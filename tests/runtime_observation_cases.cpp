@@ -115,6 +115,9 @@ int main(int argc, char** argv) {
     first.join(); second.join();
     const auto failures = calls.load(); assert(failures && !observer);
     observer("disabled"); assert(calls == failures);
+    l4d2_observation::Observer copied(observer), assigned;
+    assigned = observer; assert(!copied && !assigned);
+    assigned("disabled-copy"); assert(calls == failures);
     l4d2_overlay::InputDiagnostics input(true, "test", [](const char*) { throw std::bad_alloc(); });
     input.sample(nullptr, nullptr, false); assert(!input.enabled());
     std::puts("observer-failure: concurrent failure stops observation; callback storage remains stable");
@@ -183,6 +186,25 @@ int main(int argc, char** argv) {
     bridge_exception::recordCommand(true, bridge_exception::Queue::Device, 1, 7);
     assert(bridge_exception::testTracking() >= 3);
     assert(bridge_exception::testHistoryState());
+    unsigned exitChecked = 0;
+    std::thread worker([&] {
+      struct ExitProbe {
+        unsigned* checked;
+        ~ExitProbe() {
+          assert(!bridge_exception::testHistoryState());
+          bridge_exception::CallScope lateCall("thread-exit", 1);
+          bridge_exception::recordCommand(true, bridge_exception::Queue::Device, 1, 1);
+          assert(!bridge_exception::testHistoryState());
+          ++*checked;
+        }
+      };
+      // This destructor runs after the history owner, which initializes later.
+      thread_local ExitProbe probe { &exitChecked };
+      (void)probe;
+      bridge_exception::recordCommand(true, bridge_exception::Queue::Device, 1, 1);
+      assert(bridge_exception::testHistoryState());
+    });
+    worker.join(); assert(exitChecked == 1);
     std::printf("crash-on: history_entries=%u\n", bridge_exception::testTracking());
     return 0;
   }

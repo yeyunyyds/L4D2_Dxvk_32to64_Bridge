@@ -71,7 +71,7 @@ Fatal handler 的一次性准备、有界故障时寄存器/堆栈/模块报告�
 本轮审计见 [第二轮路径分类](RUNTIME-DIAGNOSTICS-AUDIT.md#pr-4-第二轮审计实施前)。变化只涉及 observer 存储/通知与失败边界，没有新增优化算法或更改策略、回收、恢复、Reset、Volume、IPC 及资源契约。
 
 - API wait 的 64 线程统计表启动时为 null，仅显式启用且文件/事件/诊断线程创建成功后发布。失败前的临时表自动释放。成功启用后的表按诊断 worker/span 的原有进程寿命保留，防止 detach/free 与使用者竞争。
-- Crash history 的 TLS 仅保留指针与失败标记；首次真正启用的 scope/command 才创建 history，并在正常线程退出时释放。关闭入口和故障报告不创建 history；分配失败只跳过追踪。
+- Crash history 的 TLS 仅保留指针与失败标记；首次真正启用的 scope/command 才创建 history，并在正常线程退出时先清空 published 指针并禁止重新记录，再释放；退出后的诊断 scope 不访问已销毁状态。关闭入口和故障报告不创建 history；分配失败只跳过追踪。
 - Data `Resource` 从内嵌 slot/kind/byte/usage 字段缩为单指针；首次启用 open 创建 metadata，失败不加入观察统计。Device 的 `m_dataKnown` 原本已按需，保持该实现。Volume 等 D3D 调用点未修改。
 - VB/IB 实际 `new[]`/零初始化/`bad_alloc` 契约归于 Core `buffer_shadow.h`；`memory_diagnostics.h` 不再拥有 allocator，只观察 before/success/failure/free。真实生产 Buffer 模板回归不再用假 memory allocator。
 - Retention 的 Core 初始化和诊断初始化分开。诊断 log 创建、写入或 callback 异常仅停用 log，不触发 fallback KEEP。KEEP DB 路径/校验/写入、恢复失败等真实 Core 故障仍保留原安全规则。

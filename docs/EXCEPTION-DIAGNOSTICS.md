@@ -21,7 +21,7 @@ client.exceptionDiagnosticsDetailed = False
 server.exceptionDiagnosticsDetailed = False
 ```
 
-当前源码默认报告保留寄存器与故障现场堆栈；crashDiagnostics=False 时 API/command context 为 unavailable、历史为空，健康运行不维护 TLS/ring，也不创建完整 history state。TLS 仅保留 nullable 指针和失败标记；首次启用的 API scope/command 才按需分配，正常线程退出释放。分配失败仅跳过诊断，故障报告不补建 history。显式 True 才跟踪上下文与命令历史。新键缺失时兼容旧配置：Detailed=True 会启用历史；显式 crashDiagnostics=False 优先。Detailed=True 将历史/故障堆栈上限扩为 32，另附最多 16 帧**处理器自身**的调用栈；不会打开逐帧 API 日志。只对发生异常的进程使用其对应选项。
+当前源码默认报告保留寄存器与故障现场堆栈；crashDiagnostics=False 时 API/command context 为 unavailable、历史为空，健康运行不维护 TLS/ring，也不创建完整 history state。TLS 仅保留 nullable 指针和失败标记；首次启用的 API scope/command 才按需分配，正常线程退出时先清空指针并停用后续记录，再释放，避免 TLS 析构阶段的悬空引用。分配失败仅跳过诊断，故障报告不补建 history。显式 True 才跟踪上下文与命令历史。新键缺失时兼容旧配置：Detailed=True 会启用历史；显式 crashDiagnostics=False 优先。Detailed=True 将历史/故障堆栈上限扩为 32，另附最多 16 帧**处理器自身**的调用栈；不会打开逐帧 API 日志。只对发生异常的进程使用其对应选项。
 
 ## 修改前的行为
 
