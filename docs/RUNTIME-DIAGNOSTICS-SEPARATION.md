@@ -21,7 +21,7 @@
 
 ## 保留的核心与检查
 
-关闭后的入口仍有一次 bool/atomic enable 检查；部分调用点保留空 stack token 和必要 wire/layout 局部量。静态固定表/ring 的存储仍编译在二进制内，但不更新。没有建立新诊断构建产品；Tracy 继续默认 compile-time 关闭。某些入口第一次调用会读取一次 Config 并缓存启动结果，没有周期 Config/UI 轮询。
+关闭后的入口仍有一次 bool/atomic enable 检查；部分调用点保留空 stack token 和必要 wire/layout 局部量。API wait 的大表和每线程 crash history 按需分配；剩余小型静态表/计数存储不更新。没有建立新诊断构建产品；Tracy 继续默认 compile-time 关闭。某些入口第一次调用会读取一次 Config 并缓存启动结果，没有周期 Config/UI 轮询。
 
 保留真实 PageBlock registry、capability/safety、view LRU/预算、locks/transfers/pins、resource map、command UID、ordered Host ACK 和恢复同步。drop/remap/reconstruction failure 的少量普通整数是已公开控制状态，用户触发 GC 的 scan/skip/byte/ACK/drain 结果计数和计时仍存在；没有 diagnostic memory/queue atomics。FGC 等待语义不变，不解除游戏持有的锁。
 
@@ -37,7 +37,7 @@ Fatal handler 的一次性准备、有界故障时寄存器/堆栈/模块报告�
 
 基线对照在同一套 x64 MSVC/Wine 计数器中，仅重复原 sampler/queue 1000 次：关闭其他诊断的 v1.2.0 仍有 54 次 VirtualQuery、1 次文件创建、1000 次时钟读取和 1000 次 queue atomic 更新；新 OFF 路径这些诊断操作均为 0。扫描次数依地址空间布局变化，不作为跨机器性能数值。
 
-最终运行时代码 `29a36bf4f37304e4b20e5d544804894150d5a529` 的 [Windows CI 37994479224](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/37994479224) 全部成功。构建使用 MSVC 14.29；本次 CI 生成本体/匹配补丁 artifact，未构建 L4N DLL/ZIP，也未替换 Release。运行时 build ID 为 `l4d2-1.2.0+4a3127cb7761dfc2`，不能与旧正式发布构件混同。后续提交只补充验证文档，不修改已验证的运行时补丁。
+第一轮运行时代码 `29a36bf4f37304e4b20e5d544804894150d5a529` 的 [Windows CI 37994479224](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/37994479224) 全部成功。构建使用 MSVC 14.29；本次 CI 生成本体/匹配补丁 artifact，未构建 L4N DLL/ZIP，也未替换 Release。运行时 build ID 为 `l4d2-1.2.0+4a3127cb7761dfc2`，不能与旧正式发布构件混同。该记录对应第一轮；PR #4 第二轮的代码与验证见下节。
 
 | 执行内容 | 结果 |
 |---|---|
@@ -66,8 +66,6 @@ Fatal handler 的一次性准备、有界故障时寄存器/堆栈/模块报告�
 
 受保护源码哈希检查覆盖 Volume Client/Host UnlockBox、volume_layout、wire helpers、原 Volume 测试/脚本、Reset helper、Host bootstrap、控制 ABI 与插件；同时执行原 Volume 回归。native fixtures 和 fake backend 不代表实际 L4D2/DXVK 驱动已覆盖。
 
-## 实机验证与后续边界
-
 ## PR #4 第二轮：状态与失败隔离
 
 本轮审计见 [第二轮路径分类](RUNTIME-DIAGNOSTICS-AUDIT.md#pr-4-第二轮审计实施前)。变化只涉及 observer 存储/通知与失败边界，没有新增优化算法或更改策略、回收、恢复、Reset、Volume、IPC 及资源契约。
@@ -77,13 +75,15 @@ Fatal handler 的一次性准备、有界故障时寄存器/堆栈/模块报告�
 - Data `Resource` 从内嵌 slot/kind/byte/usage 字段缩为单指针；首次启用 open 创建 metadata，失败不加入观察统计。Device 的 `m_dataKnown` 原本已按需，保持该实现。Volume 等 D3D 调用点未修改。
 - VB/IB 实际 `new[]`/零初始化/`bad_alloc` 契约归于 Core `buffer_shadow.h`；`memory_diagnostics.h` 不再拥有 allocator，只观察 before/success/failure/free。真实生产 Buffer 模板回归不再用假 memory allocator。
 - Retention 的 Core 初始化和诊断初始化分开。诊断 log 创建、写入或 callback 异常仅停用 log，不触发 fallback KEEP。KEEP DB 路径/校验/写入、恢复失败等真实 Core 故障仍保留原安全规则。
-- Retention/residency 日志通知、PageBlock sidecar 观察、API/Debug/Trace producer、Color map 与 Host inventory 的诊断分配/通知异常被隔离；Data worker/退出摘要异常不能以未捕获异常终止 Bridge。诊断状态不持有 COM 引用。
+- Retention/residency 日志通知、PageBlock sidecar 观察、API/Debug/Trace producer、Color map 与 Host inventory 的诊断分配/通知异常被隔离；Data worker/退出摘要异常不能以未捕获异常终止 Bridge。诊断状态不持有 COM 引用。已发布日志回调失败时以原子标记停用，保留存储供在途调用使用；不在并发通知中清空或释放回调。Presenter/Steam 观察回调失败也不阻断已启用的输入状态转发。
 
 仍保留开关/null 检查、空 timing token、小型 TLS 指针/标记、静态名字表和小型内存/queue 观察原子存储（OFF 不更新）。PageBlock nullable sidecar 与已有固定模拟观察表保留，未重构 core registry 或 residency gate。Core 指纹/DB、资源/锁/transfer 状态、超时与 intrinsic GC/恢复数据继续存在。
 
-新增故障注入和闭环：文件创建拒绝、诊断线程创建拒绝、诊断分配失败、retention 写入失败、抛异常的日志回调；使用生产 Runtime/Parent/Entry/Database 与 Host `runShared` 传输和独立 mock 数据源，验证 DB miss→Evictable→LGC 驱逐→preserve miss→恢复→KEEP→重新打开 DB 命中。另在 memoryMonitoring=False 下分别运行 AGC/FGC，要求仅实际 mapped view 查询，无 whole-process 扫描。真实 DXVK/L4D2 仍需实机验证。
+新增 13 个独立进程测试模式，覆盖 OFF/启用正对照、可选状态缺失与故障注入。故障注入和闭环：文件创建拒绝、诊断线程创建拒绝、诊断分配失败、retention 写入失败、抛异常的日志回调及其并发停用；使用生产 Runtime/Parent/Entry/Database 与 Host `runShared` 传输和独立 mock 数据源，验证 DB miss→Evictable→LGC 驱逐→preserve miss→恢复→KEEP→重新打开 DB 命中。另在 memoryMonitoring=False 下分别运行 AGC/FGC，要求仅实际 mapped view 查询，无 whole-process 扫描。真实 DXVK/L4D2 仍需实机验证。
 
 本地 MSVC/Wine x64 的新增模式通过；原生 Windows 双位数结果将在本轮 CI 完成后记录。Python 37 项通过，包含未变的 Volume/Reset/ABI/Host/plugin 源码保护。
+
+## 实机验证与后续边界
 
 仍需真实 L4D2 + DXVK 在 x86/x64 Host 上复测联机过图、Reset/切窗、所选策略和三种 GC/恢复；开 Presenter/Input 后复测已验证 ReShade 组合（x64 + Vulkan ReShade 6.0.1）及实际键鼠。验证 OFF 运行没有新 diagnostics 文件，再逐项启用观察确认需要的输出。
 

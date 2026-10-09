@@ -54,13 +54,11 @@ settings. Automatic reclaim and LGC/AGC/FGC continue to use the same implementat
   regression tests will remain byte-for-byte unchanged. Diagnostic callees can
   reject disabled work without touching those paths.
 
-## Verification plan
-
 ## PR #4 第二轮审计（实施前）
 
 | 路径 | 分类与现状 | 本轮最小分离 |
 |---|---|---|
-| `retention_runtime.h::Runtime::initialize` | DB/交换回调为 Core；诊断文件失败会调用 `context.disable("policy-log-unavailable")`，诊断初始化与 Core 共用 catch，可能误触发 KEEP fallback。 | Core 初始化独立；诊断初始化单独吞掉失败，仅清空日志回调。DB/真实恢复错误保持原规则。 |
+| `retention_runtime.h::Runtime::initialize` | DB/交换回调为 Core；诊断文件失败会调用 `context.disable("policy-log-unavailable")`，诊断初始化与 Core 共用 catch，可能误触发 KEEP fallback。 | Core 初始化独立；诊断初始化独立处理失败，仅停用日志回调；已发布回调保持存储不变，避免与并发调用竞争。DB/真实恢复错误保持原规则。 |
 | `retention_policy.h::Context::write`、residency `write/report` | 诊断回调可抛出，影响 upload/reclaim/recovery 返回路径。 | 日志通知不传播异常；失败停用对应回调，不改变策略/结果。 |
 | `api_wait_diagnostics.h` | 关闭不更新，但常驻 `ThreadStats[64]` 约数 MiB。 | 启用时创建表；失败仅返回 diagnostics 初始化失败；关闭仅保留开关/指针和轻量 TLS token。 |
 | `exception_diagnostics.cpp` | 关闭不更新，但每线程常驻 API/context 和两组 command history。 | 线程首次启用记录时创建 state，TLS 仅保留 nullable owner；故障报告不创建 state；分配失败跳过记录，基础 fatal 处理保留。 |
@@ -71,6 +69,8 @@ settings. Automatic reclaim and LGC/AGC/FGC continue to use the same implementat
 | API logging / Presenter / Steam / queue | 上轮 producer gate 与 demand gate 已完成；本轮不改功能。 | 复跑 disabled/positive/core 回归，保持现有语义。 |
 
 验收新增：真实 retention runtime 的 log-create/抛异常失败；所有观察关闭的 DB miss→驱逐→preserve miss→Host 内容恢复→KEEP promotion→DB 持久化；三种 GC 不强制扫描；真实生产 VB/IB 模板使用 Core allocator；可见 state/分配计数证明 OFF 不建立 API wait/history/data metadata。Volume 原文件与原测试仍受 hash 保护。
+
+## Verification plan
 
 Add production-path disabled tests with intercepted Win32 operations for diagnostic
 scans/clocks/files/threads/hooks/Getters and allocation/counter/history assertions.

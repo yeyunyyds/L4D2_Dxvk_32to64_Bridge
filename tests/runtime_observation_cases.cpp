@@ -106,6 +106,20 @@ static void learnedLoop(const char* mode) {
 int main(int argc, char** argv) {
   assert(argc == 2);
   using namespace diagnostic_work;
+  if (!std::strcmp(argv[1], "observer-failure")) {
+    std::atomic<unsigned> calls { 0 };
+    l4d2_observation::Observer observer;
+    observer = [&](const char*) { ++calls; throw std::bad_alloc(); };
+    std::thread first([&] { for (unsigned i = 0; i < 1000; ++i) { observer("failed"); } });
+    std::thread second([&] { for (unsigned i = 0; i < 1000; ++i) { observer("failed"); } });
+    first.join(); second.join();
+    const auto failures = calls.load(); assert(failures && !observer);
+    observer("disabled"); assert(calls == failures);
+    l4d2_overlay::InputDiagnostics input(true, "test", [](const char*) { throw std::bad_alloc(); });
+    input.sample(nullptr, nullptr, false); assert(!input.enabled());
+    std::puts("observer-failure: concurrent failure stops observation; callback storage remains stable");
+    return 0;
+  }
   if (!std::strcmp(argv[1], "init-failure")) {
     failDiagnosticFiles = true;
     assert(!l4d2_api_wait::initialize(true, "client") && !l4d2_api_wait::state);

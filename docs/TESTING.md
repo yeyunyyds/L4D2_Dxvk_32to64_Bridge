@@ -49,6 +49,8 @@ python -m pip install meson==1.3.2 ninja==1.11.1.1
 
 准备源码后运行 `scripts/test_runtime_observation.ps1`（x86/x64）。测试从生产文件提取 startup/logger/input 函数，结合真实诊断、PageBlock 和 Presenter 实现，仅用确定性适配器替代 detour 安装及 runtime 环境。仅测试二进制强制包含 Win32 计数器，并替换堆分配入口；发行构建没有这些计数器。
 
-off 模式重复 1000 次调用，断言诊断扫描/时钟/文件/线程/hook/HWND/模块查询/SRW 锁/分配均为零，command ring、memory 与 queue 计数不更新；用不可解引用 Device 指针证明没有诊断 Getter。随后调用真实 control ABI 的 GC handler，运行 shadow + AGC，区分单个实际 mapped-view VirtualQuery 和 GC 结果计时。独立进程的 monitor-on/input-on/crash-on/logging-on 是正对照。OFF 进程必须没有新 .log 文件。各启用诊断的既有回归仍必须通过。
+off 模式重复 1000 次调用，断言诊断扫描/时钟/文件/线程/hook/HWND/模块查询/SRW 锁/分配均为零，command ring、memory 与 queue 计数不更新；用不可解引用 Device 指针证明没有诊断 Getter。随后调用真实 control ABI 的 GC handler，分别运行 shadow + AGC/FGC，区分每次单个实际 mapped-view VirtualQuery 和 GC 结果计时。独立进程的 monitor-on/input-on/crash-on/logging-on 是正对照。OFF 进程必须没有新 .log 文件。各启用诊断的既有回归仍必须通过。
+
+另覆盖 init-failure、allocation-failure、data-on、observer-failure、lg-off、retention-log-failure、retention-write-failure、retention-callback-failure，总共 13 个独立进程模式。OFF 要求 API wait 表、TLS crash history 和 Data Resource metadata 不存在；随后真实 Core VB/IB 分配仍正常。启用失败注入文件/线程/堆分配与抛异常回调；retention 测试使用生产 Runtime/Database/Parent/Entry 和 Host `runShared` 验证驱逐、preserve miss、独立 mock 内容恢复、KEEP 提升及新 Runtime 的持久 DB 命中，不能进入 fallback KEEP。buffer contract 使用生产 Core allocator，仍保留 FULL_SHADOW 原契约。
 
 `python -m unittest discover -s tests -p test_runtime_separation.py` 检查受保护 Volume 生产代码/测试的基线哈希、配置/ABI/关闭门和默认 Tracy 构建。其余 PageBlock GC、readback、buffer contract、Reset、queue、ATI/adapter 与原 Volume suite 不改变语义。实机仍需双 Host、联机过图、窗口切换及启用 Presenter/ReShade 输入验证；计数器测试不代表真实游戏/驱动已覆盖。

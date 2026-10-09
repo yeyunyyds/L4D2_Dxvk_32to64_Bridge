@@ -35,7 +35,7 @@ struct ClientOptions { static bool getOptimizedDynamicLock() { return false; } }
 namespace buffer_contract {
 inline uint64_t liveBytes = 0;
 inline bool failAllocation = false;
-struct alignas(std::max_align_t) Allocation { size_t bytes; };
+union Allocation { size_t bytes; std::max_align_t alignment; };
 }
 void* operator new[](size_t size) {
   if (buffer_contract::failAllocation) { throw std::bad_alloc(); }
