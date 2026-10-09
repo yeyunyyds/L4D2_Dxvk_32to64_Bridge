@@ -11,12 +11,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def generate(source, output):
     src = source / 'bridge/src'
-    host = (src / 'server/main.cpp').read_text()
-    client = (src / 'client/d3d9_lss.cpp').read_text()
-    di = (src / 'client/di_hook.cpp').read_text()
-    util = (src / 'client/d3d9_util.h').read_text()
-    logger = (src / 'util/log/log.h').read_text()
-    window = (src / 'client/window.cpp').read_text()
+    host = (src / 'server/main.cpp').read_text(encoding="utf-8")
+    client = (src / 'client/d3d9_lss.cpp').read_text(encoding="utf-8")
+    di = (src / 'client/di_hook.cpp').read_text(encoding="utf-8")
+    util = (src / 'client/d3d9_util.h').read_text(encoding="utf-8")
+    logger = (src / 'util/log/log.h').read_text(encoding="utf-8")
+    window = (src / 'client/window.cpp').read_text(encoding="utf-8")
+    control = (src / 'client/pageblock_control.cpp').read_text(encoding="utf-8")
     generated = ['#include "runtime_observation_support.h"\n']
     for marker in ['class FunctionEntryExitLogger']:
         start, end = method(util, marker)
@@ -37,9 +38,11 @@ def generate(source, output):
         generated.append(host[start:end] + '\n')
     start, end = method(window, 'void WndProc::sampleSteamInput()')
     generated.append(window[start:end] + '\n')
+    start, end = method(control, 'extern "C" HRESULT WINAPI L4D2BridgePageBlockControl(')
+    generated.append(control[start:end] + '\n')
     generated.append('#include "runtime_observation_cases.cpp"\n')
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(''.join(generated))
+    output.write_text(''.join(generated), encoding='utf-8')
 
 
 if __name__ == '__main__':

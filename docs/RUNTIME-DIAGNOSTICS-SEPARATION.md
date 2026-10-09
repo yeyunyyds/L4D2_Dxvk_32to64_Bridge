@@ -10,7 +10,7 @@
 | Host memoryMonitoring | 不访问/构造 Recorder，不配置 GPU 观察，不建立 diagnostic inventory，不更新队列 observation atomics 或 processed-command 总数；无周期扫描/内存文件。 | 原 VA、CPU/commit/GPU budget、resource/queue 日志。 |
 | Crash history | CallScope/CommandScope/recordCommand 在 TLS/history 前返回；无命令 ring 或 API context 更新、可选退出队列 dump。 | 原上下文与 ring，basic/detailed 报告保留。 |
 | API wait | 既有 gate 保留；无 diagnostic QPC/TLS stats/atomic/histogram/线程/文件。 | 原阶段计时与周期输出，格式和控制流不变。 |
-| Color | 既有 producer gate 保留；无 payload 哈希、diagnostic Getter/COM refs/状态记录、线程或日志。 | 原纹理/状态摘要和 backend 快照。 |
+| Color | producer gate 与延迟初始化 metadata map；关闭时 map 不分配、不哈希/查表/擦除记录，原 Volume call sites 保持不变；无 payload 哈希、diagnostic Getter/COM refs/状态记录、线程或日志。 | 原纹理/状态摘要和 backend 快照。 |
 | Data / VB / IB | 既有 detail/histogram/状态比较 gate 保留；无 detail 分配、载荷比较、timing/counters、线程/文件。另将 memory total/Trace buffer total 归到明确开关。 | 原数据追踪/直方图；FULL_SHADOW 和锁契约不变。 |
 | PageBlock / learned details | 无资源诊断记录、历史/模拟 LRU、learned summary 计数和日志 formatting/file；纯 recovery profiling 计时关闭。 | 详细输出继续存在；选定策略的 DB/identity/恢复正确性独立于日志开关。 |
 | Presenter / Input | 全部相关功能关闭时，不创建 Presenter window/thread/hook，不进入可选 input detour/DirectInput setup，不做 ReShade 模块扫描/binding/capture；输入消息保留核心窗口/session 通知。 | 原按需窗口/输入路由及 ReShade addon 协作。Input=False 的呈现窗口不初始化其输入。 |
@@ -33,7 +33,9 @@ Fatal handler 的一次性准备、有界故障时寄存器/堆栈/模块报告�
 
 ## 验证
 
-`scripts/test_runtime_observation.ps1` 使用生产 helper 和从生产文件提取的 startup/input/logger 函数，测试对象中拦截 Win32，并统计分配；release 没有测试 hooks。独立 OFF 进程 1000 次调用要求诊断 scan/clock/file/thread/hook/HWND/module/SRW lock/allocation 全为 0，内存/queue/history 无更新；不可解引用 Device 哨兵用于证明没有 Getter。随后真实 PagefileShadow + AGC 仍 evict 1 / release 4096 bytes；其 1 次 VirtualQuery 是实际 mapped view，结果计时属于用户请求结果。monitor-on/input-on/crash-on/logging-on 为正对照；OFF 后不能有新诊断日志。
+`scripts/test_runtime_observation.ps1` 使用生产 helper 和从生产文件提取的 startup/input/logger 函数，测试对象中拦截 Win32，并统计分配；release 没有测试 hooks。独立 OFF 进程 1000 次调用要求诊断 scan/clock/file/thread/hook/HWND/module/SRW lock/allocation 全为 0，内存/queue/history 无更新；不可解引用 Device 哨兵用于证明没有 Getter。随后调用真实 control ABI 的 GC handler，PagefileShadow + AGC 仍 evict 1 / release 4096 bytes；其 1 次 VirtualQuery 是实际 mapped view，结果计时属于用户请求结果。monitor-on/input-on/crash-on/logging-on 为正对照；OFF 后不能有新诊断日志。
+
+基线对照在同一套 x64 MSVC/Wine 计数器中，仅重复原 sampler/queue 1000 次：关闭其他诊断的 v1.2.0 仍有 54 次 VirtualQuery、1 次文件创建、1000 次时钟读取和 1000 次 queue atomic 更新；新 OFF 路径这些诊断操作均为 0。扫描次数依地址空间布局变化，不作为跨机器性能数值。
 
 本地 MSVC 14.29 / SDK 10.0.22621 在 Wine 下已完成 x86 Client 与 x86/x64 Host 编译/链接，关闭测试首轮 x64 执行通过。最终源码的 Windows CI 与其余 core/enabled regression 结果在提交验证后补充。没有以 FPS 作为验收，也不声称 FPS 提升。
 

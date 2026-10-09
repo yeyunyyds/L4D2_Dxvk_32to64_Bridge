@@ -56,6 +56,7 @@ int main(int argc, char** argv) {
   l4d2_host_memory::Recorder dormantHost(false);
   assert(!dormantHost.due() && !dormantHost.sample({}));
   dormantHost.setGpuAdapter(1, 1);
+  l4d2_color::DiagnosticMap<unsigned, unsigned> dormantColorMap;
   const auto beforeHistory = bridge_exception::testTracking();
   for (unsigned i = 0; i < 1000; ++i) {
     l4d2_memory::sample(true, "pageblock-gc-before");
@@ -80,6 +81,8 @@ int main(int argc, char** argv) {
     l4d2_data::sent(1, false, wire, true, 4); l4d2_data::received(1, false);
     l4d2_data::stateSet(1, true, 32); l4d2_data::backend(1, false, 32, S_OK);
     assert(!wire.bytes);
+    assert(dormantColorMap.find(i) == dormantColorMap.end() && !dormantColorMap.size());
+    dormantColorMap.erase(i);
     l4d2_color::record("disabled"); l4d2_color::observe(1, l4d2_color::State::Render, 1, 1, S_OK);
     l4d2_color::Digest digest;
     l4d2_color::upload(1, 1, "disabled", 1, 21, 32, 32, 1, 128, 0, digest, S_OK, S_OK, true);
@@ -119,9 +122,16 @@ int main(int argc, char** argv) {
     response.format = request.format; response.mip = request.mip;
     return S_OK;
   };
-  const auto gc = l4d2_residency::RunPageBlockGc(context, l4d2_residency::PageBlockGcMode::Aggressive);
+  controlContext = &context;
+  l4d2_control::Request request;
+  request.version = l4d2_control::kDetailedVersion;
+  request.operation = l4d2_control::Operation::Gc;
+  request.value = static_cast<uint32_t>(l4d2_residency::PageBlockGcMode::Aggressive);
+  l4d2_control::DetailedResponse response;
+  assert(L4D2BridgePageBlockControl(&request, &response.base) == S_OK);
+  const auto& gc = response.base;
   assert(gc.pageBlocksScanned == 1 && gc.pageBlocksEvicted == 1 && gc.backingBytesReleased == 4096);
-  assert(gc.hostAckWaitCount == 1 && !files && !threads);
+  assert(response.hostAckWaitCount == 1 && !files && !threads);
   assert(!l4d2_memory::nextSample && !l4d2_memory::surfaceBackingBytes && !l4d2_memory::bytes[0]);
   assert(scans == 1); // actual mapped view, no whole-process diagnostic scan
   std::printf("off: diagnostic scans/files/clocks/threads/hooks/windows/modules/locks/allocations=0; GC evicted=%llu bytes=%llu intrinsic_view_queries=%u\n", gc.pageBlocksEvicted, gc.backingBytesReleased, scans.load());

@@ -9,6 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / '.deps/dxvk-remix'
+# Project digests normalize only checkout CRLF/LF; all other bytes are protected.
 # Digests from the patched v1.2.0 baseline, commit 47c4da5403e3b8f1b1beca0ffa35474be3027394.
 PROTECTED_RUNTIME = {'bridge/src/client/d3d9_volume.cpp': '33673701ba3fdab4aa014ea15f32133c5aabeaea4ae0356355e5cb4098270edb', 'bridge/src/client/d3d9_volume.h': '8417cacce6b3fb5da18218c584d1afe995b4b12789e9bdb53abf27c84239c695', 'bridge/src/client/d3d9_volumetexture.cpp': '1d528fff6f939106ca5bc46fdfb12e4d237d221c25b674a97ec1fd11036f405b', 'bridge/src/util/volume_layout.h': '8c4ea033ae1eba2441642ffa5ef2a3c82c732654b95857defcfecfe766d423d1', 'bridge/src/util/util_texture_and_volume.h': 'c53ac762333bc5192f23a4b397a5325903d542313609abbd5f476f8cd7349ae1', 'bridge/src/util/pageblock_control.h': 'c91375dc22442cc3162b2361fd7ac1b57fadd5155ed38026a17370f5c8d1d52e', 'bridge/src/util/bridge_control.h': '512739b3c28052f6ce48ac42c5762ea7aab1c4276729c863f22b9c48252b8ef4', 'bridge/src/client/d3d9_bootstrap.cpp': '81037c8c457ca557d4a5e040d4d1e7afbd22881bbe6b2a31d6de9cde182d5a56', 'bridge/src/util/device_reset.h': '661b781c69b21084751cb0a2a1fad3c3bc6dac9a4dd750d74dbc19237b54d06c'}
 PROTECTED_PROJECT = {'tests/volume_layout_test.cpp': '8ac62a56526cbadaecbe92785665176fb653ae40c54c14df01e8b92be4a8f527', 'scripts/test_volume_layout.ps1': '10f5349ab3aecc11228bdaa363bddb2ca1e13cd586129a2696bb03c793c732e8', 'plugins/l4n/L4D2BridgePlugin.cpp': '87de950b7fc0c178e4e7131dc529b8ccc959fe131d7d37e8e5aa45e23cd0cb82'}
@@ -22,24 +23,24 @@ class RuntimeSeparation(unittest.TestCase):
                 self.assertEqual(hashlib.sha256((SOURCE / name).read_bytes()).hexdigest(), digest)
         for name, digest in PROTECTED_PROJECT.items():
             with self.subTest(name=name):
-                self.assertEqual(hashlib.sha256((ROOT / name).read_bytes()).hexdigest(), digest)
-        server = (SOURCE / 'bridge/src/server/main.cpp').read_text()
+                self.assertEqual(hashlib.sha256((ROOT / name).read_bytes().replace(b"\r\n", b"\n")).hexdigest(), digest)
+        server = (SOURCE / 'bridge/src/server/main.cpp').read_text(encoding="utf-8")
         for name, digest in VOLUME_HANDLERS.items():
             start = server.index('      case ' + name + ':')
             end = server.index('      case ', start + 10)
             self.assertEqual(hashlib.sha256(server[start:end].encode()).hexdigest(), digest)
 
     def test_packaged_defaults_and_independent_monitoring(self):
-        config = (ROOT / 'config/bridge.conf').read_text()
+        config = (ROOT / 'config/bridge.conf').read_text(encoding="utf-8")
         for side in ['client', 'server']:
             for switch in ['memoryMonitoring', 'crashDiagnostics', 'apiWaitDiagnostics',
                            'dataDiagnostics', 'colorDiagnostics', 'steamInputDiagnostics', 'steamOverlayInput']:
                 self.assertRegex(config, re.escape(side + '.' + switch) + r'\s*=\s*False')
         self.assertRegex(config, r'client.pageBlockRetentionPolicy\s*=\s*learned-aggressive')
         for file, side in [('client/d3d9_lss.cpp', 'client'), ('server/main.cpp', 'server')]:
-            startup = (SOURCE / ('bridge/src/' + file)).read_text()
+            startup = (SOURCE / ('bridge/src/' + file)).read_text(encoding="utf-8")
             self.assertIn('memoryMonitoring = Config::getOption<bool>("' + side + '.memoryMonitoring", false)', startup)
-        options = (SOURCE / 'bridge/meson_options.txt').read_text()
+        options = (SOURCE / 'bridge/meson_options.txt').read_text(encoding="utf-8")
         self.assertRegex(options, r"option\('enable_tracy',\s*type\s*:\s*'boolean',\s*value\s*:\s*false")
 
     def test_logging_producers_are_lazy_and_command_guarded(self):
@@ -47,12 +48,12 @@ class RuntimeSeparation(unittest.TestCase):
             for path in (SOURCE / ('bridge/src/' + folder)).rglob('*.cpp'):
                 if path.name == 'log.cpp':
                     continue
-                self.assertNotRegex(path.read_text(), r'Logger::(?:debug|trace)\(')
-        server = (SOURCE / 'bridge/src/server/main.cpp').read_text()
+                self.assertNotRegex(path.read_text(encoding="utf-8"), r'Logger::(?:debug|trace)\(')
+        server = (SOURCE / 'bridge/src/server/main.cpp').read_text(encoding="utf-8")
         self.assertRegex(server, r'if \(GlobalOptions::getLogServerCommands\(\)\)\s*\{\s*Logger::info\("Device Processing:')
-        module = (SOURCE / 'bridge/src/server/module_processing.cpp').read_text()
+        module = (SOURCE / 'bridge/src/server/module_processing.cpp').read_text(encoding="utf-8")
         self.assertRegex(module, r'if \(GlobalOptions::getLogServerCommands\(\)\)\s*\{\s*Logger::info')
-        logger = (SOURCE / 'bridge/src/client/d3d9_util.h').read_text()
+        logger = (SOURCE / 'bridge/src/client/d3d9_util.h').read_text(encoding="utf-8")
         self.assertIn('FunctionEntryExitLogger(const char* functionName', logger)
         self.assertNotIn('>> s_counters;', logger)
 

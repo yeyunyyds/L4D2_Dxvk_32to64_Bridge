@@ -86,3 +86,11 @@ inline l4d2_overlay::InputDiagnostics& inputDiagnostics() {
   static l4d2_overlay::InputDiagnostics instance(false, "client", [](const char*) { ++messages; });
   return instance;
 }
+
+// The exported production GC handler uses the real registry/reclaim. Only its
+// process-wide runtime accessor is supplied by the deterministic test fixture.
+inline l4d2_residency::Context* controlContext = nullptr;
+namespace l4d2_residency {
+inline Context& context() { assert(controlContext); return *controlContext; }
+inline bool setPolicy(Policy policy) { context().policy = policy; return true; }
+}
