@@ -37,7 +37,32 @@ Fatal handler 的一次性准备、有界故障时寄存器/堆栈/模块报告�
 
 基线对照在同一套 x64 MSVC/Wine 计数器中，仅重复原 sampler/queue 1000 次：关闭其他诊断的 v1.2.0 仍有 54 次 VirtualQuery、1 次文件创建、1000 次时钟读取和 1000 次 queue atomic 更新；新 OFF 路径这些诊断操作均为 0。扫描次数依地址空间布局变化，不作为跨机器性能数值。
 
-本地 MSVC 14.29 / SDK 10.0.22621 在 Wine 下已完成 x86 Client 与 x86/x64 Host 编译/链接，关闭测试首轮 x64 执行通过。最终源码的 Windows CI 与其余 core/enabled regression 结果在提交验证后补充。没有以 FPS 作为验收，也不声称 FPS 提升。
+最终运行时代码 `29a36bf4f37304e4b20e5d544804894150d5a529` 的 [Windows CI 37994479224](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/37994479224) 全部成功。构建使用 MSVC 14.29；本次 CI 生成本体/匹配补丁 artifact，未构建 L4N DLL/ZIP，也未替换 Release。运行时 build ID 为 `l4d2-1.2.0+4a3127cb7761dfc2`，不能与旧正式发布构件混同。后续提交只补充验证文档，不修改已验证的运行时补丁。
+
+| 执行内容 | 结果 |
+|---|---|
+| x86 Client DLL、x86 Host、x64 Host 完整原生构建/链接/打包 | 全部成功；本地 MSVC/Wine 初轮三目标也通过。 |
+| 新 OFF 工作计数 + control ABI GC（x86/x64） | 两端各 1000 次调用，诊断扫描/时钟/文件/线程/hook/HWND/模块查询/SRW lock/堆分配为 0；内存/queue/history 无更新、没有新日志；AGC evict=1 / 4096 bytes，1 次 intrinsic mapped-view query。 |
+| 新开启正对照（x86/x64） | Monitor 分别 scan=183/145、file=1、clock=1；input detour adapter calls=6 / setup=7；crash history entries=3；lazy log producers=2。 |
+| Source 保护与默认配置（Python 3 项） | 通过；Volume、ABI、Reset helper、Host bootstrap 与 L4N 源码未改；原始 project 文本 hash 仅归一化 Git checkout 的 CRLF/LF。 |
+| `test_pageblock_gc.ps1 -SkipPluginTests`（x86/x64） | learned/aggressive/force、KEEP/pins/VA/drop/current-content recovery、coverage；原 Config/设置持久化、Host/Presenter target、ABI 检查通过。L4N DLL callback fixture 本次按未改插件约定跳过。 |
+| `test_exception_diagnostics.ps1` | Client/两种 Host 的异常归因、detailed、故障/坏记录、flush、peer attribution 与有界退出通过；开启 history 的旧 fixture 保持原结果。 |
+| `test_device_reset.ps1`（x86/x64） | 失败/重试/timeout、隐式 surface 引用/有序销毁及 150000 次查询引用平衡通过。 |
+| `test_color_diagnostics.ps1`（x86/x64） + color analysis 2 项 | 禁用/开启诊断、wire/hash/ring/file/异步退出与临时 COM 引用通过。 |
+| `test_data_diagnostics.ps1`（x86/x64） + data analysis 16 项 | disabled/normal/extended/overflow/cap/periodic、生产 constants 比较与现有统计通过。 |
+| `test_buffer_contract.ps1`（x86） | VB/IB 历史内容、多次 Lock/Unlock、部分/READONLY/DISCARD 与 FULL_SHADOW 契约通过。 |
+| **原 `test_volume_layout.ps1`（x86/x64）** | **每端 59 项通过**：API byte pitch、wire、padding、partial box 和无效 stride；原测试/脚本保持不变。 |
+| `test_diagnostics.ps1`（x86） | 显式开启的 memory/pageblock 观察、shadow lifetime、10000 次创建失败清理通过。 |
+| `test_host_diagnostics.ps1`（x86/x64） | 显式开启的 inventory、VA/process/CPU/GPU-invalid-adapter、queue 观察通过。 |
+| `test_x86_backend.ps1` | 官方 DXVK 2.6.1 x86 DLL 加载/导出通过；未以 DLL 加载冒充 GPU 渲染验证。 |
+| `test_adapter_information.ps1` + `test_ati_texture_layout.ps1` | x86/x64 identifier/caps transport 与 ATI1/ATI2 guarded layout/upload/readback 通过。 |
+| `test_overlay_presenter.ps1`（x86/x64 Host） | 跨进程 child HWND、捕获、Reset routing、resize、teardown 通过（fake ReShade addon）。 |
+| `test_api_wait_diagnostics.ps1`（x86/x64） + analysis 6 项 | 启用归因/快照、禁用入口与原周期输出通过。 |
+| `test_command_queue.ps1`（x86/x64） | idle/wait/timeout/wakeup、跨进程 x86→x64 队列通过；观测 fixture 显式开启 counter。 |
+| `test_readback_recovery.ps1` | 独立 child-process readback、18 个格式恢复、25 个 mock readback、真实 backing deletion/hash/full mip/永久 KEEP/跨次 DB 命中/失败与 fallback 通过。 |
+| release packaging Python 8 项；本地全部 Python 35 项 | 通过；L4N 分包规则继续有效，未重建插件。 |
+
+首次 Windows run 的运行时 OFF/正对照已通过，但新增源码保护测试遗漏 UTF-8 和 checkout 换行处理导致失败；已修正测试后完整重跑成功。验收依据是操作调用停止与契约回归，没有 FPS 提升结论。
 
 受保护源码哈希检查覆盖 Volume Client/Host UnlockBox、volume_layout、wire helpers、原 Volume 测试/脚本、Reset helper、Host bootstrap、控制 ABI 与插件；同时执行原 Volume 回归。native fixtures 和 fake backend 不代表实际 L4D2/DXVK 驱动已覆盖。
 
