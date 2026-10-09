@@ -71,7 +71,7 @@ Fatal handler 的一次性准备、有界故障时寄存器/堆栈/模块报告�
 本轮审计见 [第二轮路径分类](RUNTIME-DIAGNOSTICS-AUDIT.md#pr-4-第二轮审计实施前)。变化只涉及 observer 存储/通知与失败边界，没有新增优化算法或更改策略、回收、恢复、Reset、Volume、IPC 及资源契约。
 
 - API wait 的 64 线程统计表启动时为 null，仅显式启用且文件/事件/诊断线程创建成功后发布。失败前的临时表自动释放。成功启用后的表按诊断 worker/span 的原有进程寿命保留，防止 detach/free 与使用者竞争。
-- Crash history 的 TLS 仅保留指针与失败标记；首次真正启用的 scope/command 才创建 history，并在正常线程退出时先清空 published 指针并禁止重新记录，再释放；退出后的诊断 scope 不访问已销毁状态。关闭入口和故障报告不创建 history；分配失败只跳过追踪。
+- Crash history 的 TLS 仅保留指针与失败标记；首次真正启用的 scope/command 才创建 history，并在正常线程退出时先清空已发布指针并禁止重新记录，再释放；退出后的诊断 scope 不访问已销毁状态。关闭入口和故障报告不创建 history；分配失败只跳过追踪。
 - Data `Resource` 从内嵌 slot/kind/byte/usage 字段缩为单指针；首次启用 open 创建 metadata，失败不加入观察统计。Device 的 `m_dataKnown` 原本已按需，保持该实现。Volume 等 D3D 调用点未修改。
 - VB/IB 实际 `new[]`/零初始化/`bad_alloc` 契约归于 Core `buffer_shadow.h`；`memory_diagnostics.h` 不再拥有 allocator，只观察 before/success/failure/free。真实生产 Buffer 模板回归不再用假 memory allocator。
 - Retention 的 Core 初始化和诊断初始化分开。诊断 log 创建、写入或 callback 异常仅停用 log，不触发 fallback KEEP。KEEP DB 路径/校验/写入、恢复失败等真实 Core 故障仍保留原安全规则。
@@ -81,7 +81,28 @@ Fatal handler 的一次性准备、有界故障时寄存器/堆栈/模块报告�
 
 新增 13 个独立进程测试模式，覆盖 OFF/启用正对照、可选状态缺失与故障注入。故障注入和闭环：文件创建拒绝、诊断线程创建拒绝、诊断分配失败、retention 写入失败、抛异常的日志回调及其并发停用；使用生产 Runtime/Parent/Entry/Database 与 Host `runShared` 传输和独立 mock 数据源，验证 DB miss→Evictable→LGC 驱逐→preserve miss→恢复→KEEP→重新打开 DB 命中。另在 memoryMonitoring=False 下分别运行 AGC/FGC，要求仅实际 mapped view 查询，无 whole-process 扫描。真实 DXVK/L4D2 仍需实机验证。
 
-本地 MSVC/Wine x64 的新增模式通过；原生 Windows 双位数结果将在本轮 CI 完成后记录。Python 37 项通过，包含未变的 Volume/Reset/ABI/Host/plugin 源码保护。
+本地 MSVC/Wine x64 的 13 个模式及 PageBlock/旧观察回归通过；x86/x64 fixture 编译通过。本地 Python 37 项通过（API wait analysis 6、color 2、data 16、packaging 8、源码保护 5）。
+
+本轮最终 [Windows CI 38002144011](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38002144011) **全部通过**，验证提交 `86b577d1bedbe4f8196b04535e685bb7a63611e3`。其运行时补丁与 `62729f7` 相同，SHA256 为 `716f2d66161f9c9aa5ef24c6ef656ae8b9b6d216bfe6820af4a8c48725ebfed2`，build ID 为 `l4d2-1.2.0+716f2d66161f9c9a`。随后提交仅同步文档，不修改已验证补丁。
+
+| 本轮执行 | 结果 |
+|---|---|
+| x86 Client / x86 Host / x64 Host 完整原生构建与链接 | 全部通过；生成本体与匹配补丁 artifact。未构建 L4N DLL/ZIP。 |
+| 13 个观察测试模式（x86/x64） | 全部通过；OFF 1000 次调用的诊断 scan/clock/file/thread/hook/HWND/module/SRW lock/allocation 为 0，API wait 表、history 与每资源 metadata 均未创建。 |
+| memoryMonitoring=False 的 Core allocation 与 GC | VB/IB 分配、零初始化、释放与 bad_alloc 契约通过；AGC/FGC 各 evict=1 / release=4096，每次仅查询 1 个实际 mapped view，无全进程扫描。LGC 在 LG 闭环中通过。 |
+| LG OFF / log-create / log-write / callback-failure（x86/x64） | 四个模式均完成驱逐、Host 恢复、KEEP 提升、持久 DB 命中，fallback=0。使用独立 mock 后端内容，不冒充真实 DXVK 驱动验证。 |
+| 初始化/分配失败与并发/线程退出边界 | 文件/线程失败不发布 ApiWait 表；诊断堆失败不改变 Core allocation 契约；失败回调停止后保持存储稳定；TLS history 释放后不重建、不访问旧指针。 |
+| PageBlock policy/GC/settings/control ABI（x86/x64） | learned/aggressive/force、keep/drop、pins/transfer、真实 backing 卸载、恢复及旧 ABI 回归通过；未改插件 callback fixture 按约定跳过。 |
+| 原 `test_volume_layout.ps1` | x86/x64 各 59 项通过；原脚本、测试和 Volume 路径未修改。 |
+| x86 VB/IB production buffer contract | 历史内容、多次 Lock/Unlock、部分/READONLY/DISCARD 与 FULL_SHADOW 通过；采用 Core allocator。 |
+| Reset / exception / color / data / 原 memory/PageBlock diagnostics | 原生测试全部通过；包括启用观察输出、引用平衡和创建失败清理。 |
+| x86+x64 Host memory / adapter / ATI / Presenter / API wait / queue | 全部通过；跨进程 Presenter 使用 fake addon，原 queue 同步/timeout/唤醒不变。 |
+| readback recovery | 独立子进程 18 个格式恢复 + 25 个 mock 回读、实际 backing deletion、全 mip 恢复、持久 KEEP、失败与 fallback 原规则全部通过。 |
+| x86 DXVK backend / Python analysis + packaging + source checks | 官方 2.6.1 DLL 加载/导出通过；分组 Python 共 37 项通过。DLL 加载不等于 GPU 渲染验证。 |
+
+中间验证发现了测试夹具对齐警告、日志回调复制契约及旧分配失败测试未更新 allocator 名称；已修正后完整重跑，未跳过相关回归或降低正式测试的 `/W4 /WX` 要求。
+
+在审计及故障注入覆盖的诊断初始化、分配、日志和回调路径中，未发现残留的诊断失败改变 Core 策略/结果路径。真正 Core DB、身份 metadata、资源分配或 recovery 失败继续执行原有安全处理；没有将它们当作可忽略的诊断错误。开启观察时正常输出与统计语义保持原样；新增差异只发生于观察失败、未启用状态存储和线程退出后的 history 停用边界。
 
 ## 实机验证与后续边界
 
