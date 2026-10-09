@@ -22,6 +22,9 @@
 namespace diagnostic_work {
 inline std::atomic<unsigned> scans { 0 }, clocks { 0 }, files { 0 }, threads { 0 };
 inline std::atomic<unsigned> hooks { 0 }, windows { 0 }, modules { 0 }, locks { 0 }, allocations { 0 };
+inline bool failAllocation = false, failRetentionFile = false, failRetentionWrite = false;
+inline bool failDiagnosticFiles = false, failThread = false;
+inline HANDLE retentionFile = INVALID_HANDLE_VALUE;
 inline SIZE_T WINAPI query(LPCVOID address, PMEMORY_BASIC_INFORMATION result, SIZE_T size) {
   ++scans; return VirtualQuery(address, result, size);
 }
@@ -30,15 +33,36 @@ inline BOOL WINAPI counter(PLARGE_INTEGER result) { ++clocks; return QueryPerfor
 inline BOOL WINAPI frequency(PLARGE_INTEGER result) { ++clocks; return QueryPerformanceFrequency(result); }
 inline HANDLE WINAPI fileW(LPCWSTR name, DWORD access, DWORD share, LPSECURITY_ATTRIBUTES security,
   DWORD disposition, DWORD flags, HANDLE templateFile) {
-  ++files; return CreateFileW(name, access, share, security, disposition, flags, templateFile);
+  ++files;
+  const bool retention = name && wcsstr(name, L"l4d2-retention.log");
+  if ((retention && failRetentionFile) || (failDiagnosticFiles && name && wcsstr(name, L".log"))) {
+    SetLastError(ERROR_ACCESS_DENIED); return INVALID_HANDLE_VALUE;
+  }
+  const auto result = CreateFileW(name, access, share, security, disposition, flags, templateFile);
+  if (retention) { retentionFile = result; }
+  return result;
+}
+inline BOOL WINAPI write(HANDLE file, LPCVOID data, DWORD size, LPDWORD written, LPOVERLAPPED overlapped) {
+  if (file == retentionFile && file != INVALID_HANDLE_VALUE && failRetentionWrite) {
+    SetLastError(ERROR_DISK_FULL); return FALSE;
+  }
+  return WriteFile(file, data, size, written, overlapped);
+}
+inline BOOL WINAPI close(HANDLE file) {
+  if (file == retentionFile) { retentionFile = INVALID_HANDLE_VALUE; }
+  return CloseHandle(file);
 }
 inline HANDLE WINAPI fileA(LPCSTR name, DWORD access, DWORD share, LPSECURITY_ATTRIBUTES security,
   DWORD disposition, DWORD flags, HANDLE templateFile) {
-  ++files; return CreateFileA(name, access, share, security, disposition, flags, templateFile);
+  ++files;
+  if (failDiagnosticFiles) { SetLastError(ERROR_ACCESS_DENIED); return INVALID_HANDLE_VALUE; }
+  return CreateFileA(name, access, share, security, disposition, flags, templateFile);
 }
 inline HANDLE WINAPI thread(LPSECURITY_ATTRIBUTES security, SIZE_T size, LPTHREAD_START_ROUTINE start,
   LPVOID context, DWORD flags, LPDWORD id) {
-  ++threads; return CreateThread(security, size, start, context, flags, id);
+  ++threads;
+  if (failThread) { SetLastError(ERROR_NOT_ENOUGH_MEMORY); return nullptr; }
+  return CreateThread(security, size, start, context, flags, id);
 }
 inline HHOOK WINAPI hook(int kind, HOOKPROC callback, HINSTANCE instance, DWORD id) {
   ++hooks; return SetWindowsHookExW(kind, callback, instance, id);
@@ -57,6 +81,8 @@ inline void WINAPI shared(PSRWLOCK lock) { ++locks; AcquireSRWLockShared(lock); 
 #define QueryPerformanceCounter diagnostic_work::counter
 #define QueryPerformanceFrequency diagnostic_work::frequency
 #define CreateFileW diagnostic_work::fileW
+#define WriteFile diagnostic_work::write
+#define CloseHandle diagnostic_work::close
 #define CreateFileA diagnostic_work::fileA
 #define CreateThread diagnostic_work::thread
 #define SetWindowsHookExW diagnostic_work::hook

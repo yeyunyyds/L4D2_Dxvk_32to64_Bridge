@@ -76,6 +76,8 @@ v1.2.0 正式版包含通用设置 API，L4N 插件单独提供 ZIP。旧 `v1.2.
 
 本节描述当前源码的诊断分离清理；已发布 v1.2.0 二进制仍按发布时行为运行，不能通过新配置键假定旧二进制已停止采样。实现前分类见 [完整审计](RUNTIME-DIAGNOSTICS-AUDIT.md)，验证方法和边界见 [分离报告](RUNTIME-DIAGNOSTICS-SEPARATION.md)。
 
+PR #4 第二轮进一步分离存储与失败：关闭 API wait 不分配线程统计表；关闭 crash history 不创建 API/command history；关闭 data diagnostics 不创建每资源 metadata。memory monitoring 只观察 Core 的分配/释放，不执行分配本身。诊断日志、统计存储或诊断线程失败不能改变 LG、GC、恢复或资源行为；retention 日志失败不再触发 KEEP fallback。KEEP DB 等核心状态的真实错误仍按原规则处理。
+
 始终运行的核心是转发、资源/shadow 生命周期、统一 PageBlock residency/reclaim、所选 keep/learned-aggressive/drop 策略、恢复、Reset 和 IPC 同步。GC 是同一系统的用户触发 sweep，不是独立内存子系统。learned-aggressive 继续是推荐随包策略。
 
 可选运行功能是 Presenter/Input、显式输入转发和 Steam 实验；诊断功能是 memory、crash history、API wait、color、data、PageBlock 详细观察及 profiling。它们分别按启动配置启用，没有插件轮询或菜单配置定时读取。

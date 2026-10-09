@@ -17,6 +17,27 @@ VOLUME_HANDLERS = {'IDirect3DVolume9_UnlockBox': '4d8c518fb453a3a27a4cad09de54bf
 
 
 class RuntimeSeparation(unittest.TestCase):
+    def test_core_allocator_and_optional_diagnostic_storage(self):
+        client = SOURCE / 'bridge/src/client'
+        allocator = (client / 'buffer_shadow.h').read_text(encoding='utf-8')
+        observer = (client / 'memory_diagnostics.h').read_text(encoding='utf-8')
+        buffer = (client / 'lockable_buffer.h').read_text(encoding='utf-8')
+        self.assertIn('new uint8_t[size]', allocator)
+        self.assertNotIn('new uint8_t[', observer)
+        self.assertIn('l4d2_buffer::allocate', buffer)
+        self.assertNotIn('l4d2_memory::allocate', buffer)
+        wait = (SOURCE / 'bridge/src/util/api_wait_diagnostics.h').read_text(encoding='utf-8')
+        crash = (SOURCE / 'bridge/src/util/exception_diagnostics.cpp').read_text(encoding='utf-8')
+        self.assertNotIn('inline ThreadStats threads[kThreads]', wait)
+        self.assertNotIn('thread_local ThreadState s_thread', crash)
+
+    def test_diagnostic_log_cannot_trigger_policy_fallback(self):
+        retention = (SOURCE / 'bridge/src/client/retention_runtime.h').read_text(encoding='utf-8')
+        self.assertNotIn('policy-log-unavailable', retention)
+        self.assertIn('void initializeDiagnostics() noexcept', retention)
+        self.assertIn('persistent-db-open-or-validation-failed', retention)
+        self.assertIn('unsupported-shared-heap-or-backend', retention)
+
     def test_protected_volume_abi_reset_host_and_plugin(self):
         for name, digest in PROTECTED_RUNTIME.items():
             with self.subTest(name=name):

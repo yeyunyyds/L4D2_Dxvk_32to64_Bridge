@@ -15,15 +15,21 @@
 #include "data_diagnostics.h"
 #include "exception_diagnostics.h"
 #include "api_wait_diagnostics.h"
+#include "buffer_shadow.h"
+#include "readback_backend.h"
 #include "pageblock_residency.h"
+#include "retention_policy.h"
 #include "steam_activity_diagnostics.h"
+#include "util_commands.h"
 
 using l4d2_observation::InputDemand;
 inline InputDemand requestedInput;
 inline unsigned detours = 0, inputSetup = 0, messages = 0;
 inline bool apiLog = false;
+inline bool retentionDiagnostics = false;
+inline std::string configuredPolicy = "keep", configuredDb;
 enum class LogLevel { Trace, Debug };
-struct Logger { static void info(const std::string&) { ++messages; } static void err(const std::string&) { ++messages; } };
+struct Logger { static void info(const std::string&) { ++messages; } static void err(const std::string&) { ++messages; } static void warn(const std::string&) { ++messages; } };
 struct LazyLogger {
   static bool isEnabled(LogLevel) { return apiLog; }
   static void trace(const std::string&) { ++messages; }
@@ -47,13 +53,28 @@ struct ClientOptions {
 };
 struct Config {
   template<typename T> static T getOption(const char* key, T fallback) {
+    if constexpr (std::is_same_v<T, std::string>) {
+      if (!std::strcmp(key, "client.pageBlockRetentionPolicy")) { return configuredPolicy; }
+      if (!std::strcmp(key, "client.pageBlockRetentionDb")) { return configuredDb; }
+      return fallback;
+    } else {
+    if (!std::strcmp(key, "client.pageBlockDiagnostics")) { return static_cast<T>(retentionDiagnostics); }
     if (!std::strcmp(key, "server.presenterWindow")) { return static_cast<T>(requestedInput.presenterWindow); }
     if (!std::strcmp(key, "server.presenterInput")) { return static_cast<T>(requestedInput.presenterInput); }
     if (!std::strcmp(key, "server.useVanillaDxvk")) { return static_cast<T>(!requestedInput.remix); }
     if (!std::strcmp(key, "client.steamOverlayInput")) { return static_cast<T>(requestedInput.steamInput); }
     return fallback;
+    }
   }
 };
+namespace bridge_util { using Config = ::Config; using Logger = ::Logger; }
+struct ClientMessage {
+  ClientMessage(Commands::D3D9Command, uint32_t) {}
+  void send_data(uint32_t, const void*) {}
+};
+namespace l4d2_retention {
+inline std::filesystem::path clientDirectory() { return std::filesystem::current_path(); }
+}
 inline void DetourTransactionBegin() { ++detours; }
 inline void DetourTransactionCommit() { ++detours; }
 inline void DetourUpdateThread(HANDLE) { ++detours; }

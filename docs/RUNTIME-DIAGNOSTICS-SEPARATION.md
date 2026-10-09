@@ -68,6 +68,23 @@ Fatal handler 的一次性准备、有界故障时寄存器/堆栈/模块报告�
 
 ## 实机验证与后续边界
 
+## PR #4 第二轮：状态与失败隔离
+
+本轮审计见 [第二轮路径分类](RUNTIME-DIAGNOSTICS-AUDIT.md#pr-4-第二轮审计实施前)。变化只涉及 observer 存储/通知与失败边界，没有新增优化算法或更改策略、回收、恢复、Reset、Volume、IPC 及资源契约。
+
+- API wait 的 64 线程统计表启动时为 null，仅显式启用且文件/事件/诊断线程创建成功后发布。失败前的临时表自动释放。成功启用后的表按诊断 worker/span 的原有进程寿命保留，防止 detach/free 与使用者竞争。
+- Crash history 的 TLS 仅保留指针与失败标记；首次真正启用的 scope/command 才创建 history，并在正常线程退出时释放。关闭入口和故障报告不创建 history；分配失败只跳过追踪。
+- Data `Resource` 从内嵌 slot/kind/byte/usage 字段缩为单指针；首次启用 open 创建 metadata，失败不加入观察统计。Device 的 `m_dataKnown` 原本已按需，保持该实现。Volume 等 D3D 调用点未修改。
+- VB/IB 实际 `new[]`/零初始化/`bad_alloc` 契约归于 Core `buffer_shadow.h`；`memory_diagnostics.h` 不再拥有 allocator，只观察 before/success/failure/free。真实生产 Buffer 模板回归不再用假 memory allocator。
+- Retention 的 Core 初始化和诊断初始化分开。诊断 log 创建、写入或 callback 异常仅停用 log，不触发 fallback KEEP。KEEP DB 路径/校验/写入、恢复失败等真实 Core 故障仍保留原安全规则。
+- Retention/residency 日志通知、PageBlock sidecar 观察、API/Debug/Trace producer、Color map 与 Host inventory 的诊断分配/通知异常被隔离；Data worker/退出摘要异常不能以未捕获异常终止 Bridge。诊断状态不持有 COM 引用。
+
+仍保留开关/null 检查、空 timing token、小型 TLS 指针/标记、静态名字表和小型内存/queue 观察原子存储（OFF 不更新）。PageBlock nullable sidecar 与已有固定模拟观察表保留，未重构 core registry 或 residency gate。Core 指纹/DB、资源/锁/transfer 状态、超时与 intrinsic GC/恢复数据继续存在。
+
+新增故障注入和闭环：文件创建拒绝、诊断线程创建拒绝、诊断分配失败、retention 写入失败、抛异常的日志回调；使用生产 Runtime/Parent/Entry/Database 与 Host `runShared` 传输和独立 mock 数据源，验证 DB miss→Evictable→LGC 驱逐→preserve miss→恢复→KEEP→重新打开 DB 命中。另在 memoryMonitoring=False 下分别运行 AGC/FGC，要求仅实际 mapped view 查询，无 whole-process 扫描。真实 DXVK/L4D2 仍需实机验证。
+
+本地 MSVC/Wine x64 的新增模式通过；原生 Windows 双位数结果将在本轮 CI 完成后记录。Python 37 项通过，包含未变的 Volume/Reset/ABI/Host/plugin 源码保护。
+
 仍需真实 L4D2 + DXVK 在 x86/x64 Host 上复测联机过图、Reset/切窗、所选策略和三种 GC/恢复；开 Presenter/Input 后复测已验证 ReShade 组合（x64 + Vulkan ReShade 6.0.1）及实际键鼠。验证 OFF 运行没有新 diagnostics 文件，再逐项启用观察确认需要的输出。
 
 本次未清理上游整个 Remix 产品，也不改 DXVK 自己的 monitoring/HUD。若以后裁剪 compile-time diagnostics 或进一步消除空 stack token/固定表，需另行验证，不以这些存储或核心观察为理由删除正确性行为。Steam Overlay 的既有不完整支持仍为已知限制。

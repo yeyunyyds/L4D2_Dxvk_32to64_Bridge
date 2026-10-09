@@ -6,6 +6,8 @@
 #include <d3d9.h>
 #include <algorithm>
 #include <cassert>
+#include <cstddef>
+#include <cstdlib>
 #include <cstdint>
 #include <cstring>
 #include <iostream>
@@ -29,14 +31,25 @@ struct GlobalOptions {
   static bool getAlwaysCopyEntireStaticBuffer() { return false; }
 };
 struct ClientOptions { static bool getOptimizedDynamicLock() { return false; } };
-namespace l4d2_memory {
-enum class Kind { Vertex, Index };
+#include "buffer_shadow.h"
+namespace buffer_contract {
 inline uint64_t liveBytes = 0;
-inline uint8_t* allocate(size_t size, Kind, unsigned, unsigned, unsigned, bool) {
-  auto* result = new uint8_t[size](); liveBytes += size; return result;
+inline bool failAllocation = false;
+struct alignas(std::max_align_t) Allocation { size_t bytes; };
 }
-inline void released(size_t size, Kind) { liveBytes -= size; }
+void* operator new[](size_t size) {
+  if (buffer_contract::failAllocation) { throw std::bad_alloc(); }
+  auto* header = static_cast<buffer_contract::Allocation*>(std::malloc(sizeof(buffer_contract::Allocation) + size));
+  if (!header) { throw std::bad_alloc(); }
+  header->bytes = size; buffer_contract::liveBytes += size;
+  return header + 1;
 }
+void operator delete[](void* data) noexcept {
+  if (!data) { return; }
+  auto* header = static_cast<buffer_contract::Allocation*>(data) - 1;
+  buffer_contract::liveBytes -= header->bytes; std::free(header);
+}
+void operator delete[](void* data, size_t) noexcept { ::operator delete[](data); }
 namespace SharedHeap {
 using AllocId = uint32_t;
 constexpr AllocId kInvalidId = UINT32_MAX;
