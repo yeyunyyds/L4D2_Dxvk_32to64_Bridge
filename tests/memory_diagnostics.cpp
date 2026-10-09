@@ -102,7 +102,7 @@ int main(int argc, char** argv) {
   if (freedBytes[1] != 8192 || freedBytes[2] != 2048 || freeCount[1] != 1 || freeCount[2] != 1) { return 34; }
   bool failed = false;
   try {
-    auto impossible = allocate(std::numeric_limits<size_t>::max(), Kind::Surface);
+    auto impossible = l4d2_buffer::allocate(std::numeric_limits<size_t>::max(), Kind::Surface);
     delete[] impossible;
   } catch (const std::bad_alloc&) { failed = true; }
   if (!failed || bytes[0] != 0 || objects[0] != 0) { return 5; }

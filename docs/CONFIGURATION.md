@@ -128,10 +128,10 @@ PR #4 第二轮进一步分离存储与失败：关闭 API wait 不分配线程�
 |---|---|---|
 | `client.memoryMonitoring=False`（新增） | 无全进程 VirtualQuery/VA 分类、进程内存/CPU 周期采样、采样时间维护、内存/峰值原子更新或采样锁；不创建/写 l4d2-memory.log；Present、分配、GC 前后调用均直接返回，无 async 任务。 | 真实分配、section/view、预算和 pin、安全失败传播；单个实际 mapped view 的测量仍用于 GC 字节结果。 |
 | `server.memoryMonitoring=False`（新增） | 不构造运行时 Recorder，不采样 VA/进程/系统内存/GPU budget；不创建/写 l4d2-host-memory.log；不维护诊断资源 inventory/队列原子统计/processed command 总数，无周期任务。 | 真正的 Host COM/resource map、队列索引/唤醒/timeout；backend 自身所需内存查询不属于此开关。 |
-| `client.crashDiagnostics=False` / `server.crashDiagnostics=False`（新增） | 不维护 API/command context、TLS 历史 ring，不复制/格式化可选退出队列历史；无逐调用诊断时间或历史写入。 | 基础 fatal handler 的一次性准备和故障时有界寄存器/栈/模块报告、退出码和 peer handling；故障现场可有 VirtualQuery，健康路径没有历史记录。 |
-| 两侧 `apiWaitDiagnostics=False` | 无诊断 QPC、统计原子更新、TLS stats 注册、histogram/percentile、周期线程、api-wait 日志。 | 核心等待/超时仍执行；GC ACK/drain 结果计时按既有 ABI 保留。 |
+| `client.crashDiagnostics=False` / `server.crashDiagnostics=False`（新增） | 不创建完整每线程 history state，不维护 API/command context、TLS 历史 ring，不复制/格式化可选退出队列历史；无逐调用诊断时间或历史写入。 | 基础 fatal handler 的一次性准备和故障时有界寄存器/栈/模块报告、退出码和 peer handling；故障现场可有 VirtualQuery，健康路径没有历史记录。 |
+| 两侧 `apiWaitDiagnostics=False` | 不分配 64 线程统计表；无诊断 QPC、统计原子更新、TLS stats 注册、histogram/percentile、周期线程、api-wait 日志。 | 核心等待/超时仍执行；GC ACK/drain 结果计时按既有 ABI 保留。 |
 | 两侧 `colorDiagnostics=False` | 无诊断 payload 哈希、状态 Getter、临时 COM 引用、ring/状态统计、color 线程/日志。 | 真实 setter、wire/layout、上传字节正确性。 |
-| 两侧 `dataDiagnostics=False` | 无 resource detail 分配、lock histogram、状态/载荷同值比较、dispatch/backend 计时、data counters、线程/日志/摘要。 | FULL_SHADOW、LockInfo、shader/declaration/StateBlock 正确性存储；空 token/启用检查仍编译在二进制内。 |
+| 两侧 `dataDiagnostics=False` | 不创建每资源 metadata；无 resource detail 分配、lock histogram、状态/载荷同值比较、dispatch/backend 计时、data counters、线程/日志/摘要。 | FULL_SHADOW、LockInfo、shader/declaration/StateBlock 正确性存储；空 token/启用检查仍编译在二进制内。 |
 | `client.pageBlockDiagnostics=False` | 无诊断资源记录、锁时间/历史、模拟 LRU、learned 摘要计数、日志格式化、pageblock/retention/gc 详细文件；恢复纯 profiling 计时关闭。 | 统一 residency gate、capability/safety、真实策略、DB/身份哈希/恢复校验、drop/remap/failure 的控制 ABI 计数、用户 GC/策略变更的普通日志。 |
 | `client.pageBlockDiagnosticsDetailed=False` | 不扩展逐资源销毁输出；只有基础 pageBlockDiagnostics=True 才存在观察工作。 | 不是 PageBlock 关闭模式。 |
 | 两侧 `steamInputDiagnostics=False` | 不维护输入诊断事件、suppression TLS 观察、模块/窗口诊断轮询或状态日志。 | 若显式 steamOverlayInput=True，仍按用户请求执行实验输入状态转发，诊断日志独立关闭。 |
