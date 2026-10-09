@@ -69,6 +69,7 @@ int testShadowCache() {
 }
 
 int main(int argc, char** argv) {
+  l4d2_observation::memoryMonitoring = true;
   if (argc != 2) { return 1; }
   using namespace l4d2_memory;
   l4d2_queue::counters.waited(true, false);

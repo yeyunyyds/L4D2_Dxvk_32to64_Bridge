@@ -4,6 +4,8 @@
 
 **当前正式版：v1.2.0。** 修复已确认的窗口/全屏切换黑屏和联机 Volume 蓝绿偏色，扩展 PageBlock 管理与恢复，并提供可选 L4N 常用设置菜单。完整包默认 **x86 Host + learned-aggressive**，x64 Host 保留；详细诊断默认关闭。
 
+当前源码另包含 [诊断/观测分离清理](docs/RUNTIME-DIAGNOSTICS-SEPARATION.md)：新增默认关闭的 memoryMonitoring / crashDiagnostics，关闭可选观察时停止扫描、历史、计时、线程和诊断文件工作；Presenter/Input 按明确配置初始化。PageBlock 策略、GC、恢复、Reset、渲染和控制 ABI 不变。这项源码清理尚未替换已发布的 v1.2.0 构件。
+
 [下载 v1.2.0](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/releases/tag/v1.2.0)：首次安装选完整包，已有安装选三件套补丁，L4N 插件单独下载。旧开发版附件保持原样。
 
 开发者参考：[当前技术架构](docs/ARCHITECTURE.md) · [API 与 ABI](docs/API.md) · [配置说明](docs/CONFIGURATION.md)。

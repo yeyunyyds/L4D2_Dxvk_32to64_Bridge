@@ -46,7 +46,12 @@ inline uint8_t* getBuf(AllocId) { return nullptr; }
 }
 template<typename T> T align(T value, size_t alignment) { return (value + alignment - 1) & ~(alignment - 1); }
 template<typename... T> std::string format_string(const char*, T...) { return {}; }
-struct Logger { static void trace(const std::string&) {} static void err(const std::string&) {} };
+namespace bridge_util { enum class LogLevel { Trace }; }
+struct Logger {
+  static bool isEnabled(bridge_util::LogLevel) { return false; }
+  template<typename Message> static void traceLazy(Message&&) {}
+  static void trace(const std::string&) {} static void err(const std::string&) {}
+};
 struct Channel { uint32_t* get_data_ptr() const { return nullptr; } };
 struct DeviceBridge { static Channel getWriterChannel() { return {}; } };
 struct Update { Commands::D3D9Command command; uint32_t offset, size, flags; std::vector<uint8_t> bytes; };
