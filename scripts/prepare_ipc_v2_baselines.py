@@ -54,7 +54,7 @@ def prepare(pr6, a_source=None, b_source=None):
         data = json.loads(manifest.read_text())
         data.update(variant=variant, production_commit=A if variant == 'A' else B,
                     generator_commit=PR6, compilation='caller/Command separate TU, no LTO, /O2',
-                    caller='tests/ipc-v2/benchmark.cpp', semantics='command 6, UID + sequence + length + blob',
+                    caller='tests/ipc-v2/benchmark.cpp', semantics='command 5, UID + sequence + length + blob',
                     dispatch='test validation, no D3D9 backend; immediate packet path for PR6')
         manifest.write_text(json.dumps(data, indent=2) + '\n')
         print('IPC_V2_BASELINE', variant, source)

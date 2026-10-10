@@ -26,6 +26,10 @@ using ldb_ipc_v2::WakeState;
 using ldb_ipc_v2::Event;
 using ldb_ipc_v2::milliseconds;
 #endif
+constexpr uint16_t kBenchmarkCommand = 5; // Commands::Bridge_Response in both frozen production trees.
+#ifdef IPC_LEGACY
+static_assert(static_cast<uint16_t>(Commands::Bridge_Response) == kBenchmarkCommand, "frozen command ABI");
+#endif
 void require(bool condition, const char* message) { if (!condition) { throw std::runtime_error(message); } }
 void prefault(const void* mapping, size_t bytes) {
   const auto* data = static_cast<const volatile uint8_t*>(mapping);
@@ -190,7 +194,7 @@ int main(int argc, char** argv) {
 #else
         {
           std::lock_guard<std::mutex> lock(clientMutex);
-          auto command = writer->begin(6, 0, sequence, 12 + aligned(size));
+          auto command = writer->begin(kBenchmarkCommand, 0, sequence, 12 + aligned(size));
           require(command.valid() && command.scalar(sequence) && command.scalar(size)
             && command.blob(size ? payload.data() : nullptr, size), "C encoding");
           require(command.finish(mode == "rpc" || (sequence + 1) % batch == 0) == Result::Success, "C submission");
@@ -237,11 +241,11 @@ int main(int argc, char** argv) {
         require(reader->consume([&](Message& message) {
           uint32_t sequence = 0, size = 0, length = 0; const uint8_t* data = nullptr;
           const uint32_t wanted = mode == "mixed" && processed % 32 ? std::min<uint32_t>(64, bytes) : bytes;
-          if (message.header.command != 6 || message.header.uid != processed || !message.scalar(sequence)
+          if (message.header.command != kBenchmarkCommand || message.header.uid != processed || !message.scalar(sequence)
               || !message.scalar(size) || !message.blob(data, length) || sequence != processed
               || size != wanted || length != size || (size && (data[0] != 0x6b || data[size - 1] != 0x6b))) { return false; }
           if (mode == "rpc") {
-            auto reply = writer->begin(6, 0, sequence, 4);
+            auto reply = writer->begin(kBenchmarkCommand, 0, sequence, 4);
             if (!reply.scalar(sequence) || reply.finish() != Result::Success) { return false; }
           }
           ++processed;
