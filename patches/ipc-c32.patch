@@ -2560,7 +2560,9 @@ diff --git a/bridge/src/client/d3d9_vertexbuffer.cpp b/bridge/src/client/d3d9_ve
    }
 -  return S_OK;
 +  return DeviceBridge::healthy() ? D3D_OK : D3DERR_DEVICELOST;
- }diff --git a/bridge/src/client/d3d9_volume.cpp b/bridge/src/client/d3d9_volume.cpp
+ }
+\ No newline at end of file
+diff --git a/bridge/src/client/d3d9_volume.cpp b/bridge/src/client/d3d9_volume.cpp
 --- a/bridge/src/client/d3d9_volume.cpp
 +++ b/bridge/src/client/d3d9_volume.cpp
 @@ -106,6 +106,7 @@
