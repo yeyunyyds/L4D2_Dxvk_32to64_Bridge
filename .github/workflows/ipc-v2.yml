@@ -1,18 +1,13 @@
 name: IPC v2 independent prototype
 on:
-  pull_request:
-    paths:
-      - 'experiments/ipc-v2/**'
-      - 'tests/ipc-v2/**'
-      - 'scripts/*ipc_v2*'
-      - '.github/workflows/ipc-v2.yml'
+  # Benchmark this development branch once per source change. PR path filters
+  # examine the whole PR diff and otherwise rerun/cancel measurements on docs edits.
   push:
     branches: ['codex/ipc-v2-prototype']
     paths:
       - 'experiments/ipc-v2/**'
       - 'tests/ipc-v2/**'
       - 'scripts/*ipc_v2*'
-      - '.github/workflows/ipc-v2.yml'
   workflow_dispatch:
 permissions:
   contents: read

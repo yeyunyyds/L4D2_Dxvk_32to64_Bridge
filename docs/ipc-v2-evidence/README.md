@@ -6,7 +6,7 @@
 
 Interpret results using [the performance report](../IPC-V2-PERFORMANCE.md) and [the protocol/scope document](../IPC-V2-DESIGN.md). These are standalone transport tests, not LDB gameplay measurements.
 
-- `linux-final-*` and `windows-final-*`: final raw samples and statistics, including warmup and failed samples. Statistics exclude failures and warmup; ratios pair the same iteration.
+- `linux-final-*` and `windows-final-*`: final raw samples and statistics, including warmup and failed samples. Statistics exclude failures and warmup; ratios pair the same iteration. `windows-repeat-*` is the cancelled PR run’s partial second-run evidence, not a fully passed run.
 - `linux-build.json`, `windows-BUILD-INFO.json`: source identity. `windows-BINARY-SHA256.json` and `windows-artifact-manifest.json`: experimental test executable hashes, PE architecture checks and artifact identity.
 - `*-source-manifest.json`: source provenance for actual A/B fixtures and the mechanically derived old C control layout.
 - `before-*`, `64K-before-*`, `initial-overfull-*`, `windows-*-partial`: development history. Some used earlier wait, layout, mutex, prefault or opcode choices, or are incomplete. They must not be substituted for final results or selectively combined with them.

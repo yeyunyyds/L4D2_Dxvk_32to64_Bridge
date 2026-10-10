@@ -117,7 +117,7 @@ DISCARD 分配新版本；NOOVERWRITE 验证写入范围/现有内容，并对�
 ## 6. 验证和阶段门槛
 
 1. 审计/协议设计：已完成当前范围。
-2. 消息流：独立原型、双向跨进程边界/故障测试；Linux 原生已运行，Windows x86/x64 使用专门 CI。
+2. 消息流：独立原型、双向跨进程边界/故障测试；Linux 原生和 UBSan 已通过；Windows x86 Client→x86/x64 Host 独立 correctness 通过，完整 A/B/C 对照见性能报告。
 3. upload pool：等待第 2 阶段性能证据；目前设计，无实现。
 4. Reply Slot：单独收益验证后选择；目前设计，无实现。
 5. 生产集成：必须在前述模块各自通过后逐步接入。优先即发小命令；每次保留 D3D9 调用顺序与失败语义。
@@ -133,7 +133,7 @@ DISCARD 分配新版本；NOOVERWRITE 验证写入范围/现有内容，并对�
 
 Linux：`python scripts/run_ipc_v2.py --rounds 11`，构建 GCC C++17 /O2，运行跨进程正确性后交替测 C1/C1-old-control/C32/C32-spin/C32-4K/C32-4K-spin。A/B 只在 Windows 运行真实提取代码，Linux 不仿造 A/B。原始结果见 evidence；脚本生成 raw.json/summary.json/BUILD-INFO.json。
 
-Windows：checkout 本分支，再 checkout 冻结的 PR6 到 `.deps/ipc-v2-pr6`；运行 `python scripts/prepare_ipc_v2_baselines.py`，随后 `powershell -File scripts/test_ipc_v2.ps1`。固定 MSVC 14.29 /O2，caller 与 Command 分开 TU、无 LTO，全部 x86 /LARGEADDRESSAWARE。CI artifact 包含原始结果、提取源码及原始生产文件哈希、测试 exe 的 SHA-256、源文件 build identity。这是独立测试程序，**不得复制到游戏目录冒充 d3d9.dll**；无安装步骤，回滚仅删除测试目录/切回原分支。
+Windows：checkout 本分支，再 checkout 冻结的 PR6 到 `.deps/ipc-v2-pr6`；运行 `python scripts/prepare_ipc_v2_baselines.py`，随后 `powershell -File scripts/test_ipc_v2.ps1`。固定 MSVC 14.29 /O2，caller 与 Command 分开 TU、无 LTO，全部 x86 /LARGEADDRESSAWARE。该临时 CI 仅在开发分支的传输/测试/脚本修改时 push 触发，或手动 workflow_dispatch；不使用 PR synchronize，避免文档提交因整个 PR diff 而取消/重跑长基准。workflow 文本修改本身不触发整套性能测试，修改运行逻辑时应手动执行。CI artifact 包含原始结果、提取源码及原始生产文件哈希、测试 exe 的 SHA-256、源文件 build identity。这是独立测试程序，**不得复制到游戏目录冒充 d3d9.dll**；无安装步骤，回滚仅删除测试目录/切回原分支。
 
 Actions artifact 解压到相同源码 checkout 的根目录后，可独立运行 `work\ipc-v2\native32.exe --host work\ipc-v2\native64.exe`（x64 Host）或将后者换成 native32.exe（x86 Host）；完整重复基准运行 `python scripts/run_ipc_v2.py --no-build --windows-baselines --rounds 11`。先将 exe 的 Get-FileHash 与 BINARY-SHA256.json 比较，并核对 BUILD-INFO。构件保留 30 天；源脚本和压缩原始证据保存在仓库，可重新构建。
 
