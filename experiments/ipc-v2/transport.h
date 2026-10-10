@@ -142,7 +142,7 @@ public:
       + (sequence & (m_shared.config.blockCount - 1)) * (sizeof(Block) + m_shared.config.blockBytes));
   }
   uint8_t* data(Block& b) { return reinterpret_cast<uint8_t*>(&b) + sizeof(Block); }
-  bool healthy() const { return !m_shared.fault.load(std::memory_order_acquire); }
+  bool healthy(std::memory_order order = std::memory_order_acquire) const { return !m_shared.fault.load(order); }
   void fault(Fault reason) {
     uint32_t empty = 0;
     m_shared.fault.compare_exchange_strong(empty, static_cast<uint32_t>(reason), std::memory_order_seq_cst);
@@ -274,7 +274,7 @@ public:
         const auto result = m_channel.wait(true, [&]() {
           m_cachedCompleted = m_channel.shared().consumer.completed.load(std::memory_order_seq_cst);
           return static_cast<uint32_t>(m_sequence - m_cachedCompleted) < config.blockCount
-            || !m_channel.healthy() || m_channel.shared().cold.consumerClosed.load(std::memory_order_acquire);
+            || !m_channel.healthy(std::memory_order_seq_cst) || m_channel.shared().cold.consumerClosed.load(std::memory_order_seq_cst);
         }, m_timeout, m_spins, m_channel.shared().cold.consumerPid.load(std::memory_order_acquire), metrics);
         if (result != Result::Success) {
           m_channel.fault(result == Result::Timeout ? Fault::Timeout : Fault::SystemWait); return {};
@@ -373,7 +373,7 @@ public:
     if (published == m_sequence) {
       const auto result = m_channel.wait(false, [&]() {
         published = shared.producer.published.load(std::memory_order_seq_cst);
-        return published != m_sequence || !m_channel.healthy() || shared.cold.producerClosed.load(std::memory_order_acquire);
+        return published != m_sequence || !m_channel.healthy(std::memory_order_seq_cst) || shared.cold.producerClosed.load(std::memory_order_seq_cst);
       }, m_timeout, m_spins, shared.cold.producerPid.load(std::memory_order_acquire), metrics);
       if (result != Result::Success) { return result; }
     }
