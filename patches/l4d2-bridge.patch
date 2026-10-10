@@ -1658,6 +1658,25 @@ index 9f82b16..b8d03d9 100644
 -};
 \ No newline at end of file
 +};
+diff --git a/bridge/src/client/d3d9_query.cpp b/bridge/src/client/d3d9_query.cpp
+index 5f70099..a2e6b6b 100644
+--- a/bridge/src/client/d3d9_query.cpp
++++ b/bridge/src/client/d3d9_query.cpp
+@@ -42,12 +42,12 @@ HRESULT Direct3DQuery9_LSS::QueryInterface(REFIID riid, LPVOID* ppvObj) {
+ }
+ 
+ ULONG Direct3DQuery9_LSS::AddRef() {
+-  LogMissingFunctionCall();
++  LogFunctionCall();
+   return D3DBase::AddRef();
+ }
+ 
+ ULONG Direct3DQuery9_LSS::Release() {
+-  LogMissingFunctionCall();
++  LogFunctionCall();
+   return D3DBase::Release();
+ }
+ 
 diff --git a/bridge/src/client/d3d9_stateblock.cpp b/bridge/src/client/d3d9_stateblock.cpp
 index 40cbd31..d9f4de4 100644
 --- a/bridge/src/client/d3d9_stateblock.cpp
@@ -2775,7 +2794,7 @@ index 3df797e..50c2258 100644
  
    if (Level >= getDesc().Levels)
 diff --git a/bridge/src/client/di_hook.cpp b/bridge/src/client/di_hook.cpp
-index bbbd470..f3837da 100644
+index bbbd470..b5b1d16 100644
 --- a/bridge/src/client/di_hook.cpp
 +++ b/bridge/src/client/di_hook.cpp
 @@ -20,6 +20,7 @@
@@ -2872,7 +2891,63 @@ index bbbd470..f3837da 100644
          memset(rgdod, 0, *pdwInOut * cbObjectData);
          *pdwInOut = 0;
        }
-@@ -952,6 +975,7 @@ static LRESULT CALLBACK HookedCallWndProc(int nCode, WPARAM wParam, LPARAM lPara
+@@ -723,21 +746,34 @@ extern HRESULT WINAPI DirectInputCreateW(HINSTANCE hinst, DWORD dwVersion,
+ #endif
+ 
+ class DirectInput7Hook: public DirectInputHookBase<7> {
+-  static void VersionCheck(DWORD dwVersion) {
+-    if (dwVersion != 0x0700) {
+-      Logger::warn(format_string("Unsupported DirectInput version: %d.%d.",
+-                                 dwVersion >> 8, dwVersion & 0xff));
++  // NV-DXVK start: Observe the original creation result without changing it.
++  static void LogCreateResult(const char* api, DWORD dwVersion, HRESULT result) noexcept {
++    try {
++      if (FAILED(result)) {
++        Logger::warn(format_string("%s failed: requestedVersion=0x%04lx HRESULT=0x%08lx",
++                                   api, dwVersion, static_cast<unsigned long>(result)));
++      } else if (dwVersion != 0x0700) {
++        Logger::debugLazy([&]() {
++          return format_string("%s requested legacy version 0x%04lx", api, dwVersion);
++        });
++      }
++    } catch (...) {
++      // An observation failure must not replace the DirectInput result.
+     }
+   }
++  // NV-DXVK end
+ 
+   static HRESULT WINAPI HookedDirectInputCreateA(HINSTANCE hinst,
+                                                  DWORD dwVersion,
+                                                  LPDIRECTINPUTA* lplpDirectInput,
+                                                  LPUNKNOWN punkOuter) {
+     LogStaticFunctionCall();
+-    VersionCheck(dwVersion);
+     gClientUsesDirectInput = true;
+-    return OrigDirectInputCreateA(hinst, dwVersion, lplpDirectInput, punkOuter);
++    // NV-DXVK start: Preserve the requested interface version and HRESULT.
++    const HRESULT result = OrigDirectInputCreateA(hinst, dwVersion, lplpDirectInput, punkOuter);
++    LogCreateResult("DirectInputCreateA", dwVersion, result);
++    return result;
++    // NV-DXVK end
+   }
+ 
+   static HRESULT WINAPI HookedDirectInputCreateW(HINSTANCE hinst,
+@@ -745,9 +781,12 @@ class DirectInput7Hook: public DirectInputHookBase<7> {
+                                                  LPDIRECTINPUTW* lplpDirectInput,
+                                                  LPUNKNOWN punkOuter) {
+     LogStaticFunctionCall();
+-    VersionCheck(dwVersion);
+     gClientUsesDirectInput = true;
+-    return OrigDirectInputCreateW(hinst, dwVersion, lplpDirectInput, punkOuter);
++    // NV-DXVK start: Preserve the requested interface version and HRESULT.
++    const HRESULT result = OrigDirectInputCreateW(hinst, dwVersion, lplpDirectInput, punkOuter);
++    LogCreateResult("DirectInputCreateW", dwVersion, result);
++    return result;
++    // NV-DXVK end
+   }
+ 
+   API_HOOK_DECL(DirectInputCreateA);
+@@ -952,6 +991,7 @@ static LRESULT CALLBACK HookedCallWndProc(int nCode, WPARAM wParam, LPARAM lPara
    
    if (nCode >= 0) {
      if (RemixState::isUIActive()) {
@@ -2880,7 +2955,7 @@ index bbbd470..f3837da 100644
        return 0;
      }
    }
-@@ -964,6 +988,7 @@ static LRESULT CALLBACK HookedGetMsgProc(int nCode, WPARAM wParam, LPARAM lParam
+@@ -964,6 +1004,7 @@ static LRESULT CALLBACK HookedGetMsgProc(int nCode, WPARAM wParam, LPARAM lParam
    
    if (nCode >= 0) {
      if (RemixState::isUIActive()) {
@@ -2888,7 +2963,7 @@ index bbbd470..f3837da 100644
        return 0;
      }
    }
-@@ -976,6 +1001,7 @@ static LRESULT CALLBACK HookedKeyboardProc(int nCode, WPARAM wParam, LPARAM lPar
+@@ -976,6 +1017,7 @@ static LRESULT CALLBACK HookedKeyboardProc(int nCode, WPARAM wParam, LPARAM lPar
  
    if (nCode >= 0) {
      if (RemixState::isUIActive()) {
@@ -2896,15 +2971,25 @@ index bbbd470..f3837da 100644
        return 0;
      }
    }
-@@ -988,6 +1014,7 @@ static LRESULT CALLBACK HookedLowLevelKeyboardProc(int nCode, WPARAM wParam, LPA
+@@ -983,17 +1025,6 @@ static LRESULT CALLBACK HookedKeyboardProc(int nCode, WPARAM wParam, LPARAM lPar
+   return CallNextHookEx(accessWinHook(WH_KEYBOARD), nCode, wParam, lParam);
+ }
  
-   if (nCode >= 0) {
-     if (RemixState::isUIActive()) {
-+      observeInputSuppression("WH_KEYBOARD_LL", _ReturnAddress(), "stop-hook-chain");
-       return 0;
-     }
-   }
-@@ -1042,6 +1069,7 @@ static BOOL WINAPI HookedGetCursorPos(LPPOINT lp) {
+-static LRESULT CALLBACK HookedLowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam) {
+-  LogStaticFunctionCall();
+-
+-  if (nCode >= 0) {
+-    if (RemixState::isUIActive()) {
+-      return 0;
+-    }
+-  }
+-
+-  return CallNextHookEx(accessWinHook(WH_KEYBOARD_LL), nCode, wParam, lParam);
+-}
+ 
+ namespace {
+   // Last cursor position observed while Remix UI is inactive, and whether one has been observed.
+@@ -1042,6 +1073,7 @@ static BOOL WINAPI HookedGetCursorPos(LPPOINT lp) {
    }
  
    if (RemixState::isUIActive()) {
@@ -2912,7 +2997,7 @@ index bbbd470..f3837da 100644
      *lp = g_uiActiveCursorPos;
      return TRUE;
    }
-@@ -1059,6 +1087,7 @@ static BOOL WINAPI HookedGetCursorPos(LPPOINT lp) {
+@@ -1059,6 +1091,7 @@ static BOOL WINAPI HookedGetCursorPos(LPPOINT lp) {
  static BOOL WINAPI HookedSetCursorPos(int X, int Y) {
    LogStaticFunctionCall();
    if (RemixState::isUIActive()) {
@@ -2920,7 +3005,7 @@ index bbbd470..f3837da 100644
      // Track the target without moving the real OS cursor, so GetCursorPos can echo it back.
      g_uiActiveCursorPos.x = X;
      g_uiActiveCursorPos.y = Y;
-@@ -1080,6 +1109,7 @@ static SHORT WINAPI HookedGetAsyncKeyState(int vk) {
+@@ -1080,6 +1113,7 @@ static SHORT WINAPI HookedGetAsyncKeyState(int vk) {
    LogStaticFunctionCall();
    // Block if Remix UI is active
    if (RemixState::isUIActive()) {
@@ -2928,7 +3013,7 @@ index bbbd470..f3837da 100644
      return 0;
    }
    return OrigGetAsyncKeyState(vk);
-@@ -1089,6 +1119,7 @@ static SHORT WINAPI HookedGetKeyState(int vk) {
+@@ -1089,6 +1123,7 @@ static SHORT WINAPI HookedGetKeyState(int vk) {
    LogStaticFunctionCall();
    // Block if Remix UI is active
    if (RemixState::isUIActive()) {
@@ -2936,7 +3021,7 @@ index bbbd470..f3837da 100644
      return 0;
    }
    return OrigGetKeyState(vk);
-@@ -1098,6 +1129,7 @@ static SHORT WINAPI HookedGetKeyboardState(PBYTE lpKeyState) {
+@@ -1098,6 +1133,7 @@ static SHORT WINAPI HookedGetKeyboardState(PBYTE lpKeyState) {
    LogStaticFunctionCall();
    // Block if Remix UI is active
    if (RemixState::isUIActive()) {
@@ -2944,7 +3029,7 @@ index bbbd470..f3837da 100644
      memset(lpKeyState, 0, 256);
      return TRUE;
    }
-@@ -1130,6 +1162,7 @@ static UINT WINAPI HookedGetRawInputData(HRAWINPUT hRawInput,
+@@ -1130,6 +1166,7 @@ static UINT WINAPI HookedGetRawInputData(HRAWINPUT hRawInput,
    }
  
    if (RemixState::isUIActive()) {
@@ -2952,7 +3037,7 @@ index bbbd470..f3837da 100644
      if (raw->header.dwType == RIM_TYPEMOUSE) {
        // Relative deltas (lLastX/lLastY) are incremental, so zero them rather than replay a stale
        // sample; absolute-mode position is left as-is.
-@@ -1164,6 +1197,7 @@ static UINT WINAPI HookedGetRawInputBuffer(PRAWINPUT pData, PUINT pcbSize, UINT
+@@ -1164,6 +1201,7 @@ static UINT WINAPI HookedGetRawInputBuffer(PRAWINPUT pData, PUINT pcbSize, UINT
    }
  
    // Drops whole batched reports rather than sanitizing them; see documentation/BridgeInputNeutralization.md.
@@ -2960,7 +3045,39 @@ index bbbd470..f3837da 100644
    UINT res = OrigGetRawInputBuffer(pData, pcbSize, cbSizeHeader);
    // Keep draining past the caller's buffer capacity so nothing is left queued to replay later.
    while (res != 0 && res != (UINT) -1) {
-@@ -1257,12 +1291,31 @@ static void DetachConventionalInput() {
+@@ -1184,7 +1222,14 @@ static void InputWinHooksAttach() {
+     if (HHOOK h = SetWindowsHookEx(idHook, lpfn, nullptr, GetCurrentThreadId())) {
+       return std::pair { idHook, h };
+     }
+-    Logger::warn(format_string("SetWindowsHookEx failed with idHook=%d", idHook));
++    // NV-DXVK start: Capture the Win32 failure before logging can change it.
++    const DWORD error = GetLastError();
++    try {
++      Logger::warn(format_string("SetWindowsHookEx failed with idHook=%d error=%lu", idHook, error));
++    } catch (...) {
++      // Leave the optional hook unavailable if reporting fails.
++    }
++    // NV-DXVK end
+     return std::pair { idHook , static_cast<HHOOK>(nullptr) };
+   };
+ 
+@@ -1192,13 +1237,13 @@ static void InputWinHooksAttach() {
+     attachWinHook(WH_CALLWNDPROC, HookedCallWndProc),
+     attachWinHook(WH_GETMESSAGE,  HookedGetMsgProc),
+     attachWinHook(WH_KEYBOARD,    HookedKeyboardProc),
+-    attachWinHook(WH_KEYBOARD_LL, HookedLowLevelKeyboardProc),
++    // WH_KEYBOARD_LL is global-only; Presenter owns the foreground-filtered hook.
+   };
+ }
+ 
+ static void InputWinHooksDetach() {
+   for (auto [id, hook] : gWinHooks) {
+-    UnhookWindowsHookEx(hook);
++    if (hook) { UnhookWindowsHookEx(hook); }
+   }
+   gWinHooks.clear();
+ }
+@@ -1257,12 +1302,31 @@ static void DetachConventionalInput() {
    InputWinHooksDetach();
  }
  
@@ -2992,7 +3109,7 @@ index bbbd470..f3837da 100644
    DetourTransactionBegin();
    DetourUpdateThread(GetCurrentThread());
  
-@@ -1281,6 +1334,7 @@ void DInputHookAttach() {
+@@ -1281,6 +1345,7 @@ void DInputHookAttach() {
  }
  
  void DInputHookDetach() {
@@ -3000,7 +3117,7 @@ index bbbd470..f3837da 100644
    DetourTransactionBegin();
    DetourUpdateThread(GetCurrentThread());
  
-@@ -1292,6 +1346,7 @@ void DInputHookDetach() {
+@@ -1292,6 +1357,7 @@ void DInputHookDetach() {
  }
  
  void DInputSetDefaultWindow(HWND hwnd) {

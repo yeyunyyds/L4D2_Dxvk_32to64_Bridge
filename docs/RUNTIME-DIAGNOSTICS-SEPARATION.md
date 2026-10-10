@@ -106,6 +106,12 @@ Fatal handler 的一次性准备、有界故障时寄存器/堆栈/模块报告�
 
 ## 实机验证与后续边界
 
+本轮 x86 实机日志的后续修正仅涉及 Client：取消以线程方式安装的 `WH_KEYBOARD_LL`（Windows 规定为 global-only），保留三个有效线程 hook 与 Host Presenter 已有的 foreground-filtered 全局键盘 hook；安装失败立即保存 Win32 error，卸载只处理有效 handle。没有新增 Client 全局 hook、Presenter 线程或输入路径。
+
+DirectInput A/W 仍按原参数调用系统并原样返回 HRESULT。成功的非 7.0 请求只在显式 Debug 日志开启时显示原始版本值；不再用“Unsupported”误判调用失败或声称已验证所有旧接口。真正失败记录原始版本/HRESULT，观察异常不能改变结果。Query AddRef/Release 改用普通调用日志，移除上游遗留 missing-call 标记；引用计数、销毁 IPC 与 Host 资源释放未改。L4N 插件、Reset、PageBlock、Volume 和 Host 实现均未修改。
+
+这次实机日志还暴露了审计范围的一个剩余项：Host `SurfaceQueries::finish()` 仍累计 `count/mismatches`，这些观察计数尚未按诊断开关分离。本次三项 Client 修正没有处理它。实际 Getter、IUnknown 身份校验和临时引用 Release 是正确性工作，不能一并关闭；此前 OFF 测试的零计数结论仅适用于其覆盖的诊断入口，不能推导为全部 Host 路径没有观察计数。
+
 仍需真实 L4D2 + DXVK 在 x86/x64 Host 上复测联机过图、Reset/切窗、所选策略和三种 GC/恢复；开 Presenter/Input 后复测已验证 ReShade 组合（x64 + Vulkan ReShade 6.0.1）及实际键鼠。验证 OFF 运行没有新 diagnostics 文件，再逐项启用观察确认需要的输出。
 
 本次未清理上游整个 Remix 产品，也不改 DXVK 自己的 monitoring/HUD。若以后裁剪 compile-time diagnostics 或进一步消除空 stack token/固定表，需另行验证，不以这些存储或核心观察为理由删除正确性行为。Steam Overlay 的既有不完整支持仍为已知限制。

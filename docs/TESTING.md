@@ -47,6 +47,8 @@ python -m pip install meson==1.3.2 ninja==1.11.1.1
 
 ## 诊断分离回归
 
+`scripts/test_input_hooks.ps1` 从生产 Client 文件提取实际 hook 安装/卸载、DirectInput A/W 创建与 Query AddRef/Release 方法，在 x86/x64 上使用确定性 Win32/COM 适配器。覆盖关闭时不安装、仅三个线程 hook、失败后继续安装其他 hook、即时捕获 GetLastError、仅卸载有效 handle、日志失败不阻断安装；旧版请求和失败的原参数/HRESULT 保持不变、关闭 Debug 时不格式化成功提示、Query 委托基类且不打印 missing-call。COM 适配器验证委托调用，并不代替真实 GPU Query 生命周期验收。
+
 准备源码后运行 `scripts/test_runtime_observation.ps1`（x86/x64）。测试从生产文件提取 startup/logger/input 函数，结合真实诊断、PageBlock 和 Presenter 实现，仅用确定性适配器替代 detour 安装及 runtime 环境。仅测试二进制强制包含 Win32 计数器，并替换堆分配入口；发行构建没有这些计数器。
 
 off 模式重复 1000 次调用，断言诊断扫描/时钟/文件/线程/hook/HWND/模块查询/SRW 锁/分配均为零，command ring、memory 与 queue 计数不更新；用不可解引用 Device 指针证明没有诊断 Getter。随后调用真实 control ABI 的 GC handler，分别运行 shadow + AGC/FGC，区分每次单个实际 mapped-view VirtualQuery 和 GC 结果计时。独立进程的 monitor-on/input-on/crash-on/logging-on 是正对照。OFF 进程必须没有新 .log 文件。各启用诊断的既有回归仍必须通过。

@@ -57,6 +57,9 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'DXVK extraction failed' }
       - name: Prepare pinned Bridge sources
         run: python scripts/prepare_bridge.py
+      - name: Test Client input hooks, legacy DirectInput results and Query logging
+        shell: powershell
+        run: ./scripts/test_input_hooks.ps1
       - name: Test disabled diagnostic work and on-demand input on x86 and x64
         shell: powershell
         run: |
