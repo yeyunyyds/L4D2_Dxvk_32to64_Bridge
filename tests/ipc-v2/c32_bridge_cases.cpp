@@ -24,6 +24,10 @@ template<class B> void transfer() {
         require(c.finish()==Result::Success,"generic finish");
       }
     }
+    if (!threaded && i == 1) {
+      Sleep(2);
+      { ldb_c32::ApiEntryScope localGetterEntry; require(!B::getWriterChannel().commands->pending(), "local getter lazy flush"); }
+    }
     if(!threaded && i%101==0) {
       require(B::waitForCommand(Commands::Bridge_Response,2000,nullptr,true,i)==Result::Success,"RPC wait");
       require(B::get_data()==i,"RPC payload");B::pop_front();
@@ -68,8 +72,30 @@ template<class B> void transfer() {
   const auto ns=std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now()-begin).count();
   std::printf("C32_TIMING cycles=%llu commands=%u wall_ns=%lld threaded=%u\n",static_cast<unsigned long long>(cyclesAfter-cyclesBefore),Count,static_cast<long long>(ns),threaded?1u:0u);
 }
+#ifdef REMIX_BRIDGE_CLIENT
+int faultCase(const std::wstring& mode) {
+  GlobalOptions::timeout=2;GlobalOptions::retries=2;
+  const size_t memory=256+256*sizeof(Header)+32768*sizeof(uint32_t);
+  WriterChannel w("FaultForward",memory,256,32768);ReaderChannel r("FaultReply",memory,256,32768);Device::install(&w,&r);
+  if (mode==L"abort") {
+    Device::Command c(Commands::IDirect3DDevice9Ex_SetRenderState);
+    c.send_data(7);unsigned before=0;w.commands->inlinePrefix(before);
+    c.abort();c.send_data(99);unsigned after=0;w.commands->inlinePrefix(after);
+    require(before==after,"write after abort");require(c.finish()!=Result::Success,"abort accepted");
+  } else {
+    {Device::Command c(Commands::IDirect3DDevice9Ex_SetRenderState);c.send_data(7);require(c.finish()==Result::Success,"tail prepare");}
+    require(Device::waitForCommand(Commands::Bridge_Response,1,nullptr,true,0)!=Result::Success,"missing reply accepted");
+  }
+  require(!gbBridgeRunning.load() && !Device::healthy(),"failure did not stop bridge");
+  {Device::Command c(Commands::IDirect3DDevice9Ex_SetRenderState);c.send_data(99);require(c.finish()!=Result::Success,"post-fault command accepted");}
+  std::puts("C32_PRODUCTION_FAIL_CLOSED_PASS");return 0;
+}
+#endif
 int wmain(int argc,wchar_t** argv) {
   try {
+#ifdef REMIX_BRIDGE_CLIENT
+    if (argc==2) {return faultCase(argv[1]);}
+#endif
     require(argc==3,"GUID/mode argument");
     streamOnly=std::wstring(argv[2])==L"stream";threaded=std::wstring(argv[2])==L"threaded";
     require(gUniqueIdentifier.setGuid(&argv[1]),"GUID valid");

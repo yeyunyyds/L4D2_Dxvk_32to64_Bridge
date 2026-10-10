@@ -3554,18 +3554,36 @@ diff --git a/bridge/src/util/util_bridgecommand.cpp b/bridge/src/util/util_bridg
      // NV-DXVK start: Optional data/resource tracing.
      l4d2_data::received(static_cast<uint16_t>(response.command), std::is_same<BridgeId, ::BridgeId::Module>::value);
      // NV-DXVK end
-@@ -175,6 +269,10 @@
+@@ -175,6 +269,14 @@
    l4d2_api_wait::Span apiResponseTiming(l4d2_api_wait::Metric::ResponseWait);
  #endif
    ZoneScoped;
 +#ifdef REMIX_BRIDGE_CLIENT
++  if (!hardTimeoutMS && verifyUID) {
++    const uint64_t configured = static_cast<uint64_t>(GlobalOptions::getCommandTimeout()) * std::max<uint32_t>(1, GlobalOptions::getCommandRetries());
++    hardTimeoutMS = static_cast<DWORD>(configured ? std::min<uint64_t>(configured, 10000) : 10000);
++  }
 +  if (!flushCommands()) { return Result::Failure; }
 +#endif
 +  if (!gbBridgeRunning.load(std::memory_order_acquire)) { return Result::Failure; }
    DWORD peekTimeoutMS = overrideTimeoutMS > 0 ? overrideTimeoutMS : GlobalOptions::getCommandTimeout();
    uint32_t maxAttempts = GlobalOptions::getCommandRetries();
  #ifdef ENABLE_WAIT_FOR_COMMAND_TRACE
-@@ -215,6 +313,7 @@
+@@ -194,7 +296,12 @@
+   do {
+     if (hardTimeoutMS) {
+       peekTimeoutMS = bridge_reset::waitSlice(waitStart, hardTimeoutMS, GetTickCount64(), peekTimeoutMS);
+-      if (!peekTimeoutMS) { return Result::Timeout; }
++      if (!peekTimeoutMS) {
++#ifdef REMIX_BRIDGE_CLIENT
++        if (verifyUID) { reportFault("reply-deadline", static_cast<uint32_t>(command), uidToVerify); return Result::Failure; }
++#endif
++        return Result::Timeout;
++      }
+     }
+     Result result;
+     Header header = getReaderChannel().commands->peek(result, peekTimeoutMS, pbEarlyOutSignal);
+@@ -215,6 +322,7 @@
            Logger::traceLazy([&]() { return format_string("...success, command %s received!", Commands::toString(command).c_str()); });
          }
  #endif
@@ -3573,7 +3591,17 @@ diff --git a/bridge/src/util/util_bridgecommand.cpp b/bridge/src/util/util_bridg
          return Result::Success;
        } else {
  #if defined(_DEBUG) || defined(DEBUGOPT)
-@@ -281,7 +380,8 @@
+@@ -272,6 +380,9 @@
+   } while (!bEarlyOut &&
+             attemptNum++ <= maxAttempts &&
+             gbBridgeRunning);
++#ifdef REMIX_BRIDGE_CLIENT
++  if (verifyUID) { reportFault("reply-timeout-or-cancelled", static_cast<uint32_t>(command), uidToVerify); return Result::Failure; }
++#endif
+   return Result::Timeout;
+ }
+ 
+@@ -281,7 +392,8 @@
  
  DECL_COMMAND_FUNC(,Command,const Commands::D3D9Command command,
                             uintptr_t pHandle,
@@ -3583,7 +3611,7 @@ diff --git a/bridge/src/util/util_bridgecommand.cpp b/bridge/src/util/util_bridg
    : m_exceptionContext(std::is_same<BridgeId, ::BridgeId::Device>::value ? bridge_exception::Queue::Device : bridge_exception::Queue::Module,
                         static_cast<uint16_t>(command), static_cast<uint32_t>(pHandle), "serialize_command")
    , m_command(command)
-@@ -307,105 +407,137 @@
+@@ -307,105 +419,141 @@
    {
      l4d2_api_wait::Span apiMutexTiming(l4d2_api_wait::Metric::CommandMutexWait);
      s_pWriterChannel->m_mutex.lock();
@@ -3665,7 +3693,11 @@ diff --git a/bridge/src/util/util_bridgecommand.cpp b/bridge/src/util/util_bridg
 +#ifdef REMIX_BRIDGE_CLIENT
 +  if (m_status == Result::Success && m_inline) {
 +    if (!s_pWriterChannel->commands->finishInline(m_command)) { m_status = Result::Failure; fault(); }
-+    else { l4d2_api_wait::queued(); }
++    else {
++      l4d2_api_wait::queued();
++      bridge_exception::recordCommand(true, std::is_same<BridgeId, ::BridgeId::Device>::value ? bridge_exception::Queue::Device : bridge_exception::Queue::Module,
++        static_cast<uint16_t>(m_command), m_handle, true, s_cmdUID);
++    }
 +    s_pWriterChannel->data->end_batch();
 +    l4d2_data::sent(static_cast<uint16_t>(m_command), std::is_same<BridgeId, ::BridgeId::Module>::value,
 +      m_dataWire, m_status == Result::Success, m_status == Result::Success ? sizeof(ldb_ipc_v2::Record) + 4 : 0);

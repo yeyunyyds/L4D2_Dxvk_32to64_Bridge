@@ -10,6 +10,8 @@ ROOT=Path(__file__).resolve().parents[1]
 out=ROOT/'work/ipc-c32-native'
 for arch in ('x86','x64'):
     subprocess.run([out/f'c32-{arch}.exe'],check=True,timeout=20)
+for mode in ('abort','timeout'):
+    subprocess.run([out/'transport-client32.exe',mode],check=True,timeout=10)
 rows=[]
 for iteration in range(3):
     for batch in (('1','32') if iteration%2==0 else ('32','1')):

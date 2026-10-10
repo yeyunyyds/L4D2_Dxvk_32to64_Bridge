@@ -14,7 +14,7 @@ API entry checks use the existing `LogFunctionCall` / `LogStaticFunctionCall` ho
 
 The adapter reads `LDB_IPC_BATCH=1` or `32` once per Client channel; default 32. C1 uses the same encoding, ownership and matched binaries with immediate publication. It does not restore the old protocol. Hold all other game/backend settings constant when comparing.
 
-Protocol metadata contains a normalized source hash; the existing Host launch build-ID comparison also rejects unmatched binaries before dispatch. Data control uses an experimental version. Transport waits and full-block backpressure fail closed; no timeout allows continuation of a partially encoded command. Added mappings cost approximately 0.51 MiB of Client virtual address space. Existing legacy command reservations remain allocated in this first adapter; removal is deferred pending evidence.
+Protocol metadata contains a normalized source hash; the existing Host launch build-ID comparison also rejects unmatched binaries before dispatch. Data control uses an experimental version. Message-block full backpressure has a 2 s budget. UID-verified synchronous reply waits are capped at 10 s (or the smaller configured retry budget) and poison the transport on timeout. These are experimental limits, not performance guarantees. Transport waits and full-block backpressure fail closed; no timeout allows continuation of a partially encoded command. Added mappings cost approximately 0.51 MiB of Client virtual address space. Existing legacy command reservations remain allocated in this first adapter; removal is deferred pending evidence.
 
 ## Install and rollback
 

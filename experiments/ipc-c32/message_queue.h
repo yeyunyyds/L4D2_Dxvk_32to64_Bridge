@@ -154,7 +154,7 @@ public:
       }
       auto& shared = m_channel->shared();
       if (!m_current) {
-        if (shared.producer.published.load(std::memory_order_acquire) == m_sequence) {
+        if (!m_offset && shared.producer.published.load(std::memory_order_acquire) == m_sequence) {
           ldb_ipc_v2::Metrics metrics;
           const auto waited = m_channel->wait(false, [&]() {
             return shared.producer.published.load(std::memory_order_seq_cst) != m_sequence
@@ -167,10 +167,10 @@ public:
           }
           if (waited != ldb_ipc_v2::Result::Success) { result = bridge_util::Result::Failure; return m_header; }
         }
-        if (!m_channel->healthy() || shared.producer.published.load(std::memory_order_acquire) == m_sequence) {
+        if (!m_channel->healthy() || (!m_offset && shared.producer.published.load(std::memory_order_acquire) == m_sequence)) {
           result = bridge_util::Result::Failure; return m_header;
         }
-        const auto published = shared.producer.published.load(std::memory_order_acquire);
+        const auto published = m_offset ? m_sequence + 1 : shared.producer.published.load(std::memory_order_acquire);
         const auto& block = m_channel->block(m_sequence);
         if (static_cast<uint32_t>(published - m_sequence) > shared.config.blockCount
             || block.sequence != m_sequence || !block.records || block.bytes > shared.config.blockBytes
