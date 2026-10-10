@@ -110,6 +110,8 @@ Fatal handler 的一次性准备、有界故障时寄存器/堆栈/模块报告�
 
 DirectInput A/W 仍按原参数调用系统并原样返回 HRESULT。成功的非 7.0 请求只在显式 Debug 日志开启时显示原始版本值；不再用“Unsupported”误判调用失败或声称已验证所有旧接口。真正失败记录原始版本/HRESULT，观察异常不能改变结果。Query AddRef/Release 改用普通调用日志，移除上游遗留 missing-call 标记；引用计数、销毁 IPC 与 Host 资源释放未改。L4N 插件、Reset、PageBlock、Volume 和 Host 实现均未修改。
 
+此修正的 [Windows CI 38007197537](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38007197537) 全部通过，验证提交 `4b07438271eaa3292c1dbfd957749cc88230316b`，build ID 为 `l4d2-1.2.0+8ce8005da14ea40a`。x86 Client / x86+x64 Host 构建、新增 x86/x64 生产方法回归、13 个观察模式及全部既有核心回归通过；本地 Python 37 项通过。L4N DLL/ZIP 按未修改组件约定跳过。随后文档提交不改变已验证运行时补丁。
+
 这次实机日志还暴露了审计范围的一个剩余项：Host `SurfaceQueries::finish()` 仍累计 `count/mismatches`，这些观察计数尚未按诊断开关分离。本次三项 Client 修正没有处理它。实际 Getter、IUnknown 身份校验和临时引用 Release 是正确性工作，不能一并关闭；此前 OFF 测试的零计数结论仅适用于其覆盖的诊断入口，不能推导为全部 Host 路径没有观察计数。
 
 仍需真实 L4D2 + DXVK 在 x86/x64 Host 上复测联机过图、Reset/切窗、所选策略和三种 GC/恢复；开 Presenter/Input 后复测已验证 ReShade 组合（x64 + Vulkan ReShade 6.0.1）及实际键鼠。验证 OFF 运行没有新 diagnostics 文件，再逐项启用观察确认需要的输出。
