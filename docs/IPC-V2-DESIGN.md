@@ -37,7 +37,9 @@ flowchart LR
   Q --> W[Client UID 匹配 / waitForCommand]
 ```
 
-Device、Module 各有请求和回复方向。PR6 Data Control 的 reserved/published/consumed 与等待标志共用控制缓存行；Header ring 的索引已分离，不能笼统称所有原子均 false sharing。Producer reserved 不等于 Host 可读；published 才可读；consumed 受 active read/pin 约束。optimized dynamic Lock 可能将返回指针保留跨命令直到 Unlock/Destroy，不能按 handler 返回立即回收。
+Device、Module 各有请求和回复方向。PR6 Data Control 的 published/consumed/fault 与等待标志共用控制缓存行；reserved cursor 位于进程本地 CircularBuffer::m_cursor，Control 的 reserved[] 是预留字段，不是第三个共享原子游标；Header ring 的索引已分离，不能笼统称所有原子均 false sharing。Producer reserved 不等于 Host 可读；published 才可读；consumed 受 active read/pin 约束。optimized dynamic Lock 可能将返回指针保留跨命令直到 Unlock/Destroy，不能按 handler 返回立即回收。
+
+实际 v1/PR6 mapping 均为 `reserved control + CommandQueue metadata/Headers + DataQueue`：v1 reserved 64 bytes，偏移 0/8/16 为 serverDataPos/clientDataExpectedPos/resetRequired；PR6 同一区域为 64-byte `bridge_data::Control`。`m_cmdMemSize = sizeof(Header)*cmdQueueSize + CommandQueue::getExtraMemoryRequirements()`，`m_dataMemSize = memSize-m_cmdMemSize`；Command 从 reserved 之后开始，Data 从 reserved+m_cmdMemSize 开始。mutex、pbCmdInProgress、queue wrapper 和 cached frontier 属于进程本地，NamedSemaphore 是内核对象；不能把 wrapper 内的指针当成 wire layout。
 
 上传常见所有权：应用 Lock 返回 Shadow 或受保护的共享数据指针 → Unlock 将数据编码/复制 → Host 读取共享区域 → backend 内部更新。SharedHeap 是可复用候选，但覆盖同一资源共享 shadow 不能自动保证历史版本不可改写。GPU 完成与 IPC 完成不是同一个边界。
 
@@ -58,22 +60,23 @@ Device、Module 各有请求和回复方向。PR6 Data Control 的 reserved/publ
 
 ## 3. C 的 ABI、消息格式与快路径
 
-所有共享字段使用固定宽度、little endian、4-byte 记录对齐和 64-byte 控制布局；不共享指针、size_t、STL 容器或 HANDLE。跨进程控制原子只用 lock-free uint32，静态断言大小/偏移；x86 不依赖共享 64-bit 原子。
+所有共享字段使用固定宽度、little endian、4-byte 记录对齐和 64-byte 控制布局；不共享指针、size_t、STL 容器或 HANDLE。跨进程控制原子只用 lock-free uint32，静态断言大小/偏移；x86 不依赖共享 64-bit 原子。支持范围是 Windows/MSVC 与 Linux/GCC 的 x86 原生共享映射和原子 ABI；不能将 std::atomic 的通用线程保证扩展成任意平台的跨进程保证。配置/Block 对象由 creator 初始化并用 ready 发布，peer 不重新构造。
 
 | 结构 | 大小 / 偏移 | 字段 |
 |---|---|---|
-| Shared metadata | 0..63 | magic、协议 `0x00020001`、mapping bytes、Config、ready、fault |
-| ProducerState | 64..127 | published、closed、pid |
-| ConsumerState | 128..191 | completed、closed、pid |
+| Shared metadata | 0..63 | magic、协议 `0x00020002`、mapping bytes、Config、ready、fault |
+| ProducerState | 64..127 | published |
+| ConsumerState | 128..191 | completed |
 | messages WakeState | 192..255 | armed、epoch |
 | credits WakeState | 256..319 | armed、epoch |
+| ColdState | 320..383 | 两端 closed / pid；不与 progress 共行 |
 | 每块 metadata | 64 bytes | bytes、records、sequence |
 | Record | 24 bytes | uint32 bytes；uint16 command/flags；uint32 resource/generation/uid/bodyBytes |
 | Body | DWORD 对齐 | uint32 参数；blob = uint32 length + bytes + padding |
 
 Config 同时比较类型 Device/Module、方向、块数/容量、128-bit build identity。启动必须 ready acquire 后验证 magic、version、bytes、整个 Config；不匹配明确拒绝。ad-hoc 未盖章编译只供开发，脚本构建才具备源码标识；不同生产协议不能混用这些 mapping 名称。
 
-块数为 power-of-two，索引 `sequence & (N-1)`，每块 metadata 后紧接连续完整记录。开始一条记录时获得有界容量，不预先 staging：`begin(maximumBodyBytes)` → `scalar/reserveBlob/blob` → `finish`。最终长度可以小于上界。未知且无法提供上界的大记录应走独立 pool/分片协议，原型直接拒绝超容量；不跨块留下半记录。
+块数为 power-of-two，索引 `sequence & (N-1)`，每块 metadata 后紧接连续完整记录。开始一条记录时获得有界容量，不预先 staging：`begin(maximumBodyBytes)` → `scalar/reserveBlob/blob` → `finish`。最终长度可以小于上界。reserveBlob 返回的可写借用仅在该 Encoder 有效且尚未 finish/abort 时有效，不是 D3D9 Lock 指针。Encoder 移动会使旧对象失效，专项测试拒绝其后续写入/发布。未知且无法提供上界的大记录应走独立 pool/分片协议，原型直接拒绝超容量；不跨块留下半记录。
 
 未 finish 的 Encoder 析构只 rollback；超界失败不发布该记录。只有完整记录参与 block.bytes/records。`finish()` 默认立即发布，`finish(false)` 只用于调用者明确管理的实验 batch，容量不足自动先发布旧完整记录。writer 不拥有线程；多线程调用必须在整个 begin→finish→必要回复等待范围内串行化，与现有锁结合时另外审查顺序。
 
@@ -90,6 +93,8 @@ Producer 写入 payload/Record/Block metadata，然后 published **seq_cst store
 等待证明：waiter 先 armed SC store，再对 progress 做 SC recheck；notifier 先 progress SC store，再 armed SC load。SC 全序不允许双方同时遗漏对方：若登记在 progress 之前，notifier 会见 armed；若登记在通知检查之后，recheck 会见 progress。epoch 在最终 predicate 之前读取，Linux futex 比较 epoch，Windows auto-reset event 保存通知。无 lost wake 的论证需要上述顺序，不能随意把进度与登记都改成 relaxed/release-acquire。
 
 正常有数据/有容量不调用 OS wait。冷路径预创建每方向 message/credit 事件，登记后重查条件，假唤醒只重试。方案 A 无自旋；B 最多 128 pause 后同一等待路径。10 ms OS wait 分片用来检查存活/故障，整体操作有显式超时；并非新的常驻线程。Reader idle timeout 不等于损坏；Writer 容量 deadline 触发 sticky fault，之后拒绝 begin/flush。Host/Client 退出通知 closed；异常退出冷路径检测 peer。生产将绑定已验证进程句柄，原型 PID 只用于测试期退出检测，PID reuse 尚需加固。
+
+fault 为当前 channel 的 sticky 状态；原型测试退出会 close 对端并释放映射，但还没有生产 session supervisor。生产接入必须将 Device/Module 四通道的 fatal fault 联动，取消其他等待并沿用既有 DEVICELOST/退出语义，不能依赖另一方向恰好收到命令才发现失败。
 
 命令处理完成只表示 Bridge 不再读该消息块，**不是 GPU fence**。若真实 backend 保留上传指针，必须先复制或显式保留 upload lease，不能套用当前纯消息 handler 的回收约定。
 
@@ -118,16 +123,35 @@ DISCARD 分配新版本；NOOVERWRITE 验证写入范围/现有内容，并对�
 5. 生产集成：必须在前述模块各自通过后逐步接入。优先即发小命令；每次保留 D3D9 调用顺序与失败语义。
 6. Windows/L4D2：需要安装匹配二进制、真实地图/资源生命周期/帧时间验证；当前不可宣称完成。
 
-当前测试涵盖零长度、exact block、溢出、abort、不完整不可见、whole-block reuse、counter wrap、Device/Module、双向、同一锁下多线程、RPC、slow consumer、peer close/exit、超时后拒绝提交、损坏长度、throw handler、OS wait 注入、登记后重查、release→reuse 的 1000 个 map epoch 模型。模型不等于真实地图测试；没有 upload allocator，所以也没有验证 DISCARD/NOOVERWRITE/长期 Lock/Texture/Volume/Readback 的生产语义。
+当前测试另含 Host→Client / Client→Host 的 0 B、64 KiB、512 KiB、2 MiB 完整逐字节往返校验。当前测试涵盖零长度、exact block、溢出、abort、不完整不可见、whole-block reuse、counter wrap、Device/Module、双向、同一锁下多线程、RPC、slow consumer、peer close/exit、超时后拒绝提交、损坏长度、throw handler、OS wait 注入、登记后重查、release→reuse 的 1000 个 map epoch 模型。模型不等于真实地图测试；没有 upload allocator，所以也没有验证 DISCARD/NOOVERWRITE/长期 Lock/Texture/Volume/Readback 的生产语义。
+
+实机回归计划必须分别记录：测试图→MOD 图、MOD 图→测试图、连续切换不同地图、同图重复加载、退出时大量释放后立即创建、上传期间慢 Host，以及长期 Lock 同时提交其他资源。每项收集故障、超时、映射/私有内存和加载帧时间；首次进图正常不代表切图通过。当前仅运行资源代际/顺序模拟，没有真实地图执行。
 
 必须保留的未完成矩阵：实际 D3D9 同步/异步 API、Reset/Present/Device Lost、完整资源种类、Readback、长期 Lock、销毁时在途 upload、生产 Device/Module 顺序、timeout/late/duplicate Reply、版本交叉装配拒绝、x86 AV、后台性能、反复地图切换和 GPU fence/引用。不得因为 transport 数据校验成功就把这些标成通过。
 
 ## 7. 复现、构件和回滚
 
-Linux：`python scripts/run_ipc_v2.py --rounds 11`，构建 GCC C++17 /O2，运行跨进程正确性后交替测 C1/C32/C32-spin/C32-4K/C32-4K-spin。A/B 只在 Windows 运行真实提取代码，Linux 不仿造 A/B。原始结果见 evidence；脚本生成 raw.json/summary.json/BUILD-INFO.json。
+Linux：`python scripts/run_ipc_v2.py --rounds 11`，构建 GCC C++17 /O2，运行跨进程正确性后交替测 C1/C1-old-control/C32/C32-spin/C32-4K/C32-4K-spin。A/B 只在 Windows 运行真实提取代码，Linux 不仿造 A/B。原始结果见 evidence；脚本生成 raw.json/summary.json/BUILD-INFO.json。
 
 Windows：checkout 本分支，再 checkout 冻结的 PR6 到 `.deps/ipc-v2-pr6`；运行 `python scripts/prepare_ipc_v2_baselines.py`，随后 `powershell -File scripts/test_ipc_v2.ps1`。固定 MSVC 14.29 /O2，caller 与 Command 分开 TU、无 LTO，全部 x86 /LARGEADDRESSAWARE。CI artifact 包含原始结果、提取源码及原始生产文件哈希、测试 exe 的 SHA-256、源文件 build identity。这是独立测试程序，**不得复制到游戏目录冒充 d3d9.dll**；无安装步骤，回滚仅删除测试目录/切回原分支。
 
-基准同时保留 64 KiB 和 4 KiB 候选，每场景 warmup 后 11 次交替/反向轮转。stream/batch/RPC/mixed/slow/small-arena/idle；0..2 MiB；CPU time、Windows cycles、wall、RPC 分位、映射 bytes、private bytes、理论 memcpy bytes、C 发布次数。当前没有完整性能归因的锁/分配/原子/OS-wait 计数；计数仅 correctness build 的局部测试，不能将推导次数冒称生产实测。Linux 不支持的 cycles/private bytes 不作为有效数据。Win CPU clock 粒度可能限制小样本，只可连同 cycles/wall 分析。
+Actions artifact 解压到相同源码 checkout 的根目录后，可独立运行 `work\ipc-v2\native32.exe --host work\ipc-v2\native64.exe`（x64 Host）或将后者换成 native32.exe（x86 Host）；完整重复基准运行 `python scripts/run_ipc_v2.py --no-build --windows-baselines --rounds 11`。先将 exe 的 Get-FileHash 与 BINARY-SHA256.json 比较，并核对 BUILD-INFO。构件保留 30 天；源脚本和压缩原始证据保存在仓库，可重新构建。
+
+基准同时保留 64 KiB 和 4 KiB 候选，每场景 warmup 后 11 次交替/反向轮转。stream/batch/RPC/mixed/slow/small-arena/idle；0..2 MiB；CPU time、Windows cycles、wall、RPC 分位、映射 bytes、private bytes、理论 memcpy bytes、C 发布次数。当前没有完整性能归因的锁/分配/原子/OS-wait 计数；计数仅 correctness build 的局部测试，不能将推导次数冒称生产实测。Linux 不支持的 cycles/private bytes 不作为有效数据。Win CPU clock 粒度可能限制小样本，只可连同 cycles/wall 分析。idle Host 指标覆盖 500 ms 无数据等待；Client CPU 在提交段结束截取，不含随后等待 Host done 的时间，因此完整 Client/进程空闲 CPU 尚未测量。
+
+C 的计时夹具也逐命令取得/释放 Client mutex，与 A/B 保持相同串行化义务，等待 RPC 时已释放该锁。不同块几何按相同 data-arena **上限**选择，实际映射/有效容量因 power-of-two 与 metadata 不同，原始结果逐项报告，不能称完全相同的有效容量。mapping_bytes 是两条 channel 的请求映射长度，不包含小型夹具 sync mapping，也不是 Windows 全部 VA 碎片/对齐占用或游戏剩余 AV；正式 AV 验收仍未完成。
 
 合并建议以性能报告为准。**生产整体替换默认 BLOCKED**，不能因为单一吞吐项更好就取消完整回归。没有游戏/GPU 环境时应明确保持 gameplay validation 未完成。
+
+控制区冷/热字段分离后 shared header 为 384 bytes。由当前核心机械生成 5889017 对应的旧 320-byte 控制布局作为 C1-old-control；只变布局和相应协议版本，移动所有权、等待重查、编码算法完全相同，并输出生成源码 SHA-256。使用同一 caller、编译器、负载和硬件交替验证；旧布局协议 0x00020001，与新布局 0x00020002 不可混用。关闭/故障登记重查也采用 SC，快路径保留 acquire；C1-old-control 仅供归因，不是生产版本。
+
+基准在计时前由两进程预触全部 mapping；这同时消除旧版首触页成本和 C 初始化 Block metadata 预热的偏差。启动采用共享事件，没有 timed 1 ms 轮询。Client mutex 义务各版本一致；相同 CMD 5 在 frozen A/B 编译时静态断言。
+
+
+## 8. 如果块方案即发优势不足：下一候选的可实施边界
+
+不强制继续扩展五项机制。先补齐生产 Release 参数和即发＋有限自旋对照；本次 C1 异步只测 event，spin 的 RPC 虽然即发，不能替代全部即发负载。若块方案仍缺乏稳定优势，下一独立候选可以是紧凑 SPSC 字节环：每条完整记录连续写入、API 语义边界发布 committed prefix；Host 缓存已发布边界并顺序解码，环尾用明确 padding/wrap 记录。Producer 本地 reserved offset、共享 published、共享 consumed credit 分开缓存行，计数窗口仍受容量约束。它消除每记录一份 64-byte block metadata，而不是删掉必要内存序。
+
+Host 可以在已取得的连续范围内集中发布 credit，但进入空闲/等待前必须补发；Producer 登记缺空间后必须重新检查，不能让双方都等待尚未发布的 credit。等待/终止采用已验证的同一握手，先保持 SC 发布，后续内存序调整须独立证明。API 返回前的即发基线无需背景提交线程，因此没有跨 API batch 的 idle 尾部缺陷。
+
+原型先只对同一普通记录语义测 A/B/C/D，沿用旧回复或反向 stream，不实现上传/Slot。若即发仍不优于 B，就保留 PR6 或只应用测量明确的局部改善；若稳定优于 B，再做资源/大数据独立所有权。这是可实施的下一步设计，当前没有 D 的实现、测试或收益声明。

@@ -4,6 +4,8 @@
 
 # IPC 效率优先架构评估
 
+> 本文是初始审计快照。当前分支、协议实现、Windows 原生结果与最终建议以 [IPC-V2-DESIGN.md](IPC-V2-DESIGN.md) 和 [IPC-V2-PERFORMANCE.md](IPC-V2-PERFORMANCE.md) 为准。下文初始方案中的 Setter 折叠、状态机/资源表优化已被本轮任务边界排除，不属于 IPC v2 实施内容。网络限制和未推送状态仅描述审计时刻。
+
 评估日期：2026-10-10。评估分支：`codex/ipc-efficiency-architecture`，从 main `cf49175e8a3c6c2fe45c99aec0680b0d1c864d24` 建立。本次产出架构方案，不修改生产 IPC、不发布二进制。
 
 **结论：有明显的结构性优化空间，值得重构；主要收益来自减少跨进程共享状态更新、合并命令、调整上传所有权与减少同步往返。忽略安全防护并不是获得这些收益的必要条件，也不足以单独带来大量优化。尚无新架构的 Windows/游戏性能证据，不能承诺 FPS 或确定的吞吐提升。**
@@ -27,7 +29,7 @@ PR6 的主体是数据队列正确性和失败传播，后续叠加了局部性�
 1. 修复 Host 在 Client 登记等待之前已完成消费、双方漏掉对方操作导致 Client 仍等待的竞态。
 2. 修复超时/系统等待失败后 serializer 继续写、RAII 析构继续发布 Header 的行为。
 3. 统一 UID、字段、blob 长度、DWORD 对齐和环尾 padding 的空间计算；拒绝覆盖未消费数据。
-4. 用共享原子单调游标追踪 reserved/published/consumed，并覆盖 Device/Module、请求/回复各方向。
+4. 用本地 reserved cursor 与共享原子 published/consumed 追踪进度，并覆盖 Device/Module、请求/回复各方向。
 5. handler 真正完成后再释放数据；optimized dynamic Lock 的跨命令指针另行 pin 到 Unlock/Destroy。
 6. `finish()`/abort/poison 将失败传到创建、StateBlock、VB/IB、Surface/Volume、恢复及 Present；必要时返回 DEVICELOST。
 7. 增加小环、跨位数、多线程、故障注入、所有权和性能对照。
