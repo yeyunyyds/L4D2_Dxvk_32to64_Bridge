@@ -4013,7 +4013,7 @@ diff --git a/bridge/src/util/util_bridgecommand.h b/bridge/src/util/util_bridgec
    static bridge_util::Result ensureQueueEmpty();
  
    //=========================//
-@@ -235,87 +288,112 @@
+@@ -235,87 +288,113 @@
      }
      Command(const Commands::D3D9Command command,
              uintptr_t pHandle,
@@ -4136,6 +4136,7 @@ diff --git a/bridge/src/util/util_bridgecommand.h b/bridge/src/util/util_bridgec
 +    }
 +    void abort() { m_status = Result::Failure; fault(); }
 +    inline void send_data(DataT value) {
++      if (m_status != Result::Success || m_finished) { return; }
 +      l4d2_api_wait::Span timing(l4d2_api_wait::Metric::Serialize);
 +#ifdef REMIX_BRIDGE_CLIENT
 +      if (m_inline && s_pWriterChannel->commands->canInline(1)) {
@@ -4204,7 +4205,7 @@ diff --git a/bridge/src/util/util_bridgecommand.h b/bridge/src/util/util_bridgec
      static inline size_t get_counter() {
        return s_cmdCounter;
      }
-@@ -357,6 +435,38 @@
+@@ -357,6 +436,38 @@
      }
  
    private:
@@ -4243,7 +4244,7 @@ diff --git a/bridge/src/util/util_bridgecommand.h b/bridge/src/util/util_bridgec
      // NV-DXVK start: Optional data/resource tracing.
      l4d2_data::Wire m_dataWire;
      // NV-DXVK end
-@@ -371,12 +481,45 @@
+@@ -371,12 +482,45 @@
    Bridge() = delete;
    Bridge(const Bridge&) = delete;
    Bridge(const Bridge&&) = delete;
@@ -4290,7 +4291,7 @@ diff --git a/bridge/src/util/util_bridgecommand.h b/bridge/src/util/util_bridgec
  #if defined(REMIX_BRIDGE_CLIENT)
    static constexpr char kWriterChannelName[] = "Client2Server";
    static constexpr char kReaderChannelName[] = "Server2Client";
-@@ -385,3 +528,16 @@
+@@ -385,3 +529,16 @@
    static constexpr char kReaderChannelName[] = "Client2Server";
  #endif
  };
