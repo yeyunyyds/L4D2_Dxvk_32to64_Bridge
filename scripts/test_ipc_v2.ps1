@@ -17,7 +17,8 @@ if ($CompileArch -or $Baseline) {
     Push-Location $out
     try {
       foreach ($name in @('native','benchmark')) {
-        & cl.exe /nologo /std:c++17 /EHsc /O2 /W4 /WX /DNOMINMAX /DWIN32 "/I$out" "$repoRoot/tests/ipc-v2/$name.cpp" "/Fe:$name$CompileArch.exe" /link /LARGEADDRESSAWARE psapi.lib
+        # C4324 is intentional cache-line padding, verified by ABI assertions.
+        & cl.exe /nologo /std:c++17 /EHsc /O2 /W4 /WX /wd4324 /DNOMINMAX /DWIN32 "/I$out" "$repoRoot/tests/ipc-v2/$name.cpp" "/Fe:$name$CompileArch.exe" /link /LARGEADDRESSAWARE psapi.lib
         if ($LASTEXITCODE -ne 0) { throw "Prototype compile failed: $name$CompileArch" }
       }
     } finally { Pop-Location }

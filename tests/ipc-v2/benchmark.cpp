@@ -44,6 +44,7 @@ uint64_t cycles() {
 struct alignas(64) Sync {
   std::atomic<uint32_t> clientReady { 0 }, hostReady { 0 }, start { 0 }, done { 0 };
   WakeState completed;
+  WakeState started;
 };
 void waitFlag(std::atomic<uint32_t>& flag) {
   const uint64_t start = milliseconds();
@@ -51,6 +52,16 @@ void waitFlag(std::atomic<uint32_t>& flag) {
     require(milliseconds() - start < 10000, "fixture startup/completion timeout");
     std::this_thread::sleep_for(std::chrono::milliseconds(1));
   }
+}
+void waitSignal(std::atomic<uint32_t>& flag, WakeState& wake, Event& event) {
+  const uint64_t start = milliseconds();
+  wake.armed.store(1, std::memory_order_seq_cst);
+  while (true) {
+    const auto epoch = wake.epoch.load(std::memory_order_acquire);
+    if (flag.load(std::memory_order_seq_cst)) { break; }
+    require(milliseconds() - start < 10000 && event.wait(epoch, 10), "fixture event timeout");
+  }
+  wake.armed.store(0, std::memory_order_seq_cst);
 }
 int main(int argc, char** argv) {
   try {
@@ -85,6 +96,7 @@ int main(int argc, char** argv) {
     auto& sync = *static_cast<Sync*>(syncMapping->data());
     if (client) { new (&sync) Sync {}; } else { waitFlag(sync.clientReady); }
     Event doneEvent(sync.completed, name + "-done");
+    Event startEvent(sync.started, name + "-start");
     uint32_t mappingBytes = 0;
 #ifdef IPC_LEGACY
     using Device = Bridge<BridgeId::Device>;
@@ -121,12 +133,12 @@ int main(int argc, char** argv) {
     mappingBytes = forward.bytes() + reverse.bytes();
 #endif
     if (client) { sync.clientReady.store(1, std::memory_order_release); waitFlag(sync.hostReady); }
-    else { sync.hostReady.store(1, std::memory_order_release); waitFlag(sync.start); }
+    else { sync.hostReady.store(1, std::memory_order_release); waitSignal(sync.start, sync.started, startEvent); }
     std::vector<uint8_t> payload(bytes, 0x6b);
     std::vector<uint64_t> latency;
     if (mode == "rpc" && client) { latency.reserve(countPackets); }
     const uint64_t cpuStart = cpuNs(), cyclesStart = cycles(), start = ns();
-    if (client && mode != "batch") { sync.start.store(1, std::memory_order_release); }
+    if (client && mode != "batch") { sync.start.store(1, std::memory_order_seq_cst); require(startEvent.notify(), "start signal"); }
     uint32_t processed = 0;
     if (mode == "idle") {
       if (!client) {
@@ -221,7 +233,7 @@ int main(int argc, char** argv) {
       }
     }
     const uint64_t end = ns(), cpuEnd = cpuNs(), cyclesEnd = cycles();
-    if (client && mode == "batch") { sync.start.store(1, std::memory_order_release); }
+    if (client && mode == "batch") { sync.start.store(1, std::memory_order_seq_cst); require(startEvent.notify(), "start signal"); }
     if (!client) { sync.done.store(1, std::memory_order_seq_cst); require(doneEvent.notify(), "done signal"); }
     else {
       const auto waitStart = milliseconds();
