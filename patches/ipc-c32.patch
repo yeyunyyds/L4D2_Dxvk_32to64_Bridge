@@ -2528,15 +2528,15 @@ diff --git a/bridge/src/client/d3d9_util.h b/bridge/src/client/d3d9_util.h
  
 -#define LogFunctionCall() bridge_exception::CallScope _exceptionCall(__FUNCTION__, reinterpret_cast<uintptr_t>(this)); FunctionEntryExitLogger _feeLogger(__FUNCTION__, this);
 -#define LogStaticFunctionCall() bridge_exception::CallScope _exceptionCall(__FUNCTION__, 0); FunctionEntryExitLogger _feeLogger(__FUNCTION__, nullptr);
-+#define LogFunctionCall() Bridge<BridgeId::Device>::apiEntry(); Bridge<BridgeId::Module>::apiEntry(); bridge_exception::CallScope _exceptionCall(__FUNCTION__, reinterpret_cast<uintptr_t>(this)); FunctionEntryExitLogger _feeLogger(__FUNCTION__, this);
-+#define LogStaticFunctionCall() Bridge<BridgeId::Device>::apiEntry(); Bridge<BridgeId::Module>::apiEntry(); bridge_exception::CallScope _exceptionCall(__FUNCTION__, 0); FunctionEntryExitLogger _feeLogger(__FUNCTION__, nullptr);
++#define LogFunctionCall() ldb_c32::ApiEntryScope _ipcApiEntry; bridge_exception::CallScope _exceptionCall(__FUNCTION__, reinterpret_cast<uintptr_t>(this)); FunctionEntryExitLogger _feeLogger(__FUNCTION__, this);
++#define LogStaticFunctionCall() ldb_c32::ApiEntryScope _ipcApiEntry; bridge_exception::CallScope _exceptionCall(__FUNCTION__, 0); FunctionEntryExitLogger _feeLogger(__FUNCTION__, nullptr);
  #else
  #define LogMissingFunctionCall()
  #define LogMissingReadFunctionCall()
 -#define LogFunctionCall() bridge_exception::CallScope _exceptionCall(__FUNCTION__, reinterpret_cast<uintptr_t>(this));
 -#define LogStaticFunctionCall() bridge_exception::CallScope _exceptionCall(__FUNCTION__, 0);
-+#define LogFunctionCall() Bridge<BridgeId::Device>::apiEntry(); Bridge<BridgeId::Module>::apiEntry(); bridge_exception::CallScope _exceptionCall(__FUNCTION__, reinterpret_cast<uintptr_t>(this));
-+#define LogStaticFunctionCall() Bridge<BridgeId::Device>::apiEntry(); Bridge<BridgeId::Module>::apiEntry(); bridge_exception::CallScope _exceptionCall(__FUNCTION__, 0);
++#define LogFunctionCall() ldb_c32::ApiEntryScope _ipcApiEntry; bridge_exception::CallScope _exceptionCall(__FUNCTION__, reinterpret_cast<uintptr_t>(this));
++#define LogStaticFunctionCall() ldb_c32::ApiEntryScope _ipcApiEntry; bridge_exception::CallScope _exceptionCall(__FUNCTION__, 0);
  #endif
  
  static void _LogMissingFunctionCall(const std::string& functionName, bool errorlogLevel = true) {
@@ -3583,12 +3583,13 @@ diff --git a/bridge/src/util/util_bridgecommand.cpp b/bridge/src/util/util_bridg
    : m_exceptionContext(std::is_same<BridgeId, ::BridgeId::Device>::value ? bridge_exception::Queue::Device : bridge_exception::Queue::Module,
                         static_cast<uint16_t>(command), static_cast<uint32_t>(pHandle), "serialize_command")
    , m_command(command)
-@@ -307,105 +407,136 @@
+@@ -307,105 +407,137 @@
    {
      l4d2_api_wait::Span apiMutexTiming(l4d2_api_wait::Metric::CommandMutexWait);
      s_pWriterChannel->m_mutex.lock();
 +    s_commandOwned = true;
-+    if (s_pWriterChannel->commands->due(ldb_ipc_v2::milliseconds()) && !s_pWriterChannel->commands->flush()) {
++    if (!ldb_c32::apiDepth && s_pWriterChannel->commands->pending()
++        && s_pWriterChannel->commands->due(ldb_ipc_v2::milliseconds()) && !s_pWriterChannel->commands->flush()) {
 +      reportFault("lazy-flush", static_cast<uint32_t>(command), s_cmdUID);
 +    }
      m_exceptionContext.setUid(s_cmdUID);
@@ -4289,6 +4290,23 @@ diff --git a/bridge/src/util/util_bridgecommand.h b/bridge/src/util/util_bridgec
  #if defined(REMIX_BRIDGE_CLIENT)
    static constexpr char kWriterChannelName[] = "Client2Server";
    static constexpr char kReaderChannelName[] = "Server2Client";
+@@ -385,3 +528,16 @@
+   static constexpr char kReaderChannelName[] = "Client2Server";
+ #endif
+ };
++
++// Scope is independent of logging/diagnostic enablement. Nested wrappers check
++// once at their outer entry; uninstrumented callers retain a constructor check.
++namespace ldb_c32 {
++inline thread_local uint32_t apiDepth = 0;
++struct ApiEntryScope {
++  ApiEntryScope() {
++    if (apiDepth++ == 0) { Bridge<BridgeId::Device>::apiEntry(); Bridge<BridgeId::Module>::apiEntry(); }
++  }
++  ~ApiEntryScope() { --apiDepth; }
++  ApiEntryScope(const ApiEntryScope&) = delete;
++};
++}
 diff --git a/bridge/src/util/util_circularbuffer.h b/bridge/src/util/util_circularbuffer.h
 --- a/bridge/src/util/util_circularbuffer.h
 +++ b/bridge/src/util/util_circularbuffer.h
