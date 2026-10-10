@@ -57,7 +57,7 @@ def prepare_old_controls(out):
 
 def stamp_build(out):
     paths = sorted((ROOT / 'experiments/ipc-v2').glob('*.h')) + sorted((ROOT / 'tests/ipc-v2').glob('*.cpp'))
-    digest = hashlib.sha256(b''.join(str(p.relative_to(ROOT)).encode() + b'\0' + p.read_bytes() for p in paths)).hexdigest()
+    digest = hashlib.sha256(b''.join(p.relative_to(ROOT).as_posix().encode() + b'\0' + p.read_bytes() for p in paths)).hexdigest()
     (out / 'ipc_v2_build.h').write_text(''.join(f'#define LDB_IPC_V2_BUILD{i} 0x{digest[i*8:(i+1)*8]}u\n' for i in range(4)))
     (out / 'BUILD-INFO.json').write_text(json.dumps(dict(build_id='ipc-v2-prototype-' + digest[:32],
         source_sha256=digest, gameplay_validated=False, production_integrated=False), indent=2) + '\n')
@@ -133,6 +133,10 @@ def summarize(rows):
                     values = []
                     for row in valid:
                         data = next(m for m in row['metrics'] if m['role'] == role)
+                        if metric == 'publications' and row['variant'] in ('A', 'B'):
+                            continue
+                        if metric == 'private_bytes' and not data['cycles_supported']:  # Linux has neither metric.
+                            continue
                         if metric == 'cycles' and not data['cycles_supported']:
                             continue
                         value = data[metric]
@@ -196,8 +200,10 @@ def main():
     metadata = dict(platform=platform.platform(), processor=platform.processor(), cpu_count=os.cpu_count(),
                     compiler='MSVC 14.29 /O2, separate production caller/Command TU' if platform.system() == 'Windows'
                     else 'GCC C++17 -O2 -pthread',
+                    old_control=json.loads((out/'old-controls/source-manifest.json').read_text()),
+                    build=json.loads((out/'BUILD-INFO.json').read_text()),
                     scope='independent transport, no D3D9/DXVK/GPU, no upload pool or Reply Slot',
-                    source_sha256={str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
+                    source_sha256={p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
                                    for p in sorted((ROOT / 'experiments/ipc-v2').glob('*.h'))
                                    + sorted((ROOT / 'tests/ipc-v2').glob('*.cpp'))})
     for arch in ('32', '64') if platform.system() == 'Windows' else ('64',):
