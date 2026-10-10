@@ -197,6 +197,50 @@ void localTests() {
 Config processConfig(uint32_t kind, uint32_t direction) {
   Config c; c.blockCount = 4; c.blockBytes = 512; c.kind = kind; c.direction = direction; return c;
 }
+Config blobConfig(uint32_t kind) {
+  Config c; c.kind = kind; c.blockCount = 2; c.blockBytes = aligned(2 * 1024 * 1024 + 36, 64); return c;
+}
+bool validateBlob(Message& m, uint32_t expected, const uint8_t*& data, uint32_t& bytes) {
+  uint32_t sequence;
+  if (m.header.command != 5 || m.header.uid != expected || !m.scalar(sequence) || sequence != expected || !m.blob(data, bytes)) { return false; }
+  for (uint32_t i = 0; i < bytes; ++i) { if (data[i] != static_cast<uint8_t>(expected + i)) { return false; } }
+  return true;
+}
+int blobChild(const std::string& name, uint32_t kind, uint32_t spins) {
+  Config c = blobConfig(kind); Channel forward(name, c, false);
+  c.direction = 1; Channel reverse(name + "-reply", c, false);
+  Reader reader(forward, 5000, spins); Writer writer(reverse, 5000, spins);
+  for (uint32_t i = 0; i < 16; ++i) {
+    const uint32_t sequence = UINT32_MAX - 7 + i;
+    require(reader.consume([&](Message& m) {
+      const uint8_t* data = nullptr; uint32_t bytes = 0;
+      if (!validateBlob(m, sequence, data, bytes)) { return false; }
+      auto reply = writer.begin(5, 100, sequence, 8 + aligned(bytes), 0, 1);
+      return reply.scalar(sequence) && reply.blob(data, bytes) && reply.finish() == Result::Success;
+    }) == Result::Success, "full-byte request and reverse encode");
+  }
+  return 0;
+}
+void crossProcessBlobs(const std::string& host, uint32_t kind, uint32_t spins) {
+  const auto name = uniqueName(); Config c = blobConfig(kind); Channel forward(name, c, true);
+  c.direction = 1; Channel reverse(name + "-reply", c, true);
+  Writer writer(forward, 5000, spins); Reader reader(reverse, 5000, spins);
+  Process process(host, name, "blob", kind, 0, spins);
+  const std::array<uint32_t, 4> sizes { 0, 65536, 524288, 2097152 };
+  std::vector<uint8_t> payload(sizes.back());
+  for (uint32_t i = 0; i < 16; ++i) {
+    const uint32_t sequence = UINT32_MAX - 7 + i, bytes = sizes[i % sizes.size()];
+    for (uint32_t j = 0; j < bytes; ++j) { payload[j] = static_cast<uint8_t>(sequence + j); }
+    auto request = writer.begin(5, 100, sequence, 8 + aligned(bytes), 1, 1);
+    require(request.scalar(sequence) && request.blob(payload.data(), bytes) && request.finish() == Result::Success, "large request");
+    require(reader.consume([&](Message& m) {
+      const uint8_t* data = nullptr; uint32_t length = 0;
+      return validateBlob(m, sequence, data, length) && length == bytes;
+    }) == Result::Success, "full-byte Host to Client blob");
+  }
+  require(writer.close() == Result::Success && process.wait() == 0, "large peer completion");
+  std::printf("IPC_V2_BIDIRECTIONAL_BLOB_PASS kind=%u spins=%u max_bytes=2097152 records=32\n", kind, spins);
+}
 bool checkPacket(Message& m, uint32_t expected, uint32_t& flags) {
   uint32_t seq = 0, size = 0; const uint8_t* p = nullptr; uint32_t n = 0;
   if (m.header.command != 6 || m.header.uid != expected || !m.scalar(seq) || seq != expected
@@ -205,6 +249,7 @@ bool checkPacket(Message& m, uint32_t expected, uint32_t& flags) {
   flags = m.header.flags; return true;
 }
 int child(const std::string& name, const std::string& mode, uint32_t kind, uint32_t direction, uint32_t spins) {
+  if (mode == "blob") { return blobChild(name, kind, spins); }
   Config c = processConfig(kind, direction);
   Channel forward(name, c, false);
   c.direction ^= 1; Channel reverse(name + "-reply", c, false);
@@ -290,6 +335,7 @@ int main(int argc, char** argv) {
     localTests();
     for (uint32_t spins : { 0u, 128u }) {
       for (uint32_t kind : { 1u, 2u }) {
+        crossProcessBlobs(host, kind, spins);
         for (uint32_t direction : { 0u, 1u }) { crossProcess(host, kind, direction, spins, "normal", false); }
         crossProcess(host, kind, 0, spins, "normal", true);
       }
