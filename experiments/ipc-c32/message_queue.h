@@ -144,7 +144,10 @@ public:
     try {
       while (!m_channel) {
         if (early && early->load()) { result = bridge_util::Result::Timeout; return m_header; }
-        try { open(); } catch (...) {
+        try { open(); } catch (const std::exception& e) {
+          // Only a not-yet-created mapping is retryable. A protocol/build
+          // mismatch is an immediate failure, never an initialization timeout.
+          if (std::strcmp(e.what(), "mapping open/create failed") != 0) { throw; }
           if (ldb_ipc_v2::milliseconds() - start >= budget) { result = bridge_util::Result::Timeout; return m_header; }
           std::this_thread::yield();
         }

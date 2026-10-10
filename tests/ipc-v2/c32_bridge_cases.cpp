@@ -5,45 +5,51 @@ using Device = Bridge<BridgeId::Device>;
 using Module = Bridge<BridgeId::Module>;
 void require(bool b, const char* text) { if(!b) {std::fprintf(stderr,"C32_BRIDGE_FAIL %s\n",text);std::exit(2);} }
 constexpr unsigned Count=12000;
+bool streamOnly=false, threaded=false;
 template<class B> void transfer() {
+  ULONG64 cyclesBefore=0,cyclesAfter=0;QueryThreadCycleTime(GetCurrentThread(),&cyclesBefore);
+  const auto begin=std::chrono::steady_clock::now();
 #ifdef REMIX_BRIDGE_CLIENT
-  std::array<uint8_t,512> blob{};
-  for(unsigned i=0;i<Count;i++) {
+  auto send = [&](unsigned i) {
     {
-      // Alternating generic/known inline packets and external blobs repeatedly
-      // changes map-style resource generations without changing dispatch order.
-      if(i%3==0) {
+      ldb_c32::ApiEntryScope entry;
+      if (!threaded && i%3==0) {
         typename B::Command c(Commands::IDirect3DDevice9Ex_SetRenderState, i%17,0,bridge_data::fields(i, i^0x1234u));
         require(c.finish()==Result::Success,"known inline finish");
       } else {
-        typename B::Command c(i%3==1 ? Commands::IDirect3DDevice9Ex_SetRenderState : Commands::IDirect3DVertexBuffer9_Unlock,i%17);
+        typename B::Command c(Commands::IDirect3DDevice9Ex_SetRenderState,threaded ? 0 : i%17);
+        if (threaded) { i=static_cast<unsigned>(c.get_uid()); }
         c.send_many(i,i^0x1234u);
-        if(i%3==2) {blob.fill(static_cast<uint8_t>(i));c.send_data(blob.size(),blob.data());}
+        if(!streamOnly && i%3==2) {std::array<uint8_t,512> blob{};blob.fill(static_cast<uint8_t>(i));c.send_data(blob.size(),blob.data());}
         require(c.finish()==Result::Success,"generic finish");
       }
     }
-    if(i%101==0) {
-      // Synchronous wait flushes the entire prior tail even if no boundary cmd.
+    if(!threaded && i%101==0) {
       require(B::waitForCommand(Commands::Bridge_Response,2000,nullptr,true,i)==Result::Success,"RPC wait");
       require(B::get_data()==i,"RPC payload");B::pop_front();
     }
-  }
+  };
+  if (threaded) {
+    std::vector<std::thread> writers;
+    for(unsigned t=0;t<4;++t) {writers.emplace_back([&] {for(unsigned i=0;i<Count/4;i++)send(i);});}
+    for(auto& writer:writers)writer.join();
+  } else {for(unsigned i=0;i<Count;i++)send(i);}
   require(B::flushCommands(),"final flush");
 #else
   const uint8_t* retained=nullptr;uint64_t pinned=0;
   for(unsigned i=0;i<Count;i++) {
     require(B::waitForCommand(Commands::Bridge_Any,2000)==Result::Success,"request wait");
-    const auto h=B::pop_front();require(h.pHandle==i%17,"resource order");
+    const auto h=B::pop_front();require(h.pHandle==(threaded ? 0 : i%17),"resource order");
     require(B::get_data()==i,"UID");
-    if(i%3==0) {const auto p=B::template get_packet<2>(false);require(p.fields[0]==i && p.fields[1]==(i^0x1234u),"known body");}
+    if(!threaded && i%3==0) {const auto p=B::template get_packet<2>(false);require(p.fields[0]==i && p.fields[1]==(i^0x1234u),"known body");}
     else {require(B::get_data()==i && B::get_data()==(i^0x1234u),"generic body");}
-    if(i%3==2) {
+    if(!streamOnly && i%3==2) {
       if(retained) {for(unsigned j=0;j<512;j++)require(retained[j]==static_cast<uint8_t>(i-3),"retained Lock contents");B::unpinRead(7);}
       B::pinRead(7);void* ptr=nullptr;require(B::get_data(&ptr)==512,"blob length");
       for(unsigned j=0;j<512;j++)require(static_cast<uint8_t*>(ptr)[j]==static_cast<uint8_t>(i),"every blob byte");
       retained=static_cast<const uint8_t*>(ptr);
     }
-    bool inlineUnpin = i%9==4;
+    bool inlineUnpin = !streamOnly && i%9==4;
     if (inlineUnpin) {
       require(retained!=nullptr,"inline unpin lease");
       for(unsigned j=0;j<512;j++)require(retained[j]==static_cast<uint8_t>(i-2),"inline unpin every byte");
@@ -51,17 +57,22 @@ template<class B> void transfer() {
     }
     B::end_read_data();
     if (inlineUnpin) {require(B::getReaderChannel().control->consumed.load()==B::getReaderChannel().data->cursor(),"inline unpin failed to advance Data Ring credits");}
-    if(i%3==2) {pinned=B::getReaderChannel().control->consumed.load();}
+    if(!streamOnly && i%3==2) {pinned=B::getReaderChannel().control->consumed.load();}
     else if(retained) {require(B::getReaderChannel().control->consumed.load()==pinned,"inline command advanced pinned data");}
-    if(i%101==0) {typename B::Command reply(Commands::Bridge_Response,i);reply.send_data(i);require(reply.finish()==Result::Success,"reply finish");}
+    if(!threaded && i%101==0) {typename B::Command reply(Commands::Bridge_Response,i);reply.send_data(i);require(reply.finish()==Result::Success,"reply finish");}
     if(i%1024==0)Sleep(1);
   }
   B::destroyReadPins(7);
 #endif
+  QueryThreadCycleTime(GetCurrentThread(),&cyclesAfter);
+  const auto ns=std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now()-begin).count();
+  std::printf("C32_TIMING cycles=%llu commands=%u wall_ns=%lld threaded=%u\n",static_cast<unsigned long long>(cyclesAfter-cyclesBefore),Count,static_cast<long long>(ns),threaded?1u:0u);
 }
 int wmain(int argc,wchar_t** argv) {
   try {
-    require(argc==2,"GUID argument");require(gUniqueIdentifier.setGuid(&argv[1]),"GUID valid");
+    require(argc==3,"GUID/mode argument");
+    streamOnly=std::wstring(argv[2])==L"stream";threaded=std::wstring(argv[2])==L"threaded";
+    require(gUniqueIdentifier.setGuid(&argv[1]),"GUID valid");
     const size_t memory=256+256*sizeof(Header)+32768*sizeof(uint32_t);
 #ifdef REMIX_BRIDGE_CLIENT
     WriterChannel dw("DeviceForward",memory,256,32768),mw("ModuleForward",memory,256,32768);
