@@ -202,6 +202,9 @@ public:
     , m_record(other.m_record), m_valid(other.m_valid) { other.m_writer = nullptr; other.m_valid = false; }
   ~Encoder();
   bool valid() const { return m_valid; }
+  // Borrowed only while this encoder owns its unpublished record.
+  const uint8_t* bodyData() const { return m_valid ? m_begin + sizeof(Record) : nullptr; }
+  uint32_t bodyBytes() const { return m_offset - sizeof(Record); }
   bool scalar(uint32_t value) {
     if (!m_valid || sizeof(value) > m_limit - m_offset) { m_valid = false; return false; }
     std::memcpy(m_begin + m_offset, &value, sizeof(value)); m_offset += sizeof(value); return true;
