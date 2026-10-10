@@ -15,17 +15,19 @@ double cpuNs() {
   u.LowPart=user.dwLowDateTime; u.HighPart=user.dwHighDateTime;
   return static_cast<double>(k.QuadPart + u.QuadPart) * 100.0;
 }
+uint64_t cpuCycles() {
+  ULONG64 cycles=0;
+  check(QueryThreadCycleTime(GetCurrentThread(), &cycles)!=0, "QueryThreadCycleTime");
+  return cycles;
+}
 template<typename T> struct TestedBuffer : LockableBuffer<T> {
   using Base = LockableBuffer<T>;
   using Desc = std::conditional_t<std::is_same_v<T, IDirect3DVertexBuffer9>, D3DVERTEXBUFFER_DESC, D3DINDEXBUFFER_DESC>;
   TestedBuffer(BaseDirect3DDevice9Ex_LSS* device, const Desc& desc) : Base(nullptr, device, desc) {}
   using Base::lock;
-  HRESULT Unlock() {
-    l4d2_api_wait::ApiScope timing(std::is_same_v<T, IDirect3DVertexBuffer9> ? l4d2_api_wait::Api::VertexUnlock : l4d2_api_wait::Api::IndexUnlock);
-    std::lock_guard<std::recursive_mutex> guard(this->device->mutex);
-    this->unlock();
-    return S_OK;
-  }
+  using Base::unlock;
+  using Direct3DResource9_LSS<T>::m_pDevice;
+  // INSERT_PRODUCTION_UNLOCK_WRAPPER
 };
 constexpr size_t kCommandSlots=65536, kMemory=64u*1024*1024;
 struct ChannelPair {
@@ -67,7 +69,7 @@ struct ChannelPair {
 template<typename T> void semantics(ChannelPair& channel) {
   using Buffer=TestedBuffer<T>; typename Buffer::Desc desc{};
   desc.Size=256; desc.Usage=D3DUSAGE_DYNAMIC | D3DUSAGE_WRITEONLY;
-  BaseDirect3DDevice9Ex_LSS device; Buffer buffer(&device, desc);
+  TestedDevice<true> device; Buffer buffer(&device, desc);
   channel.resetData();
   void* full=nullptr;
   expect(buffer.lock(0, 0, &full, D3DLOCK_DISCARD)==S_OK, "whole lock");
@@ -105,13 +107,13 @@ template<typename T> void benchmark(ChannelPair& channel, unsigned size, bool st
   using Buffer=TestedBuffer<T>; typename Buffer::Desc desc{};
   desc.Size=streaming ? 64u*1024*1024 : 1024u*1024;
   desc.Usage=D3DUSAGE_DYNAMIC | D3DUSAGE_WRITEONLY;
-  BaseDirect3DDevice9Ex_LSS device; Buffer buffer(&device, desc);
+  TestedDevice<true> device; Buffer buffer(&device, desc);
   void* base=nullptr; buffer.lock(0, 0, &base, D3DLOCK_READONLY); buffer.Unlock();
   std::memset(base, 0xa7, desc.Size);
   // Bound both call count and copied bytes; timers run only around batches.
   const size_t calls=warm ? 4096 : (std::max)(size_t(4096), (std::min)(size_t(1000000), size_t(128u*1024*1024)/size));
   const size_t batch=(std::min)(size_t(60000), size_t(16u*1024*1024)/(size+32));
-  double upload=0, cpu=0, consume=0; size_t cursor=0, total=0;
+  double upload=0, cpu=0, consume=0, cycles=0; size_t cursor=0, total=0;
   for (size_t done=0;done<calls;) {
     channel.resetData();
     const size_t count=(std::min)(batch, calls-done);
@@ -120,10 +122,11 @@ template<typename T> void benchmark(ChannelPair& channel, unsigned size, bool st
       check(buffer.lock(static_cast<UINT>(cursor), size, &data, D3DLOCK_NOOVERWRITE)==S_OK, "prepare lock");
       cursor=streaming ? (cursor+size <= desc.Size-size ? cursor+size : 0) : 0;
     }
-    const double cpuStart=cpuNs(); const auto start=Clock::now();
+    const double cpuStart=cpuNs(); const auto cycleStart=cpuCycles(); const auto start=Clock::now();
     for (size_t i=0;i<count;++i) { buffer.Unlock(); }
-    const auto end=Clock::now(); const double cpuEnd=cpuNs();
+    const auto end=Clock::now(); const auto cycleEnd=cpuCycles(); const double cpuEnd=cpuNs();
     upload+=std::chrono::duration<double,std::nano>(end-start).count(); cpu+=cpuEnd-cpuStart;
+    cycles+=static_cast<double>(cycleEnd-cycleStart);
     const auto consumeStart=Clock::now();
     for (size_t i=0;i<count;++i) {
       const auto p=channel.consume();
@@ -134,7 +137,7 @@ template<typename T> void benchmark(ChannelPair& channel, unsigned size, bool st
     done+=count;
   }
   check(total==calls*size, "payload count");
-  std::printf("{\"calls\":%zu,\"batch_calls\":%zu,\"payload_bytes\":%zu,\"wire_bytes_without_tail_padding\":%zu,\"upload_ns\":%.6f,\"upload_cpu_ns\":%.6f,\"consume_ns\":%.6f}\n", calls, batch, total, calls*(32+bridge_util::align<size_t>(size,4)), upload/calls, cpu/calls, consume/calls);
+  std::printf("{\"calls\":%zu,\"batch_calls\":%zu,\"payload_bytes\":%zu,\"wire_bytes_without_tail_padding\":%zu,\"upload_ns\":%.6f,\"upload_cpu_ns\":%.6f,\"upload_cycles\":%.6f,\"consume_ns\":%.6f}\n", calls, batch, total, calls*(32+bridge_util::align<size_t>(size,4)), upload/calls, cpu/calls, cycles/calls, consume/calls);
 }
 }
 int main(int argc, char** argv) {

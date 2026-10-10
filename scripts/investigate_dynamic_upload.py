@@ -27,6 +27,7 @@ FILES = (
     "util_semaphore.cpp", "util_guid.h", "api_wait_diagnostics.h",
     "data_diagnostics.h", "data_diagnostics.cpp", "exception_diagnostics.h",
     "exception_diagnostics.cpp", "queue_wait_diagnostics.h", "runtime_observation.h",
+    "util_scopedlock.h",
 )
 
 
@@ -72,6 +73,10 @@ inline std::string bufferNameToOption(const std::string&) { return {}; }
     (work / "config").mkdir(exist_ok=True)
     (work / "config/global_options.h").write_text('''#pragma once
 struct GlobalOptions {
+  inline static volatile bool logApiCalls=false, logAllCalls=false, logAllCommands=false;
+  static bool getLogApiCalls() { return logApiCalls; }
+  static bool getLogAllCalls() { return logAllCalls; }
+  static bool getLogAllCommands() { return logAllCommands; }
   static unsigned getCommandTimeout() { return 1000; }
   static unsigned getCommandRetries() { return 3; }
   static unsigned getSemaphoreTimeout() { return 1000; }
@@ -107,6 +112,34 @@ using ClientMessage = DeviceBridge::Command;
     template = buf[buf.index("template <typename T>"):]
     support = (ROOT / "tests/dynamic_upload_support.h").read_text(encoding="utf-8")
     support = support.replace("// INSERT_PRODUCTION_BRIDGE", bridge)
+    d3dutil = (client / "d3d9_util.h").read_text(encoding="utf-8")
+    lss = (client / "d3d9_lss.cpp").read_text(encoding="utf-8")
+    device = (client / "d3d9_device.h").read_text(encoding="utf-8")
+    for name, contents in (("d3d9_util.h", d3dutil), ("d3d9_lss.cpp", lss), ("d3d9_device.h", device)):
+        hashes[name] = hashlib.sha256(contents.encode()).hexdigest()
+    log_class = d3dutil[d3dutil.index("class FunctionEntryExitLogger {"):d3dutil.index("#define LogMissingFunctionCall()")]
+    start, end = method(d3dutil, "static void _LogFunctionCall(")
+    helper = d3dutil[start:end]
+    start = lss.index("std::map<std::thread::id, std::atomic<size_t>>& FunctionEntryExitLogger::counters()")
+    end = lss.index("\n#endif", start)
+    support = support.replace("// INSERT_PRODUCTION_API_LOGGER", log_class + helper + lss[start:end])
+    start = device.index("#ifdef WITH_MULTITHREADED_DEVICE", device.index("class Direct3DDevice9Ex_LSS"))
+    end = device.index("#endif", start) + len("#endif")
+    support = support.replace("// INSERT_PRODUCTION_DEVICE_SYNC", device[start:end])
+    wrappers = []
+    for name in ("vertexbuffer", "indexbuffer"):
+        contents = (client / ("d3d9_" + name + ".cpp")).read_text(encoding="utf-8")
+        class_name = "Direct3DVertexBuffer9_LSS" if name == "vertexbuffer" else "Direct3DIndexBuffer9_LSS"
+        start, end = method(contents, "HRESULT " + class_name + "::Unlock()")
+        wrappers.append(contents[start:end])
+        hashes[class_name + "::Unlock"] = hashlib.sha256(contents[start:end].encode()).hexdigest()
+    # Both production wrappers differ only in their API label and class name.
+    normalized = [w.replace("Direct3DIndexBuffer9_LSS", "Direct3DVertexBuffer9_LSS").replace("Api::IndexUnlock", "Api::VertexUnlock") for w in wrappers]
+    if normalized[0] != normalized[1]:
+        raise ValueError("VB and IB wrappers no longer share the audited layout")
+    wrapper = normalized[0].replace("Direct3DVertexBuffer9_LSS::", "").replace("l4d2_api_wait::Api::VertexUnlock", "(std::is_same_v<T, IDirect3DVertexBuffer9> ? l4d2_api_wait::Api::VertexUnlock : l4d2_api_wait::Api::IndexUnlock)")
+    cases = (ROOT / "tests/dynamic_upload_cases.cpp").read_text(encoding="utf-8")
+    (work / "dynamic_upload_cases.cpp").write_text(cases.replace("// INSERT_PRODUCTION_UNLOCK_WRAPPER", wrapper), encoding="utf-8")
     generated = work / "dynamic_upload_generated.cpp"
     generated.write_text(support + "\n" + template + '\n#include "dynamic_upload_cases.cpp"\n', encoding="utf-8")
     return generated, hashes
@@ -140,7 +173,7 @@ def main():
     exes = {}
     for mode in ("full", "floor"):
         exe = args.work / (mode + ".exe")
-        command = ["cl.exe", "/nologo", "/std:c++17", "/EHsc", "/O2", "/DNOMINMAX", "/DWIN32", "/W3", "/I" + str(args.work), "/I" + str(ROOT / "tests")]
+        command = ["cl.exe", "/nologo", "/std:c++17", "/EHsc", "/O2", "/DNOMINMAX", "/DWIN32", "/DDEBUGOPT", "/DWITH_MULTITHREADED_DEVICE", "/W3", "/I" + str(args.work), "/I" + str(ROOT / "tests")]
         if mode == "floor":
             command.append("/DL4D2_COST_NO_COPY")
         subprocess.run([*command, *map(str, sources), "/Fe:" + str(exe), "/link", "ole32.lib", "psapi.lib"], cwd=args.work, check=True)
@@ -167,12 +200,12 @@ def main():
                 row = dict(working=working, size=size, kind=kind)
                 for mode in ("full", "floor"):
                     entries = [s for s in chosen if s["mode"] == mode]
-                    row[mode] = {key: dict(median=statistics.median(s[key] for s in entries), min=min(s[key] for s in entries), max=max(s[key] for s in entries)) for key in ("upload_ns", "upload_cpu_ns", "consume_ns")}
+                    row[mode] = {key: dict(median=statistics.median(s[key] for s in entries), min=min(s[key] for s in entries), max=max(s[key] for s in entries)) for key in ("upload_ns", "upload_cpu_ns", "upload_cycles", "consume_ns")}
                 row["paired_saved_ns"] = [next(s["upload_ns"] for s in chosen if s["mode"] == "full" and s["repeat"] == r) - next(s["upload_ns"] for s in chosen if s["mode"] == "floor" and s["repeat"] == r) for r in range(args.repeats)]
                 row["copy_delta_ns"] = statistics.median(row["paired_saved_ns"])
                 row["copy_share"] = row["copy_delta_ns"] / row["full"]["upload_ns"]["median"]
                 summary.append(row)
-    output = dict(schema=1, scope="Windows x86 native shared memory and queues; production template and command path; allocation/options/logger/device/peer adapters; uncontended staged batches; no game/GPU", patch_sha256=PATCH_SHA, source_sha256=hashes, compiler=banner.strip(), platform=platform.platform(), processor=platform.processor(), cpu_count=os.cpu_count(), repeats=args.repeats, semantics=semantics, summary=summary, samples=samples)
+    output = dict(schema=1, scope="Windows x86 native shared memory and queues; production template, Unlock wrapper, ScopedLock/device mutex and command path; allocation/options/logger/COM owner/peer adapters; uncontended staged batches; no game/GPU", patch_sha256=PATCH_SHA, source_sha256=hashes, compiler=banner.strip(), compile_flags="/std:c++17 /EHsc /O2 /DNOMINMAX /DWIN32 /DDEBUGOPT /DWITH_MULTITHREADED_DEVICE /W3", cpu_ns_limit="GetThreadTimes quantization can report zero for short batches; use wall time and CPU cycles, not this field, for the cost model", platform=platform.platform(), processor=platform.processor(), cpu_count=os.cpu_count(), repeats=args.repeats, semantics=semantics, summary=summary, samples=samples)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(output, indent=2) + "\n", encoding="utf-8")
     print("DYNAMIC_UPLOAD_RESULT " + json.dumps({k: v for k, v in output.items() if k != "samples"}))

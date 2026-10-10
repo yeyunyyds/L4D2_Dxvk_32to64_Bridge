@@ -11,6 +11,7 @@
 #include <cstdio>
 #include <cstring>
 #include <memory>
+#include <map>
 #include <mutex>
 #include <queue>
 #include <sstream>
@@ -21,6 +22,7 @@
 #include "config/global_options.h"
 #include "log/log.h"
 #include "util_common.h"
+#include "util_scopedlock.h"
 #include "util_commands.h"
 #include "util_circularbuffer.h"
 #include "util_semaphore.h"
@@ -37,10 +39,15 @@ struct BridgeState {
   static ProcessState getServerState_NoLock() { return ProcessState::Running; }
 };
 // INSERT_PRODUCTION_BRIDGE
-struct BaseDirect3DDevice9Ex_LSS { std::recursive_mutex mutex; };
+// INSERT_PRODUCTION_API_LOGGER
+#define LogFunctionCall() bridge_exception::CallScope _exceptionCall(__FUNCTION__, reinterpret_cast<uintptr_t>(this)); FunctionEntryExitLogger _feeLogger(__FUNCTION__, this)
+struct BaseDirect3DDevice9Ex_LSS : bridge_util::Syncable {};
+template<bool EnableSync> struct TestedDevice : BaseDirect3DDevice9Ex_LSS {
+// INSERT_PRODUCTION_DEVICE_SYNC
+};
 template<typename T> struct Direct3DResource9_LSS {
-  BaseDirect3DDevice9Ex_LSS* device;
-  Direct3DResource9_LSS(T*, BaseDirect3DDevice9Ex_LSS* owner) : device(owner) {}
+  BaseDirect3DDevice9Ex_LSS* m_pDevice;
+  Direct3DResource9_LSS(T*, BaseDirect3DDevice9Ex_LSS* owner) : m_pDevice(owner) {}
   uint32_t getId() const { return 1; }
 };
 struct ClientOptions { static bool getOptimizedDynamicLock() { return false; } };
