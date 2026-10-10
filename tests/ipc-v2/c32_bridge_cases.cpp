@@ -43,7 +43,14 @@ template<class B> void transfer() {
       for(unsigned j=0;j<512;j++)require(static_cast<uint8_t*>(ptr)[j]==static_cast<uint8_t>(i),"every blob byte");
       retained=static_cast<const uint8_t*>(ptr);
     }
+    bool inlineUnpin = i%9==4;
+    if (inlineUnpin) {
+      require(retained!=nullptr,"inline unpin lease");
+      for(unsigned j=0;j<512;j++)require(retained[j]==static_cast<uint8_t>(i-2),"inline unpin every byte");
+      B::unpinRead(7);retained=nullptr;
+    }
     B::end_read_data();
+    if (inlineUnpin) {require(B::getReaderChannel().control->consumed.load()==B::getReaderChannel().data->cursor(),"inline unpin failed to advance Data Ring credits");}
     if(i%3==2) {pinned=B::getReaderChannel().control->consumed.load();}
     else if(retained) {require(B::getReaderChannel().control->consumed.load()==pinned,"inline command advanced pinned data");}
     if(i%101==0) {typename B::Command reply(Commands::Bridge_Response,i);reply.send_data(i);require(reply.finish()==Result::Success,"reply finish");}

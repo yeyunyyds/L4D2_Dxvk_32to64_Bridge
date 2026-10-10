@@ -3316,7 +3316,7 @@ diff --git a/bridge/src/util/util_atomiccircularqueue.h b/bridge/src/util/util_a
 diff --git a/bridge/src/util/util_bridgecommand.cpp b/bridge/src/util/util_bridgecommand.cpp
 --- a/bridge/src/util/util_bridgecommand.cpp
 +++ b/bridge/src/util/util_bridgecommand.cpp
-@@ -60,67 +60,135 @@
+@@ -60,67 +60,148 @@
    bIsInit = true;
  }
  
@@ -3492,6 +3492,18 @@ diff --git a/bridge/src/util/util_bridgecommand.cpp b/bridge/src/util/util_bridg
 +#ifdef REMIX_BRIDGE_SERVER
 +  if (s_inlineRead) {
 +    if (!s_readActive || s_inlineCursor != s_inlineEnd) { failRead(); }
++    // An inline Unlock/Destroy may release a Data Ring pin without moving
++    // that ring's cursor. Publish the newly reclaimable frontier before the
++    // message block credit, or a full upload ring could stall indefinitely.
++    if (s_pinsChanged) {
++      uint64_t consumed = channel.data->cursor();
++      for (const auto& resource : s_readPins) {
++        if (!resource.second.empty()) { consumed = std::min(consumed, resource.second.front()); }
++      }
++      channel.control->consumed.store(consumed, std::memory_order_seq_cst);
++      if (channel.control->waiting.load(std::memory_order_seq_cst)) { channel.dataSemaphore->release(); }
++      s_pinsChanged = false;
++    }
 +    s_readActive = s_inlineRead = false;
 +    channel.commands->finishRead(); return 0;
 +  }
@@ -3501,6 +3513,7 @@ diff --git a/bridge/src/util/util_bridgecommand.cpp b/bridge/src/util/util_bridg
 +  for (const auto& resource : s_readPins) {
 +    if (!resource.second.empty()) { consumed = std::min(consumed, resource.second.front()); }
 +  }
++  s_pinsChanged = false;
 +  channel.control->consumed.store(consumed, std::memory_order_seq_cst);
 +  if (channel.control->waiting.load(std::memory_order_seq_cst)) { channel.dataSemaphore->release(); }
 +  s_readActive = false;
@@ -3513,7 +3526,7 @@ diff --git a/bridge/src/util/util_bridgecommand.cpp b/bridge/src/util/util_bridg
  
  DECL_BRIDGE_FUNC(Header, pop_front) {
    ZoneScoped;
-@@ -129,12 +197,25 @@
+@@ -129,12 +210,25 @@
  #ifdef REMIX_BRIDGE_CLIENT
    l4d2_api_wait::Span apiResponseTiming(l4d2_api_wait::Metric::ResponseWait);
  #endif
@@ -3539,7 +3552,7 @@ diff --git a/bridge/src/util/util_bridgecommand.cpp b/bridge/src/util/util_bridg
      // NV-DXVK start: Optional data/resource tracing.
      l4d2_data::received(static_cast<uint16_t>(response.command), std::is_same<BridgeId, ::BridgeId::Module>::value);
      // NV-DXVK end
-@@ -175,6 +256,10 @@
+@@ -175,6 +269,10 @@
    l4d2_api_wait::Span apiResponseTiming(l4d2_api_wait::Metric::ResponseWait);
  #endif
    ZoneScoped;
@@ -3550,7 +3563,7 @@ diff --git a/bridge/src/util/util_bridgecommand.cpp b/bridge/src/util/util_bridg
    DWORD peekTimeoutMS = overrideTimeoutMS > 0 ? overrideTimeoutMS : GlobalOptions::getCommandTimeout();
    uint32_t maxAttempts = GlobalOptions::getCommandRetries();
  #ifdef ENABLE_WAIT_FOR_COMMAND_TRACE
-@@ -215,6 +300,7 @@
+@@ -215,6 +313,7 @@
            Logger::traceLazy([&]() { return format_string("...success, command %s received!", Commands::toString(command).c_str()); });
          }
  #endif
@@ -3558,7 +3571,7 @@ diff --git a/bridge/src/util/util_bridgecommand.cpp b/bridge/src/util/util_bridg
          return Result::Success;
        } else {
  #if defined(_DEBUG) || defined(DEBUGOPT)
-@@ -281,7 +367,8 @@
+@@ -281,7 +380,8 @@
  
  DECL_COMMAND_FUNC(,Command,const Commands::D3D9Command command,
                             uintptr_t pHandle,
@@ -3568,7 +3581,7 @@ diff --git a/bridge/src/util/util_bridgecommand.cpp b/bridge/src/util/util_bridg
    : m_exceptionContext(std::is_same<BridgeId, ::BridgeId::Device>::value ? bridge_exception::Queue::Device : bridge_exception::Queue::Module,
                         static_cast<uint16_t>(command), static_cast<uint32_t>(pHandle), "serialize_command")
    , m_command(command)
-@@ -307,105 +394,136 @@
+@@ -307,105 +407,136 @@
    {
      l4d2_api_wait::Span apiMutexTiming(l4d2_api_wait::Metric::CommandMutexWait);
      s_pWriterChannel->m_mutex.lock();
@@ -3846,7 +3859,7 @@ diff --git a/bridge/src/util/util_bridgecommand.h b/bridge/src/util/util_bridgec
  
  using namespace bridge_util;
  
-@@ -135,47 +144,58 @@
+@@ -135,47 +144,59 @@
    //=========================//
    // Channel reading methods //
    //=========================//
@@ -3879,6 +3892,7 @@ diff --git a/bridge/src/util/util_bridgecommand.h b/bridge/src/util/util_bridgec
 -    }
 -    return retval;
 +#ifdef REMIX_BRIDGE_SERVER
++    if (!s_readActive) { startPendingRead(); }
 +    if (s_inlineRead) { failRead(); }
 +#endif
 +    ensureScalarRead();
@@ -3938,7 +3952,7 @@ diff --git a/bridge/src/util/util_bridgecommand.h b/bridge/src/util/util_bridgec
    }
  
    static inline size_t get_data_pos() {
-@@ -191,16 +211,48 @@
+@@ -191,16 +212,48 @@
      return bridge_util::Result::Failure;
    }
  
@@ -3988,15 +4002,15 @@ diff --git a/bridge/src/util/util_bridgecommand.h b/bridge/src/util/util_bridgec
 +  static void unpinRead(uint32_t id) {
 +    auto it = s_readPins.find(id);
 +    if (it != s_readPins.end()) {
-+      if (!it->second.empty()) { it->second.pop_front(); }
++      if (!it->second.empty()) { it->second.pop_front(); s_pinsChanged = true; }
 +      if (it->second.empty()) { s_readPins.erase(it); }
 +    }
 +  }
-+  static void destroyReadPins(uint32_t id) { s_readPins.erase(id); }
++  static void destroyReadPins(uint32_t id) { if (s_readPins.erase(id)) { s_pinsChanged = true; } }
    static bridge_util::Result ensureQueueEmpty();
  
    //=========================//
-@@ -235,87 +287,112 @@
+@@ -235,87 +288,112 @@
      }
      Command(const Commands::D3D9Command command,
              uintptr_t pHandle,
@@ -4187,7 +4201,7 @@ diff --git a/bridge/src/util/util_bridgecommand.h b/bridge/src/util/util_bridgec
      static inline size_t get_counter() {
        return s_cmdCounter;
      }
-@@ -357,6 +434,38 @@
+@@ -357,6 +435,38 @@
      }
  
    private:
@@ -4226,7 +4240,7 @@ diff --git a/bridge/src/util/util_bridgecommand.h b/bridge/src/util/util_bridgec
      // NV-DXVK start: Optional data/resource tracing.
      l4d2_data::Wire m_dataWire;
      // NV-DXVK end
-@@ -371,12 +480,44 @@
+@@ -371,12 +481,45 @@
    Bridge() = delete;
    Bridge(const Bridge&) = delete;
    Bridge(const Bridge&&) = delete;
@@ -4251,6 +4265,7 @@ diff --git a/bridge/src/util/util_bridgecommand.h b/bridge/src/util/util_bridgec
 +  static bridge_util::Result waitDataQueue(uint64_t end, uint64_t current);
 +  [[noreturn]] static void failRead();
 +  static inline bool s_readActive = false;
++  static inline bool s_pinsChanged = false;
 +#ifdef REMIX_BRIDGE_SERVER
 +  static inline bool s_inlineRead = false;
 +  static inline const DataT* s_inlineCursor = nullptr;
