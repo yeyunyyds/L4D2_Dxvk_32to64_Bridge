@@ -20,7 +20,7 @@ Protocol metadata contains a normalized source hash; the existing Host launch bu
 
 1. Exit L4D2 and both Bridge Hosts. Back up `bin/dxvk_d3d9.dll`, `bin/.l4d2bridge/L4D2Bridge64.exe` and `bin/.l4d2bridge/L4D2Bridge32.exe` together.
 2. Verify the ZIP SHA-256, then merge its `bin` directory into your existing game root. The ZIP contains only those three bridge binaries and documentation. Preserve DXVK, ReShade, runtime configuration and retention databases. It is not a first-install package.
-3. Confirm Client and Host logs show the same `ldb-ipc-c32-dev+…` build ID. Start with your existing game launch options.
+3. Confirm Client and Host logs show the same `ldb-ipc-c32-dev+…` build ID. Client startup lines `IPC_C32 … batch=1/32` confirm the environment setting actually reached the game. Start with your existing game launch options.
 4. To compare C1, launch the game from a process with `LDB_IPC_BATCH=1`; for example, set `$env:LDB_IPC_BATCH='1'` in PowerShell and start the game executable from that same shell with your existing arguments. An already-running Steam launcher will not automatically inherit a newly changed environment. Remove the variable or set `32` for C32. Do not compare against an old Host binary.
 5. To roll back, exit both processes and restore the entire backed-up three-file set.
 

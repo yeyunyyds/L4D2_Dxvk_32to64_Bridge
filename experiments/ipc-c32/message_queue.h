@@ -97,6 +97,7 @@ public:
     }
   }
   MessageQueue(const MessageQueue&) = delete;
+  uint32_t batchSize() const { return m_batch; }
   bool pending() const { return m_deadline.load(std::memory_order_acquire) != 0; }
   bool due(uint64_t now) const {
     const auto deadline = m_deadline.load(std::memory_order_acquire);
