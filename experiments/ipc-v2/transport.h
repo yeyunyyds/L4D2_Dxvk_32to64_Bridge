@@ -199,7 +199,7 @@ public:
   Encoder& operator=(const Encoder&) = delete;
   Encoder(Encoder&& other) noexcept
     : m_writer(other.m_writer), m_begin(other.m_begin), m_limit(other.m_limit), m_offset(other.m_offset)
-    , m_record(other.m_record), m_valid(other.m_valid) { other.m_writer = nullptr; }
+    , m_record(other.m_record), m_valid(other.m_valid) { other.m_writer = nullptr; other.m_valid = false; }
   ~Encoder();
   bool valid() const { return m_valid; }
   bool scalar(uint32_t value) {

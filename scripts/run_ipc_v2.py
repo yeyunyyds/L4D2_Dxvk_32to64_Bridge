@@ -45,13 +45,33 @@ def build_linux(out):
 
 
 def prepare_old_controls(out):
-    frozen = '58890170fcd1b3b599fc270b2127717d03ad07e1'
+    # Derive ONLY the old wire layout from current code, keeping all checks,
+    # move ownership, waits and encoding algorithms identical for attribution.
     old = out / 'old-controls'; old.mkdir(exist_ok=True)
-    for name in ('platform.h', 'transport.h'):
-        (old / name).write_bytes(subprocess.check_output(
-            ['git', 'show', f'{frozen}:experiments/ipc-v2/{name}'], cwd=ROOT))
-    (old / 'source-manifest.json').write_text(json.dumps(dict(commit=frozen,
-        scope='old C control layout only, same current caller, no production changes',
+    source = (ROOT/'experiments/ipc-v2/transport.h').read_text()
+    code = source
+    replacements = [
+        ('kVersion = 0x00020002', 'kVersion = 0x00020001'),
+        ('  std::atomic<uint32_t> published { 0 };', '  std::atomic<uint32_t> published { 0 };\n  std::atomic<uint32_t> closed { 0 }, pid { 0 };'),
+        ('  std::atomic<uint32_t> completed { 0 };', '  std::atomic<uint32_t> completed { 0 };\n  std::atomic<uint32_t> closed { 0 }, pid { 0 };'),
+        ('struct alignas(64) ColdState {\n  std::atomic<uint32_t> producerClosed { 0 }, consumerClosed { 0 };\n  std::atomic<uint32_t> producerPid { 0 }, consumerPid { 0 };\n};\n', ''),
+        ('  ColdState cold;\n', ''),
+        ('sizeof(Shared) == 384', 'sizeof(Shared) == 320'),
+        (' && offsetof(Shared, cold) == 320', ''),
+    ]
+    for before, after in replacements:
+        if code.count(before) != 1:
+            raise RuntimeError('Old-layout adapter no longer matches current source: '+before)
+        code = code.replace(before, after)
+    for before, after in [('cold.producerClosed','producer.closed'), ('cold.consumerClosed','consumer.closed'),
+                          ('cold.producerPid','producer.pid'), ('cold.consumerPid','consumer.pid')]:
+        code = code.replace(before, after)
+    (old/'transport.h').write_text(code)
+    (old/'platform.h').write_bytes((ROOT/'experiments/ipc-v2/platform.h').read_bytes())
+    (old/'source-manifest.json').write_text(json.dumps(dict(layout_reference_commit='58890170fcd1b3b599fc270b2127717d03ad07e1',
+        scope='old C control layout derived from current core; same algorithms and current caller',
+        current_core_sha256=hashlib.sha256(source.encode()).hexdigest(),
+        adapters=['320-byte old control layout', 'matching old layout protocol version 0x00020001'],
         source_sha256={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in old.glob('*.h')}),indent=2)+'\n')
 
 

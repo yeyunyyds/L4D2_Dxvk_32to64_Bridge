@@ -167,6 +167,15 @@ void localTests() {
       "throwing handler stops channel");
     require(!writer.begin(6, 0, 2, 0).valid(), "no submission after backend failure");
   }
+  {
+    Channel channel(uniqueName(), c, true); Writer writer(channel); Reader reader(channel);
+    auto source = writer.begin(5, 0, 1, 8); require(source.scalar(7), "move prefix");
+    auto owner = std::move(source);
+    require(!source.valid() && !source.scalar(9) && source.finish() == Result::Invalid, "moved source cannot encode");
+    require(owner.scalar(8) && owner.finish() == Result::Success, "moved owner completes");
+    require(reader.consume([](Message& m) { uint32_t a, b; return m.scalar(a) && m.scalar(b) && a == 7 && b == 8; })
+      == Result::Success, "single moved owner publication");
+  }
   // Map-exit release/recreate model: this tests ordered transport of versions,
   // not D3D9 Lock semantics or a versioned upload allocator.
   {
