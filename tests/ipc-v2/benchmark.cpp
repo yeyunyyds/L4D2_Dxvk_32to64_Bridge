@@ -18,8 +18,19 @@
 #else
 #include <ctime>
 #endif
+#ifndef IPC_LEGACY
 using namespace ldb_ipc_v2;
+#else
+using ldb_ipc_v2::Mapping;
+using ldb_ipc_v2::WakeState;
+using ldb_ipc_v2::Event;
+using ldb_ipc_v2::milliseconds;
+#endif
 void require(bool condition, const char* message) { if (!condition) { throw std::runtime_error(message); } }
+void prefault(const void* mapping, size_t bytes) {
+  const auto* data = static_cast<const volatile uint8_t*>(mapping);
+  for (size_t offset = 0; offset < bytes; offset += 4096) { (void)data[offset]; }
+}
 uint64_t ns() {
   return static_cast<uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(
     std::chrono::steady_clock::now().time_since_epoch()).count());
@@ -114,6 +125,8 @@ int main(int argc, char** argv) {
 #endif
     Device::install(&writer, &reader);
     mappingBytes = static_cast<uint32_t>(2 * (memory + WriterChannel::kReservedSpace));
+    prefault(writer.sharedMem->data(), writer.sharedMem->getSize());
+    prefault(reader.sharedMem->data(), reader.sharedMem->getSize());
 #else
     Config config;
     // Respect the same data-arena budget even in the 16 KiB pressure fixture.
@@ -132,6 +145,7 @@ int main(int argc, char** argv) {
     writer.reset(new Writer(client ? forward : reverse, 5000, spins));
     reader.reset(new Reader(client ? reverse : forward, mode == "idle" ? 500 : 5000, spins));
     mappingBytes = forward.bytes() + reverse.bytes();
+    prefault(&forward.shared(), forward.bytes()); prefault(&reverse.shared(), reverse.bytes());
 #endif
     if (client) { sync.clientReady.store(1, std::memory_order_release); waitFlag(sync.hostReady); }
     else { sync.hostReady.store(1, std::memory_order_release); waitSignal(sync.start, sync.started, startEvent); }
