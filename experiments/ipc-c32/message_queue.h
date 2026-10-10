@@ -80,8 +80,13 @@ public:
   MessageQueue(const std::string& name, void*, size_t, size_t, bool writer)
     : m_name(name), m_writerSide(writer) {
     if (writer) {
+#ifdef _WIN32
+      char batch[8] {};
+      if (GetEnvironmentVariableA("LDB_IPC_BATCH", batch, sizeof(batch)) == 1 && batch[0] == '1') { m_batch = 1; }
+#else
       const auto* batch = std::getenv("LDB_IPC_BATCH");
       if (batch && std::string(batch) == "1") { m_batch = 1; }
+#endif
       open();
     }
   }
