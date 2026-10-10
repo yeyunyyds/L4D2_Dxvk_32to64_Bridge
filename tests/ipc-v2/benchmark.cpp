@@ -10,6 +10,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <memory>
+#include <mutex>
 #include <thread>
 #include <vector>
 #ifdef _WIN32
@@ -135,6 +136,7 @@ int main(int argc, char** argv) {
     if (client) { sync.clientReady.store(1, std::memory_order_release); waitFlag(sync.hostReady); }
     else { sync.hostReady.store(1, std::memory_order_release); waitSignal(sync.start, sync.started, startEvent); }
     std::vector<uint8_t> payload(bytes, 0x6b);
+    std::mutex clientMutex; // Same per-command serialization obligation as A/B.
     std::vector<uint64_t> latency;
     if (mode == "rpc" && client) { latency.reserve(countPackets); }
     const uint64_t cpuStart = cpuNs(), cyclesStart = cycles(), start = ns();
@@ -172,10 +174,13 @@ int main(int argc, char** argv) {
         }
 #endif
 #else
-        auto command = writer->begin(6, 0, sequence, 12 + aligned(size));
-        require(command.valid() && command.scalar(sequence) && command.scalar(size)
-          && command.blob(size ? payload.data() : nullptr, size), "C encoding");
-        require(command.finish(mode == "rpc" || (sequence + 1) % batch == 0) == Result::Success, "C submission");
+        {
+          std::lock_guard<std::mutex> lock(clientMutex);
+          auto command = writer->begin(6, 0, sequence, 12 + aligned(size));
+          require(command.valid() && command.scalar(sequence) && command.scalar(size)
+            && command.blob(size ? payload.data() : nullptr, size), "C encoding");
+          require(command.finish(mode == "rpc" || (sequence + 1) % batch == 0) == Result::Success, "C submission");
+        }
         if (mode == "rpc") {
           require(reader->consume([&](Message& m) { uint32_t value = 0; return m.header.uid == sequence && m.scalar(value) && value == sequence; })
             == Result::Success, "C RPC wait");

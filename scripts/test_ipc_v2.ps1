@@ -26,7 +26,7 @@ if ($CompileArch -or $Baseline) {
     $fixture = Join-Path $repoRoot ".deps/ipc-v2-$Baseline"
     Push-Location $fixture
     try {
-      $flags = if ($Role -eq 'host32') { @('/DREMIX_BRIDGE_X86_SERVER','/DREMIX_BRIDGE_SERVER') } else { @() }
+      [string[]]$flags = if ($Role -eq 'host32') { @('/DREMIX_BRIDGE_X86_SERVER','/DREMIX_BRIDGE_SERVER') } else { @() }
       if ($Baseline -eq 'A') { $flags += '/DIPC_OLD_BASELINE' }
       & cl.exe /nologo /std:c++17 /EHsc /O2 /W3 /DNOMINMAX /DWIN32 /DIPC_LEGACY @flags "/I$fixture" "/I$out" "/I$repoRoot/.deps/ipc-v2-pr6/tests" "$repoRoot/tests/ipc-v2/benchmark.cpp" ipc_command.cpp util_sharedmemory.cpp util_semaphore.cpp data_diagnostics.cpp exception_diagnostics.cpp "/Fe:perf-$Role.exe" /link /LARGEADDRESSAWARE ole32.lib psapi.lib
       if ($LASTEXITCODE -ne 0) { throw "Baseline compile failed: $Baseline $Role" }
