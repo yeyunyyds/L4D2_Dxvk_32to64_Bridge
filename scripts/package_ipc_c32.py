@@ -19,7 +19,16 @@ files={
  'bin/.l4d2bridge/L4D2Bridge64.exe':(source/'_ipcC32_x64/src/server/L4D2Bridge64.exe',0x8664),
  'bin/.l4d2bridge/L4D2Bridge32.exe':(source/'_ipcC32_x86_server/src/server/L4D2Bridge32.exe',0x14c),
 }
-out=ROOT/'dist/ipc-c32'
+# Inspect actual compile receipts, not just the requested Meson build flavour.
+compile_receipts={}
+for directory in ('_ipcC32_x86','_ipcC32_x64','_ipcC32_x86_server'):
+    commands=json.loads((source/directory/'compile_commands.json').read_text())
+    actual=[entry['command'] for entry in commands if entry['file'].endswith('.cpp')]
+    if not actual or not all('NDEBUG' in command and '/O2' in command and 'DEBUGOPT' not in command for command in actual):
+        raise RuntimeError(f'Expected actual Release /O2 + NDEBUG compilation: {directory}')
+    compile_receipts[directory]=actual[0]
+receipt['compile_examples']=compile_receipts
+out=ROOT/'dist/ipc-c32' 
 out.mkdir(parents=True,exist_ok=False)
 hashes={}
 for name,(path,arch) in files.items():

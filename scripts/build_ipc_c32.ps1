@@ -8,7 +8,7 @@ $env:L4D2_BRIDGE_BUILD_ID = $receipt.build_id
 Push-Location "$root/.deps/dxvk-remix/bridge"
 try {
   foreach ($arch in @('x64','x86')) {
-    $command = ". .\build_bridge.ps1; Build -Platform $arch -BuildFlavour release -BuildSubDir _ipcC32_$arch -VcVarsVer 14.29; exit `$LASTEXITCODE"
+    $command = ". .\build_common.ps1; SetupVS -Platform $arch -VcVarsVer 14.29; & meson setup _ipcC32_$arch --buildtype release --backend ninja; if (`$LASTEXITCODE -ne 0) { exit `$LASTEXITCODE }; Copy-Item Directory.Build.Props _ipcC32_$arch; & meson compile -C _ipcC32_$arch; exit `$LASTEXITCODE"
     & powershell.exe -NoProfile -Command $command
     if ($LASTEXITCODE -ne 0) { throw "C32 Release build failed: $arch" }
   }
