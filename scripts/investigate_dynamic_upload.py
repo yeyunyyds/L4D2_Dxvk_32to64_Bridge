@@ -100,7 +100,7 @@ public:
 ''' + command_class + statics + '''};
 #define DECL_BRIDGE_FUNC(RETURN_T, NAME, ...) \\
   template<typename BridgeId> RETURN_T Bridge<BridgeId>::NAME(__VA_ARGS__)
-''' + sync + definitions + '''
+''' + sync + "\n" + definitions + '''
 using DeviceBridge = Bridge<BridgeId::Device>;
 using ClientMessage = DeviceBridge::Command;
 '''
