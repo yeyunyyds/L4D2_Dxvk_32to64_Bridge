@@ -50,6 +50,34 @@ int main() {
       std::atomic<bool> cancel{true};Result result;r.peek(result,1,&cancel);check(result==Result::Timeout);
       w.fault();check(!w.beginInline({Commands::IDirect3DDevice9Ex_SetIndices,0,0,123}));check(!w.flush());
     }
-    std::puts("C32_PASS batches/boundaries/lazy/abort/external/wrap/cancel/fault");return 0;
+    {
+      const auto n=name();ldb_ipc_v2::Config cfg;cfg.blockCount=64;cfg.blockBytes=4096;
+      cfg.build[0]^=1;ldb_ipc_v2::Channel wrong(n,cfg,true);
+      ldb_c32::MessageQueue r(n,nullptr,0,0,false);Result result;
+      r.peek(result,100);check(result==Result::Failure);
+    }
+    {
+      const auto n=name();ldb_ipc_v2::Config cfg;cfg.blockCount=64;cfg.blockBytes=4096;
+      ldb_ipc_v2::Channel malformed(n,cfg,true);
+      auto& block=malformed.block(0);block.bytes=28;block.records=1;block.sequence=0;
+      const ldb_ipc_v2::Record bad{28,0,0,0,0,0,UINT32_MAX};
+      std::memcpy(malformed.data(block),&bad,sizeof(bad));
+      malformed.shared().producer.published.store(1,std::memory_order_seq_cst);
+      ldb_c32::MessageQueue r(n,nullptr,0,0,false);Result result;r.peek(result,100);
+      check(result==Result::Failure && malformed.shared().fault.load()!=0 && malformed.shared().consumer.completed.load()==0);
+    }
+    {
+      const auto n=name();ldb_c32::MessageQueue w(n,nullptr,0,0,true);
+      for(unsigned i=0;i<64*32;i++) {write(w,i);}
+      ldb_ipc_v2::Config cfg;cfg.blockCount=64;cfg.blockBytes=4096;
+      ldb_ipc_v2::Channel observe(n,cfg,false);
+      std::vector<uint8_t> before(4096);std::memcpy(before.data(),observe.data(observe.block(0)),before.size());
+      const auto start=ldb_ipc_v2::milliseconds();
+      check(!w.beginInline({Commands::IDirect3DDevice9Ex_SetRenderState,0,0,123}));
+      check(ldb_ipc_v2::milliseconds()-start<4000 && !w.healthy() && !w.flush());
+      check(std::memcmp(before.data(),observe.data(observe.block(0)),before.size())==0);
+      check(!w.beginInline({Commands::IDirect3DDevice9Ex_SetRenderState,0,0,123}));
+    }
+    std::puts("C32_PASS batches/boundaries/lazy/abort/external/wrap/cancel/fault/protocol/malformed/full-pool");return 0;
   }catch(const std::exception& e){std::fprintf(stderr,"%s\n",e.what());return 1;}
 }
