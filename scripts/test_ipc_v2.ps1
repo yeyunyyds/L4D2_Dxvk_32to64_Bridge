@@ -16,9 +16,11 @@ if ($CompileArch -or $Baseline) {
   if ($CompileArch) {
     Push-Location $out
     try {
-      foreach ($name in @('native','benchmark')) {
+      foreach ($name in @('native','benchmark','benchmark-old-controls')) {
+        $inputName = if ($name -eq 'benchmark-old-controls') { 'benchmark' } else { $name }
+        [string[]]$extraFlags = if ($name -eq 'benchmark-old-controls') { @('/DIPC_V2_OLD_CONTROL') } else { @() }
         # C4324 is intentional cache-line padding, verified by ABI assertions.
-        & cl.exe /nologo /std:c++17 /EHsc /O2 /W4 /WX /wd4324 /DNOMINMAX /DWIN32 "/I$out" "$repoRoot/tests/ipc-v2/$name.cpp" "/Fe:$name$CompileArch.exe" /link /LARGEADDRESSAWARE psapi.lib
+        & cl.exe /nologo /std:c++17 /EHsc /O2 /W4 /WX /wd4324 /DNOMINMAX /DWIN32 @extraFlags "/I$out" "$repoRoot/tests/ipc-v2/$inputName.cpp" "/Fe:$name$CompileArch.exe" /link /LARGEADDRESSAWARE psapi.lib
         if ($LASTEXITCODE -ne 0) { throw "Prototype compile failed: $name$CompileArch" }
       }
     } finally { Pop-Location }
@@ -34,7 +36,7 @@ if ($CompileArch -or $Baseline) {
   }
 } else {
   New-Item -ItemType Directory -Force $out | Out-Null
-  python -c "import sys;sys.path.insert(0,r'$repoRoot/scripts');from run_ipc_v2 import stamp_build;from pathlib import Path;stamp_build(Path(r'$out'))"
+  python -c "import sys;sys.path.insert(0,r'$repoRoot/scripts');from run_ipc_v2 import stamp_build,prepare_old_controls;from pathlib import Path;stamp_build(Path(r'$out'));prepare_old_controls(Path(r'$out'))"
   if ($LASTEXITCODE -ne 0) { throw 'Build identity generation failed' }
   foreach ($arch in @('32','64')) {
     & powershell.exe -NoProfile -File $PSCommandPath -CompileArch $arch

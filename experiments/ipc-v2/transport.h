@@ -21,7 +21,7 @@
 
 namespace ldb_ipc_v2 {
 constexpr uint32_t kMagic = 0x32504349;
-constexpr uint32_t kVersion = 0x00020001;
+constexpr uint32_t kVersion = 0x00020002;
 constexpr uint32_t kAlignment = 64;
 constexpr uint32_t aligned(uint32_t n, uint32_t alignment = 4) {
   return (n + alignment - 1) & ~(alignment - 1);
@@ -40,13 +40,13 @@ struct Config {
 static_assert(sizeof(Config) == 32, "config ABI");
 struct alignas(64) ProducerState {
   std::atomic<uint32_t> published { 0 };
-  std::atomic<uint32_t> closed { 0 };
-  std::atomic<uint32_t> pid { 0 };
 };
 struct alignas(64) ConsumerState {
   std::atomic<uint32_t> completed { 0 };
-  std::atomic<uint32_t> closed { 0 };
-  std::atomic<uint32_t> pid { 0 };
+};
+struct alignas(64) ColdState {
+  std::atomic<uint32_t> producerClosed { 0 }, consumerClosed { 0 };
+  std::atomic<uint32_t> producerPid { 0 }, consumerPid { 0 };
 };
 struct alignas(64) Shared {
   uint32_t magic = kMagic;
@@ -59,6 +59,7 @@ struct alignas(64) Shared {
   ConsumerState consumer;
   WakeState messages;
   WakeState credits;
+  ColdState cold;
 };
 struct alignas(64) Block {
   uint32_t bytes = 0;
@@ -75,9 +76,9 @@ struct Record {
   uint32_t bodyBytes;
 };
 static_assert(sizeof(Record) == 24 && alignof(Record) == 4, "record ABI");
-static_assert(sizeof(Block) == 64 && sizeof(Shared) == 320, "shared ABI");
+static_assert(sizeof(Block) == 64 && sizeof(Shared) == 384, "shared ABI");
 static_assert(offsetof(Shared, producer) == 64 && offsetof(Shared, consumer) == 128
-  && offsetof(Shared, messages) == 192 && offsetof(Shared, credits) == 256, "control isolation");
+  && offsetof(Shared, messages) == 192 && offsetof(Shared, credits) == 256 && offsetof(Shared, cold) == 320, "control isolation");
 static_assert(std::atomic<uint32_t>::is_always_lock_free
   && sizeof(std::atomic<uint32_t>) == 4, "cross-process atomic ABI");
 
@@ -235,7 +236,7 @@ public:
   Metrics metrics;
   Writer(Channel& channel, uint32_t timeoutMs = 1000, uint32_t spins = 0)
     : m_channel(channel), m_timeout(timeoutMs), m_spins(spins) {
-    checkOwner(channel.shared().producer.pid);
+    checkOwner(channel.shared().cold.producerPid);
     m_sequence = channel.shared().producer.published.load();
     m_cachedCompleted = channel.shared().consumer.completed.load();
   }
@@ -246,7 +247,7 @@ public:
     if (m_closed || !m_channel.healthy()) { return Result::Fault; }
     if (m_active) { return Result::Invalid; }
     if (!m_records) { return Result::Success; }
-    if (m_channel.shared().consumer.closed.load(std::memory_order_acquire)) {
+    if (m_channel.shared().cold.consumerClosed.load(std::memory_order_acquire)) {
       m_channel.fault(Fault::PeerExited); return Result::Fault;
     }
     auto& block = m_channel.block(m_sequence);
@@ -273,15 +274,15 @@ public:
         const auto result = m_channel.wait(true, [&]() {
           m_cachedCompleted = m_channel.shared().consumer.completed.load(std::memory_order_seq_cst);
           return static_cast<uint32_t>(m_sequence - m_cachedCompleted) < config.blockCount
-            || !m_channel.healthy() || m_channel.shared().consumer.closed.load(std::memory_order_acquire);
-        }, m_timeout, m_spins, m_channel.shared().consumer.pid.load(std::memory_order_acquire), metrics);
+            || !m_channel.healthy() || m_channel.shared().cold.consumerClosed.load(std::memory_order_acquire);
+        }, m_timeout, m_spins, m_channel.shared().cold.consumerPid.load(std::memory_order_acquire), metrics);
         if (result != Result::Success) {
           m_channel.fault(result == Result::Timeout ? Fault::Timeout : Fault::SystemWait); return {};
         }
       }
     }
     if (!m_channel.healthy()) { return {}; }
-    if (m_channel.shared().consumer.closed.load(std::memory_order_acquire)) {
+    if (m_channel.shared().cold.consumerClosed.load(std::memory_order_acquire)) {
       m_channel.fault(Fault::PeerExited); return {};
     }
     m_active = true;
@@ -293,7 +294,7 @@ public:
     const auto result = m_active ? Result::Invalid : flush();
     if (m_active) { m_channel.fault(Fault::Bounds); }
     m_closed = true;
-    m_channel.shared().producer.closed.store(1, std::memory_order_seq_cst);
+    m_channel.shared().cold.producerClosed.store(1, std::memory_order_seq_cst);
     m_channel.notifyMessages();
     return result;
   }
@@ -314,7 +315,7 @@ inline Encoder::~Encoder() { abort(); }
 inline Result Encoder::finish(bool publish) {
   if (!m_writer || !m_valid || !m_writer->m_channel.healthy()) { abort(); return Result::Invalid; }
   auto* writer = m_writer;
-  if (writer->m_channel.shared().consumer.closed.load(std::memory_order_acquire)) {
+  if (writer->m_channel.shared().cold.consumerClosed.load(std::memory_order_acquire)) {
     writer->m_channel.fault(Fault::PeerExited); abort(); return Result::Fault;
   }
   m_record.bytes = m_offset;
@@ -357,14 +358,14 @@ public:
   Reader(Channel& channel, uint32_t timeoutMs = 1000, uint32_t spins = 0)
     : m_channel(channel), m_timeout(timeoutMs), m_spins(spins) {
     uint32_t empty = 0;
-    if (!channel.shared().consumer.pid.compare_exchange_strong(empty, processId())) {
+    if (!channel.shared().cold.consumerPid.compare_exchange_strong(empty, processId())) {
       throw std::runtime_error("duplicate channel reader");
     }
     m_sequence = channel.shared().consumer.completed.load();
   }
   Reader(const Reader&) = delete;
   ~Reader() {
-    m_channel.shared().consumer.closed.store(1, std::memory_order_seq_cst); m_channel.notifyCredits();
+    m_channel.shared().cold.consumerClosed.store(1, std::memory_order_seq_cst); m_channel.notifyCredits();
   }
   template<typename Handler> Result consume(Handler&& handler) {
     auto& shared = m_channel.shared();
@@ -372,12 +373,12 @@ public:
     if (published == m_sequence) {
       const auto result = m_channel.wait(false, [&]() {
         published = shared.producer.published.load(std::memory_order_seq_cst);
-        return published != m_sequence || !m_channel.healthy() || shared.producer.closed.load(std::memory_order_acquire);
-      }, m_timeout, m_spins, shared.producer.pid.load(std::memory_order_acquire), metrics);
+        return published != m_sequence || !m_channel.healthy() || shared.cold.producerClosed.load(std::memory_order_acquire);
+      }, m_timeout, m_spins, shared.cold.producerPid.load(std::memory_order_acquire), metrics);
       if (result != Result::Success) { return result; }
     }
     if (!m_channel.healthy()) { return Result::Fault; }
-    if (published == m_sequence && shared.producer.closed.load(std::memory_order_acquire)) { return Result::Closed; }
+    if (published == m_sequence && shared.cold.producerClosed.load(std::memory_order_acquire)) { return Result::Closed; }
     auto& block = m_channel.block(m_sequence);
     if (static_cast<uint32_t>(published - m_sequence) > shared.config.blockCount
         || block.sequence != m_sequence || block.bytes > shared.config.blockBytes || !block.records

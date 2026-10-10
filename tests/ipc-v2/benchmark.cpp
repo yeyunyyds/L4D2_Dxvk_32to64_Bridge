@@ -5,7 +5,11 @@
 #ifdef IPC_LEGACY
 #include "ipc_fixture.h"
 #endif
+#ifdef IPC_V2_OLD_CONTROL
+#include "old-controls/transport.h"
+#else
 #include "../../experiments/ipc-v2/transport.h"
+#endif
 #include <algorithm>
 #include <cstdio>
 #include <cstdlib>

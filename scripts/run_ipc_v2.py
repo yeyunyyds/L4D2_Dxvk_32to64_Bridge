@@ -34,9 +34,25 @@ def run_checked(cmd, **kwargs):
 def build_linux(out):
     out.mkdir(parents=True, exist_ok=True)
     stamp_build(out)
+    prepare_old_controls(out)
     for name in ('native', 'benchmark'):
         run_checked(['g++', '-std=c++17', '-O2', '-Wall', '-Wextra', '-Werror', '-pthread',
                      '-I', out, ROOT / f'tests/ipc-v2/{name}.cpp', '-o', out / name])
+
+    run_checked(['g++', '-std=c++17', '-O2', '-Wall', '-Wextra', '-Werror', '-pthread',
+                 '-DIPC_V2_OLD_CONTROL', '-I', out, ROOT / 'tests/ipc-v2/benchmark.cpp',
+                 '-o', out / 'benchmark-old-controls'])
+
+
+def prepare_old_controls(out):
+    frozen = '58890170fcd1b3b599fc270b2127717d03ad07e1'
+    old = out / 'old-controls'; old.mkdir(exist_ok=True)
+    for name in ('platform.h', 'transport.h'):
+        (old / name).write_bytes(subprocess.check_output(
+            ['git', 'show', f'{frozen}:experiments/ipc-v2/{name}'], cwd=ROOT))
+    (old / 'source-manifest.json').write_text(json.dumps(dict(commit=frozen,
+        scope='old C control layout only, same current caller, no production changes',
+        source_sha256={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in old.glob('*.h')}),indent=2)+'\n')
 
 
 def stamp_build(out):
@@ -52,6 +68,10 @@ def binaries(out, variant, arch):
     if variant in ('A', 'B'):
         base = ROOT / f'.deps/ipc-v2-{variant}'
         return base / 'perf-client32.exe', base / f'perf-host{arch}.exe'
+    if variant == 'C1-old-control':
+        if platform.system() == 'Windows':
+            return out / 'benchmark-old-controls32.exe', out / f'benchmark-old-controls{arch}.exe'
+        return out / 'benchmark-old-controls', out / 'benchmark-old-controls'
     if platform.system() == 'Windows':
         return out / 'benchmark32.exe', out / f'benchmark{arch}.exe'
     return out / 'benchmark', out / 'benchmark'
@@ -60,7 +80,7 @@ def binaries(out, variant, arch):
 def sample(out, arch, variant, scenario, iteration):
     mode, size, count, words = scenario
     client_exe, host_exe = binaries(out, variant, arch)
-    batch = 1 if variant in ('A', 'B', 'C1') else 32
+    batch = 1 if variant in ('A', 'B', 'C1', 'C1-old-control') else 32
     spins = 128 if variant.endswith('-spin') else 0
     block_bytes = 4096 if '-4K' in variant else 65536
     common = [str(uuid.uuid4()), str(count), str(size), mode, str(batch), str(spins), str(words), str(block_bytes)]
@@ -166,7 +186,7 @@ def main():
             run_checked([native, '--host', out / f'native{arch}.exe'])
     else:
         run_checked([native])
-    variants = ['C1', 'C32', 'C32-spin', 'C32-4K', 'C32-4K-spin']
+    variants = ['C1', 'C1-old-control', 'C32', 'C32-spin', 'C32-4K', 'C32-4K-spin']
     if args.windows_baselines:
         if platform.system() != 'Windows':
             raise RuntimeError('Actual A/B require Windows; Linux emulation is intentionally excluded')
