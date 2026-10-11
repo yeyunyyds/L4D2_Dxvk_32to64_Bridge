@@ -1,0 +1,6 @@
+{
+  "bridge/src/client/lockable_buffer.h": "50ddaf9eb2584ae414e4769fe2a1c780cbbed9c9dbdd4aea8c63c762a7afc508",
+  "bridge/src/client/buffer_shadow.h": "c4251d0bb6bbf2408d770876b38d768f465ab65faf67f8338b0b6c0cb4ccba8e",
+  "bridge/src/client/memory_diagnostics.h": "8741bb16a92aba50215838597e6e09cf90f62bc624adfac3bd7884cc25432d8f",
+  "production_patch_sha256": "e8a61ece359546f8b1ca815f3e708b8bb8caef12b3be8f46de0d3b46201a3ee9"
+}
