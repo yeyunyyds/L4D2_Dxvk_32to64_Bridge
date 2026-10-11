@@ -3637,7 +3637,7 @@ diff --git a/bridge/src/util/util_bridgecommand.cpp b/bridge/src/util/util_bridg
    : m_exceptionContext(std::is_same<BridgeId, ::BridgeId::Device>::value ? bridge_exception::Queue::Device : bridge_exception::Queue::Module,
                         static_cast<uint16_t>(command), static_cast<uint32_t>(pHandle), "serialize_command")
    , m_command(command)
-@@ -307,105 +435,175 @@
+@@ -307,105 +435,177 @@
    {
      l4d2_api_wait::Span apiMutexTiming(l4d2_api_wait::Metric::CommandMutexWait);
      s_pWriterChannel->m_mutex.lock();
@@ -3849,7 +3849,9 @@ diff --git a/bridge/src/util/util_bridgecommand.cpp b/bridge/src/util/util_bridg
 +  std::array<DataT, 256> prefix {};
 +  const auto startPosition = (channel.data->get_pos() + capacity - prefixWords) % capacity;
 +  for (size_t i = 0; i < prefixWords; ++i) { prefix[i] = channel.data->data()[(startPosition + i) % capacity]; }
-+  const auto paddingEnd = channel.data->cursor() + capacity - channel.data->get_pos();
++  const auto tailWords = capacity - channel.data->get_pos();
++  if (channel.data->cursor() > UINT64_MAX - tailWords) { return false; }
++  const auto paddingEnd = channel.data->cursor() + tailWords;
 +  // This marker retires unused tail and the abandoned prefix. It is published
 +  // separately so its credit can return before the real upload is reserved.
 +  channel.data->advanceTo(paddingEnd);
