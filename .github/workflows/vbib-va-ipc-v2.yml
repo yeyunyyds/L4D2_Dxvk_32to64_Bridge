@@ -51,6 +51,7 @@ jobs:
           path: |
             .deps/ipc-transport/
             .deps/ipc-combined-pr6/
+            .deps/ipc-combined-va-pr6/
             .deps/ipc-combined-combined/
             .deps/ipc-combined-results/
             .deps/buffer-shadow-va-evidence/

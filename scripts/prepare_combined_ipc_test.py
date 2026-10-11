@@ -8,7 +8,7 @@ import subprocess
 def main():
     subprocess.run(['python', str(ROOT/'scripts/prepare_buffer_shadow_baseline.py')], check=True)
     baseline = ROOT/'.deps/shadow-crt-baseline' 
-    for name, source in [('pr6', baseline), ('combined', ROOT/'.deps/dxvk-remix')]:
+    for name, source in [('pr6', baseline), ('va-pr6', baseline), ('combined', ROOT/'.deps/dxvk-remix')]:
         out = ROOT/'.deps'/f'ipc-combined-{name}'
         generate(source, out)
         code = (out/'ipc_transport.cpp').read_text()
@@ -25,8 +25,18 @@ def main():
         caller = (ROOT/'tests/ipc_performance_cases.cpp').read_text()
         caller = caller.replace('int wmain(int argc,wchar_t** argv){', 'int wmain(int argc,wchar_t** argv){\n  bridge_data::buildIdentity = "native-production-fixture";')
         (out/'ipc_caller.cpp').write_text('#include "ipc_fixture.h"\n'+caller)
+        shadow_source = baseline if name == 'pr6' else ROOT/'.deps/dxvk-remix'
+        (out/'client').mkdir(exist_ok=True)
+        for filename in ('buffer_shadow.h','buffer_shadow_arena.h','memory_diagnostics.h'):
+            original = shadow_source/'bridge/src/client'/filename
+            if original.exists():
+                contents = original.read_text()
+                if filename == 'memory_diagnostics.h':
+                    contents = contents.replace('../util/queue_wait_diagnostics.h','../queue_wait_diagnostics.h')
+                    contents = contents.replace('../util/runtime_observation.h','../runtime_observation.h')
+                (out/'client'/filename).write_text(contents)
         manifest = json.loads((out/'source-manifest.json').read_text())
-        manifest.update(variant=name, caller='tests/ipc_performance_cases.cpp',
+        manifest.update(lifecycle_caller_sha256=hashlib.sha256((ROOT/'tests/combined_shadow_ipc.cpp').read_bytes()).hexdigest(),shadow_source_sha256={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in (shadow_source/'bridge/src/client').glob('buffer_shadow*.h')},variant=name, caller='tests/ipc_performance_cases.cpp',
             compilation='MSVC /O2, separate Command/caller translation units, no LTO',
             scope='actual D3D9 transport with integrity dispatch fixture, no backend/GPU',
             caller_sha256=hashlib.sha256((ROOT/'tests/ipc_performance_cases.cpp').read_bytes()).hexdigest())
