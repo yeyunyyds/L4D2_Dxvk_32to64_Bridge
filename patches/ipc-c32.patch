@@ -3848,7 +3848,7 @@ diff --git a/bridge/src/util/util_bridgecommand.cpp b/bridge/src/util/util_bridg
 +      || !channel.data->get_pos()) { return false; }
 +  std::array<DataT, 256> prefix {};
 +  const auto startPosition = (channel.data->get_pos() + capacity - prefixWords) % capacity;
-+  for (size_t i = 0; i < prefixWords; ++i) { prefix[i] = channel.data->m_data[(startPosition + i) % capacity]; }
++  for (size_t i = 0; i < prefixWords; ++i) { prefix[i] = channel.data->data()[(startPosition + i) % capacity]; }
 +  const auto paddingEnd = channel.data->cursor() + capacity - channel.data->get_pos();
 +  // This marker retires unused tail and the abandoned prefix. It is published
 +  // separately so its credit can return before the real upload is reserved.
@@ -4105,7 +4105,7 @@ diff --git a/bridge/src/util/util_bridgecommand.h b/bridge/src/util/util_bridgec
    static bridge_util::Result ensureQueueEmpty();
  
    //=========================//
-@@ -235,87 +288,113 @@
+@@ -235,87 +288,119 @@
      }
      Command(const Commands::D3D9Command command,
              uintptr_t pHandle,
@@ -4125,7 +4125,30 @@ diff --git a/bridge/src/util/util_bridgecommand.h b/bridge/src/util/util_bridgec
 -          // For now just log when things go wrong, but could use some robustness improvements
 -          Logger::err("DataQueue send_data: Failed to send data!");
 -        }
--      }
++            const Commands::Flags commandFlags)
++      : Command(command, pHandle, commandFlags, true) { }
++    template<size_t N> Command(Commands::D3D9Command command, uintptr_t handle,
++        Commands::Flags flags, const bridge_data::Packet<N>& packet)
++      : Command(command, handle, flags, false) {
++      if (m_status != Result::Success) { return; }
++      l4d2_api_wait::Span timing(l4d2_api_wait::Metric::Serialize);
++#ifdef REMIX_BRIDGE_CLIENT
++      std::array<DataT, N + 1> fields {};
++      fields[0] = s_cmdUID;
++      for (size_t i = 0; i < N; ++i) { fields[i + 1] = packet.fields[i]; }
++#else
++      const auto& fields = packet.fields;
++#endif
++#ifdef REMIX_BRIDGE_CLIENT
++      if (!packet.hasBlob && inlineMany(fields)) { return; }
++      leaveInline();
++#endif
++      auto r = s_pWriterChannel->data->packetReservation(fields.size(), packet.bytes, packet.hasBlob);
++#ifdef REMIX_BRIDGE_CLIENT
++      if (packet.hasBlob && packet.bytes <= UINT32_MAX && !r.valid
++          && relocateUpload(fields.size() + 1 + (static_cast<uint64_t>(packet.bytes) + 3) / 4)) {
++        r = s_pWriterChannel->data->packetReservation(fields.size(), packet.bytes, packet.hasBlob);
+       }
 -    }
 -
 -    inline void send_data(const DataT size, const void* obj) {
@@ -4186,25 +4209,7 @@ diff --git a/bridge/src/util/util_bridgecommand.h b/bridge/src/util/util_bridgec
 -      l4d2_api_wait::Span apiDataTiming(l4d2_api_wait::Metric::BlobCommit);
 -      ZoneScoped;
 -      if (gbBridgeRunning) {
-+            const Commands::Flags commandFlags)
-+      : Command(command, pHandle, commandFlags, true) { }
-+    template<size_t N> Command(Commands::D3D9Command command, uintptr_t handle,
-+        Commands::Flags flags, const bridge_data::Packet<N>& packet)
-+      : Command(command, handle, flags, false) {
-+      if (m_status != Result::Success) { return; }
-+      l4d2_api_wait::Span timing(l4d2_api_wait::Metric::Serialize);
-+#ifdef REMIX_BRIDGE_CLIENT
-+      std::array<DataT, N + 1> fields {};
-+      fields[0] = s_cmdUID;
-+      for (size_t i = 0; i < N; ++i) { fields[i + 1] = packet.fields[i]; }
-+#else
-+      const auto& fields = packet.fields;
 +#endif
-+#ifdef REMIX_BRIDGE_CLIENT
-+      if (!packet.hasBlob && inlineMany(fields)) { return; }
-+      leaveInline();
-+#endif
-+      const auto r = s_pWriterChannel->data->packetReservation(fields.size(), packet.bytes, packet.hasBlob);
 +      m_status = syncReservation(r);
 +      if (m_status != Result::Success) { fault(); return; }
 +      m_packetBlob = s_pWriterChannel->data->write_packet_reserved(fields, packet.bytes, packet.hasBlob, r);
@@ -4297,7 +4302,7 @@ diff --git a/bridge/src/util/util_bridgecommand.h b/bridge/src/util/util_bridgec
      static inline size_t get_counter() {
        return s_cmdCounter;
      }
-@@ -357,6 +436,45 @@
+@@ -357,6 +442,45 @@
      }
  
    private:
@@ -4306,7 +4311,7 @@ diff --git a/bridge/src/util/util_bridgecommand.h b/bridge/src/util/util_bridgec
 +      if (m_status != Result::Success || m_finished || s_pWriterChannel->data->blobOpen()) { return {}; }
 +      auto r = s_pWriterChannel->data->reservation(words, blob);
 +#ifdef REMIX_BRIDGE_CLIENT
-+      if (blob && !r.valid && relocateUpload(words)) {
++      if (blob && (!r.valid || r.end - m_begin > s_pWriterChannel->data->get_total_size()) && relocateUpload(words)) {
 +        r = s_pWriterChannel->data->reservation(words, blob);
 +      }
 +#endif
@@ -4343,7 +4348,7 @@ diff --git a/bridge/src/util/util_bridgecommand.h b/bridge/src/util/util_bridgec
      // NV-DXVK start: Optional data/resource tracing.
      l4d2_data::Wire m_dataWire;
      // NV-DXVK end
-@@ -371,12 +489,45 @@
+@@ -371,12 +495,45 @@
    Bridge() = delete;
    Bridge(const Bridge&) = delete;
    Bridge(const Bridge&&) = delete;
@@ -4390,7 +4395,7 @@ diff --git a/bridge/src/util/util_bridgecommand.h b/bridge/src/util/util_bridgec
  #if defined(REMIX_BRIDGE_CLIENT)
    static constexpr char kWriterChannelName[] = "Client2Server";
    static constexpr char kReaderChannelName[] = "Server2Client";
-@@ -385,3 +536,16 @@
+@@ -385,3 +542,16 @@
    static constexpr char kReaderChannelName[] = "Client2Server";
  #endif
  };
