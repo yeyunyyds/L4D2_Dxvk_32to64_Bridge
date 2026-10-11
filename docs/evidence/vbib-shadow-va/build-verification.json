@@ -1,0 +1,22 @@
+{
+  "build_id": "l4d2-1.2.2-dev.1+df5515b3dc8bcda7",
+  "source_commit": "859a123333071c7ba7ea97c2ab1776281207a831",
+  "build_run": 38110932082,
+  "files": {
+    "bin/dxvk_d3d9.dll": {
+      "machine": "0x14c",
+      "sha256": "d296f92245e33c9a186097490af21a6f8e9aa6d62d652928db8d32b9dec6a2a3",
+      "size": 2450432
+    },
+    "bin/.l4d2bridge/L4D2Bridge32.exe": {
+      "machine": "0x14c",
+      "sha256": "ddbfb4b1ee3960e704764878069c1c507f29e4c48e544f81dddd0284d9762248",
+      "size": 2085376
+    },
+    "bin/.l4d2bridge/L4D2Bridge64.exe": {
+      "machine": "0x8664",
+      "sha256": "37585dc5addf2a816d0fab7577f802fbb35e6d84b58adb246e7b04c3e86d6603",
+      "size": 2503680
+    }
+  }
+}
