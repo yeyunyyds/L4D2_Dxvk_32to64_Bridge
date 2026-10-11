@@ -1,6 +1,7 @@
 // Test only: actual production LockableBuffer and buffer_shadow, native x86 CRT.
 #include <iomanip>
 #include <stdexcept>
+#include <malloc.h>
 
 constexpr uint64_t MiB = 1024 * 1024;
 bool nativeArrayControl = false;
@@ -63,6 +64,17 @@ void record(const char* phase, unsigned round, const Population& stat, const Pop
   PROCESS_MEMORY_COUNTERS_EX p {}; p.cb = sizeof(p);
   if (!GetProcessMemoryInfo(GetCurrentProcess(), reinterpret_cast<PROCESS_MEMORY_COUNTERS*>(&p), sizeof(p)))
     throw std::runtime_error("GetProcessMemoryInfo");
+  uint64_t heapBusy = 0;
+  bool heapComplete = false;
+  const auto heap = reinterpret_cast<HANDLE>(_get_heap_handle());
+  if (HeapLock(heap)) {
+    PROCESS_HEAP_ENTRY entry {};
+    while (HeapWalk(heap, &entry)) {
+      if (entry.wFlags & PROCESS_HEAP_ENTRY_BUSY) heapBusy += entry.cbData;
+    }
+    heapComplete = GetLastError() == ERROR_NO_MORE_ITEMS;
+    HeapUnlock(heap);
+  }
   std::cout << "{\"phase\":\"" << phase << "\",\"round\":" << round
     << ",\"static_shadow_bytes\":" << stat.bytes << ",\"dynamic_shadow_bytes\":" << dyn.bytes
     << ",\"objects\":" << stat.vb.size() + stat.ib.size() + dyn.vb.size() + dyn.ib.size()
@@ -70,6 +82,10 @@ void record(const char* phase, unsigned round, const Population& stat, const Pop
     << ",\"native_array_control\":" << (nativeArrayControl ? "true" : "false")
     << ",\"available_virtual_bytes\":" << av() << ",\"free_scan_bytes\":" << scan.free
     << ",\"largest_free_bytes\":" << scan.largestFree << ",\"private_bytes\":" << p.PrivateUsage
+    << ",\"private_reserved_bytes\":" << scan.privateReserved
+    << ",\"private_committed_scan_bytes\":" << scan.privateCommitted
+    << ",\"crt_heap_busy_bytes\":" << heapBusy
+    << ",\"crt_heap_walk_complete\":" << (heapComplete ? "true" : "false")
     << ",\"working_set_bytes\":" << p.WorkingSetSize << ",\"reserved_background_bytes\":" << background
     << ",\"address_limit\":" << scan.limit << ",\"scan_complete\":" << (scan.complete ? "true" : "false")
     << ",\"lock_cycles\":" << locks << "}\n" << std::flush;
