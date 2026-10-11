@@ -1,0 +1,52 @@
+name: VA allocator and production IPC v2 hybrid
+on:
+  push:
+    branches: [codex/vbib-va-ipc-v2]
+    paths: ['patches/**', 'scripts/**', 'tests/**', '.github/workflows/vbib-va-ipc-v2.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native:
+    runs-on: windows-2022
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Prepare actual combined production
+        run: python scripts/prepare_bridge.py
+      - name: Production transport, concurrent replies, faults and long Lock pins
+        shell: powershell
+        run: |
+          ./scripts/test_data_ring_contract.ps1
+          ./scripts/test_ipc_api_failure.ps1
+          ./scripts/test_ipc_transport.ps1
+      - name: Allocator and complete VB IB contents and lifetime
+        shell: powershell
+        run: |
+          ./scripts/test_buffer_shadow_arena.ps1
+          ./scripts/test_buffer_contract.ps1
+          ./scripts/test_runtime_observation.ps1
+      - name: Matched separate-caller production IPC comparison
+        shell: powershell
+        run: ./scripts/test_combined_ipc.ps1
+      - name: Native VA and first-write regression
+        shell: powershell
+        run: ./scripts/test_buffer_shadow_va.ps1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: vbib-va-production-ipc-v2-evidence
+          include-hidden-files: true
+          path: |
+            .deps/ipc-transport/
+            .deps/ipc-combined-pr6/
+            .deps/ipc-combined-combined/
+            .deps/ipc-combined-results/
+            .deps/buffer-shadow-va-evidence/
+            .deps/buffer-shadow-arena-test/
+          retention-days: 30

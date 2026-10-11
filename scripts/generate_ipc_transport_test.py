@@ -27,13 +27,15 @@ def generate(source, output):
     util = source / 'bridge/src/util'
     output.mkdir(parents=True, exist_ok=True)
     hashes = {}
-    for name in FILES:
+    extras = ('util_ipcv2commandqueue.h', 'ipc_v2/platform.h', 'ipc_v2/transport.h') if (util/'util_ipcv2commandqueue.h').exists() else ()
+    for name in (*FILES, *extras):
         text = (util / name).read_text(encoding='utf-8')
         hashes[name] = hashlib.sha256(text.encode()).hexdigest()
         if name == 'util_semaphore.cpp':
             text = '#include "ipc_wait_injection.h"\n' + text
         if name == 'util_ipcchannel.h':
             text = text.replace('#include "util_blockingcircularqueue.h"','')  # unused alternative
+        (output / name).parent.mkdir(parents=True, exist_ok=True)
         (output / name).write_text(text, encoding='utf-8')
     (output / 'version.h').write_text('#define BRIDGE_VERSION \"native-production-fixture\"\n',encoding='utf-8')
     (output / 'log').mkdir(exist_ok=True)
