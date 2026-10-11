@@ -8,9 +8,13 @@ $output = Join-Path $repoRoot '.deps/buffer-pressure-test'
 New-Item -ItemType Directory -Force $output | Out-Null
 python "$PSScriptRoot/generate_buffer_pressure_test.py" --output "$output/actual_buffer_pressure.cpp"
 if ($LASTEXITCODE -ne 0) { throw 'Pressure extraction failed' }
+$allocatorFlags = @()
+if (Select-String -Path "$source/bridge/src/client/buffer_shadow.h" -Pattern 'using Storage =' -Quiet) {
+  $allocatorFlags += '/DLDB_SHADOW_ARENA'
+}
 Push-Location $output
 try {
-  & cl.exe /nologo /std:c++17 /EHsc /O2 /W4 /WX /DNOMINMAX "/I$source/bridge/src/util" "/I$source/bridge/src/client" "/I$repoRoot/tests" actual_buffer_pressure.cpp "$source/bridge/src/util/data_diagnostics.cpp" /Fe:buffer-pressure.exe /link /LARGEADDRESSAWARE psapi.lib
+  & cl.exe /nologo /std:c++17 /EHsc /O2 /W4 /WX /DNOMINMAX @allocatorFlags "/I$source/bridge/src/util" "/I$source/bridge/src/client" "/I$repoRoot/tests" actual_buffer_pressure.cpp "$source/bridge/src/util/data_diagnostics.cpp" /Fe:buffer-pressure.exe /link /LARGEADDRESSAWARE psapi.lib
   if ($LASTEXITCODE -ne 0) { throw 'Pressure compilation failed' }
   foreach ($scenario in @(@('2300','few-large'), @('2300','many-small'), @('800','few-large'), @('800','fragmented'), @('2300','native-array-control'))) {
     $name = "$($scenario[0])-$($scenario[1])"

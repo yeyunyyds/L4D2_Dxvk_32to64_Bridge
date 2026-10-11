@@ -5,6 +5,12 @@
 
 constexpr uint64_t MiB = 1024 * 1024;
 bool nativeArrayControl = false;
+uint64_t phaseNanoseconds = 0;
+uint64_t nowNanoseconds() {
+  LARGE_INTEGER value {}, frequency {}; QueryPerformanceCounter(&value); QueryPerformanceFrequency(&frequency);
+  return static_cast<uint64_t>(value.QuadPart / frequency.QuadPart) * 1000000000ull
+    + static_cast<uint64_t>(value.QuadPart % frequency.QuadPart) * 1000000000ull / static_cast<uint64_t>(frequency.QuadPart);
+}
 template<typename T> class PressureBuffer : public LockableBuffer<T> {
   using Desc = std::conditional_t<std::is_same_v<T, IDirect3DVertexBuffer9>, D3DVERTEXBUFFER_DESC, D3DINDEXBUFFER_DESC>;
 public:
@@ -22,7 +28,7 @@ uint64_t av() {
 struct Population {
   std::vector<std::unique_ptr<VB>> vb;
   std::vector<std::unique_ptr<IB>> ib;
-  std::vector<std::unique_ptr<uint8_t[]>> arrayVB, arrayIB;
+  std::vector<ShadowOwner> arrayVB, arrayIB;
   uint64_t bytes = 0;
   void add(UINT vs, UINT is, bool dynamic) {
     if (nativeArrayControl) {
@@ -37,6 +43,15 @@ struct Population {
     ib.push_back(std::make_unique<IB>(i)); bytes += is;
   }
   void clear() { vb.clear(); ib.clear(); arrayVB.clear(); arrayIB.clear(); bytes = 0; }
+  void retainEvery(unsigned stride) {
+    for (size_t j = 0; j < vb.size(); ++j) if (j % stride) vb[j].reset();
+    for (size_t j = 0; j < ib.size(); ++j) if (j % stride) ib[j].reset();
+    vb.erase(std::remove_if(vb.begin(), vb.end(), [](const auto& p) { return !p; }), vb.end());
+    ib.erase(std::remove_if(ib.begin(), ib.end(), [](const auto& p) { return !p; }), ib.end());
+    bytes = 0;
+    for (const auto& p : vb) bytes += p->getDesc().Size;
+    for (const auto& p : ib) bytes += p->getDesc().Size;
+  }
 };
 struct Pressure {
   std::vector<void*> regions;
@@ -65,6 +80,9 @@ void record(const char* phase, unsigned round, const Population& stat, const Pop
   if (!GetProcessMemoryInfo(GetCurrentProcess(), reinterpret_cast<PROCESS_MEMORY_COUNTERS*>(&p), sizeof(p)))
     throw std::runtime_error("GetProcessMemoryInfo");
   uint64_t heapBusy = 0;
+#ifdef LDB_SHADOW_ARENA
+  const auto allocator = l4d2_buffer::arena().stats();
+#endif
   bool heapComplete = false;
   const auto heap = reinterpret_cast<HANDLE>(_get_heap_handle());
   if (HeapLock(heap)) {
@@ -88,7 +106,16 @@ void record(const char* phase, unsigned round, const Population& stat, const Pop
     << ",\"crt_heap_walk_complete\":" << (heapComplete ? "true" : "false")
     << ",\"working_set_bytes\":" << p.WorkingSetSize << ",\"reserved_background_bytes\":" << background
     << ",\"address_limit\":" << scan.limit << ",\"scan_complete\":" << (scan.complete ? "true" : "false")
+    << ",\"phase_nanoseconds\":" << phaseNanoseconds
+#ifdef LDB_SHADOW_ARENA
+    << ",\"allocator\":\"arena\",\"arena_reserved_bytes\":" << allocator.reserved
+    << ",\"arena_committed_bytes\":" << allocator.committed << ",\"arena_regions\":" << allocator.regions
+    << ",\"arena_allocations\":" << allocator.allocations << ",\"arena_release_failures\":" << allocator.releaseFailures
+#else
+    << ",\"allocator\":\"crt\""
+#endif
     << ",\"lock_cycles\":" << locks << "}\n" << std::flush;
+  phaseNanoseconds = 0;
 }
 template<typename T> void cycle(T& buffer, DWORD flag) {
   void* p = nullptr;
@@ -103,7 +130,8 @@ int main(int argc, char** argv) {
     const unsigned target = static_cast<unsigned>(std::stoul(argv[1]));
     const std::string shape = argv[2]; const unsigned rounds = static_cast<unsigned>(std::stoul(argv[3]));
     nativeArrayControl = shape == "native-array-control";
-    const bool manySmallBuffers = shape == "many-small" || nativeArrayControl, fragmented = shape == "fragmented";
+    const bool survivors = shape == "partial-survivors";
+    const bool manySmallBuffers = shape == "many-small" || nativeArrayControl || survivors, fragmented = shape == "fragmented";
     Population stat, dyn;
     record("empty", 0, stat, dyn, 0);
     Pressure pressure; pressure.make(target, fragmented);
@@ -119,29 +147,43 @@ int main(int argc, char** argv) {
     }
     for (unsigned round = 1; round <= rounds; ++round) {
       record("before-map", round, stat, dyn, pressure.reserved);
-      dyn.add(12 * MiB, 256 * 1024, true);
+      auto begin = nowNanoseconds(); dyn.add(12 * MiB, 256 * 1024, true);
+      phaseNanoseconds = nowNanoseconds() - begin;
       record("dynamic-12.25mib", round, stat, dyn, pressure.reserved);
       for (auto targetMiB : {128u, 256u, 512u, 768u, 1024u, 1280u}) {
         bool failed = false;
+        begin = nowNanoseconds();
         try {
           // Preserve upload-adapter headroom; do not call this an OOM threshold.
           while (stat.bytes < uint64_t(targetMiB) * MiB && av() > 64 * MiB)
             stat.add(manySmallBuffers ? 64 * 1024 : UINT(8 * MiB), manySmallBuffers ? 16 * 1024 : UINT(2 * MiB), false);
         } catch (const std::bad_alloc&) { failed = true; }
+        phaseNanoseconds = nowNanoseconds() - begin;
         record(failed ? "allocation-failed" : "static-growth", round, stat, dyn, pressure.reserved);
         if (failed) break;
       }
+      begin = nowNanoseconds();
       for (unsigned i = 0; i < (nativeArrayControl ? 0u : 10000u); ++i) {
         cycle(*dyn.vb.front(), D3DLOCK_DISCARD); cycle(*dyn.ib.front(), D3DLOCK_NOOVERWRITE);
       }
+      phaseNanoseconds = nowNanoseconds() - begin;
       record("after-lock-phase", round, stat, dyn, pressure.reserved, nativeArrayControl ? 0 : 20000);
+      if (survivors) {
+        begin = nowNanoseconds(); stat.retainEvery(32); phaseNanoseconds = nowNanoseconds() - begin;
+        record("partial-survivors", round, stat, dyn, pressure.reserved);
+        // Verify actual historical contents and wire path of each survivor.
+        for (auto& p : stat.vb) cycle(*p, 0);
+        for (auto& p : stat.ib) cycle(*p, 0);
+      }
       // Independent dynamic-heavy stage: bounded and permitted to fail under low AV.
-      stat.clear();
+      begin = nowNanoseconds(); stat.clear(); phaseNanoseconds = nowNanoseconds() - begin;
       record("static-released", round, stat, dyn, pressure.reserved);
+      begin = nowNanoseconds();
       try { while (dyn.bytes < 512 * MiB) dyn.add(8 * MiB, 2 * MiB, true); }
       catch (const std::bad_alloc&) {}
+      phaseNanoseconds = nowNanoseconds() - begin;
       record("dynamic-growth", round, stat, dyn, pressure.reserved);
-      dyn.clear();
+      begin = nowNanoseconds(); dyn.clear(); phaseNanoseconds = nowNanoseconds() - begin;
       record("map-released", round, stat, dyn, pressure.reserved);
     }
     // Intentionally retain one map's objects, then create the next; this is NOT a demonstrated leak.

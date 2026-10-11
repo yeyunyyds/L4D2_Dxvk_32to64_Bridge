@@ -8,8 +8,9 @@ from generate_buffer_contract_test import generate
 ROOT = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--output', type=Path, required=True)
+parser.add_argument('--source', type=Path, default=ROOT / '.deps/dxvk-remix')
 args = parser.parse_args()
-source = ROOT / '.deps/dxvk-remix'
+source = args.source
 generate(source, args.output)
 text = args.output.read_text()
 assert text.count('#include "buffer_contract_cases.cpp"') == 1
@@ -19,5 +20,9 @@ args.output.write_text(text)
 names = ['bridge/src/client/lockable_buffer.h', 'bridge/src/client/buffer_shadow.h',
          'bridge/src/client/memory_diagnostics.h']
 manifest = {name: hashlib.sha256((source / name).read_bytes()).hexdigest() for name in names}
-manifest['production_patch_sha256'] = hashlib.sha256((ROOT / 'patches/l4d2-bridge.patch').read_bytes()).hexdigest()
+arena = source / 'bridge/src/client/buffer_shadow_arena.h'
+if arena.exists():
+    manifest['bridge/src/client/buffer_shadow_arena.h'] = hashlib.sha256(arena.read_bytes()).hexdigest()
+patch = ROOT / '.deps/shadow-crt-baseline.patch' if source.name == 'shadow-crt-baseline' else ROOT / 'patches/l4d2-bridge.patch'
+manifest['production_patch_sha256'] = hashlib.sha256(patch.read_bytes()).hexdigest()
 (args.output.parent / 'source-manifest.json').write_text(json.dumps(manifest, indent=2))

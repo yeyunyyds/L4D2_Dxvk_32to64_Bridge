@@ -1,0 +1,44 @@
+name: VB IB shadow allocator VA A B
+on:
+  push:
+    branches: [codex/vbib-shadow-va-allocator]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-va:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Prepare candidate production sources
+        run: python scripts/prepare_bridge.py
+      - name: Allocator boundaries, failure rollback and concurrent ownership
+        shell: powershell
+        run: ./scripts/test_buffer_shadow_arena.ps1
+      - name: Actual VB IB history, overlapping locks and failed uploads
+        shell: powershell
+        run: ./scripts/test_buffer_contract.ps1
+      - name: Existing optional diagnostics and allocation failures
+        shell: powershell
+        run: |
+          ./scripts/test_runtime_observation.ps1
+          python -m unittest discover -s tests -p test_runtime_separation.py
+          if ($LASTEXITCODE -ne 0) { throw 'Runtime separation failed' }
+      - name: Five alternating native x86 VA and outer batch timing comparisons
+        shell: powershell
+        run: ./scripts/test_buffer_shadow_va.ps1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: vbib-shadow-va-evidence
+          include-hidden-files: true
+          path: |
+            .deps/buffer-shadow-va-evidence/
+            .deps/buffer-shadow-arena-test/
+            .deps/buffer-contract-test/
+          if-no-files-found: error
