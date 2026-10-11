@@ -355,9 +355,13 @@ int genericReadFailures(const std::wstring& mode) {
     && input.data->cursor()==expected,"generic invalid read no extra advance/ack");
   std::printf("IPC_GENERIC_READ_REJECTION_PASS mode=%ls\n",mode.c_str());return 0;
 }
+#include "ipcv2_adapter_cases.h"
 int wmain(int argc,wchar_t** argv) {
   if(argc==2) {
     const std::wstring mode=argv[1];
+#ifdef LDB_IPCV2_ADAPTER_TEST
+    if (mode.rfind(L"v2-",0)==0) return v2AdapterCases(mode);
+#endif
     if(mode==L"exit-child" || mode==L"normal-exit-child") { Sleep(100);ExitProcess(mode==L"normal-exit-child"?0:31); }
     if(mode==L"pins") { return pinnedLifetime(); }
     if(mode==L"serializer") { return serializerBoundaries(); }

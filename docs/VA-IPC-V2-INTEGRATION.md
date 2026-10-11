@@ -15,7 +15,7 @@ Device/Module 请求与回复四条通道均使用新的命令适配器。每条
 ## 为生产新增的条件
 
 - Client 建通道先于 Host 启动：允许 first opener 初始化 mapping，peer 校验 ready、协议、Config 和构建身份；独立原型的 writer-only 创建不能直接沿用。
-- Reply 多线程：就绪数据 peek 返回 Header 值；消费确认发布后，后续 waiter acquire 可观察原 payload 游标完成。空队列等待通过冷路径 timed mutex 保证一个 registered waiter，正常就绪路径无新增 mutex。
+- Reply 多线程：就绪数据 peek 返回 Header 值；消费确认发布后，后续 waiter acquire 可观察原 payload 游标完成。Client 回复队列的 peek/copy/pull 用局部 SRW 锁防止一个 waiter 读 Header 时另一 waiter 归还并复用该槽位；这属于新增同步成本，不能省略。Host 单 dispatch 线程不加此锁。空队列等待另通过冷路径 timed mutex 保证一个 registered waiter。
 - 原命令队列 usable capacity 为 queueSize−1；新物理槽为 power-of-two，但逻辑 quota 保留原值，不能扩大测试预算获得优势。
 - 容量 deadline、故障、等待失败与取消导致 sticky session fault，并唤醒已注册的四方向通道；不能失败后继续提交。
 - 冷路径保留原 peer process handle，避免 PID 重用把旧进程误认成活着。

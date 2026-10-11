@@ -13,6 +13,9 @@ if ($CompileRole) {
   Push-Location $testDir
   try {
     $roleFlags = if ($CompileRole -eq 'host32') { @('/DREMIX_BRIDGE_X86_SERVER','/DREMIX_BRIDGE_SERVER') } else { @() }
+    if (Test-Path (Join-Path $testDir 'util_ipcv2commandqueue.h')) {
+      $roleFlags += @('/DLDB_IPCV2_ADAPTER_TEST','/DLDB_IPC_V2_TEST')
+    }
     & cl.exe /nologo /std:c++17 /EHsc /O2 /W3 /DNOMINMAX /DWIN32 @roleFlags "/I$testDir" "/I$repoRoot/tests" ipc_transport.cpp util_sharedmemory.cpp util_semaphore.cpp data_diagnostics.cpp exception_diagnostics.cpp "/Fe:transport-$CompileRole.exe" /link ole32.lib psapi.lib
     if ($LASTEXITCODE -ne 0) { throw "Transport compile failed: $CompileRole" }
   } finally { Pop-Location }
