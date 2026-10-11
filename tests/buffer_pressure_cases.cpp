@@ -77,7 +77,7 @@ int main(int argc, char** argv) {
     if (argc != 4 || sizeof(void*) != 4) throw std::runtime_error("Expected x86: target-av-mib shape cycles");
     const unsigned target = static_cast<unsigned>(std::stoul(argv[1]));
     const std::string shape = argv[2]; const unsigned rounds = static_cast<unsigned>(std::stoul(argv[3]));
-    const bool small = shape == "many-small", fragmented = shape == "fragmented";
+    const bool manySmallBuffers = shape == "many-small", fragmented = shape == "fragmented";
     Population stat, dyn;
     record("empty", 0, stat, dyn, 0);
     Pressure pressure; pressure.make(target, fragmented);
@@ -100,7 +100,7 @@ int main(int argc, char** argv) {
         try {
           // Preserve upload-adapter headroom; do not call this an OOM threshold.
           while (stat.bytes < uint64_t(targetMiB) * MiB && av() > 64 * MiB)
-            stat.add(small ? 64 * 1024 : UINT(8 * MiB), small ? 16 * 1024 : UINT(2 * MiB), false);
+            stat.add(manySmallBuffers ? 64 * 1024 : UINT(8 * MiB), manySmallBuffers ? 16 * 1024 : UINT(2 * MiB), false);
         } catch (const std::bad_alloc&) { failed = true; }
         record(failed ? "allocation-failed" : "static-growth", round, stat, dyn, pressure.reserved);
         if (failed) break;
