@@ -20,6 +20,9 @@ for variant in ('crt', 'arena'):
         rounds = []
         for n in (1, 2, 3):
             batch = [r for r in rows if r['round'] == n]
+            if not batch or not any(r['phase'] == 'map-released' for r in batch):
+                assert rows[-1]['phase'] == 'process-oom-released', 'incomplete sample without recorded OOM'
+                break
             before = next(r for r in batch if r['phase'] == 'before-map')
             peak = max(batch, key=lambda r: r['static_shadow_bytes'] + r['dynamic_shadow_bytes'])
             release = next(r for r in batch if r['phase'] == 'map-released')
@@ -48,9 +51,11 @@ for variant in ('crt', 'arena'):
                 'release_work_bytes': lock['static_shadow_bytes'] + dynamic['dynamic_shadow_bytes'],
                 'survivors': survivors, 'released': release,
             })
-        assert rows[-1]['phase'] == 'all-owned-objects-released' and not rows[-1]['objects']
+        assert rows[-1]['phase'] in ('all-owned-objects-released', 'process-oom-released') and not rows[-1]['objects']
         if variant == 'arena': assert not rows[-1]['arena_reserved_bytes']
         samples[path.stem] = {'background': background, 'rounds': rounds,
+                             'exhausted_va': rows[-1]['phase'] == 'process-oom-released',
+                             'incomplete_round_records': [r for r in rows if r['round'] > len(rounds)],
                              'probes': [r for r in rows if 'probe-' in r['phase']]}
     assert len(samples) == 25, (variant, len(samples))
     results[variant] = samples
@@ -60,7 +65,9 @@ def distribution(values):
 
 paired = {}
 for scenario in ('2300-few-large', '2300-many-small', '800-many-small', '800-fragmented', '2300-partial-survivors'):
-    pairs = [(results['crt'][f'{scenario}-{i}']['rounds'][0], results['arena'][f'{scenario}-{i}']['rounds'][0]) for i in range(1, 6)]
+    pairs = [(results['crt'][f'{scenario}-{i}']['rounds'][0], results['arena'][f'{scenario}-{i}']['rounds'][0]) for i in range(1, 6)
+             if results['crt'][f'{scenario}-{i}']['rounds'] and results['arena'][f'{scenario}-{i}']['rounds']]
+    assert pairs, 'no completed first-round comparison'
     row = {}
     for variant, index in (('crt', 0), ('arena', 1)):
         row[variant] = {metric: distribution([pair[index][metric] for pair in pairs]) for metric in
@@ -68,6 +75,7 @@ for scenario in ('2300-few-large', '2300-many-small', '800-many-small', '800-fra
              'create_cpu_ns', 'lock_cpu_ns', 'release_cpu_ns')}
     equal = [pair for pair in pairs if pair[0]['logical_peak'] == pair[1]['logical_peak']]
     row['equal_work_pairs'] = len(equal)
+    row['exhausted_va_samples'] = {v: sum(results[v][f'{scenario}-{i}']['exhausted_va'] for i in range(1, 6)) for v in ('crt', 'arena')}
     # Later rounds deliberately expose retained VA changing achievable work;
     # never present their different workloads as an allocator speedup.
     for metric in ('create_ns', 'lock_ns', 'release_ns'):

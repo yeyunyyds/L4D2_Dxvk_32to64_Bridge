@@ -29,7 +29,10 @@ for ($repeat = 1; $repeat -le 5; ++$repeat) {
     foreach ($variant in $order) {
       $name = "$($scenario[0])-$($scenario[1])-$repeat"
       & "$output/$variant/buffer-pressure.exe" $scenario[0] $scenario[1] 3 | Out-File "$output/$variant/$name.jsonl" -Encoding utf8
-      if ($LASTEXITCODE -ne 0) { throw "Pressure scenario failed: $variant $name" }
+      $result = $LASTEXITCODE
+      if ($result -eq 2 -and $scenario[0] -eq '800') {
+        Write-Host "Preserved exhausted-VA sample: $variant $name (exit 2)"
+      } elseif ($result -ne 0) { throw "Pressure scenario failed: $variant $name exit=$result" }
     }
   }
 }

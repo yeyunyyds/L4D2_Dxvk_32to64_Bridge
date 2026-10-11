@@ -208,5 +208,13 @@ int main(int argc, char** argv) {
     record("new-map-old-still-owned", 0, stat, dyn, pressure.reserved);
     stat.clear(); record("all-owned-objects-released", 0, stat, dyn, pressure.reserved);
     return 0;
+  } catch (const std::bad_alloc&) {
+    // Preserve exhausted-VA samples rather than dropping them or reducing the
+    // workload. Stack unwinding already destroyed every owned resource/background.
+    Population empty;
+    phaseNanoseconds = phaseCpuNanoseconds = 0;
+    record("process-oom-released", 0, empty, empty, 0);
+    std::cerr << "bad allocation: pressure boundary, owned resources unwound\n";
+    return 2;
   } catch (const std::exception& e) { std::cerr << e.what() << '\n'; return 1; }
 }
