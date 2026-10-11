@@ -16,13 +16,30 @@ int v2AdapterCases(const std::wstring& mode) {
     try { ldb_ipc_v2::Channel wrong(gUniqueIdentifier.toString("ModuleV2AdapterCommand") + "-production", config, false); }
     catch (const std::runtime_error&) { rejected = true; }
     require(rejected, "production v2 build mismatch refused");
+    DWORD before = 0, after = 0;
+    require(GetProcessHandleCount(GetCurrentProcess(), &before) != FALSE, "construction handles baseline");
+    const auto* identity = bridge_data::buildIdentity;
+    bridge_data::buildIdentity = "deliberately-incompatible-production-build";
+    for (unsigned i = 0; i < 100; ++i) {
+      bool failed = false;
+      try { WriterChannel wrong("ModuleV2Adapter", memory, 32, 128); }
+      catch (const std::runtime_error&) { failed = true; }
+      require(failed, "IpcChannel construction rejects mismatch");
+    }
+    bridge_data::buildIdentity = identity;
+    require(GetProcessHandleCount(GetCurrentProcess(), &after) != FALSE && before == after,
+      "failed channel construction releases section and event handles");
   } else if (mode == L"v2-fault") {
+    ReaderChannel otherReader("DeviceV2Other", memory, 32, 128);
+    WriterChannel otherWriter("DeviceV2Other", memory, 32, 128);
     for (uint32_t i = 0; i < 31; ++i)
       require(writer.commands->try_push({Commands::Bridge_Response,0,i,i}) == Result::Success, "fault prefill");
     ldb_ipc_v2::Event::failNextWait = true;
     require(writer.commands->push({Commands::Bridge_Response,0,32,32}, 40) == Result::Failure, "OS wait failed");
     const auto published = shared.producer.published.load();
     require(!gbBridgeRunning.load() && shared.fault.load(), "sticky production session fault");
+    require(otherReader.commands->testChannel().shared().fault.load()
+      && otherWriter.commands->testChannel().shared().fault.load(), "fault cancels other Device/Module channels");
     require(writer.commands->try_push({Commands::Bridge_Response,0,33,33}) == Result::Failure
       && shared.producer.published.load() == published, "no post-failure publication");
   } else {
