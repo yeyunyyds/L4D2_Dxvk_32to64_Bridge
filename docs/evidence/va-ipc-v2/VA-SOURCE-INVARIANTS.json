@@ -1,0 +1,5 @@
+{
+  "client/buffer_shadow.h": "0dbc910e68a488200e98c33ea6d38dd901a21fbbd27f689fbf326c6a2e199f6d",
+  "client/buffer_shadow_arena.h": "9b1cea8737702178f66a44cd67932bd4df0b951a774972918e07d8d15c3e3e40",
+  "client/lockable_buffer.h": "9354fc0523bcc3992cde39520259b32653fd9b62d5b4147b8fa59f21a2d321a3"
+}

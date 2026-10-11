@@ -1,0 +1,25 @@
+{
+  "pre_cache": {
+    "production_commit": "af543260ccacc2595a12368f34209937dffb8bb8",
+    "test_commit": "a8961200fab234e7104e1d21f9e56dfe013a7a71",
+    "actions_run": 38115604987,
+    "artifact_id": 11692549900,
+    "numeric_reader_run": 38116342654,
+    "note": "Whitelisted finite numeric aggregate fields only; full raw logs and binaries remain in the original Actions artifact."
+  },
+  "candidate_production_commit": "f09b44380f3e47d3651b8857216f59d0aacc6d2c",
+  "candidate_build": {
+    "run": 38116766750,
+    "artifact_id": 11694460506,
+    "conclusion": "success",
+    "build_id": "l4d2-1.2.2-dev.2+c45ef456eb8dde36"
+  },
+  "candidate_native": {
+    "run": 38116766924,
+    "artifact_id": 11693916241,
+    "conclusion": "success",
+    "valid_transport_pairs": 264,
+    "valid_shadow_pairs": 30,
+    "full_artifact_sha256": "1bc322f44538fe202be5ee6340e861fc964eea88ccda7dd97bc8c3b97e87018f"
+  }
+}

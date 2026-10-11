@@ -1,0 +1,758 @@
+[
+  {
+    "host_bits": 32,
+    "variant": "pr6",
+    "round": 0,
+    "values": {
+      "creation_first_write_ns": {
+        "median": 374656200,
+        "min": 317558800,
+        "max": 391763000
+      },
+      "submission_ns": {
+        "median": 362074200,
+        "min": 347603000,
+        "max": 375391300
+      },
+      "upload_complete_ns": {
+        "median": 385007600,
+        "min": 370067600,
+        "max": 397880300
+      },
+      "release_ns": {
+        "median": 97649400,
+        "min": 96091300,
+        "max": 126896600
+      },
+      "released_av_loss": {
+        "median": 1358757888,
+        "min": 1358757888,
+        "max": 1358757888
+      },
+      "released_largest": {
+        "median": 2137264128,
+        "min": 2129989632,
+        "max": 2145325056
+      },
+      "mapped_channel_delta": {
+        "median": 142622720,
+        "min": 142622720,
+        "max": 142622720
+      }
+    }
+  },
+  {
+    "host_bits": 32,
+    "variant": "pr6",
+    "round": 1,
+    "values": {
+      "creation_first_write_ns": {
+        "median": 391392800,
+        "min": 321452600,
+        "max": 446032200
+      },
+      "submission_ns": {
+        "median": 354342300,
+        "min": 348899900,
+        "max": 368412100
+      },
+      "upload_complete_ns": {
+        "median": 376836500,
+        "min": 371436900,
+        "max": 391623300
+      },
+      "release_ns": {
+        "median": 118895700,
+        "min": 115729900,
+        "max": 149740200
+      },
+      "released_av_loss": {
+        "median": 1425080320,
+        "min": 1425080320,
+        "max": 1425080320
+      },
+      "released_largest": {
+        "median": 2137264128,
+        "min": 2129989632,
+        "max": 2145325056
+      },
+      "mapped_channel_delta": {
+        "median": 142622720,
+        "min": 142622720,
+        "max": 142622720
+      }
+    }
+  },
+  {
+    "host_bits": 32,
+    "variant": "pr6",
+    "round": 2,
+    "values": {
+      "creation_first_write_ns": {
+        "median": 397091800,
+        "min": 394091000,
+        "max": 413061300
+      },
+      "submission_ns": {
+        "median": 354408700,
+        "min": 349105500,
+        "max": 372303200
+      },
+      "upload_complete_ns": {
+        "median": 377899200,
+        "min": 371553200,
+        "max": 395964100
+      },
+      "release_ns": {
+        "median": 147760400,
+        "min": 119958000,
+        "max": 165568300
+      },
+      "released_av_loss": {
+        "median": 1425080320,
+        "min": 1425080320,
+        "max": 1425080320
+      },
+      "released_largest": {
+        "median": 2137264128,
+        "min": 2129989632,
+        "max": 2145325056
+      },
+      "mapped_channel_delta": {
+        "median": 142622720,
+        "min": 142622720,
+        "max": 142622720
+      }
+    }
+  },
+  {
+    "host_bits": 32,
+    "variant": "va-pr6",
+    "round": 0,
+    "values": {
+      "creation_first_write_ns": {
+        "median": 385188000,
+        "min": 331871100,
+        "max": 388440300
+      },
+      "submission_ns": {
+        "median": 350443600,
+        "min": 349941200,
+        "max": 361211700
+      },
+      "upload_complete_ns": {
+        "median": 373254000,
+        "min": 372473500,
+        "max": 384181500
+      },
+      "release_ns": {
+        "median": 57176300,
+        "min": 51261700,
+        "max": 79308300
+      },
+      "released_av_loss": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "released_largest": {
+        "median": 2140082176,
+        "min": 2135560192,
+        "max": 2144276480
+      },
+      "mapped_channel_delta": {
+        "median": 142622720,
+        "min": 142622720,
+        "max": 142622720
+      }
+    }
+  },
+  {
+    "host_bits": 32,
+    "variant": "va-pr6",
+    "round": 1,
+    "values": {
+      "creation_first_write_ns": {
+        "median": 375950800,
+        "min": 338992500,
+        "max": 393857800
+      },
+      "submission_ns": {
+        "median": 367156000,
+        "min": 352848800,
+        "max": 370537800
+      },
+      "upload_complete_ns": {
+        "median": 390568800,
+        "min": 375920200,
+        "max": 393221100
+      },
+      "release_ns": {
+        "median": 58879300,
+        "min": 50670100,
+        "max": 65501900
+      },
+      "released_av_loss": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "released_largest": {
+        "median": 2140082176,
+        "min": 2135560192,
+        "max": 2144276480
+      },
+      "mapped_channel_delta": {
+        "median": 142622720,
+        "min": 142622720,
+        "max": 142622720
+      }
+    }
+  },
+  {
+    "host_bits": 32,
+    "variant": "va-pr6",
+    "round": 2,
+    "values": {
+      "creation_first_write_ns": {
+        "median": 343031500,
+        "min": 324661900,
+        "max": 381793200
+      },
+      "submission_ns": {
+        "median": 356416900,
+        "min": 354331500,
+        "max": 360554100
+      },
+      "upload_complete_ns": {
+        "median": 378909200,
+        "min": 377952900,
+        "max": 383028200
+      },
+      "release_ns": {
+        "median": 57771100,
+        "min": 53136000,
+        "max": 61745200
+      },
+      "released_av_loss": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "released_largest": {
+        "median": 2140082176,
+        "min": 2135560192,
+        "max": 2144276480
+      },
+      "mapped_channel_delta": {
+        "median": 142622720,
+        "min": 142622720,
+        "max": 142622720
+      }
+    }
+  },
+  {
+    "host_bits": 32,
+    "variant": "combined",
+    "round": 0,
+    "values": {
+      "creation_first_write_ns": {
+        "median": 358312200,
+        "min": 346743900,
+        "max": 385342000
+      },
+      "submission_ns": {
+        "median": 353748600,
+        "min": 349423500,
+        "max": 357149400
+      },
+      "upload_complete_ns": {
+        "median": 376320800,
+        "min": 371965300,
+        "max": 380616600
+      },
+      "release_ns": {
+        "median": 58579800,
+        "min": 51632300,
+        "max": 63612100
+      },
+      "released_av_loss": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "released_largest": {
+        "median": 2135298048,
+        "min": 2134249472,
+        "max": 2140606464
+      },
+      "mapped_channel_delta": {
+        "median": 143163392,
+        "min": 143163392,
+        "max": 143163392
+      }
+    }
+  },
+  {
+    "host_bits": 32,
+    "variant": "combined",
+    "round": 1,
+    "values": {
+      "creation_first_write_ns": {
+        "median": 378969100,
+        "min": 332126200,
+        "max": 385101400
+      },
+      "submission_ns": {
+        "median": 355592500,
+        "min": 351037400,
+        "max": 381527800
+      },
+      "upload_complete_ns": {
+        "median": 378654000,
+        "min": 373547400,
+        "max": 404767000
+      },
+      "release_ns": {
+        "median": 57997200,
+        "min": 53060100,
+        "max": 61311000
+      },
+      "released_av_loss": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "released_largest": {
+        "median": 2135298048,
+        "min": 2134249472,
+        "max": 2140606464
+      },
+      "mapped_channel_delta": {
+        "median": 143163392,
+        "min": 143163392,
+        "max": 143163392
+      }
+    }
+  },
+  {
+    "host_bits": 32,
+    "variant": "combined",
+    "round": 2,
+    "values": {
+      "creation_first_write_ns": {
+        "median": 383373300,
+        "min": 358279700,
+        "max": 390528400
+      },
+      "submission_ns": {
+        "median": 370961100,
+        "min": 365259800,
+        "max": 399623300
+      },
+      "upload_complete_ns": {
+        "median": 394232000,
+        "min": 388084300,
+        "max": 422286000
+      },
+      "release_ns": {
+        "median": 57565700,
+        "min": 54779400,
+        "max": 64207800
+      },
+      "released_av_loss": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "released_largest": {
+        "median": 2135298048,
+        "min": 2134249472,
+        "max": 2140606464
+      },
+      "mapped_channel_delta": {
+        "median": 143163392,
+        "min": 143163392,
+        "max": 143163392
+      }
+    }
+  },
+  {
+    "host_bits": 64,
+    "variant": "pr6",
+    "round": 0,
+    "values": {
+      "creation_first_write_ns": {
+        "median": 397213300,
+        "min": 374641600,
+        "max": 419373500
+      },
+      "submission_ns": {
+        "median": 398633400,
+        "min": 347308700,
+        "max": 408026500
+      },
+      "upload_complete_ns": {
+        "median": 423690000,
+        "min": 369791600,
+        "max": 432309300
+      },
+      "release_ns": {
+        "median": 108814400,
+        "min": 89881600,
+        "max": 144805300
+      },
+      "released_av_loss": {
+        "median": 1358757888,
+        "min": 1358757888,
+        "max": 1358757888
+      },
+      "released_largest": {
+        "median": 2137198592,
+        "min": 2135166976,
+        "max": 2144210944
+      },
+      "mapped_channel_delta": {
+        "median": 142622720,
+        "min": 142622720,
+        "max": 142622720
+      }
+    }
+  },
+  {
+    "host_bits": 64,
+    "variant": "pr6",
+    "round": 1,
+    "values": {
+      "creation_first_write_ns": {
+        "median": 406548200,
+        "min": 390827900,
+        "max": 429653700
+      },
+      "submission_ns": {
+        "median": 380897000,
+        "min": 350393100,
+        "max": 410073600
+      },
+      "upload_complete_ns": {
+        "median": 405113800,
+        "min": 372868700,
+        "max": 434481500
+      },
+      "release_ns": {
+        "median": 128329500,
+        "min": 114027600,
+        "max": 177916600
+      },
+      "released_av_loss": {
+        "median": 1425080320,
+        "min": 1425080320,
+        "max": 1425080320
+      },
+      "released_largest": {
+        "median": 2137198592,
+        "min": 2135166976,
+        "max": 2144210944
+      },
+      "mapped_channel_delta": {
+        "median": 142622720,
+        "min": 142622720,
+        "max": 142622720
+      }
+    }
+  },
+  {
+    "host_bits": 64,
+    "variant": "pr6",
+    "round": 2,
+    "values": {
+      "creation_first_write_ns": {
+        "median": 427632300,
+        "min": 404485300,
+        "max": 446131700
+      },
+      "submission_ns": {
+        "median": 377185300,
+        "min": 347766300,
+        "max": 410846800
+      },
+      "upload_complete_ns": {
+        "median": 401192900,
+        "min": 370219600,
+        "max": 435289200
+      },
+      "release_ns": {
+        "median": 152166300,
+        "min": 136001300,
+        "max": 183200700
+      },
+      "released_av_loss": {
+        "median": 1425080320,
+        "min": 1425080320,
+        "max": 1425080320
+      },
+      "released_largest": {
+        "median": 2137198592,
+        "min": 2135166976,
+        "max": 2144210944
+      },
+      "mapped_channel_delta": {
+        "median": 142622720,
+        "min": 142622720,
+        "max": 142622720
+      }
+    }
+  },
+  {
+    "host_bits": 64,
+    "variant": "va-pr6",
+    "round": 0,
+    "values": {
+      "creation_first_write_ns": {
+        "median": 411258600,
+        "min": 373263300,
+        "max": 413895800
+      },
+      "submission_ns": {
+        "median": 402843800,
+        "min": 358007300,
+        "max": 412645900
+      },
+      "upload_complete_ns": {
+        "median": 427602400,
+        "min": 380551600,
+        "max": 437689200
+      },
+      "release_ns": {
+        "median": 61793000,
+        "min": 57126500,
+        "max": 67271900
+      },
+      "released_av_loss": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "released_largest": {
+        "median": 2135101440,
+        "min": 2132086784,
+        "max": 2140213248
+      },
+      "mapped_channel_delta": {
+        "median": 142622720,
+        "min": 142622720,
+        "max": 142622720
+      }
+    }
+  },
+  {
+    "host_bits": 64,
+    "variant": "va-pr6",
+    "round": 1,
+    "values": {
+      "creation_first_write_ns": {
+        "median": 408502400,
+        "min": 378410800,
+        "max": 420517100
+      },
+      "submission_ns": {
+        "median": 408963800,
+        "min": 349555900,
+        "max": 416179600
+      },
+      "upload_complete_ns": {
+        "median": 433390600,
+        "min": 372015700,
+        "max": 440895000
+      },
+      "release_ns": {
+        "median": 60868600,
+        "min": 57606800,
+        "max": 70334200
+      },
+      "released_av_loss": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "released_largest": {
+        "median": 2135101440,
+        "min": 2132086784,
+        "max": 2140213248
+      },
+      "mapped_channel_delta": {
+        "median": 142622720,
+        "min": 142622720,
+        "max": 142622720
+      }
+    }
+  },
+  {
+    "host_bits": 64,
+    "variant": "va-pr6",
+    "round": 2,
+    "values": {
+      "creation_first_write_ns": {
+        "median": 402838200,
+        "min": 331190100,
+        "max": 415147600
+      },
+      "submission_ns": {
+        "median": 402167300,
+        "min": 355382900,
+        "max": 412968600
+      },
+      "upload_complete_ns": {
+        "median": 427062300,
+        "min": 377844700,
+        "max": 437307900
+      },
+      "release_ns": {
+        "median": 69840600,
+        "min": 57026300,
+        "max": 75486300
+      },
+      "released_av_loss": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "released_largest": {
+        "median": 2135101440,
+        "min": 2132086784,
+        "max": 2140213248
+      },
+      "mapped_channel_delta": {
+        "median": 142622720,
+        "min": 142622720,
+        "max": 142622720
+      }
+    }
+  },
+  {
+    "host_bits": 64,
+    "variant": "combined",
+    "round": 0,
+    "values": {
+      "creation_first_write_ns": {
+        "median": 408474300,
+        "min": 347383800,
+        "max": 416990000
+      },
+      "submission_ns": {
+        "median": 374733700,
+        "min": 344566600,
+        "max": 404179300
+      },
+      "upload_complete_ns": {
+        "median": 399071100,
+        "min": 367085000,
+        "max": 428988800
+      },
+      "release_ns": {
+        "median": 64284500,
+        "min": 56575900,
+        "max": 76843200
+      },
+      "released_av_loss": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "released_largest": {
+        "median": 2144276480,
+        "min": 2130579456,
+        "max": 2144735232
+      },
+      "mapped_channel_delta": {
+        "median": 143163392,
+        "min": 143163392,
+        "max": 143163392
+      }
+    }
+  },
+  {
+    "host_bits": 64,
+    "variant": "combined",
+    "round": 1,
+    "values": {
+      "creation_first_write_ns": {
+        "median": 382473700,
+        "min": 352189700,
+        "max": 415823800
+      },
+      "submission_ns": {
+        "median": 390321300,
+        "min": 358355400,
+        "max": 412117100
+      },
+      "upload_complete_ns": {
+        "median": 415352800,
+        "min": 380938600,
+        "max": 437928900
+      },
+      "release_ns": {
+        "median": 65014900,
+        "min": 58590200,
+        "max": 73120100
+      },
+      "released_av_loss": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "released_largest": {
+        "median": 2144276480,
+        "min": 2130579456,
+        "max": 2144735232
+      },
+      "mapped_channel_delta": {
+        "median": 143163392,
+        "min": 143163392,
+        "max": 143163392
+      }
+    }
+  },
+  {
+    "host_bits": 64,
+    "variant": "combined",
+    "round": 2,
+    "values": {
+      "creation_first_write_ns": {
+        "median": 396814800,
+        "min": 380879300,
+        "max": 416804200
+      },
+      "submission_ns": {
+        "median": 411934200,
+        "min": 384552500,
+        "max": 452600000
+      },
+      "upload_complete_ns": {
+        "median": 436820200,
+        "min": 409502600,
+        "max": 475260800
+      },
+      "release_ns": {
+        "median": 67190500,
+        "min": 60236000,
+        "max": 68305000
+      },
+      "released_av_loss": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "released_largest": {
+        "median": 2144276480,
+        "min": 2130579456,
+        "max": 2144735232
+      },
+      "mapped_channel_delta": {
+        "median": 143163392,
+        "min": 143163392,
+        "max": 143163392
+      }
+    }
+  }
+]

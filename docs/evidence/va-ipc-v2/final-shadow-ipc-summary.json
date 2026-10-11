@@ -1,0 +1,758 @@
+[
+  {
+    "host_arch": "32",
+    "variant": "pr6",
+    "rounds": [
+      {
+        "round": 0,
+        "stats": {
+          "creation_first_write_ns": {
+            "median": 540424100,
+            "min": 453935700,
+            "max": 607861600
+          },
+          "submission_ns": {
+            "median": 488769300,
+            "min": 483401600,
+            "max": 504308200
+          },
+          "upload_complete_ns": {
+            "median": 520394600,
+            "min": 515934100,
+            "max": 536860500
+          },
+          "release_ns": {
+            "median": 146967100,
+            "min": 146486900,
+            "max": 147143400
+          },
+          "released_av_loss": {
+            "median": 1358757888,
+            "min": 1358757888,
+            "max": 1358757888
+          },
+          "released_largest": {
+            "median": 2137931776,
+            "min": 2131116032,
+            "max": 2143436800
+          },
+          "mapped_channel_delta": {
+            "median": 142622720,
+            "min": 142622720,
+            "max": 142622720
+          }
+        }
+      },
+      {
+        "round": 1,
+        "stats": {
+          "creation_first_write_ns": {
+            "median": 538398700,
+            "min": 502449700,
+            "max": 592532600
+          },
+          "submission_ns": {
+            "median": 487255000,
+            "min": 481603200,
+            "max": 489127600
+          },
+          "upload_complete_ns": {
+            "median": 520221200,
+            "min": 513267000,
+            "max": 523185000
+          },
+          "release_ns": {
+            "median": 213017900,
+            "min": 201903300,
+            "max": 221364000
+          },
+          "released_av_loss": {
+            "median": 1425080320,
+            "min": 1425080320,
+            "max": 1425080320
+          },
+          "released_largest": {
+            "median": 2137931776,
+            "min": 2131116032,
+            "max": 2143436800
+          },
+          "mapped_channel_delta": {
+            "median": 142622720,
+            "min": 142622720,
+            "max": 142622720
+          }
+        }
+      },
+      {
+        "round": 2,
+        "stats": {
+          "creation_first_write_ns": {
+            "median": 530806700,
+            "min": 509825300,
+            "max": 577820300
+          },
+          "submission_ns": {
+            "median": 486950000,
+            "min": 484027500,
+            "max": 489320800
+          },
+          "upload_complete_ns": {
+            "median": 519310500,
+            "min": 515583400,
+            "max": 520939100
+          },
+          "release_ns": {
+            "median": 212403700,
+            "min": 193722400,
+            "max": 223341100
+          },
+          "released_av_loss": {
+            "median": 1425080320,
+            "min": 1425080320,
+            "max": 1425080320
+          },
+          "released_largest": {
+            "median": 2137931776,
+            "min": 2131116032,
+            "max": 2143436800
+          },
+          "mapped_channel_delta": {
+            "median": 142622720,
+            "min": 142622720,
+            "max": 142622720
+          }
+        }
+      }
+    ]
+  },
+  {
+    "host_arch": "32",
+    "variant": "va-pr6",
+    "rounds": [
+      {
+        "round": 0,
+        "stats": {
+          "creation_first_write_ns": {
+            "median": 536177700,
+            "min": 515548400,
+            "max": 566452700
+          },
+          "submission_ns": {
+            "median": 499608400,
+            "min": 480694300,
+            "max": 518276900
+          },
+          "upload_complete_ns": {
+            "median": 531188500,
+            "min": 512298000,
+            "max": 551165000
+          },
+          "release_ns": {
+            "median": 59851900,
+            "min": 53090300,
+            "max": 63853000
+          },
+          "released_av_loss": {
+            "median": 0,
+            "min": 0,
+            "max": 0
+          },
+          "released_largest": {
+            "median": 2134392832,
+            "min": 2133540864,
+            "max": 2144288768
+          },
+          "mapped_channel_delta": {
+            "median": 142622720,
+            "min": 142622720,
+            "max": 142622720
+          }
+        }
+      },
+      {
+        "round": 1,
+        "stats": {
+          "creation_first_write_ns": {
+            "median": 532717500,
+            "min": 474789300,
+            "max": 573072800
+          },
+          "submission_ns": {
+            "median": 488211300,
+            "min": 483814200,
+            "max": 494431900
+          },
+          "upload_complete_ns": {
+            "median": 522048600,
+            "min": 516404400,
+            "max": 531854900
+          },
+          "release_ns": {
+            "median": 62533200,
+            "min": 59759600,
+            "max": 66382300
+          },
+          "released_av_loss": {
+            "median": 0,
+            "min": 0,
+            "max": 0
+          },
+          "released_largest": {
+            "median": 2134392832,
+            "min": 2133540864,
+            "max": 2144288768
+          },
+          "mapped_channel_delta": {
+            "median": 142622720,
+            "min": 142622720,
+            "max": 142622720
+          }
+        }
+      },
+      {
+        "round": 2,
+        "stats": {
+          "creation_first_write_ns": {
+            "median": 499284400,
+            "min": 457306100,
+            "max": 561206700
+          },
+          "submission_ns": {
+            "median": 487771100,
+            "min": 485577000,
+            "max": 493936100
+          },
+          "upload_complete_ns": {
+            "median": 521910400,
+            "min": 518240500,
+            "max": 526355200
+          },
+          "release_ns": {
+            "median": 60736100,
+            "min": 52783300,
+            "max": 65385100
+          },
+          "released_av_loss": {
+            "median": 0,
+            "min": 0,
+            "max": 0
+          },
+          "released_largest": {
+            "median": 2134392832,
+            "min": 2133540864,
+            "max": 2144288768
+          },
+          "mapped_channel_delta": {
+            "median": 142622720,
+            "min": 142622720,
+            "max": 142622720
+          }
+        }
+      }
+    ]
+  },
+  {
+    "host_arch": "32",
+    "variant": "combined",
+    "rounds": [
+      {
+        "round": 0,
+        "stats": {
+          "creation_first_write_ns": {
+            "median": 466058200,
+            "min": 432010800,
+            "max": 494029200
+          },
+          "submission_ns": {
+            "median": 499985400,
+            "min": 483015900,
+            "max": 537794700
+          },
+          "upload_complete_ns": {
+            "median": 531820400,
+            "min": 514535100,
+            "max": 569795400
+          },
+          "release_ns": {
+            "median": 60650900,
+            "min": 59467800,
+            "max": 64934700
+          },
+          "released_av_loss": {
+            "median": 0,
+            "min": 0,
+            "max": 0
+          },
+          "released_largest": {
+            "median": 2137210880,
+            "min": 2129215488,
+            "max": 2140356608
+          },
+          "mapped_channel_delta": {
+            "median": 143163392,
+            "min": 143163392,
+            "max": 143163392
+          }
+        }
+      },
+      {
+        "round": 1,
+        "stats": {
+          "creation_first_write_ns": {
+            "median": 482967300,
+            "min": 449743800,
+            "max": 560110200
+          },
+          "submission_ns": {
+            "median": 486548500,
+            "min": 483097400,
+            "max": 509710200
+          },
+          "upload_complete_ns": {
+            "median": 518006300,
+            "min": 514715100,
+            "max": 541231300
+          },
+          "release_ns": {
+            "median": 66545400,
+            "min": 60871300,
+            "max": 71071800
+          },
+          "released_av_loss": {
+            "median": 0,
+            "min": 0,
+            "max": 0
+          },
+          "released_largest": {
+            "median": 2137210880,
+            "min": 2129215488,
+            "max": 2140356608
+          },
+          "mapped_channel_delta": {
+            "median": 143163392,
+            "min": 143163392,
+            "max": 143163392
+          }
+        }
+      },
+      {
+        "round": 2,
+        "stats": {
+          "creation_first_write_ns": {
+            "median": 531245500,
+            "min": 456828400,
+            "max": 569153000
+          },
+          "submission_ns": {
+            "median": 487497700,
+            "min": 481880800,
+            "max": 497924800
+          },
+          "upload_complete_ns": {
+            "median": 519122700,
+            "min": 515364400,
+            "max": 529728100
+          },
+          "release_ns": {
+            "median": 66037500,
+            "min": 57544400,
+            "max": 69856300
+          },
+          "released_av_loss": {
+            "median": 0,
+            "min": 0,
+            "max": 0
+          },
+          "released_largest": {
+            "median": 2137210880,
+            "min": 2129215488,
+            "max": 2140356608
+          },
+          "mapped_channel_delta": {
+            "median": 143163392,
+            "min": 143163392,
+            "max": 143163392
+          }
+        }
+      }
+    ]
+  },
+  {
+    "host_arch": "64",
+    "variant": "pr6",
+    "rounds": [
+      {
+        "round": 0,
+        "stats": {
+          "creation_first_write_ns": {
+            "median": 498792900,
+            "min": 439115200,
+            "max": 573435800
+          },
+          "submission_ns": {
+            "median": 486725700,
+            "min": 478581800,
+            "max": 501600400
+          },
+          "upload_complete_ns": {
+            "median": 518248700,
+            "min": 510263400,
+            "max": 533185000
+          },
+          "release_ns": {
+            "median": 149570600,
+            "min": 147857900,
+            "max": 153761800
+          },
+          "released_av_loss": {
+            "median": 1358757888,
+            "min": 1358757888,
+            "max": 1358757888
+          },
+          "released_largest": {
+            "median": 2141143040,
+            "min": 2135375872,
+            "max": 2145861632
+          },
+          "mapped_channel_delta": {
+            "median": 142622720,
+            "min": 142622720,
+            "max": 142622720
+          }
+        }
+      },
+      {
+        "round": 1,
+        "stats": {
+          "creation_first_write_ns": {
+            "median": 608868500,
+            "min": 554547500,
+            "max": 616737900
+          },
+          "submission_ns": {
+            "median": 483803000,
+            "min": 480640900,
+            "max": 509048600
+          },
+          "upload_complete_ns": {
+            "median": 515303200,
+            "min": 512018300,
+            "max": 540566700
+          },
+          "release_ns": {
+            "median": 213982400,
+            "min": 212361800,
+            "max": 229835000
+          },
+          "released_av_loss": {
+            "median": 1425080320,
+            "min": 1425080320,
+            "max": 1425080320
+          },
+          "released_largest": {
+            "median": 2141143040,
+            "min": 2135375872,
+            "max": 2145861632
+          },
+          "mapped_channel_delta": {
+            "median": 142622720,
+            "min": 142622720,
+            "max": 142622720
+          }
+        }
+      },
+      {
+        "round": 2,
+        "stats": {
+          "creation_first_write_ns": {
+            "median": 568467000,
+            "min": 525693100,
+            "max": 611595300
+          },
+          "submission_ns": {
+            "median": 483673800,
+            "min": 480618800,
+            "max": 490100400
+          },
+          "upload_complete_ns": {
+            "median": 515147100,
+            "min": 512137100,
+            "max": 521503100
+          },
+          "release_ns": {
+            "median": 216276000,
+            "min": 211185700,
+            "max": 224967600
+          },
+          "released_av_loss": {
+            "median": 1425080320,
+            "min": 1425080320,
+            "max": 1425080320
+          },
+          "released_largest": {
+            "median": 2141143040,
+            "min": 2135375872,
+            "max": 2145861632
+          },
+          "mapped_channel_delta": {
+            "median": 142622720,
+            "min": 142622720,
+            "max": 142622720
+          }
+        }
+      }
+    ]
+  },
+  {
+    "host_arch": "64",
+    "variant": "va-pr6",
+    "rounds": [
+      {
+        "round": 0,
+        "stats": {
+          "creation_first_write_ns": {
+            "median": 535201500,
+            "min": 455893700,
+            "max": 574428400
+          },
+          "submission_ns": {
+            "median": 483833700,
+            "min": 482658300,
+            "max": 498170500
+          },
+          "upload_complete_ns": {
+            "median": 515313800,
+            "min": 514074800,
+            "max": 529586300
+          },
+          "release_ns": {
+            "median": 60925100,
+            "min": 59346100,
+            "max": 67545200
+          },
+          "released_av_loss": {
+            "median": 0,
+            "min": 0,
+            "max": 0
+          },
+          "released_largest": {
+            "median": 2138587136,
+            "min": 2132688896,
+            "max": 2141470720
+          },
+          "mapped_channel_delta": {
+            "median": 142622720,
+            "min": 142622720,
+            "max": 142622720
+          }
+        }
+      },
+      {
+        "round": 1,
+        "stats": {
+          "creation_first_write_ns": {
+            "median": 555991700,
+            "min": 460045700,
+            "max": 566161500
+          },
+          "submission_ns": {
+            "median": 482945400,
+            "min": 480520000,
+            "max": 484890800
+          },
+          "upload_complete_ns": {
+            "median": 514453400,
+            "min": 511909100,
+            "max": 516617000
+          },
+          "release_ns": {
+            "median": 63510800,
+            "min": 58811400,
+            "max": 64935200
+          },
+          "released_av_loss": {
+            "median": 0,
+            "min": 0,
+            "max": 0
+          },
+          "released_largest": {
+            "median": 2138587136,
+            "min": 2132688896,
+            "max": 2141470720
+          },
+          "mapped_channel_delta": {
+            "median": 142622720,
+            "min": 142622720,
+            "max": 142622720
+          }
+        }
+      },
+      {
+        "round": 2,
+        "stats": {
+          "creation_first_write_ns": {
+            "median": 538112300,
+            "min": 448241800,
+            "max": 566323400
+          },
+          "submission_ns": {
+            "median": 480729300,
+            "min": 480035800,
+            "max": 486372600
+          },
+          "upload_complete_ns": {
+            "median": 512118400,
+            "min": 511520400,
+            "max": 517949200
+          },
+          "release_ns": {
+            "median": 63240400,
+            "min": 59968500,
+            "max": 71098500
+          },
+          "released_av_loss": {
+            "median": 0,
+            "min": 0,
+            "max": 0
+          },
+          "released_largest": {
+            "median": 2138587136,
+            "min": 2132688896,
+            "max": 2141470720
+          },
+          "mapped_channel_delta": {
+            "median": 142622720,
+            "min": 142622720,
+            "max": 142622720
+          }
+        }
+      }
+    ]
+  },
+  {
+    "host_arch": "64",
+    "variant": "combined",
+    "rounds": [
+      {
+        "round": 0,
+        "stats": {
+          "creation_first_write_ns": {
+            "median": 495750100,
+            "min": 432357100,
+            "max": 560900200
+          },
+          "submission_ns": {
+            "median": 483313600,
+            "min": 479030200,
+            "max": 494481500
+          },
+          "upload_complete_ns": {
+            "median": 514709000,
+            "min": 510540400,
+            "max": 525910800
+          },
+          "release_ns": {
+            "median": 59685600,
+            "min": 57031700,
+            "max": 69342900
+          },
+          "released_av_loss": {
+            "median": 0,
+            "min": 0,
+            "max": 0
+          },
+          "released_largest": {
+            "median": 2135769088,
+            "min": 2129412096,
+            "max": 2144550912
+          },
+          "mapped_channel_delta": {
+            "median": 143163392,
+            "min": 143163392,
+            "max": 143163392
+          }
+        }
+      },
+      {
+        "round": 1,
+        "stats": {
+          "creation_first_write_ns": {
+            "median": 471530100,
+            "min": 454956700,
+            "max": 514379100
+          },
+          "submission_ns": {
+            "median": 482492100,
+            "min": 481492700,
+            "max": 490036300
+          },
+          "upload_complete_ns": {
+            "median": 513938500,
+            "min": 513014700,
+            "max": 522685300
+          },
+          "release_ns": {
+            "median": 62759700,
+            "min": 57798600,
+            "max": 64470900
+          },
+          "released_av_loss": {
+            "median": 0,
+            "min": 0,
+            "max": 0
+          },
+          "released_largest": {
+            "median": 2135769088,
+            "min": 2129412096,
+            "max": 2144550912
+          },
+          "mapped_channel_delta": {
+            "median": 143163392,
+            "min": 143163392,
+            "max": 143163392
+          }
+        }
+      },
+      {
+        "round": 2,
+        "stats": {
+          "creation_first_write_ns": {
+            "median": 473426000,
+            "min": 452900600,
+            "max": 570150900
+          },
+          "submission_ns": {
+            "median": 482203500,
+            "min": 480785500,
+            "max": 489839400
+          },
+          "upload_complete_ns": {
+            "median": 513649300,
+            "min": 512297400,
+            "max": 521308300
+          },
+          "release_ns": {
+            "median": 60058600,
+            "min": 58171300,
+            "max": 67379100
+          },
+          "released_av_loss": {
+            "median": 0,
+            "min": 0,
+            "max": 0
+          },
+          "released_largest": {
+            "median": 2135769088,
+            "min": 2129412096,
+            "max": 2144550912
+          },
+          "mapped_channel_delta": {
+            "median": 143163392,
+            "min": 143163392,
+            "max": 143163392
+          }
+        }
+      }
+    ]
+  }
+]

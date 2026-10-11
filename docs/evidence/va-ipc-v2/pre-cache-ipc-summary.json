@@ -1,0 +1,1432 @@
+[
+  {
+    "host_bits": 32,
+    "mode": "batch",
+    "bytes": 0,
+    "values": {
+      "pr6": {
+        "client_wall_ns_call": {
+          "median": 95.537,
+          "min": 93.242,
+          "max": 99.558
+        },
+        "host_wall_ns_call": {
+          "median": 34.921,
+          "min": 34.592,
+          "max": 35.321
+        },
+        "client_cycles_call": {
+          "median": 248.184,
+          "min": 242.228,
+          "max": 258.68
+        },
+        "host_cycles_call": {
+          "median": 90.817,
+          "min": 89.959,
+          "max": 91.855
+        }
+      },
+      "combined": {
+        "client_wall_ns_call": {
+          "median": 107.146,
+          "min": 105.821,
+          "max": 110.771
+        },
+        "host_wall_ns_call": {
+          "median": 78.679,
+          "min": 77.742,
+          "max": 81.787
+        },
+        "client_cycles_call": {
+          "median": 278.28,
+          "min": 274.855,
+          "max": 287.704
+        },
+        "host_cycles_call": {
+          "median": 204.415,
+          "min": 201.981,
+          "max": 212.489
+        }
+      }
+    },
+    "paired": {
+      "client_wall_ns_call": {
+        "median_percent": 11.95453070538115,
+        "min": 7.6216878603427185,
+        "max": 18.799468050878353,
+        "pairs": 5
+      },
+      "host_wall_ns_call": {
+        "median_percent": 125.30568998596836,
+        "min": 121.85668582429714,
+        "max": 133.20407174018425,
+        "pairs": 5
+      }
+    }
+  },
+  {
+    "host_bits": 32,
+    "mode": "batch",
+    "bytes": 64,
+    "values": {
+      "pr6": {
+        "client_wall_ns_call": {
+          "median": 113.121,
+          "min": 112.129,
+          "max": 114.342
+        },
+        "host_wall_ns_call": {
+          "median": 36.654,
+          "min": 35.712,
+          "max": 39.612
+        },
+        "client_cycles_call": {
+          "median": 293.961,
+          "min": 291.244,
+          "max": 297.005
+        },
+        "host_cycles_call": {
+          "median": 95.303,
+          "min": 92.886,
+          "max": 102.103
+        }
+      },
+      "combined": {
+        "client_wall_ns_call": {
+          "median": 125.379,
+          "min": 123.108,
+          "max": 126.996
+        },
+        "host_wall_ns_call": {
+          "median": 80.888,
+          "min": 79.054,
+          "max": 86.225
+        },
+        "client_cycles_call": {
+          "median": 325.666,
+          "min": 319.759,
+          "max": 329.847
+        },
+        "host_cycles_call": {
+          "median": 210.149,
+          "min": 205.371,
+          "max": 223.99
+        }
+      }
+    },
+    "paired": {
+      "client_wall_ns_call": {
+        "median_percent": 10.04693924367821,
+        "min": 9.791400975661958,
+        "max": 12.431609327690918,
+        "pairs": 5
+      },
+      "host_wall_ns_call": {
+        "median_percent": 121.36536738351253,
+        "min": 117.31545996162778,
+        "max": 134.62585034013603,
+        "pairs": 5
+      }
+    }
+  },
+  {
+    "host_bits": 32,
+    "mode": "batch",
+    "bytes": 4096,
+    "values": {
+      "pr6": {
+        "client_wall_ns_call": {
+          "median": 1039.8,
+          "min": 1033.633,
+          "max": 1048.6
+        },
+        "host_wall_ns_call": {
+          "median": 37.9,
+          "min": 36.467,
+          "max": 41.033
+        },
+        "client_cycles_call": {
+          "median": 2701.261,
+          "min": 2685.011,
+          "max": 2723.795
+        },
+        "host_cycles_call": {
+          "median": 99.623,
+          "min": 95.845,
+          "max": 107.909
+        }
+      },
+      "combined": {
+        "client_wall_ns_call": {
+          "median": 1055.0,
+          "min": 1043.667,
+          "max": 1058.167
+        },
+        "host_wall_ns_call": {
+          "median": 80.667,
+          "min": 78.7,
+          "max": 84.1
+        },
+        "client_cycles_call": {
+          "median": 2739.975,
+          "min": 2710.76,
+          "max": 2748.33
+        },
+        "host_cycles_call": {
+          "median": 210.427,
+          "min": 205.409,
+          "max": 219.466
+        }
+      }
+    },
+    "paired": {
+      "client_wall_ns_call": {
+        "median_percent": 1.0697567354080784,
+        "min": 0.3718984420080673,
+        "max": 2.1348970088996833,
+        "pairs": 5
+      },
+      "host_wall_ns_call": {
+        "median_percent": 118.46326816025447,
+        "min": 91.7968464406697,
+        "max": 122.97705233350254,
+        "pairs": 5
+      }
+    }
+  },
+  {
+    "host_bits": 32,
+    "mode": "batch",
+    "bytes": 65536,
+    "values": {
+      "pr6": {
+        "client_wall_ns_call": {
+          "median": 14058.947,
+          "min": 13575.263,
+          "max": 14207.895
+        },
+        "host_wall_ns_call": {
+          "median": 54.211,
+          "min": 52.105,
+          "max": 87.368
+        },
+        "client_cycles_call": {
+          "median": 36524.389,
+          "min": 35266.4,
+          "max": 36908.916
+        },
+        "host_cycles_call": {
+          "median": 160.242,
+          "min": 150.663,
+          "max": 243.305
+        }
+      },
+      "combined": {
+        "client_wall_ns_call": {
+          "median": 14100.0,
+          "min": 13522.632,
+          "max": 14325.263
+        },
+        "host_wall_ns_call": {
+          "median": 103.158,
+          "min": 100.0,
+          "max": 112.105
+        },
+        "client_cycles_call": {
+          "median": 36359.358,
+          "min": 35128.463,
+          "max": 37210.242
+        },
+        "host_cycles_call": {
+          "median": 289.011,
+          "min": 278.884,
+          "max": 312.137
+        }
+      }
+    },
+    "paired": {
+      "client_wall_ns_call": {
+        "median_percent": 0.3296899364754413,
+        "min": -0.3876978295006217,
+        "max": 1.8942812715632362,
+        "pairs": 5
+      },
+      "host_wall_ns_call": {
+        "median_percent": 89.99848001215992,
+        "min": 19.278225437231033,
+        "max": 115.15209672776128,
+        "pairs": 5
+      }
+    }
+  },
+  {
+    "host_bits": 32,
+    "mode": "stream",
+    "bytes": 64,
+    "values": {
+      "pr6": {
+        "client_wall_ns_call": {
+          "median": 170.613,
+          "min": 170.108,
+          "max": 174.321
+        },
+        "host_wall_ns_call": {
+          "median": 170.471,
+          "min": 169.771,
+          "max": 174.071
+        },
+        "client_cycles_call": {
+          "median": 443.066,
+          "min": 441.776,
+          "max": 452.791
+        },
+        "host_cycles_call": {
+          "median": 442.73,
+          "min": 440.938,
+          "max": 452.08
+        }
+      },
+      "combined": {
+        "client_wall_ns_call": {
+          "median": 163.738,
+          "min": 160.35,
+          "max": 164.717
+        },
+        "host_wall_ns_call": {
+          "median": 163.558,
+          "min": 160.175,
+          "max": 164.404
+        },
+        "client_cycles_call": {
+          "median": 425.233,
+          "min": 416.455,
+          "max": 427.764
+        },
+        "host_cycles_call": {
+          "median": 424.783,
+          "min": 415.998,
+          "max": 426.987
+        }
+      }
+    },
+    "paired": {
+      "client_wall_ns_call": {
+        "median_percent": -5.317100369610328,
+        "min": -6.845991016572873,
+        "max": -3.5565640651821218,
+        "pairs": 5
+      },
+      "host_wall_ns_call": {
+        "median_percent": -5.369734017141248,
+        "min": -6.960952714696866,
+        "max": -3.45583167914425,
+        "pairs": 5
+      }
+    }
+  },
+  {
+    "host_bits": 32,
+    "mode": "stream",
+    "bytes": 524288,
+    "values": {
+      "pr6": {
+        "client_wall_ns_call": {
+          "median": 115306.25,
+          "min": 113497.917,
+          "max": 115600.0
+        },
+        "host_wall_ns_call": {
+          "median": 115241.667,
+          "min": 113502.083,
+          "max": 115620.833
+        },
+        "client_cycles_call": {
+          "median": 299463.125,
+          "min": 294749.0,
+          "max": 300210.083
+        },
+        "host_cycles_call": {
+          "median": 8937.875,
+          "min": 8740.75,
+          "max": 9304.625
+        }
+      },
+      "combined": {
+        "client_wall_ns_call": {
+          "median": 116085.417,
+          "min": 114360.417,
+          "max": 116833.333
+        },
+        "host_wall_ns_call": {
+          "median": 116075.0,
+          "min": 114291.667,
+          "max": 116716.667
+        },
+        "client_cycles_call": {
+          "median": 301464.583,
+          "min": 296971.458,
+          "max": 303190.875
+        },
+        "host_cycles_call": {
+          "median": 10054.896,
+          "min": 9912.875,
+          "max": 10493.646
+        }
+      }
+    },
+    "paired": {
+      "client_wall_ns_call": {
+        "median_percent": 0.7599258407535281,
+        "min": -0.24933600737166994,
+        "max": 1.9228666295725505,
+        "pairs": 5
+      },
+      "host_wall_ns_call": {
+        "median_percent": 0.6956559554946784,
+        "min": -0.1842851717377747,
+        "max": 1.6603458552023165,
+        "pairs": 5
+      }
+    }
+  },
+  {
+    "host_bits": 32,
+    "mode": "stream",
+    "bytes": 2097152,
+    "values": {
+      "pr6": {
+        "client_wall_ns_call": {
+          "median": 58902.083,
+          "min": 44722.917,
+          "max": 182004.167
+        },
+        "host_wall_ns_call": {
+          "median": 58808.333,
+          "min": 44614.583,
+          "max": 181993.75
+        },
+        "client_cycles_call": {
+          "median": 153076.083,
+          "min": 116312.083,
+          "max": 472092.833
+        },
+        "host_cycles_call": {
+          "median": 11468.604,
+          "min": 8902.229,
+          "max": 13096.958
+        }
+      },
+      "combined": {
+        "client_wall_ns_call": {
+          "median": 52843.75,
+          "min": 45337.5,
+          "max": 178293.75
+        },
+        "host_wall_ns_call": {
+          "median": 52789.583,
+          "min": 45302.083,
+          "max": 178237.5
+        },
+        "client_cycles_call": {
+          "median": 137359.625,
+          "min": 117874.25,
+          "max": 463045.917
+        },
+        "host_cycles_call": {
+          "median": 12950.104,
+          "min": 9931.896,
+          "max": 15899.5
+        }
+      }
+    },
+    "paired": {
+      "client_wall_ns_call": {
+        "median_percent": -0.48472581294841666,
+        "min": -71.43069038672989,
+        "max": 202.69515256361984,
+        "pairs": 5
+      },
+      "host_wall_ns_call": {
+        "median_percent": 0.013798178741963874,
+        "min": -71.45895693410623,
+        "max": 203.08204791317587,
+        "pairs": 5
+      }
+    }
+  },
+  {
+    "host_bits": 32,
+    "mode": "near-full",
+    "bytes": 64,
+    "values": {
+      "pr6": {
+        "client_wall_ns_call": {
+          "median": 116.667,
+          "min": 113.725,
+          "max": 125.49
+        },
+        "host_wall_ns_call": {
+          "median": 43.137,
+          "min": 42.157,
+          "max": 45.098
+        },
+        "client_cycles_call": {
+          "median": 315.696,
+          "min": 309.578,
+          "max": 341.441
+        },
+        "host_cycles_call": {
+          "median": 127.451,
+          "min": 125.539,
+          "max": 135.735
+        }
+      },
+      "combined": {
+        "client_wall_ns_call": {
+          "median": 176.471,
+          "min": 139.706,
+          "max": 187.745
+        },
+        "host_wall_ns_call": {
+          "median": 65.686,
+          "min": 62.745,
+          "max": 87.255
+        },
+        "client_cycles_call": {
+          "median": 476.029,
+          "min": 379.804,
+          "max": 503.686
+        },
+        "host_cycles_call": {
+          "median": 186.971,
+          "min": 178.559,
+          "max": 241.265
+        }
+      }
+    },
+    "paired": {
+      "client_wall_ns_call": {
+        "median_percent": 49.609530639891645,
+        "min": 22.845460540778184,
+        "max": 57.982977191493724,
+        "pairs": 5
+      },
+      "host_wall_ns_call": {
+        "median_percent": 47.72700929596403,
+        "min": 43.821486694019754,
+        "max": 102.27414980179428,
+        "pairs": 5
+      }
+    }
+  },
+  {
+    "host_bits": 32,
+    "mode": "wrap",
+    "bytes": 64,
+    "values": {
+      "pr6": {
+        "client_wall_ns_call": {
+          "median": 162.4,
+          "min": 159.017,
+          "max": 164.083
+        },
+        "host_wall_ns_call": {
+          "median": 161.808,
+          "min": 158.433,
+          "max": 163.5
+        },
+        "client_cycles_call": {
+          "median": 421.846,
+          "min": 413.088,
+          "max": 426.24
+        },
+        "host_cycles_call": {
+          "median": 420.364,
+          "min": 411.58,
+          "max": 424.777
+        }
+      },
+      "combined": {
+        "client_wall_ns_call": {
+          "median": 175.292,
+          "min": 171.867,
+          "max": 178.858
+        },
+        "host_wall_ns_call": {
+          "median": 174.742,
+          "min": 171.317,
+          "max": 178.283
+        },
+        "client_cycles_call": {
+          "median": 455.36,
+          "min": 446.483,
+          "max": 464.583
+        },
+        "host_cycles_call": {
+          "median": 453.973,
+          "min": 445.103,
+          "max": 463.173
+        }
+      }
+    },
+    "paired": {
+      "client_wall_ns_call": {
+        "median_percent": 8.080897011011402,
+        "min": 6.831298793903096,
+        "max": 10.372107374267191,
+        "pairs": 5
+      },
+      "host_wall_ns_call": {
+        "median_percent": 8.13214418713275,
+        "min": 6.71259939138118,
+        "max": 10.34070864923411,
+        "pairs": 5
+      }
+    }
+  },
+  {
+    "host_bits": 32,
+    "mode": "slow",
+    "bytes": 64,
+    "values": {
+      "pr6": {
+        "client_wall_ns_call": {
+          "median": 233687.35,
+          "min": 232303.758,
+          "max": 236172.917
+        },
+        "host_wall_ns_call": {
+          "median": 237593.433,
+          "min": 236213.567,
+          "max": 240077.358
+        },
+        "client_cycles_call": {
+          "median": 514.902,
+          "min": 502.551,
+          "max": 534.625
+        },
+        "host_cycles_call": {
+          "median": 873.286,
+          "min": 835.54,
+          "max": 924.22
+        }
+      },
+      "combined": {
+        "client_wall_ns_call": {
+          "median": 238516.475,
+          "min": 234782.083,
+          "max": 239875.275
+        },
+        "host_wall_ns_call": {
+          "median": 241066.208,
+          "min": 238686.458,
+          "max": 243778.717
+        },
+        "client_cycles_call": {
+          "median": 673.855,
+          "min": 659.548,
+          "max": 689.431
+        },
+        "host_cycles_call": {
+          "median": 880.721,
+          "min": 848.54,
+          "max": 887.042
+        }
+      }
+    },
+    "paired": {
+      "client_wall_ns_call": {
+        "median_percent": 1.004501099439059,
+        "min": -0.03822680048777283,
+        "max": 3.259317483792068,
+        "pairs": 5
+      },
+      "host_wall_ns_call": {
+        "median_percent": 0.9874431167464115,
+        "min": -0.03765406146747363,
+        "max": 3.2026737905363367,
+        "pairs": 5
+      }
+    }
+  },
+  {
+    "host_bits": 32,
+    "mode": "idle",
+    "bytes": 0,
+    "values": {
+      "pr6": {
+        "client_wall_ns_call": {
+          "median": 100.0,
+          "min": 100.0,
+          "max": 200.0
+        },
+        "host_wall_ns_call": {
+          "median": 488376800.0,
+          "min": 483052100.0,
+          "max": 504760900.0
+        },
+        "client_cycles_call": {
+          "median": 3536.0,
+          "min": 3172.0,
+          "max": 4368.0
+        },
+        "host_cycles_call": {
+          "median": 393353.0,
+          "min": 382720.0,
+          "max": 399048.0
+        }
+      },
+      "combined": {
+        "client_wall_ns_call": {
+          "median": 100.0,
+          "min": 100.0,
+          "max": 300.0
+        },
+        "host_wall_ns_call": {
+          "median": 504141000.0,
+          "min": 502058600.0,
+          "max": 511907700.0
+        },
+        "client_cycles_call": {
+          "median": 3146.0,
+          "min": 2756.0,
+          "max": 4472.0
+        },
+        "host_cycles_call": {
+          "median": 268840.0,
+          "min": 248949.0,
+          "max": 273805.0
+        }
+      }
+    },
+    "paired": {
+      "client_wall_ns_call": {
+        "median_percent": 0.0,
+        "min": -50.0,
+        "max": 200.0,
+        "pairs": 5
+      },
+      "host_wall_ns_call": {
+        "median_percent": 2.930241389659627,
+        "min": -0.37431583944002034,
+        "max": 4.818185466631508,
+        "pairs": 5
+      }
+    }
+  },
+  {
+    "host_bits": 64,
+    "mode": "batch",
+    "bytes": 0,
+    "values": {
+      "pr6": {
+        "client_wall_ns_call": {
+          "median": 92.0,
+          "min": 91.654,
+          "max": 92.504
+        },
+        "host_wall_ns_call": {
+          "median": 29.621,
+          "min": 29.062,
+          "max": 29.837
+        },
+        "client_cycles_call": {
+          "median": 239.01,
+          "min": 238.101,
+          "max": 240.293
+        },
+        "host_cycles_call": {
+          "median": 77.0,
+          "min": 75.542,
+          "max": 77.555
+        }
+      },
+      "combined": {
+        "client_wall_ns_call": {
+          "median": 101.346,
+          "min": 100.7,
+          "max": 102.138
+        },
+        "host_wall_ns_call": {
+          "median": 70.167,
+          "min": 69.325,
+          "max": 76.6
+        },
+        "client_cycles_call": {
+          "median": 263.226,
+          "min": 261.565,
+          "max": 265.296
+        },
+        "host_cycles_call": {
+          "median": 182.288,
+          "min": 180.099,
+          "max": 199.006
+        }
+      }
+    },
+    "paired": {
+      "client_wall_ns_call": {
+        "median_percent": 9.8697274532481,
+        "min": 9.558505578137154,
+        "max": 11.019565217391314,
+        "pairs": 5
+      },
+      "host_wall_ns_call": {
+        "median_percent": 138.8858302938545,
+        "min": 134.0400391614058,
+        "max": 158.01670708703855,
+        "pairs": 5
+      }
+    }
+  },
+  {
+    "host_bits": 64,
+    "mode": "batch",
+    "bytes": 64,
+    "values": {
+      "pr6": {
+        "client_wall_ns_call": {
+          "median": 114.183,
+          "min": 111.846,
+          "max": 119.183
+        },
+        "host_wall_ns_call": {
+          "median": 29.512,
+          "min": 28.892,
+          "max": 31.283
+        },
+        "client_cycles_call": {
+          "median": 296.624,
+          "min": 290.55,
+          "max": 309.639
+        },
+        "host_cycles_call": {
+          "median": 76.726,
+          "min": 75.145,
+          "max": 81.339
+        }
+      },
+      "combined": {
+        "client_wall_ns_call": {
+          "median": 127.338,
+          "min": 124.896,
+          "max": 129.45
+        },
+        "host_wall_ns_call": {
+          "median": 72.954,
+          "min": 71.546,
+          "max": 75.987
+        },
+        "client_cycles_call": {
+          "median": 330.731,
+          "min": 324.437,
+          "max": 336.218
+        },
+        "host_cycles_call": {
+          "median": 189.536,
+          "min": 185.876,
+          "max": 197.382
+        }
+      }
+    },
+    "paired": {
+      "client_wall_ns_call": {
+        "median_percent": 11.520979480307926,
+        "min": 8.104195583864836,
+        "max": 13.115972812234489,
+        "pairs": 5
+      },
+      "host_wall_ns_call": {
+        "median_percent": 144.84446117518223,
+        "min": 132.71351628622722,
+        "max": 152.80563838438601,
+        "pairs": 5
+      }
+    }
+  },
+  {
+    "host_bits": 64,
+    "mode": "batch",
+    "bytes": 4096,
+    "values": {
+      "pr6": {
+        "client_wall_ns_call": {
+          "median": 1037.467,
+          "min": 1025.2,
+          "max": 1040.0
+        },
+        "host_wall_ns_call": {
+          "median": 29.767,
+          "min": 29.633,
+          "max": 32.167
+        },
+        "client_cycles_call": {
+          "median": 2695.203,
+          "min": 2662.903,
+          "max": 2701.487
+        },
+        "host_cycles_call": {
+          "median": 78.13,
+          "min": 77.801,
+          "max": 84.448
+        }
+      },
+      "combined": {
+        "client_wall_ns_call": {
+          "median": 1048.7,
+          "min": 1039.0,
+          "max": 1063.0
+        },
+        "host_wall_ns_call": {
+          "median": 72.767,
+          "min": 71.8,
+          "max": 76.167
+        },
+        "client_cycles_call": {
+          "median": 2723.89,
+          "min": 2698.939,
+          "max": 2760.957
+        },
+        "host_cycles_call": {
+          "median": 190.173,
+          "min": 187.46,
+          "max": 198.831
+        }
+      }
+    },
+    "paired": {
+      "client_wall_ns_call": {
+        "median_percent": 1.5407469424894238,
+        "min": 1.0340405812516051,
+        "max": 2.2115384615384537,
+        "pairs": 5
+      },
+      "host_wall_ns_call": {
+        "median_percent": 143.36805204435902,
+        "min": 123.21012217489971,
+        "max": 155.8773138038768,
+        "pairs": 5
+      }
+    }
+  },
+  {
+    "host_bits": 64,
+    "mode": "batch",
+    "bytes": 65536,
+    "values": {
+      "pr6": {
+        "client_wall_ns_call": {
+          "median": 13690.526,
+          "min": 13404.737,
+          "max": 14160.526
+        },
+        "host_wall_ns_call": {
+          "median": 46.316,
+          "min": 40.526,
+          "max": 49.474
+        },
+        "client_cycles_call": {
+          "median": 35567.042,
+          "min": 34828.779,
+          "max": 36790.821
+        },
+        "host_cycles_call": {
+          "median": 133.284,
+          "min": 119.463,
+          "max": 143.821
+        }
+      },
+      "combined": {
+        "client_wall_ns_call": {
+          "median": 13507.368,
+          "min": 13380.0,
+          "max": 14182.105
+        },
+        "host_wall_ns_call": {
+          "median": 87.368,
+          "min": 85.263,
+          "max": 95.263
+        },
+        "client_cycles_call": {
+          "median": 35087.958,
+          "min": 34754.474,
+          "max": 36840.632
+        },
+        "host_cycles_call": {
+          "median": 240.568,
+          "min": 235.368,
+          "max": 262.053
+        }
+      }
+    },
+    "paired": {
+      "client_wall_ns_call": {
+        "median_percent": -0.18453924161286883,
+        "min": -2.1482124743261166,
+        "max": 0.3950956321407517,
+        "pairs": 5
+      },
+      "host_wall_ns_call": {
+        "median_percent": 94.3172985577338,
+        "min": 88.63459711546764,
+        "max": 112.98919212357497,
+        "pairs": 5
+      }
+    }
+  },
+  {
+    "host_bits": 64,
+    "mode": "stream",
+    "bytes": 64,
+    "values": {
+      "pr6": {
+        "client_wall_ns_call": {
+          "median": 182.442,
+          "min": 166.496,
+          "max": 185.071
+        },
+        "host_wall_ns_call": {
+          "median": 181.967,
+          "min": 166.079,
+          "max": 185.704
+        },
+        "client_cycles_call": {
+          "median": 472.77,
+          "min": 428.38,
+          "max": 480.71
+        },
+        "host_cycles_call": {
+          "median": 469.789,
+          "min": 425.714,
+          "max": 478.646
+        }
+      },
+      "combined": {
+        "client_wall_ns_call": {
+          "median": 167.425,
+          "min": 165.917,
+          "max": 196.504
+        },
+        "host_wall_ns_call": {
+          "median": 167.179,
+          "min": 165.625,
+          "max": 197.096
+        },
+        "client_cycles_call": {
+          "median": 434.848,
+          "min": 429.175,
+          "max": 510.342
+        },
+        "host_cycles_call": {
+          "median": 434.159,
+          "min": 426.646,
+          "max": 508.68
+        }
+      }
+    },
+    "paired": {
+      "client_wall_ns_call": {
+        "median_percent": -7.7715897385048365,
+        "min": -9.36567938731141,
+        "max": 7.707655035572936,
+        "pairs": 5
+      },
+      "host_wall_ns_call": {
+        "median_percent": -7.788747931605078,
+        "min": -9.424252698815472,
+        "max": 8.314144872421924,
+        "pairs": 5
+      }
+    }
+  },
+  {
+    "host_bits": 64,
+    "mode": "stream",
+    "bytes": 524288,
+    "values": {
+      "pr6": {
+        "client_wall_ns_call": {
+          "median": 116316.667,
+          "min": 115716.667,
+          "max": 116993.75
+        },
+        "host_wall_ns_call": {
+          "median": 116254.167,
+          "min": 115741.667,
+          "max": 116993.75
+        },
+        "client_cycles_call": {
+          "median": 301318.875,
+          "min": 300560.0,
+          "max": 303858.208
+        },
+        "host_cycles_call": {
+          "median": 8203.479,
+          "min": 7948.792,
+          "max": 8704.5
+        }
+      },
+      "combined": {
+        "client_wall_ns_call": {
+          "median": 116397.917,
+          "min": 114820.833,
+          "max": 118210.417
+        },
+        "host_wall_ns_call": {
+          "median": 116335.417,
+          "min": 114737.5,
+          "max": 118439.583
+        },
+        "client_cycles_call": {
+          "median": 302303.625,
+          "min": 298189.667,
+          "max": 305879.688
+        },
+        "host_cycles_call": {
+          "median": 9346.917,
+          "min": 9202.271,
+          "max": 9669.167
+        }
+      }
+    },
+    "paired": {
+      "client_wall_ns_call": {
+        "median_percent": 0.5147361098525094,
+        "min": -1.286001429184691,
+        "max": 2.1182786037528656,
+        "pairs": 5
+      },
+      "host_wall_ns_call": {
+        "median_percent": 0.0322690520936586,
+        "min": -1.3046130208820839,
+        "max": 2.330980769440627,
+        "pairs": 5
+      }
+    }
+  },
+  {
+    "host_bits": 64,
+    "mode": "stream",
+    "bytes": 2097152,
+    "values": {
+      "pr6": {
+        "client_wall_ns_call": {
+          "median": 177035.417,
+          "min": 175795.833,
+          "max": 182314.583
+        },
+        "host_wall_ns_call": {
+          "median": 176854.167,
+          "min": 176025.0,
+          "max": 182241.667
+        },
+        "client_cycles_call": {
+          "median": 458033.875,
+          "min": 456588.167,
+          "max": 470493.833
+        },
+        "host_cycles_call": {
+          "median": 8462.958,
+          "min": 8228.312,
+          "max": 8808.583
+        }
+      },
+      "combined": {
+        "client_wall_ns_call": {
+          "median": 180222.917,
+          "min": 178681.25,
+          "max": 182443.75
+        },
+        "host_wall_ns_call": {
+          "median": 180137.5,
+          "min": 178602.083,
+          "max": 182354.167
+        },
+        "client_cycles_call": {
+          "median": 468072.583,
+          "min": 461725.333,
+          "max": 473875.458
+        },
+        "host_cycles_call": {
+          "median": 9553.25,
+          "min": 9436.812,
+          "max": 14499.875
+        }
+      }
+    },
+    "paired": {
+      "client_wall_ns_call": {
+        "median_percent": 2.518309976095945,
+        "min": -1.908331161857757,
+        "max": 3.0549440850019316,
+        "pairs": 5
+      },
+      "host_wall_ns_call": {
+        "median_percent": 2.2225902200791348,
+        "min": -1.9136677453680195,
+        "max": 3.109906932529327,
+        "pairs": 5
+      }
+    }
+  },
+  {
+    "host_bits": 64,
+    "mode": "near-full",
+    "bytes": 64,
+    "values": {
+      "pr6": {
+        "client_wall_ns_call": {
+          "median": 115.196,
+          "min": 113.235,
+          "max": 115.686
+        },
+        "host_wall_ns_call": {
+          "median": 35.294,
+          "min": 33.824,
+          "max": 38.725
+        },
+        "client_cycles_call": {
+          "median": 313.657,
+          "min": 308.176,
+          "max": 316.078
+        },
+        "host_cycles_call": {
+          "median": 102.725,
+          "min": 97.373,
+          "max": 112.157
+        }
+      },
+      "combined": {
+        "client_wall_ns_call": {
+          "median": 179.902,
+          "min": 170.588,
+          "max": 184.804
+        },
+        "host_wall_ns_call": {
+          "median": 55.882,
+          "min": 53.431,
+          "max": 56.863
+        },
+        "client_cycles_call": {
+          "median": 483.167,
+          "min": 458.186,
+          "max": 497.951
+        },
+        "host_cycles_call": {
+          "median": 155.745,
+          "min": 151.667,
+          "max": 160.078
+        }
+      }
+    },
+    "paired": {
+      "client_wall_ns_call": {
+        "median_percent": 55.50887747869231,
+        "min": 47.457773628615385,
+        "max": 61.80219934159838,
+        "pairs": 5
+      },
+      "host_wall_ns_call": {
+        "median_percent": 56.16476637603398,
+        "min": 46.83795997417688,
+        "max": 63.76537369914854,
+        "pairs": 5
+      }
+    }
+  },
+  {
+    "host_bits": 64,
+    "mode": "wrap",
+    "bytes": 64,
+    "values": {
+      "pr6": {
+        "client_wall_ns_call": {
+          "median": 168.492,
+          "min": 167.542,
+          "max": 173.0
+        },
+        "host_wall_ns_call": {
+          "median": 168.025,
+          "min": 167.083,
+          "max": 172.525
+        },
+        "client_cycles_call": {
+          "median": 436.761,
+          "min": 435.227,
+          "max": 446.663
+        },
+        "host_cycles_call": {
+          "median": 435.519,
+          "min": 427.473,
+          "max": 444.695
+        }
+      },
+      "combined": {
+        "client_wall_ns_call": {
+          "median": 183.133,
+          "min": 181.183,
+          "max": 190.092
+        },
+        "host_wall_ns_call": {
+          "median": 182.675,
+          "min": 180.733,
+          "max": 189.483
+        },
+        "client_cycles_call": {
+          "median": 475.748,
+          "min": 470.654,
+          "max": 490.408
+        },
+        "host_cycles_call": {
+          "median": 474.47,
+          "min": 469.406,
+          "max": 486.666
+        }
+      }
+    },
+    "paired": {
+      "client_wall_ns_call": {
+        "median_percent": 8.915678414673312,
+        "min": 7.5321083493578245,
+        "max": 11.72840243043536,
+        "pairs": 5
+      },
+      "host_wall_ns_call": {
+        "median_percent": 8.934832907950296,
+        "min": 7.563160244011313,
+        "max": 11.621170316549257,
+        "pairs": 5
+      }
+    }
+  },
+  {
+    "host_bits": 64,
+    "mode": "slow",
+    "bytes": 64,
+    "values": {
+      "pr6": {
+        "client_wall_ns_call": {
+          "median": 235894.742,
+          "min": 234552.65,
+          "max": 237303.667
+        },
+        "host_wall_ns_call": {
+          "median": 239799.358,
+          "min": 238455.7,
+          "max": 241208.808
+        },
+        "client_cycles_call": {
+          "median": 498.552,
+          "min": 486.661,
+          "max": 513.567
+        },
+        "host_cycles_call": {
+          "median": 773.175,
+          "min": 763.618,
+          "max": 838.099
+        }
+      },
+      "combined": {
+        "client_wall_ns_call": {
+          "median": 235767.35,
+          "min": 231941.825,
+          "max": 251427.633
+        },
+        "host_wall_ns_call": {
+          "median": 239671.25,
+          "min": 235846.642,
+          "max": 255333.3
+        },
+        "client_cycles_call": {
+          "median": 662.85,
+          "min": 654.998,
+          "max": 675.945
+        },
+        "host_cycles_call": {
+          "median": 840.023,
+          "min": 788.68,
+          "max": 917.622
+        }
+      }
+    },
+    "paired": {
+      "client_wall_ns_call": {
+        "median_percent": -0.03743810667703462,
+        "min": -1.1131082935963321,
+        "max": 6.584670293329387,
+        "pairs": 5
+      },
+      "host_wall_ns_call": {
+        "median_percent": -0.036659109065362294,
+        "min": -1.0941478857498521,
+        "max": 6.477891404529945,
+        "pairs": 5
+      }
+    }
+  },
+  {
+    "host_bits": 64,
+    "mode": "idle",
+    "bytes": 0,
+    "values": {
+      "pr6": {
+        "client_wall_ns_call": {
+          "median": 200.0,
+          "min": 100.0,
+          "max": 200.0
+        },
+        "host_wall_ns_call": {
+          "median": 486066500.0,
+          "min": 470147700.0,
+          "max": 489188800.0
+        },
+        "client_cycles_call": {
+          "median": 3406.0,
+          "min": 3302.0,
+          "max": 3588.0
+        },
+        "host_cycles_call": {
+          "median": 354354.0,
+          "min": 342368.0,
+          "max": 364337.0
+        }
+      },
+      "combined": {
+        "client_wall_ns_call": {
+          "median": 100.0,
+          "min": 100.0,
+          "max": 200.0
+        },
+        "host_wall_ns_call": {
+          "median": 500798000.0,
+          "min": 499993900.0,
+          "max": 501560000.0
+        },
+        "client_cycles_call": {
+          "median": 3380.0,
+          "min": 3094.0,
+          "max": 4108.0
+        },
+        "host_cycles_call": {
+          "median": 229580.0,
+          "min": 222220.0,
+          "max": 232466.0
+        }
+      }
+    },
+    "paired": {
+      "client_wall_ns_call": {
+        "median_percent": -50.0,
+        "min": -50.0,
+        "max": 100.0,
+        "pairs": 5
+      },
+      "host_wall_ns_call": {
+        "median_percent": 3.031272469919233,
+        "min": 2.347682530752948,
+        "max": 6.348260344568324,
+        "pairs": 5
+      }
+    }
+  }
+]

@@ -1,0 +1,46 @@
+{
+  "source_sha256": {
+    "util_common.h": "d07ca930ee322f5ebd541ee39ff42afdc1146f6821c67cef57b585f37b727839",
+    "util_commands.h": "bc3c30788cb44089560dcb61094838985daa9bcf83956bc9cf991d9c5baaba38",
+    "util_circularqueue.h": "4e8f4e95d2ce01876bcab0049bd2c18e4d49d09f4cd864973c2fa11cdb26cc4e",
+    "util_circularbuffer.h": "d40a7e732150993d3c7af753397c6f0944719f610b31dd09ba1a70bc68408eff",
+    "util_atomiccircularqueue.h": "3caf47d9ef17d5a8fd29e9775c97de0f18ce3048ef5aa6fe0d436eb5e9bd0a49",
+    "util_ipcchannel.h": "e5615986529815995e585afd180ed0a284aeca31f7a4daa2e6665479d7b41edf",
+    "util_sharedmemory.h": "220f59b124669b75c7d0a7bc97868533f1f758b9a2edcaa54b2a3baec1c750da",
+    "util_sharedmemory.cpp": "3b2390d77927ed431f50f18a7e4badf3510548289aa1ba54064d02fda0122ac0",
+    "util_semaphore.h": "737c4232da103bb364fcdf051aea6ada00038c827ace8073c79f77ddf74b956e",
+    "util_semaphore.cpp": "6e1d43eaab6e178f4d9e561b02f8f3187bde26923bf1dc754f9fcb6d6682a9fa",
+    "util_guid.h": "d8ae475f61150b900146ca8a32cc22ff4a82a75fe03785dd49c520a5c2b97cbb",
+    "api_wait_diagnostics.h": "84d8f6dca9adc3fc09931dc9514eda5450f68d2b5f9af9654799dbd0814d3b32",
+    "data_diagnostics.h": "7bc3c8949e5d665afb672620bb7cc8628ab20e2a0b4809bbd78cdd62c08382c8",
+    "data_diagnostics.cpp": "94a2c85dd1029c769299f3534f10ce8f32007312a3e229abfed979125259afc4",
+    "exception_diagnostics.h": "ee3623a3651ad1622a522cfa84eebfe009d8f1075b0e4ac068878a9233a90d74",
+    "exception_diagnostics.cpp": "27d1a54faf12e41253ac2d0b0d279347bf9ad1bebd9ec4b734f09b27d8b82e8a",
+    "queue_wait_diagnostics.h": "dfb09af76e51d58e12095b21deb0e7ad6f6a0545ac056d34f0388c5fbd1615ec",
+    "runtime_observation.h": "e2d36520636f0392b9cf0f302557f9f1263ed1e8b5981130dad9607184ee444f",
+    "util_scopedlock.h": "95d3cce02c30f33cd0dbdf1e96e7f4a38f2d78f9a17a1f227088eca973467b7a",
+    "device_reset.h": "661b781c69b21084751cb0a2a1fad3c3bc6dac9a4dd750d74dbc19237b54d06c",
+    "data_ring_contract.h": "ca88d640b41b081b99fd9b0af50d5e7c72eb4f7edb712dff516080c7578058af",
+    "util_ipcv2commandqueue.h": "d9e07f85797984e4aa1c736bb8bb3a913c3ad35d73ac7ecb10f189f6657ded48",
+    "ipc_v2/platform.h": "ac500c3c2258ee35f4465bb6c586479f11425dcb22f6114adfcf09515da76333",
+    "ipc_v2/transport.h": "afc0a1497fc81933961a08837242e586a2ae117abc187130efa0eb1d59115e3d",
+    "util_bridgecommand.h": "5415217692940459b0241b9620babbf50e717bd6139d5a39ffe65f1f17b6061e",
+    "util_bridgecommand.cpp": "8a126fb86e240dcb96acdc12f952ff666462a42f32db7c0707af4ee3a5dda690"
+  },
+  "adapters": [
+    "options/logger",
+    "peer exit signal",
+    "test dispatch",
+    "explicit system wait failure injection"
+  ],
+  "lifecycle_caller_sha256": "5620d4ae244fcd43f3832d2a5d0842fd08bc17e680de591494af8be744550737",
+  "shadow_source_sha256": {
+    "buffer_shadow.h": "0dbc910e68a488200e98c33ea6d38dd901a21fbbd27f689fbf326c6a2e199f6d",
+    "buffer_shadow_arena.h": "9b1cea8737702178f66a44cd67932bd4df0b951a774972918e07d8d15c3e3e40"
+  },
+  "variant": "combined",
+  "caller": "tests/ipc_performance_cases.cpp",
+  "compilation": "MSVC /O2, separate Command/caller translation units, no LTO",
+  "scope": "actual D3D9 transport with integrity dispatch fixture, no backend/GPU",
+  "caller_sha256": "5e9c52c9b95d3f383667590eb875de1aa57107977512546fbab5d4449632eb73"
+}
