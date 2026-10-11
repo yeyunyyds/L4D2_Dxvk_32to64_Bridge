@@ -7,6 +7,9 @@
 #include <stdexcept>
 #include <thread>
 #include <vector>
+#ifdef _WIN32
+#include <malloc.h>
+#endif
 
 struct TestPlatform {
   using Mutex = std::mutex;
@@ -20,10 +23,14 @@ struct TestPlatform {
   }
   static void freeMetadata(void* p) { --metadataCount; std::free(p); }
   // Header belongs to the test platform, never the production payload.
-  struct alignas(16) Header { size_t bytes; };
+  struct alignas(16) Header { size_t bytes; uint8_t padding[16 - sizeof(size_t)]; };
   static void* reserve(size_t n) {
     if (n > reserveLimit) return nullptr;
-    auto* h = static_cast<Header*>(std::malloc(sizeof(Header) + n));
+#ifdef _WIN32
+    auto* h = static_cast<Header*>(_aligned_malloc(sizeof(Header) + n, 16));
+#else
+    auto* h = static_cast<Header*>(std::aligned_alloc(16, sizeof(Header) + n));
+#endif
     if (!h) return nullptr;
     h->bytes = n; reserved += n; return h + 1;
   }
@@ -31,7 +38,13 @@ struct TestPlatform {
   static bool release(void* p) {
     if (failRelease) return false;
     auto* h = static_cast<Header*>(p) - 1;
-    reserved -= h->bytes; std::free(h); return true;
+    reserved -= h->bytes;
+#ifdef _WIN32
+    _aligned_free(h);
+#else
+    std::free(h);
+#endif
+    return true;
   }
 };
 using Arena = l4d2_buffer::ShadowArena<TestPlatform>;
