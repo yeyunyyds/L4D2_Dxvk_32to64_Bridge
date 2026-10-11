@@ -12,6 +12,7 @@
 #endif
 
 struct TestPlatform {
+  static constexpr bool freshPagesZero = false;
   using Mutex = std::mutex;
   inline static size_t reserved = 0, metadataCount = 0;
   inline static size_t reserveLimit = SIZE_MAX;

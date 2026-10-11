@@ -86,7 +86,10 @@ for scenario in ('2300-few-large', '2300-many-small', '800-many-small', '800-fra
     paired[scenario] = row
     print(scenario, 'CRT/arena residual MiB', row['crt']['av_residual']['median'] / 2**20,
           row['arena']['av_residual']['median'] / 2**20, 'equal-work pairs', len(equal))
+first_use = {v: [json.loads((root / v / f'first-use-{i}.json').read_text(encoding='utf-8-sig')) for i in range(1, 6)] for v in ('crt', 'arena')}
+assert all(r['bytes'] == 1342177280 for rows in first_use.values() for r in rows)
+first_use_summary = {v: {k: distribution([r[k] for r in rows]) for k in rows[0]} for v, rows in first_use.items()}
 (root / 'summary.json').write_text(json.dumps({'environment': {'platform': platform.platform(), 'processor': platform.processor()},
-    'paired_first_round': paired, 'samples': results}, indent=2))
+    'paired_first_round': paired, 'first_use': first_use, 'first_use_summary': first_use_summary, 'samples': results}, indent=2))
 hashes = {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(root.rglob('*')) if p.is_file()}
 (root / 'SHA256.json').write_text(json.dumps(hashes, indent=2))

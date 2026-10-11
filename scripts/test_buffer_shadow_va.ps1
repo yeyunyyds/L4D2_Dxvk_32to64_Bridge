@@ -19,12 +19,18 @@ foreach ($variant in @('crt', 'arena')) {
   try {
     & cl.exe /nologo /std:c++17 /EHsc /O2 /W4 /WX /DNOMINMAX @flags "/I$production/bridge/src/util" "/I$production/bridge/src/client" "/I$repoRoot/tests" actual_buffer_pressure.cpp "$production/bridge/src/util/data_diagnostics.cpp" /Fe:buffer-pressure.exe /link /LARGEADDRESSAWARE psapi.lib
     if ($LASTEXITCODE -ne 0) { throw 'Pressure compilation failed' }
+    & cl.exe /nologo /std:c++17 /EHsc /O2 /W4 /WX /DNOMINMAX @flags "/I$production/bridge/src/util" "/I$production/bridge/src/client" "/I$repoRoot/tests" "$repoRoot/tests/buffer_shadow_first_use.cpp" "$production/bridge/src/util/data_diagnostics.cpp" /Fe:first-use.exe /link /LARGEADDRESSAWARE psapi.lib
+    if ($LASTEXITCODE -ne 0) { throw 'First-use compilation failed' }
   } finally { Pop-Location }
 }
 # Fresh process per sample; alternate order. Both use the same workloads and
 # capture adapter. No per-call timer, no simulated FPS, preserve low-AV failures.
 for ($repeat = 1; $repeat -le 5; ++$repeat) {
   $order = if ($repeat % 2) { @('crt', 'arena') } else { @('arena', 'crt') }
+  foreach ($variant in $order) {
+    & "$output/$variant/first-use.exe" | Out-File "$output/$variant/first-use-$repeat.json" -Encoding utf8
+    if ($LASTEXITCODE -ne 0) { throw 'First full write regression failed' }
+  }
   foreach ($scenario in @(@('2300','few-large'), @('2300','many-small'), @('800','many-small'), @('800','fragmented'), @('2300','partial-survivors'))) {
     foreach ($variant in $order) {
       $name = "$($scenario[0])-$($scenario[1])-$repeat"
