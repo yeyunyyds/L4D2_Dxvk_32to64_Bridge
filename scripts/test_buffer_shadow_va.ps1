@@ -28,8 +28,10 @@ foreach ($variant in @('crt', 'arena')) {
 for ($repeat = 1; $repeat -le 5; ++$repeat) {
   $order = if ($repeat % 2) { @('crt', 'arena') } else { @('arena', 'crt') }
   foreach ($variant in $order) {
-    & "$output/$variant/first-use.exe" | Out-File "$output/$variant/first-use-$repeat.json" -Encoding utf8
-    if ($LASTEXITCODE -ne 0) { throw 'First full write regression failed' }
+    foreach ($shape in @('large', 'small')) {
+      & "$output/$variant/first-use.exe" $shape | Out-File "$output/$variant/first-use-$shape-$repeat.json" -Encoding utf8
+      if ($LASTEXITCODE -ne 0) { throw 'First full write regression failed' }
+    }
   }
   foreach ($scenario in @(@('2300','few-large'), @('2300','many-small'), @('800','many-small'), @('800','fragmented'), @('2300','partial-survivors'))) {
     foreach ($variant in $order) {

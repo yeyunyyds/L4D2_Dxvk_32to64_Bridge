@@ -43,27 +43,33 @@ struct Population {
   std::vector<std::unique_ptr<IB>> ib;
   std::vector<ShadowOwner> arrayVB, arrayIB;
   uint64_t bytes = 0;
+  uint64_t vaAllocations = 0;
   void add(UINT vs, UINT is, bool dynamic) {
     if (nativeArrayControl) {
       arrayVB.emplace_back(l4d2_buffer::allocate(vs, l4d2_memory::Kind::Vertex, true)); bytes += vs;
+      vaAllocations += vs < 1024 * 1024;
       arrayIB.emplace_back(l4d2_buffer::allocate(is, l4d2_memory::Kind::Index, true)); bytes += is;
+      vaAllocations += is < 1024 * 1024;
       return;
     }
     D3DVERTEXBUFFER_DESC v {}; v.Size = vs; v.Usage = D3DUSAGE_WRITEONLY | (dynamic ? D3DUSAGE_DYNAMIC : 0);
     v.Pool = D3DPOOL_DEFAULT; v.Format = D3DFMT_VERTEXDATA;
     D3DINDEXBUFFER_DESC i {}; i.Size = is; i.Usage = v.Usage; i.Pool = v.Pool; i.Format = D3DFMT_INDEX16;
     vb.push_back(std::make_unique<VB>(v)); bytes += vs;
+    vaAllocations += vs < 1024 * 1024;
     ib.push_back(std::make_unique<IB>(i)); bytes += is;
+    vaAllocations += is < 1024 * 1024;
   }
-  void clear() { vb.clear(); ib.clear(); arrayVB.clear(); arrayIB.clear(); bytes = 0; }
+  void clear() { vb.clear(); ib.clear(); arrayVB.clear(); arrayIB.clear(); bytes = vaAllocations = 0; }
   void retainEvery(unsigned stride) {
     for (size_t j = 0; j < vb.size(); ++j) if (j % stride) vb[j].reset();
     for (size_t j = 0; j < ib.size(); ++j) if (j % stride) ib[j].reset();
     vb.erase(std::remove_if(vb.begin(), vb.end(), [](const auto& p) { return !p; }), vb.end());
     ib.erase(std::remove_if(ib.begin(), ib.end(), [](const auto& p) { return !p; }), ib.end());
     bytes = 0;
-    for (const auto& p : vb) bytes += p->getDesc().Size;
-    for (const auto& p : ib) bytes += p->getDesc().Size;
+    vaAllocations = 0;
+    for (const auto& p : vb) { bytes += p->getDesc().Size; vaAllocations += p->getDesc().Size < 1024 * 1024; }
+    for (const auto& p : ib) { bytes += p->getDesc().Size; vaAllocations += p->getDesc().Size < 1024 * 1024; }
   }
 };
 struct Pressure {
@@ -94,6 +100,7 @@ void record(const char* phase, unsigned round, const Population& stat, const Pop
     throw std::runtime_error("GetProcessMemoryInfo");
   uint64_t heapBusy = 0;
 #ifdef LDB_SHADOW_ARENA
+  static_assert(l4d2_buffer::kCrtThreshold == 1024 * 1024, "update measured allocation classification");
   const auto allocator = l4d2_buffer::arena().stats();
 #endif
   bool heapComplete = false;
@@ -125,6 +132,7 @@ void record(const char* phase, unsigned round, const Population& stat, const Pop
     << ",\"allocator\":\"arena\",\"arena_reserved_bytes\":" << allocator.reserved
     << ",\"arena_committed_bytes\":" << allocator.committed << ",\"arena_regions\":" << allocator.regions
     << ",\"arena_allocations\":" << allocator.allocations << ",\"arena_release_failures\":" << allocator.releaseFailures
+    << ",\"expected_va_allocations\":" << stat.vaAllocations + dyn.vaAllocations
 #else
     << ",\"allocator\":\"crt\""
 #endif

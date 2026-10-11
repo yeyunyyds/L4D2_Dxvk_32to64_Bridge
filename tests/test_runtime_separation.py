@@ -24,6 +24,7 @@ class RuntimeSeparation(unittest.TestCase):
         observer = (client / 'memory_diagnostics.h').read_text(encoding='utf-8')
         buffer = (client / 'lockable_buffer.h').read_text(encoding='utf-8')
         self.assertIn('arena().allocate(size, zero)', allocator)
+        self.assertIn('size >= kCrtThreshold', allocator)
         self.assertIn('using Storage = std::unique_ptr<uint8_t[], Deleter>', allocator)
         self.assertNotIn('new uint8_t[', observer)
         self.assertIn('l4d2_buffer::allocate', buffer)

@@ -13,12 +13,15 @@ uint64_t cpu() {
   return (((uint64_t(k.dwHighDateTime) << 32) | k.dwLowDateTime)
     + ((uint64_t(u.dwHighDateTime) << 32) | u.dwLowDateTime)) * 100;
 }
-int main() {
+int main(int argc, char** argv) {
+  if (argc != 2) return 1;
+  const bool small = std::string(argv[1]) == "small";
+  const unsigned pairs = small ? 16384 : 128;
   std::vector<std::pair<ShadowOwner, size_t>> allocations;
-  allocations.reserve(256);
+  allocations.reserve(pairs * 2);
   auto beginCpu = cpu(), begin = wall();
-  for (unsigned i = 0; i < 128; ++i) {
-    for (size_t bytes : {size_t(8 * 1024 * 1024), size_t(2 * 1024 * 1024)})
+  for (unsigned i = 0; i < pairs; ++i) {
+    for (size_t bytes : {size_t(small ? 64 * 1024 : 8 * 1024 * 1024), size_t(small ? 16 * 1024 : 2 * 1024 * 1024)})
       allocations.emplace_back(ShadowOwner(l4d2_buffer::allocate(bytes, l4d2_memory::Kind::Vertex, true)), bytes);
   }
   const auto allocateNs = wall() - begin, allocateCpu = cpu() - beginCpu;

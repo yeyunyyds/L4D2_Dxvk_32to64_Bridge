@@ -16,7 +16,7 @@ for variant in ('crt', 'arena'):
         background = next(r for r in rows if r['phase'] == 'background')
         assert background['address_limit'] > 3 * 1024**3, 'requires actual x86 LAA'
         if variant == 'arena':
-            assert all(r['arena_allocations'] == r['objects'] and not r['arena_release_failures'] for r in rows)
+            assert all(r['arena_allocations'] == r['expected_va_allocations'] and not r['arena_release_failures'] for r in rows)
         rounds = []
         for n in (1, 2, 3):
             batch = [r for r in rows if r['round'] == n]
@@ -86,9 +86,11 @@ for scenario in ('2300-few-large', '2300-many-small', '800-many-small', '800-fra
     paired[scenario] = row
     print(scenario, 'CRT/arena residual MiB', row['crt']['av_residual']['median'] / 2**20,
           row['arena']['av_residual']['median'] / 2**20, 'equal-work pairs', len(equal))
-first_use = {v: [json.loads((root / v / f'first-use-{i}.json').read_text(encoding='utf-8-sig')) for i in range(1, 6)] for v in ('crt', 'arena')}
-assert all(r['bytes'] == 1342177280 for rows in first_use.values() for r in rows)
-first_use_summary = {v: {k: distribution([r[k] for r in rows]) for k in rows[0]} for v, rows in first_use.items()}
+first_use = {shape: {v: [json.loads((root / v / f'first-use-{shape}-{i}.json').read_text(encoding='utf-8-sig')) for i in range(1, 6)]
+                    for v in ('crt', 'arena')} for shape in ('large', 'small')}
+assert all(r['bytes'] == 1342177280 for variants in first_use.values() for rows in variants.values() for r in rows)
+first_use_summary = {shape: {v: {k: distribution([r[k] for r in rows]) for k in rows[0]} for v, rows in variants.items()}
+                     for shape, variants in first_use.items()}
 (root / 'summary.json').write_text(json.dumps({'environment': {'platform': platform.platform(), 'processor': platform.processor()},
     'paired_first_round': paired, 'first_use': first_use, 'first_use_summary': first_use_summary, 'samples': results}, indent=2))
 hashes = {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(root.rglob('*')) if p.is_file()}
