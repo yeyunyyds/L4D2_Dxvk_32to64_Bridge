@@ -1,0 +1,57 @@
+name: Inspect saved combined native evidence
+on:
+  workflow_dispatch:
+    inputs:
+      artifact_id:
+        description: 'Existing artifact ID in this repository'
+        required: true
+        default: '11692549900'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read saved evidence without rebuilding or changing measurements
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_ID: ${{ inputs.artifact_id }}
+        run: |
+          [[ "$ARTIFACT_ID" =~ ^[0-9]+$ ]]
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$ARTIFACT_ID/zip" > evidence.zip
+          python - <<'PY'
+          import json, math, zipfile
+          with zipfile.ZipFile('evidence.zip') as archive:
+              # Never print raw records, logs, arbitrary text or binary data.
+              # Only fixed numerical aggregate fields from our own synthetic
+              # test artifact may leave this reader. Source identity is checked.
+              manifests = [n for n in archive.namelist() if n.endswith('ipc-combined-combined/source-manifest.json')]
+              assert len(manifests) == 1
+              manifest = json.loads(archive.read(manifests[0]))
+              assert manifest['source_sha256']['util_ipcv2commandqueue.h'] == 'caabc620bfd6ee971e171cb460a1a3452e779eb8fc52ec2df05ce137c014a719'
+              def number(value):
+                  assert type(value) in (int, float) and math.isfinite(value)
+                  return value
+              def stats(values):
+                  return {k: number(values[k]) for k in ('median','min','max')}
+              for name in archive.namelist():
+                  if name.endswith('ipc-combined-results/summary.json'):
+                      for row in json.loads(archive.read(name)):
+                          assert row['host_arch'] in ('32','64')
+                          assert row['mode'] in ('batch','stream','near-full','wrap','slow','idle')
+                          out = dict(host_bits=int(row['host_arch']), mode=row['mode'], bytes=number(row['bytes']), values={})
+                          for variant in ('pr6','combined'):
+                              out['values'][variant] = {k: stats(row['variants'][variant][k]) for k in ('client_wall_ns_call','host_wall_ns_call','client_cycles_call','host_cycles_call')}
+                          out['paired'] = {k: {f: number(row['paired'][k][f]) for f in ('median_percent','min','max','pairs')} for k in ('client_wall_ns_call','host_wall_ns_call')}
+                          print('NUMERIC_IPC_SUMMARY', json.dumps(out))
+                  if name.endswith('ipc-combined-results/shadow-ipc-summary.json'):
+                      for row in json.loads(archive.read(name)):
+                          assert row['host_arch'] in ('32','64') and row['variant'] in ('pr6','va-pr6','combined')
+                          for round_ in row['rounds']:
+                              assert round_['round'] in (0,1,2)
+                              out = dict(host_bits=int(row['host_arch']), variant=row['variant'], round=round_['round'], values={})
+                              for k in ('creation_first_write_ns','submission_ns','upload_complete_ns','release_ns','released_av_loss','released_largest','mapped_channel_delta'):
+                                  out['values'][k] = stats(round_['stats'][k])
+                              print('NUMERIC_SHADOW_SUMMARY', json.dumps(out))
+          PY
