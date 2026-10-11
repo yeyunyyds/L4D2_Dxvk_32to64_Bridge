@@ -15,11 +15,11 @@ uint64_t cpu() {
 }
 int main(int argc, char** argv) {
   if (argc != 2) return 1;
-  const bool small = std::string(argv[1]) == "small";
+  const bool smallShape = std::string(argv[1]) == "small";
   const bool mixed = std::string(argv[1]) == "mixed";
-  const unsigned pairs = small ? 16384 : (mixed ? 640 : 128);
-  const size_t vb = small ? 65536 : (mixed ? 1048576 : 8388608);
-  const size_t ib = small ? 16384 : (mixed ? 1048575 : 2097152);
+  const unsigned pairs = smallShape ? 16384 : (mixed ? 640 : 128);
+  const size_t vb = smallShape ? 65536 : (mixed ? 1048576 : 8388608);
+  const size_t ib = smallShape ? 16384 : (mixed ? 1048575 : 2097152);
   std::vector<std::pair<ShadowOwner, size_t>> allocations;
   allocations.reserve(pairs * 2);
   auto beginCpu = cpu(), begin = wall();
