@@ -51,7 +51,7 @@ for host_role in ('host32','host64'):
 
 if (TEST/'util_ipcv2commandqueue.h').exists():
     for role in ('client32','host32','host64'):
-        for mode in ('v2-quota','v2-wrap','v2-build','v2-fault'):
+        for mode in ('v2-quota','v2-wrap','v2-build','v2-fault','v2-bad-block','v2-bad-record'):
             result=subprocess.run([str(TEST/f'transport-{role}.exe'),mode],capture_output=True,text=True,timeout=20)
             print(result.stdout,result.stderr,sep='',flush=True)
             if result.returncode: raise RuntimeError(f'Production v2 adapter failed: {role} {mode}')

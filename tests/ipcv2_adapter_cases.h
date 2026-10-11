@@ -29,6 +29,20 @@ int v2AdapterCases(const std::wstring& mode) {
     bridge_data::buildIdentity = identity;
     require(GetProcessHandleCount(GetCurrentProcess(), &after) != FALSE && before == after,
       "failed channel construction releases section and event handles");
+  } else if (mode.rfind(L"v2-bad-", 0) == 0) {
+    require(writer.commands->try_push({Commands::Bridge_Response,0,7,9}) == Result::Success, "malformed record fixture");
+    auto& block = channel.block(seed);
+    if (mode == L"v2-bad-block") block.bytes = 1024;
+    else {
+      ldb_ipc_v2::Record record {};
+      std::memcpy(&record, channel.data(block), sizeof(record));
+      record.bodyBytes = UINT32_MAX;
+      std::memcpy(channel.data(block), &record, sizeof(record));
+    }
+    Result result;
+    reader.commands->peek(result, 10);
+    require(result == Result::Failure && shared.consumer.completed.load() == seed
+      && shared.fault.load() && !gbBridgeRunning.load(), "bad Header rejected without credit");
   } else if (mode == L"v2-fault") {
     ReaderChannel otherReader("DeviceV2Other", memory, 32, 128);
     WriterChannel otherWriter("DeviceV2Other", memory, 32, 128);
