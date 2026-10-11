@@ -1,5 +1,8 @@
 name: Inspect saved combined native evidence
 on:
+  push:
+    branches: [codex/vbib-va-ipc-v2]
+    paths: ['.github/workflows/inspect-combined-evidence.yml']
   workflow_dispatch:
     inputs:
       artifact_id:
@@ -16,7 +19,7 @@ jobs:
       - name: Read saved evidence without rebuilding or changing measurements
         env:
           GH_TOKEN: ${{ github.token }}
-          ARTIFACT_ID: ${{ inputs.artifact_id }}
+          ARTIFACT_ID: ${{ inputs.artifact_id || '11692549900' }}
         run: |
           [[ "$ARTIFACT_ID" =~ ^[0-9]+$ ]]
           gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$ARTIFACT_ID/zip" > evidence.zip
