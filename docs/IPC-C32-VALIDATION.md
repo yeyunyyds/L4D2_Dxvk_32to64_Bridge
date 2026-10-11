@@ -1,5 +1,7 @@
 # C32 experimental bridge validation and delivery
 
+**Superseded:** the original build regressed in third-party map loading. See [the wrap-fix investigation and replacement build](IPC-C32-WRAP-FIX.md).
+
 Status: **AWAITING GAME VALIDATION**. Native correctness and the matched Release build passed; production merging remains gated on real L4D2 testing.
 
 Implemented: C32 full-batch/capacity publication, conservative forced semantic boundaries, API-entry lazy age check, inline scalar records, and ordered descriptors retaining PR6 Data Ring ownership. Replies, large payloads and Lock buffers retain the correctness foundation. No independent upload pool or reply slots are integrated.
