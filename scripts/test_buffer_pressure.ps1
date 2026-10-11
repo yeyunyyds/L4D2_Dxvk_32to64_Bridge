@@ -12,7 +12,7 @@ Push-Location $output
 try {
   & cl.exe /nologo /std:c++17 /EHsc /O2 /W4 /WX /DNOMINMAX "/I$source/bridge/src/util" "/I$source/bridge/src/client" "/I$repoRoot/tests" actual_buffer_pressure.cpp "$source/bridge/src/util/data_diagnostics.cpp" /Fe:buffer-pressure.exe /link /LARGEADDRESSAWARE psapi.lib
   if ($LASTEXITCODE -ne 0) { throw 'Pressure compilation failed' }
-  foreach ($scenario in @(@('2300','few-large'), @('2300','many-small'), @('800','few-large'), @('800','fragmented'))) {
+  foreach ($scenario in @(@('2300','few-large'), @('2300','many-small'), @('800','few-large'), @('800','fragmented'), @('2300','native-array-control'))) {
     $name = "$($scenario[0])-$($scenario[1])"
     & .\buffer-pressure.exe $scenario[0] $scenario[1] 3 | Out-File "$name.jsonl" -Encoding utf8
     if ($LASTEXITCODE -ne 0) { throw "Pressure scenario failed: $name" }

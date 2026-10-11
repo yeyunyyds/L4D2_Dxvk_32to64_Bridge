@@ -15,7 +15,7 @@ for path in sorted(root.glob('*.jsonl')):
         batch = [r for r in rows if r['round'] == n]
         before = next(r for r in batch if r['phase'] == 'before-map')
         peak = max(batch, key=lambda r: r['static_shadow_bytes'] + r['dynamic_shadow_bytes'])
-        locks = next(r for r in batch if r['phase'] == 'after-20000-locks')
+        locks = next(r for r in batch if r['phase'] == 'after-lock-phase')
         prelocks = next(r for r in reversed(batch[:batch.index(locks)]) if r['phase'] in ('static-growth', 'allocation-failed'))
         end = next(r for r in batch if r['phase'] == 'map-released')
         assert (locks['static_shadow_bytes'], locks['dynamic_shadow_bytes']) == (prelocks['static_shadow_bytes'], prelocks['dynamic_shadow_bytes'])

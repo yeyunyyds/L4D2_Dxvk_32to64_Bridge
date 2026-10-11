@@ -3,6 +3,7 @@
 #include <stdexcept>
 
 constexpr uint64_t MiB = 1024 * 1024;
+bool nativeArrayControl = false;
 template<typename T> class PressureBuffer : public LockableBuffer<T> {
   using Desc = std::conditional_t<std::is_same_v<T, IDirect3DVertexBuffer9>, D3DVERTEXBUFFER_DESC, D3DINDEXBUFFER_DESC>;
 public:
@@ -20,15 +21,21 @@ uint64_t av() {
 struct Population {
   std::vector<std::unique_ptr<VB>> vb;
   std::vector<std::unique_ptr<IB>> ib;
+  std::vector<std::unique_ptr<uint8_t[]>> arrayVB, arrayIB;
   uint64_t bytes = 0;
   void add(UINT vs, UINT is, bool dynamic) {
+    if (nativeArrayControl) {
+      arrayVB.emplace_back(l4d2_buffer::allocate(vs, l4d2_memory::Kind::Vertex, true)); bytes += vs;
+      arrayIB.emplace_back(l4d2_buffer::allocate(is, l4d2_memory::Kind::Index, true)); bytes += is;
+      return;
+    }
     D3DVERTEXBUFFER_DESC v {}; v.Size = vs; v.Usage = D3DUSAGE_WRITEONLY | (dynamic ? D3DUSAGE_DYNAMIC : 0);
     v.Pool = D3DPOOL_DEFAULT; v.Format = D3DFMT_VERTEXDATA;
     D3DINDEXBUFFER_DESC i {}; i.Size = is; i.Usage = v.Usage; i.Pool = v.Pool; i.Format = D3DFMT_INDEX16;
     vb.push_back(std::make_unique<VB>(v)); bytes += vs;
     ib.push_back(std::make_unique<IB>(i)); bytes += is;
   }
-  void clear() { vb.clear(); ib.clear(); bytes = 0; }
+  void clear() { vb.clear(); ib.clear(); arrayVB.clear(); arrayIB.clear(); bytes = 0; }
 };
 struct Pressure {
   std::vector<void*> regions;
@@ -59,6 +66,8 @@ void record(const char* phase, unsigned round, const Population& stat, const Pop
   std::cout << "{\"phase\":\"" << phase << "\",\"round\":" << round
     << ",\"static_shadow_bytes\":" << stat.bytes << ",\"dynamic_shadow_bytes\":" << dyn.bytes
     << ",\"objects\":" << stat.vb.size() + stat.ib.size() + dyn.vb.size() + dyn.ib.size()
+      + stat.arrayVB.size() + stat.arrayIB.size() + dyn.arrayVB.size() + dyn.arrayIB.size()
+    << ",\"native_array_control\":" << (nativeArrayControl ? "true" : "false")
     << ",\"available_virtual_bytes\":" << av() << ",\"free_scan_bytes\":" << scan.free
     << ",\"largest_free_bytes\":" << scan.largestFree << ",\"private_bytes\":" << p.PrivateUsage
     << ",\"working_set_bytes\":" << p.WorkingSetSize << ",\"reserved_background_bytes\":" << background
@@ -77,7 +86,8 @@ int main(int argc, char** argv) {
     if (argc != 4 || sizeof(void*) != 4) throw std::runtime_error("Expected x86: target-av-mib shape cycles");
     const unsigned target = static_cast<unsigned>(std::stoul(argv[1]));
     const std::string shape = argv[2]; const unsigned rounds = static_cast<unsigned>(std::stoul(argv[3]));
-    const bool manySmallBuffers = shape == "many-small", fragmented = shape == "fragmented";
+    nativeArrayControl = shape == "native-array-control";
+    const bool manySmallBuffers = shape == "many-small" || nativeArrayControl, fragmented = shape == "fragmented";
     Population stat, dyn;
     record("empty", 0, stat, dyn, 0);
     Pressure pressure; pressure.make(target, fragmented);
@@ -105,10 +115,10 @@ int main(int argc, char** argv) {
         record(failed ? "allocation-failed" : "static-growth", round, stat, dyn, pressure.reserved);
         if (failed) break;
       }
-      for (unsigned i = 0; i < 10000; ++i) {
+      for (unsigned i = 0; i < (nativeArrayControl ? 0u : 10000u); ++i) {
         cycle(*dyn.vb.front(), D3DLOCK_DISCARD); cycle(*dyn.ib.front(), D3DLOCK_NOOVERWRITE);
       }
-      record("after-20000-locks", round, stat, dyn, pressure.reserved, 20000);
+      record("after-lock-phase", round, stat, dyn, pressure.reserved, nativeArrayControl ? 0 : 20000);
       // Independent dynamic-heavy stage: bounded and permitted to fail under low AV.
       stat.clear();
       record("static-released", round, stat, dyn, pressure.reserved);
