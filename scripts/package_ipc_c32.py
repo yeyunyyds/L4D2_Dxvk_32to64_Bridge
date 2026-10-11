@@ -34,7 +34,8 @@ hashes={}
 for name,(path,arch) in files.items():
     if machine(path)!=arch or build.encode() not in path.read_bytes():
         raise RuntimeError(f'Architecture/build identity mismatch: {name}')
-    if arch==0x14c:
+    # The DLL inherits the game's address space; LAA matters on the x86 Host EXE.
+    if arch==0x14c and path.suffix.lower()=='.exe':
         raw=path.read_bytes();pe=struct.unpack_from('<I',raw,60)[0]
         if not struct.unpack_from('<H',raw,pe+22)[0]&0x20: raise RuntimeError('x86 must be LARGEADDRESSAWARE')
     dest=out/name;dest.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(path,dest)
