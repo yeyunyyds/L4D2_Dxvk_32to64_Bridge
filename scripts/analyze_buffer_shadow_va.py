@@ -57,14 +57,14 @@ for variant in ('crt', 'arena'):
                              'exhausted_va': rows[-1]['phase'] == 'process-oom-released',
                              'incomplete_round_records': [r for r in rows if r['round'] > len(rounds)],
                              'probes': [r for r in rows if 'probe-' in r['phase']]}
-    assert len(samples) == 25, (variant, len(samples))
+    assert len(samples) == 30, (variant, len(samples))
     results[variant] = samples
 
 def distribution(values):
     return {'median': statistics.median(values), 'min': min(values), 'max': max(values)}
 
 paired = {}
-for scenario in ('2300-few-large', '2300-many-small', '800-many-small', '800-fragmented', '2300-partial-survivors'):
+for scenario in ('2300-few-large', '2300-many-small', '800-many-small', '800-fragmented', '2300-partial-survivors', '2300-mixed-sizes'):
     pairs = [(results['crt'][f'{scenario}-{i}']['rounds'][0], results['arena'][f'{scenario}-{i}']['rounds'][0]) for i in range(1, 6)
              if results['crt'][f'{scenario}-{i}']['rounds'] and results['arena'][f'{scenario}-{i}']['rounds']]
     assert pairs, 'no completed first-round comparison'
@@ -87,8 +87,9 @@ for scenario in ('2300-few-large', '2300-many-small', '800-many-small', '800-fra
     print(scenario, 'CRT/arena residual MiB', row['crt']['av_residual']['median'] / 2**20,
           row['arena']['av_residual']['median'] / 2**20, 'equal-work pairs', len(equal))
 first_use = {shape: {v: [json.loads((root / v / f'first-use-{shape}-{i}.json').read_text(encoding='utf-8-sig')) for i in range(1, 6)]
-                    for v in ('crt', 'arena')} for shape in ('large', 'small')}
-assert all(r['bytes'] == 1342177280 for variants in first_use.values() for rows in variants.values() for r in rows)
+                    for v in ('crt', 'arena')} for shape in ('large', 'small', 'mixed')}
+expected_bytes = {'large': 1342177280, 'small': 1342177280, 'mixed': 1342176640}
+assert all(r['bytes'] == expected_bytes[shape] for shape, variants in first_use.items() for rows in variants.values() for r in rows)
 first_use_summary = {shape: {v: {k: distribution([r[k] for r in rows]) for k in rows[0]} for v, rows in variants.items()}
                      for shape, variants in first_use.items()}
 (root / 'summary.json').write_text(json.dumps({'environment': {'platform': platform.platform(), 'processor': platform.processor()},

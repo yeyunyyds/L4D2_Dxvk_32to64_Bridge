@@ -154,6 +154,7 @@ int main(int argc, char** argv) {
     const std::string shape = argv[2]; const unsigned rounds = static_cast<unsigned>(std::stoul(argv[3]));
     nativeArrayControl = shape == "native-array-control";
     const bool survivors = shape == "partial-survivors";
+    const bool mixedSizes = shape == "mixed-sizes";
     const bool manySmallBuffers = shape == "many-small" || nativeArrayControl || survivors, fragmented = shape == "fragmented";
     Population stat, dyn;
     record("empty", 0, stat, dyn, 0);
@@ -178,8 +179,12 @@ int main(int argc, char** argv) {
         begin = beginPhase();
         try {
           // Preserve upload-adapter headroom; do not call this an OOM threshold.
-          while (stat.bytes < uint64_t(targetMiB) * MiB && av() > 64 * MiB)
-            stat.add(manySmallBuffers ? 64 * 1024 : UINT(8 * MiB), manySmallBuffers ? 16 * 1024 : UINT(2 * MiB), false);
+          while (stat.bytes < uint64_t(targetMiB) * MiB && av() > 64 * MiB) {
+            const UINT sizes[] = {262143, 262144, 262145, 524288, 786432, 1048575, 1048576, 1048577, 1572864, 2097152};
+            const UINT vs = mixedSizes ? sizes[stat.vb.size() % 10] : (manySmallBuffers ? 64 * 1024 : UINT(8 * MiB));
+            const UINT is = mixedSizes ? vs / 4 : (manySmallBuffers ? 16 * 1024 : UINT(2 * MiB));
+            stat.add(vs, is, false);
+          }
         } catch (const std::bad_alloc&) { failed = true; }
         finishPhase(begin);
         record(failed ? "allocation-failed" : "static-growth", round, stat, dyn, pressure.reserved);

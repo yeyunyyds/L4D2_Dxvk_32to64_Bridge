@@ -28,12 +28,12 @@ foreach ($variant in @('crt', 'arena')) {
 for ($repeat = 1; $repeat -le 5; ++$repeat) {
   $order = if ($repeat % 2) { @('crt', 'arena') } else { @('arena', 'crt') }
   foreach ($variant in $order) {
-    foreach ($shape in @('large', 'small')) {
+    foreach ($shape in @('large', 'small', 'mixed')) {
       & "$output/$variant/first-use.exe" $shape | Out-File "$output/$variant/first-use-$shape-$repeat.json" -Encoding utf8
       if ($LASTEXITCODE -ne 0) { throw 'First full write regression failed' }
     }
   }
-  foreach ($scenario in @(@('2300','few-large'), @('2300','many-small'), @('800','many-small'), @('800','fragmented'), @('2300','partial-survivors'))) {
+  foreach ($scenario in @(@('2300','few-large'), @('2300','many-small'), @('800','many-small'), @('800','fragmented'), @('2300','partial-survivors'), @('2300','mixed-sizes'))) {
     foreach ($variant in $order) {
       $name = "$($scenario[0])-$($scenario[1])-$repeat"
       & "$output/$variant/buffer-pressure.exe" $scenario[0] $scenario[1] 3 | Out-File "$output/$variant/$name.jsonl" -Encoding utf8

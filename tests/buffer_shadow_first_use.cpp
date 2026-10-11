@@ -16,12 +16,15 @@ uint64_t cpu() {
 int main(int argc, char** argv) {
   if (argc != 2) return 1;
   const bool small = std::string(argv[1]) == "small";
-  const unsigned pairs = small ? 16384 : 128;
+  const bool mixed = std::string(argv[1]) == "mixed";
+  const unsigned pairs = small ? 16384 : (mixed ? 640 : 128);
+  const size_t vb = small ? 65536 : (mixed ? 1048576 : 8388608);
+  const size_t ib = small ? 16384 : (mixed ? 1048575 : 2097152);
   std::vector<std::pair<ShadowOwner, size_t>> allocations;
   allocations.reserve(pairs * 2);
   auto beginCpu = cpu(), begin = wall();
   for (unsigned i = 0; i < pairs; ++i) {
-    for (size_t bytes : {size_t(small ? 64 * 1024 : 8 * 1024 * 1024), size_t(small ? 16 * 1024 : 2 * 1024 * 1024)})
+    for (size_t bytes : {vb, ib})
       allocations.emplace_back(ShadowOwner(l4d2_buffer::allocate(bytes, l4d2_memory::Kind::Vertex, true)), bytes);
   }
   const auto allocateNs = wall() - begin, allocateCpu = cpu() - beginCpu;
@@ -31,7 +34,7 @@ int main(int argc, char** argv) {
   for (const auto& p : allocations) if (p.first[0] != 0x5a || p.first[p.second - 1] != 0x5a) return 1;
   beginCpu = cpu(); begin = wall(); allocations.clear();
   const auto releaseNs = wall() - begin, releaseCpu = cpu() - beginCpu;
-  std::cout << "{\"bytes\":1342177280,\"allocation_ns\":" << allocateNs
+  std::cout << "{\"bytes\":" << uint64_t(pairs) * (vb + ib) << ",\"allocation_ns\":" << allocateNs
     << ",\"allocation_cpu_ns\":" << allocateCpu << ",\"first_write_ns\":" << writeNs
     << ",\"first_write_cpu_ns\":" << writeCpu << ",\"through_first_write_ns\":" << allocateNs + writeNs
     << ",\"through_first_write_cpu_ns\":" << allocateCpu + writeCpu
