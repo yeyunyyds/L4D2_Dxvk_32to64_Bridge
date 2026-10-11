@@ -77,6 +77,11 @@ int v2AdapterCases(const std::wstring& mode) {
           && shared.consumer.completed.load() == uint32_t(before + 1), "one pop one consume confirmation");
       }
     }
+    const auto sentFromReader = reader.commands->getWriterQueueData();
+    const auto receivedFromWriter = writer.commands->getReaderQueueData();
+    require(sentFromReader.size() == 10 && receivedFromWriter.size() == 10
+      && sentFromReader[0] == Commands::Bridge_Response && receivedFromWriter[0] == Commands::Bridge_Response,
+      "cross-process queue history remains observable from both endpoint wrappers");
     require(shared.producer.published.load() == uint32_t(seed + 62000)
       && shared.consumer.completed.load() == uint32_t(seed + 62000), "counter wrap and reuse");
   }
