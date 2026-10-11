@@ -22,15 +22,21 @@ jobs:
       - name: Production transport, concurrent replies, faults and long Lock pins
         shell: powershell
         run: |
-          ./scripts/test_data_ring_contract.ps1
-          ./scripts/test_ipc_api_failure.ps1
-          ./scripts/test_ipc_transport.ps1
+          & powershell.exe -NoProfile -File ./scripts/test_data_ring_contract.ps1
+          if ($LASTEXITCODE -ne 0) { throw "test_data_ring_contract failed" }
+          & powershell.exe -NoProfile -File ./scripts/test_ipc_api_failure.ps1
+          if ($LASTEXITCODE -ne 0) { throw "test_ipc_api_failure failed" }
+          & powershell.exe -NoProfile -File ./scripts/test_ipc_transport.ps1
+          if ($LASTEXITCODE -ne 0) { throw "test_ipc_transport failed" }
       - name: Allocator and complete VB IB contents and lifetime
         shell: powershell
         run: |
-          ./scripts/test_buffer_shadow_arena.ps1
-          ./scripts/test_buffer_contract.ps1
-          ./scripts/test_runtime_observation.ps1
+          & powershell.exe -NoProfile -File ./scripts/test_buffer_shadow_arena.ps1
+          if ($LASTEXITCODE -ne 0) { throw "test_buffer_shadow_arena failed" }
+          & powershell.exe -NoProfile -File ./scripts/test_buffer_contract.ps1
+          if ($LASTEXITCODE -ne 0) { throw "test_buffer_contract failed" }
+          & powershell.exe -NoProfile -File ./scripts/test_runtime_observation.ps1
+          if ($LASTEXITCODE -ne 0) { throw "test_runtime_observation failed" }
       - name: Matched separate-caller production IPC comparison
         shell: powershell
         run: ./scripts/test_combined_ipc.ps1

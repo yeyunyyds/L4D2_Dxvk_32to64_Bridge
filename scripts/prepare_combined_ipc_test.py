@@ -22,7 +22,9 @@ def main():
         (out/'ipc_fixture.h').write_text('#pragma once\n'+header)
         globals_ = 'std::atomic<bool> gbBridgeRunning {true};\nstd::atomic<bool> ipcInjectWaitFailure {false};\nbridge_util::Guid gUniqueIdentifier;\n'
         (out/'ipc_command.cpp').write_text('#include "ipc_fixture.h"\n'+globals_+body)
-        (out/'ipc_caller.cpp').write_text('#include "ipc_fixture.h"\n#include "ipc_performance_cases.cpp"\n')
+        caller = (ROOT/'tests/ipc_performance_cases.cpp').read_text()
+        caller = caller.replace('int wmain(int argc,wchar_t** argv){', 'int wmain(int argc,wchar_t** argv){\n  bridge_data::buildIdentity = "native-production-fixture";')
+        (out/'ipc_caller.cpp').write_text('#include "ipc_fixture.h"\n'+caller)
         manifest = json.loads((out/'source-manifest.json').read_text())
         manifest.update(variant=name, caller='tests/ipc_performance_cases.cpp',
             compilation='MSVC /O2, separate Command/caller translation units, no LTO',

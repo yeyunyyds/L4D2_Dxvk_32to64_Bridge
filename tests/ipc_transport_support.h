@@ -38,6 +38,10 @@ using namespace bridge_util;
 std::atomic<bool> gbBridgeRunning {true};
 std::atomic<bool> ipcInjectWaitFailure {false};
 bridge_util::Guid gUniqueIdentifier;
+#ifdef LDB_IPCV2_ADAPTER_TEST
+struct V2FixtureIdentity { V2FixtureIdentity() { bridge_data::buildIdentity = "native-production-fixture"; } };
+inline V2FixtureIdentity v2FixtureIdentity;
+#endif
 struct BridgeState {
   enum class ProcessState { Running, DoneProcessing };
   static ProcessState getServerState_NoLock() { return ProcessState::Running; }
