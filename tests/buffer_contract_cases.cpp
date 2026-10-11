@@ -105,6 +105,21 @@ static void failedUploadContract() {
   check(updates.empty(),"failed reserved lock published update");
 }
 int main() {
+#ifdef LDB_SHADOW_ARENA
+  // Real Windows SRW/VirtualAlloc adapter, independent payload ownership.
+  // Avoid concurrent COM fixture use: it intentionally captures serial uploads.
+  std::atomic<unsigned> allocatorErrors { 0 };
+  std::vector<std::thread> allocatorWorkers;
+  for (unsigned t = 0; t < 4; ++t) allocatorWorkers.emplace_back([&allocatorErrors] {
+    for (unsigned n = 0; n < 1000; ++n) {
+      auto owner = l4d2_buffer::allocate(n % 2 ? 65536 : 16384, l4d2_memory::Kind::Vertex, true);
+      if (owner[0] || owner[16383] || reinterpret_cast<uintptr_t>(owner.get()) % 16) ++allocatorErrors;
+      owner[0] = 0xa3; owner[16383] = 0x5b;
+    }
+  });
+  for (auto& worker : allocatorWorkers) worker.join();
+  check(!allocatorErrors && !l4d2_buffer::arena().stats().regions, "real Windows allocator concurrency/zero/retirement");
+#endif
   failedUploadContract();
   run<IDirect3DVertexBuffer9>("VB", D3DFMT_VERTEXDATA);
   run<IDirect3DVertexBuffer9>("VB managed", D3DFMT_VERTEXDATA, D3DPOOL_MANAGED);

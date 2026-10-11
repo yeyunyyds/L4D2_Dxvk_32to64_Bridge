@@ -30,14 +30,22 @@ for variant in ('crt', 'arena'):
             growth = [r for r in batch[:batch.index(lock)] if r['phase'] in ('dynamic-12.25mib', 'static-growth', 'allocation-failed')]
             assert lock['static_shadow_bytes'] == growth[-1]['static_shadow_bytes']
             survivors = [r for r in batch if r['phase'] == 'partial-survivors']
+            dynamic = next(r for r in batch if r['phase'] == 'dynamic-growth')
+            release_phases = [r for r in batch if r['phase'] in ('partial-survivors', 'static-released', 'map-released')]
             rounds.append({
                 'round': n, 'logical_peak': peak['static_shadow_bytes'] + peak['dynamic_shadow_bytes'],
                 'av_loss_peak': before['available_virtual_bytes'] - peak['available_virtual_bytes'],
                 'av_residual': background['available_virtual_bytes'] - release['available_virtual_bytes'],
                 'largest_free_released': release['largest_free_bytes'],
                 'create_ns': sum(r['phase_nanoseconds'] for r in growth),
+                'create_cpu_ns': sum(r['phase_cpu_nanoseconds'] for r in growth),
+                'create_work_bytes': lock['static_shadow_bytes'] + lock['dynamic_shadow_bytes'],
                 'lock_ns': lock['phase_nanoseconds'],
-                'release_ns': sum(r['phase_nanoseconds'] for r in batch if r['phase'] in ('partial-survivors', 'static-released', 'map-released')),
+                'lock_cpu_ns': lock['phase_cpu_nanoseconds'],
+                'lock_work_calls': lock['lock_cycles'],
+                'release_ns': sum(r['phase_nanoseconds'] for r in release_phases),
+                'release_cpu_ns': sum(r['phase_cpu_nanoseconds'] for r in release_phases),
+                'release_work_bytes': lock['static_shadow_bytes'] + dynamic['dynamic_shadow_bytes'],
                 'survivors': survivors, 'released': release,
             })
         assert rows[-1]['phase'] == 'all-owned-objects-released' and not rows[-1]['objects']
@@ -56,13 +64,17 @@ for scenario in ('2300-few-large', '2300-many-small', '800-many-small', '800-fra
     row = {}
     for variant, index in (('crt', 0), ('arena', 1)):
         row[variant] = {metric: distribution([pair[index][metric] for pair in pairs]) for metric in
-            ('logical_peak', 'av_loss_peak', 'av_residual', 'largest_free_released', 'create_ns', 'lock_ns', 'release_ns')}
+            ('logical_peak', 'av_loss_peak', 'av_residual', 'largest_free_released', 'create_ns', 'lock_ns', 'release_ns',
+             'create_cpu_ns', 'lock_cpu_ns', 'release_cpu_ns')}
     equal = [pair for pair in pairs if pair[0]['logical_peak'] == pair[1]['logical_peak']]
     row['equal_work_pairs'] = len(equal)
     # Later rounds deliberately expose retained VA changing achievable work;
     # never present their different workloads as an allocator speedup.
     for metric in ('create_ns', 'lock_ns', 'release_ns'):
-        row[metric + '_paired_change'] = distribution([b[metric] / a[metric] - 1 for a, b in equal]) if equal else None
+        work = metric.split('_')[0] + ('_work_calls' if metric == 'lock_ns' else '_work_bytes')
+        completed = [(a, b) for a, b in pairs if a[work] == b[work] and a[metric]]
+        row[metric + '_equal_work_pairs'] = len(completed)
+        row[metric + '_paired_change'] = distribution([b[metric] / a[metric] - 1 for a, b in completed]) if completed else None
     paired[scenario] = row
     print(scenario, 'CRT/arena residual MiB', row['crt']['av_residual']['median'] / 2**20,
           row['arena']['av_residual']['median'] / 2**20, 'equal-work pairs', len(equal))

@@ -17,6 +17,8 @@
 #include <string>
 #include <type_traits>
 #include <vector>
+#include <thread>
+#include <atomic>
 #include "data_diagnostics.h"
 #include "data_ring_contract.h"
 #include "util_commands.h"

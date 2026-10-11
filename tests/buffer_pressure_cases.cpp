@@ -6,10 +6,23 @@
 constexpr uint64_t MiB = 1024 * 1024;
 bool nativeArrayControl = false;
 uint64_t phaseNanoseconds = 0;
+uint64_t phaseCpuNanoseconds = 0, phaseCpuBegin = 0;
+uint64_t cpuNanoseconds() {
+  FILETIME created {}, exited {}, kernel {}, user {};
+  if (!GetProcessTimes(GetCurrentProcess(), &created, &exited, &kernel, &user)) throw std::runtime_error("GetProcessTimes");
+  const uint64_t k = (uint64_t(kernel.dwHighDateTime) << 32) | kernel.dwLowDateTime;
+  const uint64_t u = (uint64_t(user.dwHighDateTime) << 32) | user.dwLowDateTime;
+  return (k + u) * 100;
+}
 uint64_t nowNanoseconds() {
   LARGE_INTEGER value {}, frequency {}; QueryPerformanceCounter(&value); QueryPerformanceFrequency(&frequency);
   return static_cast<uint64_t>(value.QuadPart / frequency.QuadPart) * 1000000000ull
     + static_cast<uint64_t>(value.QuadPart % frequency.QuadPart) * 1000000000ull / static_cast<uint64_t>(frequency.QuadPart);
+}
+uint64_t beginPhase() { phaseCpuBegin = cpuNanoseconds(); return nowNanoseconds(); }
+void finishPhase(uint64_t begin) {
+  phaseNanoseconds = nowNanoseconds() - begin;
+  phaseCpuNanoseconds = cpuNanoseconds() - phaseCpuBegin;
 }
 template<typename T> class PressureBuffer : public LockableBuffer<T> {
   using Desc = std::conditional_t<std::is_same_v<T, IDirect3DVertexBuffer9>, D3DVERTEXBUFFER_DESC, D3DINDEXBUFFER_DESC>;
@@ -107,6 +120,7 @@ void record(const char* phase, unsigned round, const Population& stat, const Pop
     << ",\"working_set_bytes\":" << p.WorkingSetSize << ",\"reserved_background_bytes\":" << background
     << ",\"address_limit\":" << scan.limit << ",\"scan_complete\":" << (scan.complete ? "true" : "false")
     << ",\"phase_nanoseconds\":" << phaseNanoseconds
+    << ",\"phase_cpu_nanoseconds\":" << phaseCpuNanoseconds
 #ifdef LDB_SHADOW_ARENA
     << ",\"allocator\":\"arena\",\"arena_reserved_bytes\":" << allocator.reserved
     << ",\"arena_committed_bytes\":" << allocator.committed << ",\"arena_regions\":" << allocator.regions
@@ -116,6 +130,7 @@ void record(const char* phase, unsigned round, const Population& stat, const Pop
 #endif
     << ",\"lock_cycles\":" << locks << "}\n" << std::flush;
   phaseNanoseconds = 0;
+  phaseCpuNanoseconds = 0;
 }
 template<typename T> void cycle(T& buffer, DWORD flag) {
   void* p = nullptr;
@@ -147,43 +162,43 @@ int main(int argc, char** argv) {
     }
     for (unsigned round = 1; round <= rounds; ++round) {
       record("before-map", round, stat, dyn, pressure.reserved);
-      auto begin = nowNanoseconds(); dyn.add(12 * MiB, 256 * 1024, true);
-      phaseNanoseconds = nowNanoseconds() - begin;
+      auto begin = beginPhase(); dyn.add(12 * MiB, 256 * 1024, true);
+      finishPhase(begin);
       record("dynamic-12.25mib", round, stat, dyn, pressure.reserved);
       for (auto targetMiB : {128u, 256u, 512u, 768u, 1024u, 1280u}) {
         bool failed = false;
-        begin = nowNanoseconds();
+        begin = beginPhase();
         try {
           // Preserve upload-adapter headroom; do not call this an OOM threshold.
           while (stat.bytes < uint64_t(targetMiB) * MiB && av() > 64 * MiB)
             stat.add(manySmallBuffers ? 64 * 1024 : UINT(8 * MiB), manySmallBuffers ? 16 * 1024 : UINT(2 * MiB), false);
         } catch (const std::bad_alloc&) { failed = true; }
-        phaseNanoseconds = nowNanoseconds() - begin;
+        finishPhase(begin);
         record(failed ? "allocation-failed" : "static-growth", round, stat, dyn, pressure.reserved);
         if (failed) break;
       }
-      begin = nowNanoseconds();
+      begin = beginPhase();
       for (unsigned i = 0; i < (nativeArrayControl ? 0u : 10000u); ++i) {
         cycle(*dyn.vb.front(), D3DLOCK_DISCARD); cycle(*dyn.ib.front(), D3DLOCK_NOOVERWRITE);
       }
-      phaseNanoseconds = nowNanoseconds() - begin;
+      finishPhase(begin);
       record("after-lock-phase", round, stat, dyn, pressure.reserved, nativeArrayControl ? 0 : 20000);
       if (survivors) {
-        begin = nowNanoseconds(); stat.retainEvery(32); phaseNanoseconds = nowNanoseconds() - begin;
+        begin = beginPhase(); stat.retainEvery(32); finishPhase(begin);
         record("partial-survivors", round, stat, dyn, pressure.reserved);
         // Verify actual historical contents and wire path of each survivor.
         for (auto& p : stat.vb) cycle(*p, 0);
         for (auto& p : stat.ib) cycle(*p, 0);
       }
       // Independent dynamic-heavy stage: bounded and permitted to fail under low AV.
-      begin = nowNanoseconds(); stat.clear(); phaseNanoseconds = nowNanoseconds() - begin;
+      begin = beginPhase(); stat.clear(); finishPhase(begin);
       record("static-released", round, stat, dyn, pressure.reserved);
-      begin = nowNanoseconds();
+      begin = beginPhase();
       try { while (dyn.bytes < 512 * MiB) dyn.add(8 * MiB, 2 * MiB, true); }
       catch (const std::bad_alloc&) {}
-      phaseNanoseconds = nowNanoseconds() - begin;
+      finishPhase(begin);
       record("dynamic-growth", round, stat, dyn, pressure.reserved);
-      begin = nowNanoseconds(); dyn.clear(); phaseNanoseconds = nowNanoseconds() - begin;
+      begin = beginPhase(); dyn.clear(); finishPhase(begin);
       record("map-released", round, stat, dyn, pressure.reserved);
     }
     // Intentionally retain one map's objects, then create the next; this is NOT a demonstrated leak.
