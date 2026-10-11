@@ -1,0 +1,30 @@
+name: VB IB shadow address pressure investigation
+on:
+  push:
+    branches: [codex/vbib-shadow-pressure]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-x86-pressure:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Prepare unchanged v1.2.2 production sources
+        run: python scripts/prepare_bridge.py
+      - name: Existing historical contents and failure regression
+        shell: powershell
+        run: ./scripts/test_buffer_contract.ps1
+      - name: Native x86 LAA production shadow pressure and map lifecycle
+        shell: powershell
+        run: ./scripts/test_buffer_pressure.ps1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: vbib-shadow-pressure-evidence
+          include-hidden-files: true
+          path: .deps/buffer-pressure-test/
+          if-no-files-found: error

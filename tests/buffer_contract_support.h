@@ -40,6 +40,7 @@ inline uint64_t liveBytes = 0;
 inline bool failAllocation = false;
 union Allocation { size_t bytes; std::max_align_t alignment; };
 }
+#ifndef LDB_PRESSURE_NATIVE_ALLOCATOR
 void* operator new[](size_t size) {
   if (buffer_contract::failAllocation) { throw std::bad_alloc(); }
   auto* header = static_cast<buffer_contract::Allocation*>(std::malloc(sizeof(buffer_contract::Allocation) + size));
@@ -53,6 +54,7 @@ void operator delete[](void* data) noexcept {
   buffer_contract::liveBytes -= header->bytes; std::free(header);
 }
 void operator delete[](void* data, size_t) noexcept { ::operator delete[](data); }
+#endif
 namespace SharedHeap {
 using AllocId = uint32_t;
 constexpr AllocId kInvalidId = UINT32_MAX;
