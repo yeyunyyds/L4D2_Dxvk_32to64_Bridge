@@ -78,9 +78,14 @@ template<class B> void uploadWrap() {
 #ifdef REMIX_BRIDGE_CLIENT
     // The first upload positions the ring near its middle. The Surface layout
     // then has UID + RECT blob + flags + format + pitch before a large blob.
-    { typename B::Command c(Commands::IDirect3DDevice9Ex_SetRenderState, i);
-      std::vector<uint8_t> bytes(68000, static_cast<uint8_t>(i));
-      c.send_data(bytes.size(), bytes.data()); require(c.finish()==Result::Success,"wrap positioning upload"); }
+    { std::vector<uint8_t> bytes(68000, static_cast<uint8_t>(i));
+      if (i % 2) {
+        typename B::Command c(Commands::IDirect3DDevice9Ex_SetRenderState, i, 0, bridge_data::payload(bytes.size(), bytes.data()));
+        require(c.finish()==Result::Success,"known-packet wrap positioning upload");
+      } else {
+        typename B::Command c(Commands::IDirect3DDevice9Ex_SetRenderState, i);
+        c.send_data(bytes.size(), bytes.data()); require(c.finish()==Result::Success,"wrap positioning upload");
+      } }
     { typename B::Command c(Commands::IDirect3DSurface9_UnlockRect, i);
       const std::array<uint32_t,4> rect {{0,0,100,200}};
       c.send_data(sizeof(rect), rect.data()); c.send_many(0,21,400);
