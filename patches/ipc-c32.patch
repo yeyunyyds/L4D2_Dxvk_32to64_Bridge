@@ -3590,7 +3590,26 @@ diff --git a/bridge/src/util/util_bridgecommand.cpp b/bridge/src/util/util_bridg
      }
      Result result;
      Header header = getReaderChannel().commands->peek(result, peekTimeoutMS, pbEarlyOutSignal);
-@@ -215,6 +326,7 @@
+@@ -203,6 +314,18 @@
+ 
+     case Result::Success:
+     {
++#ifdef REMIX_BRIDGE_SERVER
++      if (header.flags & ldb_c32::Padding) {
++        try {
++          if (header.flags != ldb_c32::Padding || header.command != Commands::Bridge_DebugMessage
++              || header.dataOffset != 0 || header.pHandle != 0 || !getReaderChannel().data->get_pos()) { failRead(); }
++          startRead(header);
++          getReaderChannel().data->advanceTo(s_readEnd);
++          end_read_data();
++        } catch (...) { getReaderChannel().commands->fault(); gbBridgeRunning = false; return Result::Failure; }
++        continue;
++      }
++#endif
+       bool uidVerified = true;
+       if (verifyUID) {
+         if (header.pHandle != uidToVerify) {
+@@ -215,6 +338,7 @@
            Logger::traceLazy([&]() { return format_string("...success, command %s received!", Commands::toString(command).c_str()); });
          }
  #endif
@@ -3598,7 +3617,7 @@ diff --git a/bridge/src/util/util_bridgecommand.cpp b/bridge/src/util/util_bridg
          return Result::Success;
        } else {
  #if defined(_DEBUG) || defined(DEBUGOPT)
-@@ -272,6 +384,9 @@
+@@ -272,6 +396,9 @@
    } while (!bEarlyOut &&
              attemptNum++ <= maxAttempts &&
              gbBridgeRunning);
@@ -3608,7 +3627,7 @@ diff --git a/bridge/src/util/util_bridgecommand.cpp b/bridge/src/util/util_bridg
    return Result::Timeout;
  }
  
-@@ -281,7 +396,8 @@
+@@ -281,7 +408,8 @@
  
  DECL_COMMAND_FUNC(,Command,const Commands::D3D9Command command,
                             uintptr_t pHandle,
@@ -3618,7 +3637,7 @@ diff --git a/bridge/src/util/util_bridgecommand.cpp b/bridge/src/util/util_bridg
    : m_exceptionContext(std::is_same<BridgeId, ::BridgeId::Device>::value ? bridge_exception::Queue::Device : bridge_exception::Queue::Module,
                         static_cast<uint16_t>(command), static_cast<uint32_t>(pHandle), "serialize_command")
    , m_command(command)
-@@ -307,105 +423,141 @@
+@@ -307,105 +435,175 @@
    {
      l4d2_api_wait::Span apiMutexTiming(l4d2_api_wait::Metric::CommandMutexWait);
      s_pWriterChannel->m_mutex.lock();
@@ -3816,6 +3835,40 @@ diff --git a/bridge/src/util/util_bridgecommand.cpp b/bridge/src/util/util_bridg
 +#endif
 +}
 +
++
++#ifdef REMIX_BRIDGE_CLIENT
++DECL_COMMAND_FUNC(bool, relocateUpload, uint64_t words) {
++  auto& channel = *s_pWriterChannel;
++  const auto capacity = channel.data->get_total_size();
++  const auto prefixWords = channel.data->cursor() - m_begin;
++  // Only a bounded, unpublished small prefix can be relocated. Oversize
++  // requests still fail; padding never permits overwrite or partial dispatch.
++  if (m_inline || m_status != Result::Success || m_finished || channel.data->blobOpen()
++      || prefixWords > 256 || words > capacity || prefixWords > capacity - words
++      || !channel.data->get_pos()) { return false; }
++  std::array<DataT, 256> prefix {};
++  const auto startPosition = (channel.data->get_pos() + capacity - prefixWords) % capacity;
++  for (size_t i = 0; i < prefixWords; ++i) { prefix[i] = channel.data->m_data[(startPosition + i) % capacity]; }
++  const auto paddingEnd = channel.data->cursor() + capacity - channel.data->get_pos();
++  // This marker retires unused tail and the abandoned prefix. It is published
++  // separately so its credit can return before the real upload is reserved.
++  channel.data->advanceTo(paddingEnd);
++  channel.data->end_batch();
++  channel.control->published.store(paddingEnd, std::memory_order_release);
++  if (!channel.commands->pushExternal({Commands::Bridge_DebugMessage, ldb_c32::Padding, 0, 0})) {
++    m_status = Result::Failure; fault(); return false;
++  }
++  m_begin = paddingEnd; s_curBatchStartPos = m_begin;
++  if (channel.data->begin_batch() != Result::Success) { m_status = Result::Failure; fault(); return false; }
++  for (size_t i = 0; i < prefixWords; ++i) {
++    const auto r = channel.data->reservation(1, false);
++    if (syncReservation(r) != Result::Success || channel.data->push_reserved(prefix[i], r) != Result::Success) {
++      m_status = Result::Failure; fault(); return false;
++    }
++  }
++  return true;
++}
++#endif
 +
 +#ifdef REMIX_BRIDGE_CLIENT
 +DECL_COMMAND_FUNC(void, leaveInline) {
@@ -4244,14 +4297,20 @@ diff --git a/bridge/src/util/util_bridgecommand.h b/bridge/src/util/util_bridgec
      static inline size_t get_counter() {
        return s_cmdCounter;
      }
-@@ -357,6 +436,38 @@
+@@ -357,6 +436,45 @@
      }
  
    private:
 +    Command(Commands::D3D9Command command, uintptr_t handle, Commands::Flags flags, bool includeUid);
 +    bridge_data::Reservation reserve(uint64_t words, bool blob) {
 +      if (m_status != Result::Success || m_finished || s_pWriterChannel->data->blobOpen()) { return {}; }
-+      const auto r = s_pWriterChannel->data->reservation(words, blob);
++      auto r = s_pWriterChannel->data->reservation(words, blob);
++#ifdef REMIX_BRIDGE_CLIENT
++      if (blob && !r.valid && relocateUpload(words)) {
++        r = s_pWriterChannel->data->reservation(words, blob);
++      }
++#endif
++      if (!r.valid) { reportFault("invalid-reservation", s_curCommand, s_curUID, words); m_status = Result::Failure; return {}; }
 +      m_status = syncReservation(r);
 +      if (m_status != Result::Success) { fault(); return {}; }
 +      return r;
@@ -4269,6 +4328,7 @@ diff --git a/bridge/src/util/util_bridgecommand.h b/bridge/src/util/util_bridgec
 +#ifdef REMIX_BRIDGE_CLIENT
 +    bool m_inline = false;
 +    void leaveInline();
++    bool relocateUpload(uint64_t words);
 +    template<size_t N> bool inlineMany(const std::array<DataT, N>& fields) {
 +      if (!m_inline || m_status != Result::Success || m_finished || !s_pWriterChannel->commands->canInline(N)) { return false; }
 +      for (auto field : fields) { if (!s_pWriterChannel->commands->scalar(field)) { abort(); return true; } }
@@ -4283,7 +4343,7 @@ diff --git a/bridge/src/util/util_bridgecommand.h b/bridge/src/util/util_bridgec
      // NV-DXVK start: Optional data/resource tracing.
      l4d2_data::Wire m_dataWire;
      // NV-DXVK end
-@@ -371,12 +482,45 @@
+@@ -371,12 +489,45 @@
    Bridge() = delete;
    Bridge(const Bridge&) = delete;
    Bridge(const Bridge&&) = delete;
@@ -4330,7 +4390,7 @@ diff --git a/bridge/src/util/util_bridgecommand.h b/bridge/src/util/util_bridgec
  #if defined(REMIX_BRIDGE_CLIENT)
    static constexpr char kWriterChannelName[] = "Client2Server";
    static constexpr char kReaderChannelName[] = "Server2Client";
-@@ -385,3 +529,16 @@
+@@ -385,3 +536,16 @@
    static constexpr char kReaderChannelName[] = "Client2Server";
  #endif
  };

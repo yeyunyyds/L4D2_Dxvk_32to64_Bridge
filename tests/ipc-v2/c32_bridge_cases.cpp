@@ -72,6 +72,39 @@ template<class B> void transfer() {
   const auto ns=std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now()-begin).count();
   std::printf("C32_TIMING cycles=%llu commands=%u wall_ns=%lld threaded=%u\n",static_cast<unsigned long long>(cyclesAfter-cyclesBefore),Count,static_cast<long long>(ns),threaded?1u:0u);
 }
+template<class B> void uploadWrap() {
+  constexpr unsigned Bytes = 80000;
+  for (unsigned i = 0; i < 32; ++i) {
+#ifdef REMIX_BRIDGE_CLIENT
+    // The first upload positions the ring near its middle. The Surface layout
+    // then has UID + RECT blob + flags + format + pitch before a large blob.
+    { typename B::Command c(Commands::IDirect3DDevice9Ex_SetRenderState, i);
+      std::vector<uint8_t> bytes(68000, static_cast<uint8_t>(i));
+      c.send_data(bytes.size(), bytes.data()); require(c.finish()==Result::Success,"wrap positioning upload"); }
+    { typename B::Command c(Commands::IDirect3DSurface9_UnlockRect, i);
+      const std::array<uint32_t,4> rect {{0,0,100,200}};
+      c.send_data(sizeof(rect), rect.data()); c.send_many(0,21,400);
+      auto* data=c.begin_data_blob(Bytes);require(data!=nullptr,"Surface wrap blob reservation");
+      std::memset(data,static_cast<uint8_t>(i^0x5a),Bytes);c.end_data_blob();
+      require(c.finish()==Result::Success,"Surface wrap finish"); }
+#else
+    require(B::waitForCommand(Commands::Bridge_Any,2000)==Result::Success,"positioning wait");
+    auto h=B::pop_front();require(h.command==Commands::IDirect3DDevice9Ex_SetRenderState && h.pHandle==i,"positioning header");
+    require(B::get_data()==i*2,"positioning UID");void* data=nullptr;require(B::get_data(&data)==68000,"positioning length");
+    for(unsigned j=0;j<68000;++j)require(static_cast<uint8_t*>(data)[j]==static_cast<uint8_t>(i),"positioning bytes");B::end_read_data();
+    require(B::waitForCommand(Commands::Bridge_Any,2000)==Result::Success,"Surface wrap wait");
+    h=B::pop_front();require(h.command==Commands::IDirect3DSurface9_UnlockRect && h.pHandle==i,"padding reached dispatch");
+    require(B::get_data()==i*2+1,"Surface UID changed by padding");
+    require(B::get_data(&data)==16,"RECT length");const std::array<uint32_t,4> rect {{0,0,100,200}};
+    require(std::memcmp(data,rect.data(),16)==0,"relocated RECT");
+    require(B::get_data()==0 && B::get_data()==21 && B::get_data()==400,"relocated scalar prefix");
+    require(B::get_data(&data)==Bytes,"Surface bytes length");
+    for(unsigned j=0;j<Bytes;++j)require(static_cast<uint8_t*>(data)[j]==static_cast<uint8_t>(i^0x5a),"Surface upload bytes");
+    B::end_read_data();
+#endif
+  }
+  std::puts("C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch");
+}
 #ifdef REMIX_BRIDGE_CLIENT
 int faultCase(const std::wstring& mode) {
   GlobalOptions::timeout=2;GlobalOptions::retries=2;
@@ -108,7 +141,8 @@ int wmain(int argc,wchar_t** argv) {
     WriterChannel dw("DeviceReply",memory,256,32768),mw("ModuleReply",memory,256,32768);
 #endif
     Device::install(&dw,&dr);Module::install(&mw,&mr);
-    transfer<Device>();transfer<Module>();
+    if (std::wstring(argv[2])==L"upload-wrap") { uploadWrap<Device>();uploadWrap<Module>(); }
+    else { transfer<Device>();transfer<Module>(); }
     std::puts("C32_BRIDGE_PASS inline/generic/known/blob/RPC/retained-Lock/Device/Module/wrap/slow-host");return 0;
   } catch (...) {std::puts("C32_BRIDGE_EXCEPTION");return 3;}
 }

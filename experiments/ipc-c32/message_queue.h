@@ -33,6 +33,7 @@ inline bool asynchronous(Commands::D3D9Command command) {
   default: return false;
   }
 }
+constexpr uint16_t Padding = 0x2000; // Internal Data Ring tail retirement, never dispatched.
 constexpr uint16_t Inline = 0x4000;
 constexpr uint32_t InlineBytes = 256;
 

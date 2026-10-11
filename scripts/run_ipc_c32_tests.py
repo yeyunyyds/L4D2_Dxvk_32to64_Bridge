@@ -16,7 +16,7 @@ rows=[]
 for iteration in range(3):
     for batch in (('1','32') if iteration%2==0 else ('32','1')):
         for arch in ('32','64'):
-            for mode in ('stream','mixed','threaded'):
+            for mode in ('stream','mixed','threaded','upload-wrap'):
                 guid=str(uuid.uuid4())
                 env=dict(os.environ,LDB_IPC_BATCH=batch)
                 host=subprocess.Popen([out/f'transport-host{arch}.exe',guid,mode],env=env,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
