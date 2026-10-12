@@ -20,10 +20,10 @@ int main(int argc,char** argv){using namespace ldb_reshade;
  HANDLE mapping=CreateFileMappingA(INVALID_HANDLE_VALUE,nullptr,PAGE_READWRITE,0,static_cast<DWORD>(sizeof(Shared)),name.c_str());check(mapping!=nullptr);
  auto* data=static_cast<Shared*>(MapViewOfFile(mapping,FILE_MAP_ALL_ACCESS,0,0,sizeof(Shared)));check(data!=nullptr);new(data)Shared();data->hostPid=GetCurrentProcessId();data->epoch=1;
  HANDLE event=CreateEventA(nullptr,TRUE,FALSE,signal.c_str());check(event!=nullptr);std::string command="\""+std::string(argv[1])+"\" writer "+name+" "+std::to_string(GetCurrentProcessId());
- STARTUPINFOA startup{};startup.cb=sizeof(startup);PROCESS_INFORMATION proc{};check(CreateProcessA(nullptr,&command[0],nullptr,nullptr,FALSE,0,nullptr,nullptr,&startup,&proc)!=FALSE);data->clientPid=proc.dwProcessId;SetEvent(event);CloseHandle(event);
+ STARTUPINFOA startup{};startup.cb=sizeof(startup);PROCESS_INFORMATION proc{};check(CreateProcessA(nullptr,&command[0],nullptr,nullptr,FALSE,0,nullptr,nullptr,&startup,&proc)!=FALSE);data->clientPid=proc.dwProcessId;check(SetEvent(event)!=FALSE);
  uint32_t next=0;const auto deadline=GetTickCount64()+10000;
  while(next<eventCount && GetTickCount64()<deadline){consume(*data,1,[&](const Event& e){check(e.time==next&&e.code==next%255+1&&e.flags==(next&1));++next;});SwitchToThread();}
  check(next==eventCount&&!data->fault);check(WaitForSingleObject(proc.hProcess,10000)==WAIT_OBJECT_0);DWORD result=1;check(GetExitCodeProcess(proc.hProcess,&result)!=FALSE&&result==0);
- CloseHandle(proc.hProcess);CloseHandle(proc.hThread);UnmapViewOfFile(data);CloseHandle(mapping);
+ CloseHandle(event);CloseHandle(proc.hProcess);CloseHandle(proc.hThread);UnmapViewOfFile(data);CloseHandle(mapping);
  std::cout<<"PASS native cross-process input: 20000 ordered events, peer identity, layout and repeated bounded-ring wrap\n";
 }
