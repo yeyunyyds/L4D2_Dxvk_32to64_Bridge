@@ -36,6 +36,16 @@ int main(){
  Client::refresh(false,apply,SetCapture);check(capture&&transitions==1);
  Client::refresh(false,apply,SetCapture);check(transitions==1);
  Client::refresh(true,apply,SetCapture);check(!capture&&transitions==2);
+ // Raw keyboard state must survive a stale legacy GetKeyboardState snapshot.
+ RAWINPUTDEVICE registration{1,6,RIDEV_NOLEGACY,hwnd};check(RegisterRawInputDevices(&registration,1,sizeof(registration))!=FALSE);Client::set(hwnd);
+ RAWINPUT packet{};packet.header.dwType=RIM_TYPEKEYBOARD;packet.header.dwSize=sizeof(packet);packet.data.keyboard.VKey=VK_CONTROL;
+ auto rawKeyboard=[&](HRAWINPUT,UINT,LPVOID destination,PUINT bytes,UINT){*static_cast<RAWINPUT*>(destination)=packet;*bytes=sizeof(packet);return static_cast<UINT>(sizeof(packet));};
+ Client::message(hwnd,WM_INPUT,RIM_INPUT,0,false,key,cursor,rawKeyboard);
+ Client::sample(false,key,cursor,[](PBYTE value){std::fill_n(value,256,BYTE(0));return TRUE;});
+ check((data->sourceFlags.load()&Ctrl)!=0);unsigned ctrlDown=0,ctrlUp=0;
+ consume(*data,epoch,[&](const Event& e){if(e.kind==uint32_t(Kind::Key)&&e.code==VK_CONTROL){if(e.flags&Down)++ctrlDown;else ++ctrlUp;}});check(ctrlDown==1&&ctrlUp==0);
+ packet.data.keyboard.Flags=RI_KEY_BREAK;Client::message(hwnd,WM_INPUT,RIM_INPUT,0,false,key,cursor,rawKeyboard);check(!(data->sourceFlags.load()&Ctrl));consume(*data,epoch,[](const Event&){});
+ registration.dwFlags=RIDEV_REMOVE;registration.hwndTarget=nullptr;check(RegisterRawInputDevices(&registration,1,sizeof(registration))!=FALSE);Client::set(hwnd);
  // Focus loss must leave the OS cursor unclipped; never restore game-only
  // clip/cursor state while another application owns the foreground.
  RECT original{};check(GetClipCursor(&original)!=FALSE);
