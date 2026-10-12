@@ -36,6 +36,13 @@ try {
   Assert-NativeArchitecture -Path (Join-Path $testDir 'native-test.exe') -Architecture $Platform
   & .\native-test.exe
   if ($LASTEXITCODE -ne 0) { throw 'Native ReShade-method fixture failed' }
+  & python.exe "$repoRoot/scripts/generate_capture_state_fixture.py" --source $source --output "$testDir/capture-state.cpp"
+  if ($LASTEXITCODE -ne 0) { throw 'Capture-state extraction failed' }
+  & cl.exe /nologo /std:c++17 /EHsc /O2 /W4 /WX capture-state.cpp /Fe:capture-state.exe
+  if ($LASTEXITCODE -ne 0) { throw 'Capture-state fixture compilation failed' }
+  Assert-NativeArchitecture -Path (Join-Path $testDir 'capture-state.exe') -Architecture $Platform
+  & .\capture-state.exe
+  if ($LASTEXITCODE -ne 0) { throw 'Capture-state concurrency test failed' }
   & cl.exe /nologo /std:c++17 /EHsc /O2 /W4 /WX "/I$source/bridge/src/util" "/I$source/bridge/src/client" "$repoRoot/tests/reshade_input_client.cpp" /Fe:client-test.exe /link user32.lib
   if ($LASTEXITCODE -ne 0) { throw 'Actual LDB Client collector compilation failed' }
   Assert-NativeArchitecture -Path (Join-Path $testDir 'client-test.exe') -Architecture $Platform

@@ -5,6 +5,7 @@
 #include "wire.h"
 #include "ipc_v2/ipc_v2_build.h"
 #include <iostream>
+#include <string>
 #include <cstring>
 #include <cstdlib>
 #include <new>
