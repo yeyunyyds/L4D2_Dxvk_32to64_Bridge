@@ -14,6 +14,7 @@ def identity():
     paths = [ROOT / 'patches/l4d2-bridge.patch', ROOT / 'patches/ipc-c32.patch']
     paths += sorted((ROOT / 'experiments/ipc-c32').glob('*.h'))
     paths += [ROOT / 'experiments/ipc-v2/platform.h', ROOT / 'experiments/ipc-v2/transport.h']
+    paths += [ROOT / 'experiments/reshade-input/wire.h', ROOT / 'experiments/reshade-input/context.hpp', ROOT / 'patches/reshade-input.patch']
     digest = hashlib.sha256()
     for path in paths:
         # Git Windows checkout line endings do not change the protocol identity.

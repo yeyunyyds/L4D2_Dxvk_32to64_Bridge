@@ -1,0 +1,199 @@
+diff --git a/source/input.cpp b/source/input.cpp
+index 0620062..e776ce4 100644
+--- a/source/input.cpp
++++ b/source/input.cpp
+@@ -399,6 +399,8 @@ void reshade::input::next_frame()
+ 	_last_mouse_position[0] = _mouse_position[0];
+ 	_last_mouse_position[1] = _mouse_position[1];
+ 
++	if (_ldb_context != nullptr) return; // External modifiers are Client values, not Host queue state.
++
+ 	// Update caps lock state
+ 	_keys[VK_CAPITAL] |= GetKeyState(VK_CAPITAL) & 0x1;
+ 
+@@ -456,7 +458,7 @@ void reshade::input::block_mouse_input(bool enable)
+ 	_block_mouse = enable;
+ 
+ 	// Some games setup ClipCursor with a tiny area which could make the cursor stay in that area instead of the whole window
+-	if (enable)
++	if (enable && _ldb_context == nullptr)
+ 		ClipCursor(nullptr);
+ }
+ void reshade::input::block_keyboard_input(bool enable)
+@@ -721,3 +723,68 @@ extern "C" BOOL WINAPI HookGetCursorPosition(LPPOINT lpPoint)
+ 	static const auto trampoline = reshade::hooks::call(HookGetCursorPosition);
+ 	return trampoline(lpPoint);
+ }
++
++// LDB optional external input: actual runtime frame consumer, no window/thread.
++extern "C" __declspec(dllexport) const uint32_t* WINAPI ReShadeLDBInputBuildV1(){return ldb_reshade::expectedBuild;}
++extern "C" __declspec(dllexport) BOOL WINAPI ReShadeLDBConfigureInputV1(const char* name,uint32_t bytes,const uint32_t* build){return ldb_reshade::configure(name,bytes,build);}
++extern "C" __declspec(dllexport) const char* WINAPI ReShadeLDBExperimentalBuildV1(){return ldb_reshade::experimentalBuild;}
++reshade::input::~input() {
++ if(!_ldb_context)return;
++ void* owner=_ldb_owner;
++ if(_ldb_context->owner.compare_exchange_strong(owner,nullptr)) {
++  ldb_reshade::publishCapture(*_ldb_context->data,_ldb_epoch,0,GetTickCount64());
++  _ldb_context->data->epoch.fetch_add(1,std::memory_order_release);
++ }
++}
++std::shared_ptr<reshade::input> reshade::input::ldb_register(window_handle window,void* runtime) {
++ auto* c=ldb_reshade::context.load(std::memory_order_acquire);if(!c || !window || !c->alive())return nullptr;
++ auto& data=*c->data;
++ const auto hwnd=static_cast<HWND>(window);
++ DWORD pid=0;GetWindowThreadProcessId(hwnd,&pid);
++ if(pid!=data.clientPid || static_cast<uint32_t>(reinterpret_cast<uintptr_t>(hwnd))!=data.window.load(std::memory_order_acquire))return nullptr;
++ void* empty=nullptr;if(!c->owner.compare_exchange_strong(empty,runtime))return nullptr;
++ auto result=std::make_shared<input>(window);
++ result->_ldb_context=c;result->_ldb_owner=runtime;result->_ldb_epoch=data.epoch.fetch_add(1,std::memory_order_acq_rel)+1;
++ result->_text_input.reserve(ldb_reshade::capacity);
++ ldb_reshade::publishCapture(data,result->_ldb_epoch,0,GetTickCount64());
++ LOG(INFO)<<"LDB_EXTERNAL_INPUT event=runtime-bound epoch="<<result->_ldb_epoch<<" build="<<ldb_reshade::experimentalBuild;
++ return result;
++}
++void reshade::input::ldb_begin_frame() {
++ if(!_ldb_context)return;
++ auto& data=*_ldb_context->data;
++ const auto now=GetTickCount64(),published=data.sourceTime.load(std::memory_order_acquire);
++ const uint32_t flags=data.sourceFlags.load(std::memory_order_acquire);
++ const bool focus=(flags & ldb_reshade::Focused)!=0 && _ldb_context->alive() && !data.fault.load(std::memory_order_acquire)
++  && published<=now && now-published<=1000 && _ldb_epoch==data.epoch.load(std::memory_order_acquire);
++ const std::unique_lock<std::shared_mutex> lock(_mutex);
++ if(!focus){std::fill_n(_keys,256,uint8_t(0));_text_input.clear();_mouse_wheel_delta=0;_block_mouse=_block_keyboard=false;}
++ if(_ldb_epoch==data.epoch.load(std::memory_order_acquire)) ldb_reshade::consume(data,_ldb_epoch,[&](const ldb_reshade::Event& e){
++  if(!focus)return;
++  switch(static_cast<ldb_reshade::Kind>(e.kind)) {
++  case ldb_reshade::Kind::Key:
++  case ldb_reshade::Kind::Button:
++   if(e.code==0 || e.code>=256){data.fault.store(3,std::memory_order_release);return;}
++   _keys[e.code]=(e.flags & ldb_reshade::Down)?0x88:0x08;_keys_time[e.code]=e.time;break;
++  case ldb_reshade::Kind::Wheel:_mouse_wheel_delta+=static_cast<short>(e.x)/WHEEL_DELTA;break;
++  case ldb_reshade::Kind::Text:
++   if(e.code>65535){data.fault.store(3,std::memory_order_release);return;}
++   _text_input+=static_cast<wchar_t>(e.code);break;
++  case ldb_reshade::Kind::Focus:
++   if(!(e.flags & ldb_reshade::Focused)){std::fill_n(_keys,256,uint8_t(0));_text_input.clear();}break;
++  default:data.fault.store(3,std::memory_order_release);break;
++  }
++ });
++ if(data.fault.load(std::memory_order_acquire)){std::fill_n(_keys,256,uint8_t(0));_block_mouse=_block_keyboard=false;_ldb_focus=false;return;}
++ _ldb_focus=focus;
++ const auto position=data.position.load(std::memory_order_acquire);
++ _mouse_position[0]=static_cast<unsigned int>(ldb_reshade::x(position));_mouse_position[1]=static_cast<unsigned int>(ldb_reshade::y(position));
++ _keys[VK_CAPITAL]=static_cast<uint8_t>((_keys[VK_CAPITAL]&~1u)|((flags & ldb_reshade::CapsLock)?1u:0u));
++ const unsigned vk[]={VK_MENU,VK_CONTROL,VK_SHIFT};const unsigned state[]={ldb_reshade::Alt,ldb_reshade::Ctrl,ldb_reshade::Shift};
++ for(unsigned i=0;i<3;++i){_keys[vk[i]]=static_cast<uint8_t>((_keys[vk[i]]&0x08)|((focus && (flags & state[i]))?0x80:0));_keys_time[vk[i]]=static_cast<DWORD>(now);}
++}
++void reshade::input::ldb_capture(bool open) {
++ if(!_ldb_context || _ldb_context->owner.load()!=_ldb_owner || _ldb_context->data->epoch.load()!=_ldb_epoch)return;
++ const uint32_t mask=(open && _ldb_focus && !_ldb_context->data->fault.load(std::memory_order_acquire))?7u:0u;
++ ldb_reshade::publishCapture(*_ldb_context->data,_ldb_epoch,mask,GetTickCount64());
++}
+diff --git a/source/input.hpp b/source/input.hpp
+index 390cede..0742b8a 100644
+--- a/source/input.hpp
++++ b/source/input.hpp
+@@ -1,4 +1,4 @@
+-/*
++﻿/*
+  * Copyright (C) 2014 Patrick Mours
+  * SPDX-License-Identifier: BSD-3-Clause
+  */
+@@ -8,6 +8,8 @@
+ #include <memory>
+ #include <string>
+ #include <shared_mutex>
++#include <mutex>
++#include "ldb_external_context.hpp"
+ 
+ namespace reshade
+ {
+@@ -29,6 +31,13 @@ namespace reshade
+ 		using window_handle = void *;
+ 
+ 		explicit input(window_handle window);
++        ~input();
++        static std::shared_ptr<input> ldb_register(window_handle window,void* runtime);
++        bool ldb_external()const{return _ldb_context!=nullptr;}
++        std::unique_lock<std::mutex> ldb_frame_lock(){return std::unique_lock<std::mutex>(_ldb_frame_mutex);}
++        void ldb_begin_frame();
++        void ldb_capture(bool open);
++
+ 
+ 		/// <summary>
+ 		/// Registers a window using raw input with the input manager.
+@@ -117,6 +126,11 @@ namespace reshade
+ 		static bool handle_window_message(const void *message_data);
+ 
+ 	private:
++        ldb_reshade::Context* _ldb_context=nullptr;
++        void* _ldb_owner=nullptr;
++        uint32_t _ldb_epoch=0;
++        bool _ldb_focus=false;
++        std::mutex _ldb_frame_mutex;
+ 		std::shared_mutex _mutex;
+ 		window_handle _window;
+ 		bool _block_mouse = false;
+diff --git a/source/runtime.cpp b/source/runtime.cpp
+index a6a2563..dd44cd4 100644
+--- a/source/runtime.cpp
++++ b/source/runtime.cpp
+@@ -1,4 +1,4 @@
+-/*
++﻿/*
+  * Copyright (C) 2014 Patrick Mours
+  * SPDX-License-Identifier: BSD-3-Clause
+  */
+@@ -490,8 +490,10 @@ bool reshade::runtime::on_init()
+ #endif
+ 
+ 	const input::window_handle window = _swapchain->get_hwnd();
+-	if (window != nullptr && !_is_vr)
+-		_input = input::register_window(window);
++	if (window != nullptr && !_is_vr) {
++        _input = input::ldb_register(window,this);
++        if (!_input) _input = input::register_window(window);
++    }
+ 	else
+ 		_input.reset();
+ 
+@@ -643,6 +645,11 @@ void reshade::runtime::on_present(api::command_queue *present_queue)
+ 	if (!_is_initialized)
+ 		return;
+ 
++    // Late configuration is adopted only on the actual runtime consumption thread.
++    if (!_input && !_is_vr) _input = input::ldb_register(_swapchain->get_hwnd(),this);
++    auto ldb_frame = (_input && _input->ldb_external()) ? _input->ldb_frame_lock() : std::unique_lock<std::mutex>();
++    if (_input) _input->ldb_begin_frame();
++
+ 	// If the application is presenting with a different queue than rendering, synchronize these two queues first
+ 	// This ensures that it has finished rendering before ReShade applies its own rendering
+ 	if (present_queue != _graphics_queue)
+@@ -864,6 +871,8 @@ void reshade::runtime::on_present(api::command_queue *present_queue)
+ 			present_queue->wait(_queue_sync_fence, _queue_sync_value);
+ 	}
+ 
++    if (_input) _input->ldb_capture(_show_overlay);
++
+ 	// Update input status
+ 	if (_input != nullptr)
+ 		_input->next_frame();
+diff --git a/source/vulkan/vulkan_hooks_instance.cpp b/source/vulkan/vulkan_hooks_instance.cpp
+index 4df604d..1f7a95c 100644
+--- a/source/vulkan/vulkan_hooks_instance.cpp
++++ b/source/vulkan/vulkan_hooks_instance.cpp
+@@ -1,4 +1,4 @@
+-/*
++﻿/*
+  * Copyright (C) 2014 Patrick Mours
+  * SPDX-License-Identifier: BSD-3-Clause OR MIT
+  */
+@@ -248,7 +248,7 @@ VkResult VKAPI_CALL vkGetPhysicalDeviceToolPropertiesEXT(VkPhysicalDevice physic
+ 	strcpy_s(tool_props.version, VERSION_STRING_PRODUCT);
+ 	tool_props.purposes = VK_TOOL_PURPOSE_ADDITIONAL_FEATURES_BIT_EXT | VK_TOOL_PURPOSE_MODIFYING_FEATURES_BIT_EXT;
+ 	strcpy_s(tool_props.description, "crosire's ReShade post-processing injector");
+-	strcpy_s(tool_props.layer, "VK_LAYER_reshade");
++	strcpy_s(tool_props.layer, "VK_LAYER_LDB_reshade");
+ 
+ 	return VK_SUCCESS;
+ }

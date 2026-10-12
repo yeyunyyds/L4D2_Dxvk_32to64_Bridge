@@ -1,0 +1,37 @@
+name: ReShade external-input independent validation
+on:
+  workflow_dispatch:
+  push:
+    branches: ['codex/reshade-external-input']
+    paths: ['.github/workflows/reshade-external-input.yml', 'experiments/reshade-input/**', 'patches/reshade-input.patch', 'scripts/*reshade*', 'tests/reshade*']
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: crosire/reshade
+          ref: 1c952ec211a91b9ebbf9042e23a4a810feba44ff
+          path: .deps/reshade
+          submodules: recursive
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Prepare pinned sources
+        run: |
+          python scripts/prepare_bridge.py
+          python scripts/prepare_reshade_external.py
+      - name: Actual input methods, wire boundaries and four process-architecture pairs
+        shell: powershell
+        run: ./scripts/test_reshade_external_input.ps1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reshade-independent-${{ github.run_id }}
+          path: |
+            .deps/reshade-input-*/source.json
+          retention-days: 30
