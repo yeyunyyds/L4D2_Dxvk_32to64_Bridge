@@ -4,13 +4,14 @@
 #pragma once
 #include <Windows.h>
 #include <new>
+#include <mutex>
 #include <cstring>
 #include "ldb_external_wire.h"
 #include "ldb_external_build.h"
 namespace ldb_reshade {
 inline constexpr uint32_t expectedBuild[4]={LDB_INPUT_BUILD0,LDB_INPUT_BUILD1,LDB_INPUT_BUILD2,LDB_INPUT_BUILD3};
 inline const char experimentalBuild[]=LDB_INPUT_BUILD_STRING;
-struct Context {HANDLE mapping=nullptr,peer=nullptr;Shared* data=nullptr;std::atomic<void*> owner{nullptr};
+struct Context {HANDLE mapping=nullptr,peer=nullptr;Shared* data=nullptr;std::atomic<void*> owner{nullptr};std::mutex publication;
  bool alive()const{return peer && WaitForSingleObject(peer,0)==WAIT_TIMEOUT;}
 };
 // Process-lifetime publication; runtime destruction releases ownership but does

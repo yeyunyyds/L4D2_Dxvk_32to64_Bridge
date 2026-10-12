@@ -28,6 +28,7 @@ def prepare(source):
     subprocess.run(['git', 'apply', str(patch)], cwd=source, check=True)
     util = source / 'bridge/src/util'
     (util / 'ipc_v2').mkdir(exist_ok=True)
+    shutil.copy2(ROOT / 'experiments/reshade-input/wire.h', util / 'ldb_external_wire.h')
     for name in ('platform.h', 'transport.h'):
         shutil.copy2(ROOT / 'experiments/ipc-v2' / name, util / 'ipc_v2' / name)
     shutil.copy2(ROOT / 'experiments/ipc-c32/message_queue.h', util / 'ipc_c32_message_queue.h')
