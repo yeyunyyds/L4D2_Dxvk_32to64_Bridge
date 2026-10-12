@@ -83,8 +83,15 @@ def inspect(path):
             'web_virtual_offset': '0x78', 'web_virtual_slot': 30,
             'web_mode': 0, 'web_return_sites': ['0x19a53', '0x19b3d', '0x6eb0d'],
             'flat_web_export_imported': False,
+            'overlay_helper_range': ['0x119e0', '0x11a6c'],
+            'overlay_guard_return_site': '0x11a03',
+            'overlay_guard_false_branch': '0x11a05 -> 0x11a20',
+            'overlay_false_dialog_tokens': ['#L4D360UI_SteamOverlay_Title', '#L4D360UI_SteamOverlay_Text'],
+            'overlay_virtual_offset': '0x70', 'overlay_virtual_slot': 28,
+            'overlay_return_site': '0x11a1a',
+            'lobby_invite_handler_calls': ['0x4f9ff', '0x5f0f6', '0x68b8a'],
             'helper_hashes': {hex(start): hashlib.sha256(raw[offset(start):offset(end)]).hexdigest()
-                              for start, end in [(0x199a0,0x19a73),(0x19a80,0x19b4c)]},
+                              for start, end in [(0x199a0,0x19a73),(0x19a80,0x19b4c),(0x119e0,0x11a6c)]},
             'claim_scope': 'static menu control flow; real guard values and requests not yet observed',
         }
     return report

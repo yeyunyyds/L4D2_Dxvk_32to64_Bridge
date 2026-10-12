@@ -1,0 +1,13 @@
+{
+  "status": "PASSED_USER_REPORTED",
+  "date": "2026-10-12",
+  "build": "ldb-ipc-c32-dev+8fffd697a6a95120",
+  "host": "x64",
+  "ipc_batch": 8,
+  "confirmation": "reshade算修复好了",
+  "bridge_log_evidence": ["Matched Client/Host build and session", "Client/Host external input channels ready", "Host configured window_mode=original no_presenter=1", "Clean shutdown"],
+  "scope": "User acceptance of ReShade repair; individual input regression checklist not supplied",
+  "runtime_bound_reshade_log_received": false,
+  "performance_validation_claimed": false,
+  "separate_open_issue": "Steam lobby Invite Friends displays Steam Community In-Game requirement"
+}

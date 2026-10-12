@@ -38,11 +38,17 @@ for arch,platform,bits,pe in [('x86','Win32',32,0x14c),('x64','x64',64,0x8664)]:
 (out/'config').mkdir();shutil.copy2(ROOT/'config/bridge.conf',out/'config/bridge.conf')
 shutil.copy2(ROOT/'config/RESHADE-EXTERNAL-INPUT-EXPERIMENT.conf',out/'config/RESHADE-EXTERNAL-INPUT-EXPERIMENT.conf')
 shutil.copy2(ROOT/'docs/RESHADE-EXTERNAL-INPUT-EXPERIMENT.md',out/'INSTALL-AND-TEST.md')
+invite=(ROOT/'docs/STEAM-INVITE-AVAILABILITY.md').exists()
+if invite:
+ shutil.copy2(ROOT/'docs/STEAM-INVITE-AVAILABILITY.md',out/'STEAM-INVITE-AND-TEST.md')
 receipt.update(experiment='reshade-original-window-external-input',reshade_source='1c952ec211a91b9ebbf9042e23a4a810feba44ff',reshade_build_id=f'ldb-reshade-input-dev+{digest[:16]}',native_run_id=__import__('os').environ.get('GITHUB_RUN_ID'),external_input_default=False,experimental_snippet_batch=8,presenter_required=False,gameplay_validated=False,status='AWAITING GAME VALIDATION',limitations=['One primary runtime/window','Whole-panel capture; fine-grained InputProcessing=0/1 not mirrored','No gameplay/GPU validation'])
+if invite:
+ receipt.update(experiment='steam-invite-availability-with-reshade-original-window',steam_experiment='verified-gameui-overlay-helper-availability',prior_reshade_user_accepted_build='8fffd697a6a95120',invitation_gameplay_validated=False)
 hashes={p.relative_to(out).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(out.rglob('*')) if p.is_file()}
 receipt['files']=hashes
 (out/'SHA256.json').write_text(json.dumps(hashes,indent=2)+'\n');(out/'BUILD-INFO.json').write_text(json.dumps(receipt,indent=2)+'\n')
-archive=out.parent/f'l4d2-bridge-reshade-original-window-dev-{digest[:16]}-r{receipt["native_run_id"]}.zip'
+label='steam-invite-reshade' if invite else 'reshade-original-window'
+archive=out.parent/f'l4d2-bridge-{label}-dev-{digest[:16]}-r{receipt["native_run_id"]}.zip'
 with zipfile.ZipFile(archive,'w',zipfile.ZIP_DEFLATED,compresslevel=9) as z:
  for p in sorted(out.rglob('*')):
   if p.is_file():z.write(p,p.relative_to(out))

@@ -1,6 +1,7 @@
 # ReShade original-window input experiment
 
-Status: AWAITING GAME VALIDATION. Experimental branch: `codex/reshade-external-input`.
+Status: PASSED (user-reported ReShade acceptance for build `8fffd697a6a95120`).
+Experimental branch: `codex/reshade-external-input`.
 Formal VERSION/main/tags/releases are unchanged. This is an update to an existing
 working LDB install; DXVK backend, presets, textures and effects are not bundled.
 
@@ -21,7 +22,10 @@ All three Bridge binaries and both ReShade DLLs are identical to native CI outpu
 13 existing native suites, 252 production transport cases, 30 failure cases,
 39 Python contracts, x86/x64 source-method/Client window/capture tests, four input
 process-architecture pairs, and both compiled-DLL ABI probes passed. These gates
-exercise source and OS transport; they do not claim L4D2/GPU validation.
+exercise source and OS transport. Subsequent user acceptance is recorded in
+[the hardware acceptance record](reshade-input-evidence/gameplay-user-acceptance.json).
+The separate Steam Invite Friends omission is tracked in
+[the invitation experiment](STEAM-INVITE-AVAILABILITY.md).
 
 ## Architecture and gates
 
@@ -131,5 +135,6 @@ For a full rollback also restore the backed-up three Bridge binaries together an
 old config. Do not pair these experimental Client/Host binaries with the prior set.
 
 The independent native gate passed. Full native compilation/regressions and package
-checks are recorded separately with their run IDs and SHAs. L4D2/GPU stability,
-Steam coexistence in this new mode, and actual performance await user testing.
+checks are recorded separately with their run IDs and SHAs. The user subsequently
+accepted the ReShade repair. Full stability/coexistence/performance regressions
+and all individual input checklist results have not been supplied.
