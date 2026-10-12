@@ -1,5 +1,18 @@
+diff --git a/res/exports.def b/res/exports.def
+index 8899963..690cc21 100644
+--- a/res/exports.def
++++ b/res/exports.def
+@@ -481,3 +481,8 @@ EXPORTS
+ 	; dinput8.dll
+ 	DirectInput8Create PRIVATE
+ 	GetdfDIJoystick PRIVATE
++
++	; Matched LDB experimental input interface (unmangled on both architectures)
++	ReShadeLDBInputBuildV1 PRIVATE
++	ReShadeLDBConfigureInputV1 PRIVATE
++	ReShadeLDBExperimentalBuildV1 PRIVATE
 diff --git a/source/input.cpp b/source/input.cpp
-index 0620062..7732e57 100644
+index 0620062..9974d65 100644
 --- a/source/input.cpp
 +++ b/source/input.cpp
 @@ -399,6 +399,8 @@ void reshade::input::next_frame()
@@ -26,9 +39,9 @@ index 0620062..7732e57 100644
  }
 +
 +// LDB optional external input: actual runtime frame consumer, no window/thread.
-+extern "C" __declspec(dllexport) const uint32_t* WINAPI ReShadeLDBInputBuildV1(){return ldb_reshade::expectedBuild;}
-+extern "C" __declspec(dllexport) BOOL WINAPI ReShadeLDBConfigureInputV1(const char* name,uint32_t bytes,const uint32_t* build){return ldb_reshade::configure(name,bytes,build);}
-+extern "C" __declspec(dllexport) const char* WINAPI ReShadeLDBExperimentalBuildV1(){return ldb_reshade::experimentalBuild;}
++extern "C" const uint32_t* WINAPI ReShadeLDBInputBuildV1(){return ldb_reshade::expectedBuild;}
++extern "C" BOOL WINAPI ReShadeLDBConfigureInputV1(const char* name,uint32_t bytes,const uint32_t* build){return ldb_reshade::configure(name,bytes,build);}
++extern "C" const char* WINAPI ReShadeLDBExperimentalBuildV1(){return ldb_reshade::experimentalBuild;}
 +reshade::input::~input() {
 + if(!_ldb_context)return;
 + void* owner=_ldb_owner;
@@ -90,7 +103,7 @@ index 0620062..7732e57 100644
 + ldb_reshade::publishCapture(*_ldb_context->data,_ldb_epoch,mask,GetTickCount64());
 +}
 diff --git a/source/input.hpp b/source/input.hpp
-index 390cede..0742b8a 100644
+index 390cede..7981e07 100644
 --- a/source/input.hpp
 +++ b/source/input.hpp
 @@ -1,4 +1,4 @@
@@ -108,13 +121,14 @@ index 390cede..0742b8a 100644
  
  namespace reshade
  {
-@@ -29,6 +31,13 @@ namespace reshade
+@@ -29,6 +31,14 @@ namespace reshade
  		using window_handle = void *;
  
  		explicit input(window_handle window);
 +        ~input();
 +        static std::shared_ptr<input> ldb_register(window_handle window,void* runtime);
 +        bool ldb_external()const{return _ldb_context!=nullptr;}
++        bool ldb_valid()const{return _ldb_context && _ldb_epoch==_ldb_context->data->epoch.load(std::memory_order_acquire);}
 +        std::unique_lock<std::mutex> ldb_frame_lock(){return std::unique_lock<std::mutex>(_ldb_frame_mutex);}
 +        void ldb_begin_frame();
 +        void ldb_capture(bool open);
@@ -122,7 +136,7 @@ index 390cede..0742b8a 100644
  
  		/// <summary>
  		/// Registers a window using raw input with the input manager.
-@@ -117,6 +126,11 @@ namespace reshade
+@@ -117,6 +127,11 @@ namespace reshade
  		static bool handle_window_message(const void *message_data);
  
  	private:
@@ -135,7 +149,7 @@ index 390cede..0742b8a 100644
  		window_handle _window;
  		bool _block_mouse = false;
 diff --git a/source/runtime.cpp b/source/runtime.cpp
-index a6a2563..dd44cd4 100644
+index a6a2563..cd35d45 100644
 --- a/source/runtime.cpp
 +++ b/source/runtime.cpp
 @@ -1,4 +1,4 @@
@@ -157,10 +171,12 @@ index a6a2563..dd44cd4 100644
  	else
  		_input.reset();
  
-@@ -643,6 +645,11 @@ void reshade::runtime::on_present(api::command_queue *present_queue)
+@@ -643,6 +645,13 @@ void reshade::runtime::on_present(api::command_queue *present_queue)
  	if (!_is_initialized)
  		return;
  
++    // Window rebinding invalidates the prior input ownership. Re-register here.
++    if (_input && _input->ldb_external() && !_input->ldb_valid()) _input.reset();
 +    // Late configuration is adopted only on the actual runtime consumption thread.
 +    if (!_input && !_is_vr) _input = input::ldb_register(_swapchain->get_hwnd(),this);
 +    auto ldb_frame = (_input && _input->ldb_external()) ? _input->ldb_frame_lock() : std::unique_lock<std::mutex>();
@@ -169,7 +185,7 @@ index a6a2563..dd44cd4 100644
  	// If the application is presenting with a different queue than rendering, synchronize these two queues first
  	// This ensures that it has finished rendering before ReShade applies its own rendering
  	if (present_queue != _graphics_queue)
-@@ -864,6 +871,8 @@ void reshade::runtime::on_present(api::command_queue *present_queue)
+@@ -864,6 +873,8 @@ void reshade::runtime::on_present(api::command_queue *present_queue)
  			present_queue->wait(_queue_sync_fence, _queue_sync_value);
  	}
  

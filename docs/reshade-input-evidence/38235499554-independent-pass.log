@@ -1,0 +1,15 @@
+2026-10-12T10:19:19.2841343Z Prepared experimental ReShade 1c952ec211a91b9ebbf9042e23a4a810feba44ff a02334fb46093e90
+2026-10-12T10:19:34.7076595Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\reshade-input-x86\wire-test.exe
+2026-10-12T10:19:34.7247598Z PASS external-input wire: fixed layout, peer/version, signed coordinates, transitions, generation, wrap, full-fault, stale/future/in-flight capture, 200000 ordered concurrent events
+2026-10-12T10:19:35.5594614Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\reshade-input-x86\native-test.exe
+2026-10-12T10:19:35.5655091Z PASS actual patched ReShade methods: bind identity, single owner, ordered key/text/wheel, Client Alt/CapsLock, native frame reset, focus/stale/death capture release, generation isolation, runtime destruction
+2026-10-12T10:19:38.4751352Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\reshade-input-x86\process-test.exe
+2026-10-12T10:19:43.9730604Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\reshade-input-x64\wire-test.exe
+2026-10-12T10:19:43.9903469Z PASS external-input wire: fixed layout, peer/version, signed coordinates, transitions, generation, wrap, full-fault, stale/future/in-flight capture, 200000 ordered concurrent events
+2026-10-12T10:19:44.6363356Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\reshade-input-x64\native-test.exe
+2026-10-12T10:19:44.6408424Z PASS actual patched ReShade methods: bind identity, single owner, ordered key/text/wheel, Client Alt/CapsLock, native frame reset, focus/stale/death capture release, generation isolation, runtime destruction
+2026-10-12T10:19:45.3374866Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\reshade-input-x64\process-test.exe
+2026-10-12T10:19:45.4152112Z PASS native cross-process input: 20000 ordered events, peer identity, layout and repeated bounded-ring wrap
+2026-10-12T10:19:45.4240970Z PASS native cross-process input: 20000 ordered events, peer identity, layout and repeated bounded-ring wrap
+2026-10-12T10:19:45.4309377Z PASS native cross-process input: 20000 ordered events, peer identity, layout and repeated bounded-ring wrap
+2026-10-12T10:19:45.4363825Z PASS native cross-process input: 20000 ordered events, peer identity, layout and repeated bounded-ring wrap
