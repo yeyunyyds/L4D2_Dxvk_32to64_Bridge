@@ -4,6 +4,7 @@
 #include <Windows.h>
 #include "wire.h"
 #include <string>
+#include <new>
 #include <iostream>
 #include <cstdlib>
 static void check(bool v){if(!v){std::cerr<<"FAIL process input wire err="<<GetLastError()<<"\n";std::exit(2);}}

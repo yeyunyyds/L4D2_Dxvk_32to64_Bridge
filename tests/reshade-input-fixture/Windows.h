@@ -19,7 +19,7 @@ inline bool fixture_alive=true;inline ULONGLONG fixture_now=1000;
 inline HANDLE OpenFileMappingA(DWORD,BOOL,const char*){return &fixture_data;}
 inline void* MapViewOfFile(HANDLE,DWORD,DWORD,DWORD,size_t){return &fixture_data;}
 inline BOOL UnmapViewOfFile(void*){return TRUE;}inline BOOL CloseHandle(HANDLE){return TRUE;}
-inline DWORD GetCurrentProcessId(){return 20;}inline HANDLE OpenProcess(DWORD,BOOL,DWORD){return reinterpret_cast<void*>(2);}
+inline DWORD GetCurrentProcessId(){return 20;}inline HANDLE OpenProcess(DWORD,BOOL,DWORD){return reinterpret_cast<void*>(uintptr_t(2));}
 inline DWORD WaitForSingleObject(HANDLE,DWORD){return fixture_alive?WAIT_TIMEOUT:0;}
 inline DWORD GetWindowThreadProcessId(HWND,DWORD* pid){*pid=10;return 99;}
 inline ULONGLONG GetTickCount64(){return fixture_now;}inline DWORD GetTickCount(){return static_cast<DWORD>(fixture_now); }

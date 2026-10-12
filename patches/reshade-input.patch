@@ -1,5 +1,5 @@
 diff --git a/source/input.cpp b/source/input.cpp
-index 0620062..e776ce4 100644
+index 0620062..7732e57 100644
 --- a/source/input.cpp
 +++ b/source/input.cpp
 @@ -399,6 +399,8 @@ void reshade::input::next_frame()
@@ -67,7 +67,7 @@ index 0620062..e776ce4 100644
 +  case ldb_reshade::Kind::Button:
 +   if(e.code==0 || e.code>=256){data.fault.store(3,std::memory_order_release);return;}
 +   _keys[e.code]=(e.flags & ldb_reshade::Down)?0x88:0x08;_keys_time[e.code]=e.time;break;
-+  case ldb_reshade::Kind::Wheel:_mouse_wheel_delta+=static_cast<short>(e.x)/WHEEL_DELTA;break;
++  case ldb_reshade::Kind::Wheel:_mouse_wheel_delta=static_cast<short>(_mouse_wheel_delta+static_cast<short>(e.x)/WHEEL_DELTA);break;
 +  case ldb_reshade::Kind::Text:
 +   if(e.code>65535){data.fault.store(3,std::memory_order_release);return;}
 +   _text_input+=static_cast<wchar_t>(e.code);break;

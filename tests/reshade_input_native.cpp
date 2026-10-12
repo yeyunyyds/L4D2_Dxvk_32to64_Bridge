@@ -15,9 +15,9 @@ static void checkAt(bool value,int line){if(!value){std::cerr<<"FAIL external Re
 #define check(value) checkAt((value),__LINE__)
 int main(){using namespace ldb_reshade;fixture_data.signature=magic;fixture_data.clientPid=10;fixture_data.hostPid=20;fixture_data.window=0x1122;fixture_data.sourceTime=1000;std::copy_n(expectedBuild,4,fixture_data.build);
  const uint32_t wrongBuild[4]={7,0,0,0};check(!configure("fixture",sizeof(Shared),wrongBuild));check(!configure("fixture",sizeof(Shared)-1,expectedBuild));check(configure("fixture",sizeof(Shared),expectedBuild));
- check(!reshade::input::ldb_register(reinterpret_cast<void*>(0x1234),reinterpret_cast<void*>(3)));
- auto input=reshade::input::ldb_register(reinterpret_cast<void*>(0x1122),reinterpret_cast<void*>(3));check(input&&input->ldb_external());auto epoch=fixture_data.epoch.load();check(epoch==1);
- check(!reshade::input::ldb_register(reinterpret_cast<void*>(0x1122),reinterpret_cast<void*>(4))); // Explicit single-primary-runtime contract.
+ check(!reshade::input::ldb_register(reinterpret_cast<void*>(uintptr_t(0x1234)),reinterpret_cast<void*>(uintptr_t(3))));
+ auto input=reshade::input::ldb_register(reinterpret_cast<void*>(uintptr_t(0x1122)),reinterpret_cast<void*>(uintptr_t(3)));check(input&&input->ldb_external());auto epoch=fixture_data.epoch.load();check(epoch==1);
+ check(!reshade::input::ldb_register(reinterpret_cast<void*>(uintptr_t(0x1122)),reinterpret_cast<void*>(uintptr_t(4)))); // Explicit single-primary-runtime contract.
  fixture_data.sourceFlags=Focused|Alt|CapsLock;fixture_data.position=xy(430,250);
  check(push(fixture_data,{epoch,1000,uint32_t(Kind::Key),VK_MENU,0,0,Down,0}));check(push(fixture_data,{epoch,1000,uint32_t(Kind::Key),65,0,0,Down,0}));
  check(push(fixture_data,{epoch,1000,uint32_t(Kind::Text),0xd834,0,0,0,0}));check(push(fixture_data,{epoch,1000,uint32_t(Kind::Text),0xdd1e,0,0,0,0}));check(push(fixture_data,{epoch,1000,uint32_t(Kind::Wheel),0,240,0,0,0}));
