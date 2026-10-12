@@ -8,12 +8,12 @@
 #include <iostream>
 #include <cstdlib>
 static void check(bool v){if(!v){std::cerr<<"FAIL process input wire err="<<GetLastError()<<"\n";std::exit(2);}}
-constexpr uint32_t count=20000;
+constexpr uint32_t eventCount=20000;
 int main(int argc,char** argv){using namespace ldb_reshade;
  if(argc==4 && std::string(argv[1])=="writer"){
   const std::string name=argv[2],signal=name+"_start";HANDLE event=OpenEventA(SYNCHRONIZE,FALSE,signal.c_str());check(event!=nullptr);check(WaitForSingleObject(event,10000)==WAIT_OBJECT_0);CloseHandle(event);
   HANDLE mapping=OpenFileMappingA(FILE_MAP_ALL_ACCESS,FALSE,name.c_str());check(mapping!=nullptr);auto* data=static_cast<Shared*>(MapViewOfFile(mapping,FILE_MAP_ALL_ACCESS,0,0,sizeof(Shared)));check(data&&valid(*data,GetCurrentProcessId(),static_cast<uint32_t>(std::stoul(argv[3]))));
-  for(uint32_t i=0;i<count;++i){while(data->write.load()-data->read.load(std::memory_order_acquire)>=capacity)SwitchToThread();check(push(*data,{1,i,1,i%255+1,0,0,i&1,0}));}
+  for(uint32_t i=0;i<eventCount;++i){while(data->write.load()-data->read.load(std::memory_order_acquire)>=capacity)SwitchToThread();check(push(*data,{1,i,1,i%255+1,0,0,i&1,0}));}
   UnmapViewOfFile(data);CloseHandle(mapping);return 0;
  }
  check(argc==2);const std::string name="Local\\LDBInputProcess_"+std::to_string(GetCurrentProcessId())+"_"+std::to_string(GetTickCount64()),signal=name+"_start";
@@ -22,8 +22,8 @@ int main(int argc,char** argv){using namespace ldb_reshade;
  HANDLE event=CreateEventA(nullptr,TRUE,FALSE,signal.c_str());check(event!=nullptr);std::string command="\""+std::string(argv[1])+"\" writer "+name+" "+std::to_string(GetCurrentProcessId());
  STARTUPINFOA startup{};startup.cb=sizeof(startup);PROCESS_INFORMATION proc{};check(CreateProcessA(nullptr,&command[0],nullptr,nullptr,FALSE,0,nullptr,nullptr,&startup,&proc)!=FALSE);data->clientPid=proc.dwProcessId;SetEvent(event);CloseHandle(event);
  uint32_t next=0;const auto deadline=GetTickCount64()+10000;
- while(next<count && GetTickCount64()<deadline){consume(*data,1,[&](const Event& e){check(e.time==next&&e.code==next%255+1&&e.flags==(next&1));++next;});SwitchToThread();}
- check(next==count&&!data->fault);check(WaitForSingleObject(proc.hProcess,10000)==WAIT_OBJECT_0);DWORD result=1;check(GetExitCodeProcess(proc.hProcess,&result)!=FALSE&&result==0);
+ while(next<eventCount && GetTickCount64()<deadline){consume(*data,1,[&](const Event& e){check(e.time==next&&e.code==next%255+1&&e.flags==(next&1));++next;});SwitchToThread();}
+ check(next==eventCount&&!data->fault);check(WaitForSingleObject(proc.hProcess,10000)==WAIT_OBJECT_0);DWORD result=1;check(GetExitCodeProcess(proc.hProcess,&result)!=FALSE&&result==0);
  CloseHandle(proc.hProcess);CloseHandle(proc.hThread);UnmapViewOfFile(data);CloseHandle(mapping);
  std::cout<<"PASS native cross-process input: 20000 ordered events, peer identity, layout and repeated bounded-ring wrap\n";
 }
