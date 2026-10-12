@@ -1,0 +1,52 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 yeyunyyds.
+name: Publish v1.3.0
+on:
+  push:
+    branches: [codex/publish-v1.3.0]
+    paths: [.github/workflows/publish-v130.yml]
+permissions:
+  contents: write
+  actions: read
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      TESTED_SHA: f6a059b758f9fcbf9c66ace73625aae9db34ad6a
+      BUILD_RUN_ID: 38221697540
+      RELEASE_VERSION: '1.3.0'
+      INCLUDE_L4N: 'true'
+      L4N_BUILD_RUN_ID: ''
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: f6a059b758f9fcbf9c66ace73625aae9db34ad6a
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Require the exact successful build on main and a new release
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os, subprocess
+          repo = os.environ['GH_REPO']
+          def api(path):
+              return json.loads(subprocess.check_output(['gh', 'api', 'repos/' + repo + '/' + path]))
+          expected = os.environ['TESTED_SHA']
+          build = api('actions/runs/' + os.environ['BUILD_RUN_ID'])
+          if build['head_sha'] != expected or build['name'] != 'Build L4D2 D3D9 Bridge' or build['conclusion'] != 'success':
+              raise RuntimeError('Matched successful build required')
+          if api('git/ref/heads/main')['object']['sha'] != expected:
+              raise RuntimeError('main must contain the exact tested source')
+          if any(item['tag_name'] == 'v1.3.0' for item in api('releases?per_page=100')):
+              raise RuntimeError('Preserve any existing release')
+          existing = subprocess.run(['gh', 'api', 'repos/' + repo + '/git/ref/tags/v1.3.0'], capture_output=True)
+          if existing.returncode == 0 or b'404' not in existing.stderr:
+              raise RuntimeError('Expected a new tag; preserve existing tag or API error')
+          PY
+      - name: Create the versioned draft with changes-only release notes
+        run: gh release create v1.3.0 --target "$TESTED_SHA" --draft --title 'LDB v1.3.0' --notes-file docs/RELEASE-V1.3.0-NOTES.md
+      - name: Publish the matched full package, update package and independent L4N plugin
+        run: python scripts/publish_release.py
