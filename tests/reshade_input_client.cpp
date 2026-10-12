@@ -36,6 +36,14 @@ int main(){
  Client::refresh(false,apply,SetCapture);check(capture&&transitions==1);
  Client::refresh(false,apply,SetCapture);check(transitions==1);
  Client::refresh(true,apply,SetCapture);check(!capture&&transitions==2);
+ // Focus loss must leave the OS cursor unclipped; never restore game-only
+ // clip/cursor state while another application owns the foreground.
+ RECT original{};check(GetClipCursor(&original)!=FALSE);
+ const RECT gameClip{10,20,80,90};check(ClipCursor(&gameClip)!=FALSE);
+ Client::refresh(false,apply,SetCapture);check(capture);
+ ShowWindow(hwnd,SW_HIDE);Client::refresh(false,apply,SetCapture);check(!capture);
+ RECT after{};check(GetClipCursor(&after)!=FALSE&&!EqualRect(&after,&gameClip));
+ ClipCursor(&original);
  // Only the window owner enqueues. Other threads may sample position/focus.
  std::thread other([&]{for(int i=0;i<200;++i)Client::sample(true,key,cursor,[](PBYTE){return FALSE;});});other.join();check(!data->fault.load()&&data->write.load()==data->read.load());
  Client::set(nullptr);check(data->epoch.load()!=epoch&&!Bridge::capture(GetTickCount64()));

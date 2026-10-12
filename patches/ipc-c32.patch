@@ -2767,7 +2767,19 @@ diff --git a/bridge/src/client/di_hook.cpp b/bridge/src/client/di_hook.cpp
      }
    }
  
-@@ -1064,6 +1077,50 @@
+@@ -1054,7 +1067,10 @@
+ }
+ 
+ void DI::onRemixUIDeactivated() {
+-  if (g_uiActiveCursorPosValid && OrigSetCursorPos) {
++  const bool externalMode=Config::getOption<bool>("server.reshadeExternalInput",false);
++  const HWND game=WndProc::getHwnd();
++  const bool foregroundOwned=game && GetAncestor(GetForegroundWindow(),GA_ROOT)==GetAncestor(game,GA_ROOT);
++  if (g_uiActiveCursorPosValid && OrigSetCursorPos && (!externalMode || foregroundOwned)) {
+     // Restore what the game was told, not the pre-UI position, so its next delta is zero.
+     OrigSetCursorPos(g_uiActiveCursorPos.x, g_uiActiveCursorPos.y);
+   }
+@@ -1064,6 +1080,50 @@
    DirectInput7Hook::flushPendingMouseInput();
  }
  
@@ -2818,7 +2830,7 @@ diff --git a/bridge/src/client/di_hook.cpp b/bridge/src/client/di_hook.cpp
  static BOOL WINAPI HookedGetCursorPos(LPPOINT lp) {
    LogStaticFunctionCall();
  
-@@ -1073,7 +1130,14 @@
+@@ -1073,7 +1133,14 @@
    }
  
    if (RemixState::isUIActive()) {
@@ -2834,7 +2846,7 @@ diff --git a/bridge/src/client/di_hook.cpp b/bridge/src/client/di_hook.cpp
      *lp = g_uiActiveCursorPos;
      return TRUE;
    }
-@@ -1113,7 +1177,13 @@
+@@ -1113,7 +1180,13 @@
    LogStaticFunctionCall();
    // Block if Remix UI is active
    if (RemixState::isUIActive()) {
@@ -2849,7 +2861,7 @@ diff --git a/bridge/src/client/di_hook.cpp b/bridge/src/client/di_hook.cpp
      return 0;
    }
    return OrigGetAsyncKeyState(vk);
-@@ -1123,7 +1193,13 @@
+@@ -1123,7 +1196,13 @@
    LogStaticFunctionCall();
    // Block if Remix UI is active
    if (RemixState::isUIActive()) {
@@ -2864,7 +2876,7 @@ diff --git a/bridge/src/client/di_hook.cpp b/bridge/src/client/di_hook.cpp
      return 0;
    }
    return OrigGetKeyState(vk);
-@@ -1133,7 +1209,15 @@
+@@ -1133,7 +1212,15 @@
    LogStaticFunctionCall();
    // Block if Remix UI is active
    if (RemixState::isUIActive()) {
@@ -2881,7 +2893,7 @@ diff --git a/bridge/src/client/di_hook.cpp b/bridge/src/client/di_hook.cpp
      memset(lpKeyState, 0, 256);
      return TRUE;
    }
-@@ -1261,6 +1345,11 @@
+@@ -1261,6 +1348,11 @@
  
    API_ATTACH(GetCursorPos);
    API_ATTACH(SetCursorPos);
@@ -2893,7 +2905,7 @@ diff --git a/bridge/src/client/di_hook.cpp b/bridge/src/client/di_hook.cpp
    API_ATTACH(GetKeyState);
    API_ATTACH(GetAsyncKeyState);
    API_ATTACH(GetKeyboardState);
-@@ -1286,6 +1375,7 @@
+@@ -1286,6 +1378,7 @@
  static void DetachConventionalInput() {
    API_DETACH(GetCursorPos);
    API_DETACH(SetCursorPos);
@@ -2901,7 +2913,7 @@ diff --git a/bridge/src/client/di_hook.cpp b/bridge/src/client/di_hook.cpp
    API_DETACH(GetKeyState);
    API_DETACH(GetAsyncKeyState);
    API_DETACH(GetKeyboardState);
-@@ -1314,6 +1404,7 @@
+@@ -1314,6 +1407,7 @@
      demand.mouseForward = ClientOptions::getForwardDirectInputMousePolicy() != DI::Never;
      demand.keyboardForward = ClientOptions::getForwardDirectInputKeyboardPolicy() != DI::Never;
      demand.steamInput = Config::getOption<bool>("client.steamOverlayInput", false);
@@ -2909,7 +2921,7 @@ diff --git a/bridge/src/client/di_hook.cpp b/bridge/src/client/di_hook.cpp
      return demand.requested();
    }();
    return requested;
-@@ -1379,3 +1470,9 @@
+@@ -1379,3 +1473,9 @@
  }
  
  }
@@ -3216,7 +3228,7 @@ new file mode 100644
 +    if(!ClipCursor(nullptr))restoreClip=false;
 +   } else {
 +    RECT current{},desktop{};GetClipCursor(&current);desktop.left=GetSystemMetrics(SM_XVIRTUALSCREEN);desktop.top=GetSystemMetrics(SM_YVIRTUALSCREEN);desktop.right=desktop.left+GetSystemMetrics(SM_CXVIRTUALSCREEN);desktop.bottom=desktop.top+GetSystemMetrics(SM_CYVIRTUALSCREEN);
-+    if(restoreClip && !steam && EqualRect(&current,&desktop))ClipCursor(&savedClip);
++    if(restoreClip && !steam && GetAncestor(GetForegroundWindow(),GA_ROOT)==GetAncestor(window,GA_ROOT) && EqualRect(&current,&desktop))ClipCursor(&savedClip);
 +    if(savedCapture && !steam && !GetCapture() && IsWindow(savedCapture) && GetAncestor(GetForegroundWindow(),GA_ROOT)==GetAncestor(window,GA_ROOT))capture(savedCapture);
 +    savedCapture=nullptr;restoreClip=false;
 +   }
