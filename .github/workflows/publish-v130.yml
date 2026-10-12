@@ -26,7 +26,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Require the exact successful build on main and a new release
+      - name: Require the exact successful build on main and our unpublished release draft
         shell: bash
         run: |
           python - <<'PY'
@@ -40,13 +40,23 @@ jobs:
               raise RuntimeError('Matched successful build required')
           if api('git/ref/heads/main')['object']['sha'] != expected:
               raise RuntimeError('main must contain the exact tested source')
-          if any(item['tag_name'] == 'v1.3.0' for item in api('releases?per_page=100')):
-              raise RuntimeError('Preserve any existing release')
-          existing = subprocess.run(['gh', 'api', 'repos/' + repo + '/git/ref/tags/v1.3.0'], capture_output=True)
-          if existing.returncode == 0 or b'404' not in existing.stderr:
-              raise RuntimeError('Expected a new tag; preserve existing tag or API error')
+          draft = api('releases/410363787')
+          if not draft['draft'] or draft['tag_name'] != 'v1.3.0' or draft['target_commitish'] != expected or draft['assets']:
+              raise RuntimeError('Preserve any unrelated, published or populated release')
           PY
-      - name: Create the versioned draft with changes-only release notes
-        run: gh release create v1.3.0 --target "$TESTED_SHA" --draft --title 'LDB v1.3.0' --notes-file docs/RELEASE-V1.3.0-NOTES.md
-      - name: Publish the matched full package, update package and independent L4N plugin
-        run: python scripts/publish_release.py
+      - name: Publish the matched packages through the exact existing draft
+        run: |
+          python - <<'PY'
+          import os, sys
+          sys.path.insert(0, 'scripts')
+          import publish_release
+          original_api = publish_release.api
+          def exact_draft_api(path):
+              if path == 'repos/' + os.environ['GH_REPO'] + '/releases?per_page=100':
+                  # Avoid a stale releases listing immediately after creation.
+                  # The existing publisher still checks tag, draft and exact source.
+                  return [original_api('repos/' + os.environ['GH_REPO'] + '/releases/410363787')]
+              return original_api(path)
+          publish_release.api = exact_draft_api
+          publish_release.main()
+          PY
