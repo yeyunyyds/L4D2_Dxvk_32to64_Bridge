@@ -27,6 +27,7 @@ int main(){
  check(events==5&&sawKey&&sawRelease&&sawText&&sawWheel); // One focus edge plus four input records.
  // Steam suppresses our source focus. Repeated unrelated background messages
  // must not fill the discrete-event ring.
+ Client::message(hwnd,WM_ACTIVATEAPP,0,0,true,key,cursor,raw);
  for(unsigned i=0;i<2000;++i)Client::message(hwnd,WM_NULL,0,0,true,key,cursor,raw);
  check(!data->fault.load()&&data->write.load()-data->read.load()==1);
  consume(*data,epoch,[](const Event&){});
