@@ -54,6 +54,8 @@ jobs:
       - name: Compile public-source experimental ReShade x86 and x64
         shell: powershell
         run: ./scripts/build_reshade_external.ps1
+      - name: Package and verify matched local-layer experiment
+        run: python scripts/package_reshade_external.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -62,6 +64,7 @@ jobs:
             .deps/reshade-input-*/source.json
             .deps/reshade/bin/**/Release/*.dll
             dist/*.zip
+            dist/RESHade-SHA256SUMS.txt
             work/ipc-c32-build.json
             work/ipc-c32-native/
             work/reshade-*-build.log

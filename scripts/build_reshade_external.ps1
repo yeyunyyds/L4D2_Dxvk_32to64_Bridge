@@ -19,4 +19,16 @@ Push-Location $source
 try {
  & msbuild.exe ReShade.vcxproj /m /nologo /v:minimal /p:Configuration=Release "/p:Platform=$buildPlatform" /p:PlatformToolset=v142 /p:WindowsTargetPlatformVersion=10.0 "/p:SolutionDir=$source\" "/flp:logfile=$root/work/reshade-$Platform-build.log;verbosity=normal"
  if($LASTEXITCODE -ne 0){throw "ReShade compilation failed: $Platform"}
+ . "$root/scripts/assert_native_architecture.ps1"
+ $dll=Join-Path $source "bin/$buildPlatform/Release/ReShade$(if($Platform -eq 'x86'){'32'}else{'64'}).dll"
+ Assert-NativeArchitecture -Path $dll -Architecture $Platform
+ $testDir=Join-Path $root ".deps/reshade-input-$Platform"
+ Push-Location $testDir
+ try {
+  & cl.exe /nologo /std:c++17 /EHsc /O2 /W4 /WX "/I$root/experiments/reshade-input" "/I$root/.deps/dxvk-remix/bridge/src/util" "$root/tests/reshade_input_dll.cpp" /Fe:dll-test.exe
+  if($LASTEXITCODE -ne 0){throw 'Compiled DLL smoke test compilation failed'}
+  Assert-NativeArchitecture -Path (Join-Path $testDir 'dll-test.exe') -Architecture $Platform
+  & .\dll-test.exe $dll
+  if($LASTEXITCODE -ne 0){throw 'Compiled DLL ABI smoke test failed'}
+ } finally {Pop-Location}
 } finally {Pop-Location}
