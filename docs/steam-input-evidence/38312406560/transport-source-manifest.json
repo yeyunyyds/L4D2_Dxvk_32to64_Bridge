@@ -1,0 +1,33 @@
+{
+  "source_sha256": {
+    "util_common.h": "d07ca930ee322f5ebd541ee39ff42afdc1146f6821c67cef57b585f37b727839",
+    "util_commands.h": "cfd0d69f05b00a6b4f05a04a41ac22c607789330fccd94f1fb6cdcb09b7dddc6",
+    "util_circularqueue.h": "4e8f4e95d2ce01876bcab0049bd2c18e4d49d09f4cd864973c2fa11cdb26cc4e",
+    "util_circularbuffer.h": "d40a7e732150993d3c7af753397c6f0944719f610b31dd09ba1a70bc68408eff",
+    "util_atomiccircularqueue.h": "3caf47d9ef17d5a8fd29e9775c97de0f18ce3048ef5aa6fe0d436eb5e9bd0a49",
+    "util_ipcchannel.h": "606a471548ff95acf6d6c38f9f91837a0727474cc6ded86d8868baa806889b44",
+    "util_sharedmemory.h": "220f59b124669b75c7d0a7bc97868533f1f758b9a2edcaa54b2a3baec1c750da",
+    "util_sharedmemory.cpp": "3b2390d77927ed431f50f18a7e4badf3510548289aa1ba54064d02fda0122ac0",
+    "util_semaphore.h": "737c4232da103bb364fcdf051aea6ada00038c827ace8073c79f77ddf74b956e",
+    "util_semaphore.cpp": "6e1d43eaab6e178f4d9e561b02f8f3187bde26923bf1dc754f9fcb6d6682a9fa",
+    "util_guid.h": "d8ae475f61150b900146ca8a32cc22ff4a82a75fe03785dd49c520a5c2b97cbb",
+    "api_wait_diagnostics.h": "84d8f6dca9adc3fc09931dc9514eda5450f68d2b5f9af9654799dbd0814d3b32",
+    "data_diagnostics.h": "7bc3c8949e5d665afb672620bb7cc8628ab20e2a0b4809bbd78cdd62c08382c8",
+    "data_diagnostics.cpp": "94a2c85dd1029c769299f3534f10ce8f32007312a3e229abfed979125259afc4",
+    "exception_diagnostics.h": "ee3623a3651ad1622a522cfa84eebfe009d8f1075b0e4ac068878a9233a90d74",
+    "exception_diagnostics.cpp": "27d1a54faf12e41253ac2d0b0d279347bf9ad1bebd9ec4b734f09b27d8b82e8a",
+    "queue_wait_diagnostics.h": "dfb09af76e51d58e12095b21deb0e7ad6f6a0545ac056d34f0388c5fbd1615ec",
+    "runtime_observation.h": "f0ffba20379031e515435bce7d3ce7d9f055cac5682553b8f0ac473aeffcbd0b",
+    "util_scopedlock.h": "95d3cce02c30f33cd0dbdf1e96e7f4a38f2d78f9a17a1f227088eca973467b7a",
+    "device_reset.h": "661b781c69b21084751cb0a2a1fad3c3bc6dac9a4dd750d74dbc19237b54d06c",
+    "data_ring_contract.h": "41de451363eca502c744d57482008585f78d42f2f1cb030e7ac139e9b0a73a13",
+    "util_bridgecommand.h": "adef13e1320711bfcf3e85d203bd8b276d96c5f81239ec16744dded942a23ef3",
+    "util_bridgecommand.cpp": "021722cd99b04728e549b5631c998906d058d4ab09c777164e2231484344773d"
+  },
+  "adapters": [
+    "options/logger",
+    "peer exit signal",
+    "test dispatch",
+    "explicit system wait failure injection"
+  ]
+}

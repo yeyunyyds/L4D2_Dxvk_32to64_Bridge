@@ -1,0 +1,364 @@
+windows	Actual input methods, wire boundaries and four process-architecture pairs	2026-10-12T21:45:10.4707047Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\reshade-input-x86\wire-test.exe
+windows	Actual input methods, wire boundaries and four process-architecture pairs	2026-10-12T21:45:10.5016594Z PASS external-input wire: fixed layout, peer/version, signed coordinates, transitions, generation, wrap, full-fault, stale/future/in-flight capture, 200000 ordered concurrent events
+windows	Actual input methods, wire boundaries and four process-architecture pairs	2026-10-12T21:45:11.7834677Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\reshade-input-x86\native-test.exe
+windows	Actual input methods, wire boundaries and four process-architecture pairs	2026-10-12T21:45:11.7900277Z PASS actual patched ReShade methods: bind identity, single owner, ordered key/text/wheel, Client Alt/CapsLock, native frame reset, focus/stale/death capture release, generation isolation, runtime destruction
+windows	Actual input methods, wire boundaries and four process-architecture pairs	2026-10-12T21:45:12.4872382Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\reshade-input-x86\capture-state.exe
+windows	Actual input methods, wire boundaries and four process-architecture pairs	2026-10-12T21:45:12.4959337Z PASS actual capture state: independent legacy/Steam and ReShade ownership, balanced aggregate transitions, duplicate completion, 20000 concurrent open/close pairs
+windows	Actual input methods, wire boundaries and four process-architecture pairs	2026-10-12T21:45:22.9531971Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\reshade-input-x86\client-test.exe
+windows	Actual input methods, wire boundaries and four process-architecture pairs	2026-10-12T21:45:23.6912013Z PASS actual LDB Client collector: original HWND, ordered key/text/wheel, focus edge, no background flood, capture handoff, owner-only enqueue, rebinding
+windows	Actual input methods, wire boundaries and four process-architecture pairs	2026-10-12T21:45:24.5901655Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\reshade-input-x86\process-test.exe
+windows	Actual input methods, wire boundaries and four process-architecture pairs	2026-10-12T21:45:35.8796226Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\reshade-input-x64\wire-test.exe
+windows	Actual input methods, wire boundaries and four process-architecture pairs	2026-10-12T21:45:35.9037009Z PASS external-input wire: fixed layout, peer/version, signed coordinates, transitions, generation, wrap, full-fault, stale/future/in-flight capture, 200000 ordered concurrent events
+windows	Actual input methods, wire boundaries and four process-architecture pairs	2026-10-12T21:45:36.6386884Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\reshade-input-x64\native-test.exe
+windows	Actual input methods, wire boundaries and four process-architecture pairs	2026-10-12T21:45:36.6436803Z PASS actual patched ReShade methods: bind identity, single owner, ordered key/text/wheel, Client Alt/CapsLock, native frame reset, focus/stale/death capture release, generation isolation, runtime destruction
+windows	Actual input methods, wire boundaries and four process-architecture pairs	2026-10-12T21:45:37.2144005Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\reshade-input-x64\capture-state.exe
+windows	Actual input methods, wire boundaries and four process-architecture pairs	2026-10-12T21:45:37.2217398Z PASS actual capture state: independent legacy/Steam and ReShade ownership, balanced aggregate transitions, duplicate completion, 20000 concurrent open/close pairs
+windows	Actual input methods, wire boundaries and four process-architecture pairs	2026-10-12T21:45:38.3313952Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\reshade-input-x64\client-test.exe
+windows	Actual input methods, wire boundaries and four process-architecture pairs	2026-10-12T21:45:38.3656280Z PASS actual LDB Client collector: original HWND, ordered key/text/wheel, focus edge, no background flood, capture handoff, owner-only enqueue, rebinding
+windows	Actual input methods, wire boundaries and four process-architecture pairs	2026-10-12T21:45:39.2300318Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\reshade-input-x64\process-test.exe
+windows	Actual input methods, wire boundaries and four process-architecture pairs	2026-10-12T21:45:39.3215016Z PASS native cross-process input: 20000 ordered events, peer identity, layout and repeated bounded-ring wrap
+windows	Actual input methods, wire boundaries and four process-architecture pairs	2026-10-12T21:45:39.3319745Z PASS native cross-process input: 20000 ordered events, peer identity, layout and repeated bounded-ring wrap
+windows	Actual input methods, wire boundaries and four process-architecture pairs	2026-10-12T21:45:39.3399140Z PASS native cross-process input: 20000 ordered events, peer identity, layout and repeated bounded-ring wrap
+windows	Actual input methods, wire boundaries and four process-architecture pairs	2026-10-12T21:45:39.3466667Z PASS native cross-process input: 20000 ordered events, peer identity, layout and repeated bounded-ring wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:09.6773701Z C32_PASS batches/boundaries/lazy/abort/external/wrap/cancel/fault/protocol/malformed/full-pool
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:11.9462363Z C32_PASS batches/boundaries/lazy/abort/external/wrap/cancel/fault/protocol/malformed/full-pool
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:12.6220018Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x32 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:12.9971710Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x32 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:13.3718107Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x32 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:13.3879919Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x32 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:13.3979622Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x32 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:13.4192009Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x32 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:13.4404862Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x32 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:13.8250860Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x64 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:14.2003379Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x64 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:14.5752089Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x64 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:14.5928317Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x64 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:14.6032387Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x64 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:14.6248153Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x64 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:14.6462061Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x64 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:15.0286253Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x32 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:15.4041067Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x32 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:15.7785389Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x32 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:15.7954157Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x32 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:15.8059146Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x32 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:15.8278020Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x32 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:15.8498538Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x32 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:16.2379572Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x64 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:16.6131247Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x64 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:16.9882399Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x64 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:17.0071050Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x64 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:17.0179612Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x64 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:17.0396747Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x64 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:17.0613553Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x64 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:17.4273180Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x32 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:17.8025912Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x32 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:18.1769694Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x32 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:18.1935496Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x32 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:18.2037709Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x32 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:18.2256265Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x32 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:18.2476171Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x32 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:18.6310990Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x64 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:19.0059570Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x64 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:19.3501401Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x64 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:19.3678330Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x64 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:19.3783925Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x64 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:19.4000253Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x64 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:19.4216334Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x64 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:19.8040726Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x32 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:20.1795565Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x32 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:20.5236298Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x32 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:20.5399769Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x32 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:20.5500043Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x32 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:20.5724445Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x32 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:20.5941937Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x32 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:20.9773353Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x64 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:21.3527145Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x64 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:21.7273314Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x64 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:21.7442689Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x64 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:21.7548786Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x64 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:21.7763099Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x64 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:21.7978707Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x64 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:22.1820684Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x32 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:22.5575259Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x32 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:22.9162790Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x32 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:22.9334300Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x32 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:22.9436963Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x32 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:22.9655930Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x32 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:22.9875993Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x32 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:23.3697663Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x64 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:23.7451204Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x64 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:24.1194316Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x64 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:24.1376671Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x64 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:24.1482929Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x64 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:24.1702314Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x64 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:24.1927798Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x64 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:24.5746506Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x32 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:24.9498315Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x32 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:25.3242754Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x32 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:25.3412208Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x32 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:25.3519084Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x32 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:25.3737153Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x32 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:25.3964475Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x32 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:25.7778982Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x64 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:26.1536022Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x64 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:26.5286915Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x64 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:26.5474341Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x64 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:26.5590071Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x64 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:26.5819151Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x64 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:26.6054122Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x64 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:26.6277906Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x32 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:26.6504616Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x32 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:26.6626462Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x32 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:26.6801570Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x32 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:27.0444559Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x32 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:27.4202784Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x32 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:27.7952527Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x32 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:27.8178677Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x64 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:27.8411317Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x64 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:27.8530276Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x64 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:27.8701882Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x64 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:28.2327008Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x64 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:28.6087297Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x64 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:28.9836748Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x64 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:29.0062185Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x32 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:29.0286082Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x32 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:29.0394372Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x32 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:29.0560028Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x32 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:29.4362464Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x32 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:29.8121078Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x32 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:30.1868629Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x32 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:30.2097637Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x64 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:30.2327718Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x64 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:30.2445325Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x64 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:30.2618253Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x64 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:30.6406105Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x64 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:31.0159745Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x64 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:31.3765265Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x64 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:31.3992375Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x32 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:31.4217707Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x32 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:31.4325121Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x32 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:31.4492395Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x32 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:31.8292352Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x32 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:32.1914144Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x32 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:32.5664756Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x32 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:32.5898585Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x64 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:32.6135323Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x64 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:32.6254450Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x64 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:32.6430389Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x64 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:33.0233776Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x64 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:33.4106117Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x64 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:33.7854797Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x64 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:33.8085096Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x32 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:33.8313355Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x32 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:33.8423455Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x32 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:33.8597420Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x32 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:34.2388229Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x32 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:34.6157709Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x32 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:34.9906683Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x32 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:35.0141808Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x64 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:35.0374817Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x64 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:35.0493761Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x64 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:35.0673620Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x64 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:35.4437303Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x64 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:35.8190495Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x64 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:36.1948732Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x64 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:36.2182879Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x32 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:36.2414951Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x32 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:36.2530073Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x32 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:36.2708520Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x32 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:36.6479500Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x32 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:37.0239187Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x32 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:37.3987370Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x32 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:37.4216960Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x64 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:37.4439677Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x64 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:37.4559908Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x64 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:37.4745686Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x64 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:37.8516800Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x64 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:38.2273314Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x64 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:38.6022765Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x64 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:38.6257338Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x32 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:38.6485865Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x32 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:38.6600315Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x32 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:38.6777031Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x32 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:39.0553519Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x32 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:39.4309415Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x32 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:39.8056811Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x32 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:39.8295033Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x64 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:39.8532843Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x64 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:39.8655932Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x64 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:39.8841133Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x64 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:40.2434941Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x64 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:40.6194365Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x64 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:40.9948369Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x64 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:41.3712328Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x32 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:41.7466123Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x32 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:42.1209844Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x32 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:42.1392843Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x32 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:42.1507056Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x32 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:42.1737622Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x32 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:42.1967831Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x32 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:42.5596745Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x64 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:42.9346516Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x64 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:43.2952950Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x64 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:43.3144968Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x64 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:43.3270953Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x64 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:43.3504023Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x64 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:43.3737623Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x64 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:43.7488157Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x32 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:44.1241059Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x32 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:44.4831728Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x32 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:44.5020343Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x32 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:44.5137350Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x32 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:44.5367651Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x32 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:44.5601454Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x32 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:44.9367306Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x64 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:45.3119321Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x64 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:45.6864148Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x64 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:45.7051853Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x64 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:45.7174933Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x64 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:45.7408648Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x64 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:45.7646697Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x64 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:46.1250243Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x32 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:46.4853863Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x32 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:46.8594440Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x32 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:46.8780644Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x32 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:46.8904601Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x32 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:46.9142333Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x32 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:46.9384973Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x32 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:47.2980304Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x64 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:47.6730333Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x64 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:48.0476568Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x64 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:48.0673473Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x64 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:48.0795273Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x64 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:48.1027634Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x64 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:48.1263460Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x64 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:48.5017053Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x32 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:48.8770212Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x32 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:49.2359932Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x32 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:49.2546476Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x32 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:49.2664729Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x32 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:49.2900308Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x32 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:49.3133681Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x32 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:49.6953227Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x64 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:50.0703511Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x64 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:50.4452291Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x64 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:50.4651812Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x64 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:50.4778227Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x64 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:50.5012552Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x64 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:50.5253593Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x64 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:50.9145950Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x32 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:51.2919062Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x32 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:51.6662598Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x32 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:51.6846889Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x32 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:51.6967502Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x32 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:51.7203434Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x32 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:51.7442664Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x32 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:52.1204992Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x64 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:52.4959352Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x64 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:52.8704933Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x64 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:52.8899421Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x64 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:52.9027335Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x64 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:52.9268810Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x64 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:52.9508162Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x64 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:53.3401581Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x32 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:53.7150932Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x32 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:54.0892631Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x32 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:54.1084806Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x32 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:54.1207791Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x32 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:54.1445854Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x32 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:54.1684796Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x32 mode=surface-small-declared
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:54.5484796Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x64 mode=stream
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:54.9235671Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x64 mode=mixed
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:55.2986201Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x64 mode=threaded
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:55.3185526Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x64 mode=upload-wrap
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:55.3314682Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x64 mode=surface-boundaries
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:55.3549452Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x64 mode=surface-small-generic
+windows	Actual transport and retained-pointer regression	2026-10-12T21:46:55.3789574Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x64 mode=surface-small-declared
+windows	Existing native regression suites	2026-10-12T21:47:02.8542331Z PASS: 59 Volume layout/transfer cases, game writes through API pitches, unchanged wire, padded backend and partial-box guards; padded source and invalid stride rejection.
+windows	Existing native regression suites	2026-10-12T21:47:04.8015239Z PASS: 59 Volume layout/transfer cases, game writes through API pitches, unchanged wire, padded backend and partial-box guards; padded source and invalid stride rejection.
+windows	Existing native regression suites	2026-10-12T21:47:06.8913306Z PASS: failed reset, repeated failure, success retry, preserved cache, timeout without read/pop, late success rejected
+windows	Existing native regression suites	2026-10-12T21:47:06.8914017Z PASS: backbuffers 1->2->1, aliased RT0, depth, ordered teardown, repeated unlink, retained external reference
+windows	Existing native regression suites	2026-10-12T21:47:06.8914710Z PASS: first-candidate query leak negative control, 150000 query references balanced, RT/depth/explicit targets, COM identity aliases, null/mismatch/failure results
+windows	Existing native regression suites	2026-10-12T21:47:08.8939833Z PASS: failed reset, repeated failure, success retry, preserved cache, timeout without read/pop, late success rejected
+windows	Existing native regression suites	2026-10-12T21:47:08.8940912Z PASS: backbuffers 1->2->1, aliased RT0, depth, ordered teardown, repeated unlink, retained external reference
+windows	Existing native regression suites	2026-10-12T21:47:08.8941610Z PASS: first-candidate query leak negative control, 150000 query references balanced, RT/depth/explicit targets, COM identity aliases, null/mismatch/failure results
+windows	Existing native regression suites	2026-10-12T21:47:13.2445867Z PASS: compressed block layout, logical rows without padding, mismatch offsets and deterministic selection
+windows	Existing native regression suites	2026-10-12T21:47:17.6380366Z PASS: 18 separate-process Q8W8V8U8/ATI1/ATI2 unload/reconstruction cases and explicit read/pitch/unlock failures; child has no original Client backing
+windows	Existing native regression suites	2026-10-12T21:47:17.6381227Z PASS: 25 independent child-process mock readbacks, reference-only corruption detection, failure stages and original backing retained
+windows	Existing native regression suites	2026-10-12T21:47:17.6382177Z PASS: real backing deletion, hash-only child-process recovery, complete mip restoration, permanent KEEP, cross-run Strong/Content DB hits, overwrite without promotion, hash/readback failures and session fallback (independent mock backend)
+windows	Existing native regression suites	2026-10-12T21:47:20.1289661Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\input-hooks-test-x86\input-hooks-test.exe
+windows	Existing native regression suites	2026-10-12T21:47:20.1379950Z PASS: Steam polling chain gating/exact original calls/scratch buffers/errors/failures; gameplay remains neutralized; Steam mouse ownership/foreground/failure/recapture; hook chain arguments/results; hooks OFF/ON/failure; original DirectInput A/W; lazy logs; Query delegation
+windows	Existing native regression suites	2026-10-12T21:47:20.1431240Z PASS: Steam polling chain gating/exact original calls/scratch buffers/errors/failures; gameplay remains neutralized; Steam mouse ownership/foreground/failure/recapture; hook chain arguments/results; hooks OFF/ON/failure; original DirectInput A/W; lazy logs; Query delegation
+windows	Existing native regression suites	2026-10-12T21:47:20.1479507Z PASS: Steam polling chain gating/exact original calls/scratch buffers/errors/failures; gameplay remains neutralized; Steam mouse ownership/foreground/failure/recapture; hook chain arguments/results; hooks OFF/ON/failure; original DirectInput A/W; lazy logs; Query delegation
+windows	Existing native regression suites	2026-10-12T21:47:20.1526238Z PASS: Steam polling chain gating/exact original calls/scratch buffers/errors/failures; gameplay remains neutralized; Steam mouse ownership/foreground/failure/recapture; hook chain arguments/results; hooks OFF/ON/failure; original DirectInput A/W; lazy logs; Query delegation
+windows	Existing native regression suites	2026-10-12T21:47:20.1572163Z PASS: Steam polling chain gating/exact original calls/scratch buffers/errors/failures; gameplay remains neutralized; Steam mouse ownership/foreground/failure/recapture; hook chain arguments/results; hooks OFF/ON/failure; original DirectInput A/W; lazy logs; Query delegation
+windows	Existing native regression suites	2026-10-12T21:47:20.1619013Z PASS: Steam polling chain gating/exact original calls/scratch buffers/errors/failures; gameplay remains neutralized; Steam mouse ownership/foreground/failure/recapture; hook chain arguments/results; hooks OFF/ON/failure; original DirectInput A/W; lazy logs; Query delegation
+windows	Existing native regression suites	2026-10-12T21:47:22.5075404Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\input-hooks-test-x64\input-hooks-test.exe
+windows	Existing native regression suites	2026-10-12T21:47:22.5128654Z PASS: Steam polling chain gating/exact original calls/scratch buffers/errors/failures; gameplay remains neutralized; Steam mouse ownership/foreground/failure/recapture; hook chain arguments/results; hooks OFF/ON/failure; original DirectInput A/W; lazy logs; Query delegation
+windows	Existing native regression suites	2026-10-12T21:47:22.5163430Z PASS: Steam polling chain gating/exact original calls/scratch buffers/errors/failures; gameplay remains neutralized; Steam mouse ownership/foreground/failure/recapture; hook chain arguments/results; hooks OFF/ON/failure; original DirectInput A/W; lazy logs; Query delegation
+windows	Existing native regression suites	2026-10-12T21:47:22.5196861Z PASS: Steam polling chain gating/exact original calls/scratch buffers/errors/failures; gameplay remains neutralized; Steam mouse ownership/foreground/failure/recapture; hook chain arguments/results; hooks OFF/ON/failure; original DirectInput A/W; lazy logs; Query delegation
+windows	Existing native regression suites	2026-10-12T21:47:22.5230490Z PASS: Steam polling chain gating/exact original calls/scratch buffers/errors/failures; gameplay remains neutralized; Steam mouse ownership/foreground/failure/recapture; hook chain arguments/results; hooks OFF/ON/failure; original DirectInput A/W; lazy logs; Query delegation
+windows	Existing native regression suites	2026-10-12T21:47:22.5264418Z PASS: Steam polling chain gating/exact original calls/scratch buffers/errors/failures; gameplay remains neutralized; Steam mouse ownership/foreground/failure/recapture; hook chain arguments/results; hooks OFF/ON/failure; original DirectInput A/W; lazy logs; Query delegation
+windows	Existing native regression suites	2026-10-12T21:47:22.5298202Z PASS: Steam polling chain gating/exact original calls/scratch buffers/errors/failures; gameplay remains neutralized; Steam mouse ownership/foreground/failure/recapture; hook chain arguments/results; hooks OFF/ON/failure; original DirectInput A/W; lazy logs; Query delegation
+windows	Existing native regression suites	2026-10-12T21:47:25.4215570Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\overlay-presenter-test\fake-x86.dll
+windows	Existing native regression suites	2026-10-12T21:47:25.4225147Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\overlay-presenter-test\overlay-x86.exe
+windows	Existing native regression suites	2026-10-12T21:47:28.0823649Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\overlay-presenter-test\fake-x64.dll
+windows	Existing native regression suites	2026-10-12T21:47:28.0832978Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\overlay-presenter-test\overlay-x64.exe
+windows	Existing native regression suites	2026-10-12T21:47:28.6009302Z PASS: host-owned cross-process child, capture, reset routing, resizing and teardown (64-bit)
+windows	Existing native regression suites	2026-10-12T21:47:29.0058352Z PASS: host-owned cross-process child, capture, reset routing, resizing and teardown (32-bit)
+windows	Existing native regression suites	2026-10-12T21:47:32.4544712Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-window-test\adapter-test-x86.exe
+windows	Existing native regression suites	2026-10-12T21:47:32.4553047Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-window-test\window-fixture-x86.dll
+windows	Existing native regression suites	2026-10-12T21:47:32.4562089Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-window-test\window-test-x86.exe
+windows	Existing native regression suites	2026-10-12T21:47:35.2252376Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-window-test\adapter-test-x64.exe
+windows	Existing native regression suites	2026-10-12T21:47:35.2261432Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-window-test\window-fixture-x64.dll
+windows	Existing native regression suites	2026-10-12T21:47:35.2271925Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-window-test\window-test-x64.exe
+windows	Existing native regression suites	2026-10-12T21:47:35.2682857Z PASS steam-window-adapter host_bits=32 foreign_game_bits=opposite queries=7
+windows	Existing native regression suites	2026-10-12T21:47:35.2820785Z PASS steam-window-diagnostics bits=32 mode=real
+windows	Existing native regression suites	2026-10-12T21:47:35.2925337Z PASS steam-window-diagnostics bits=32 mode=chain
+windows	Existing native regression suites	2026-10-12T21:47:35.3122367Z PASS steam-window-adapter host_bits=64 foreign_game_bits=opposite queries=7
+windows	Existing native regression suites	2026-10-12T21:47:35.3247591Z PASS steam-window-diagnostics bits=64 mode=real
+windows	Existing native regression suites	2026-10-12T21:47:35.3359095Z PASS steam-window-diagnostics bits=64 mode=chain
+windows	Existing native regression suites	2026-10-12T21:47:37.4501987Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-web-test\web-test.exe
+windows	Existing native regression suites	2026-10-12T21:47:37.4595995Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=1 host_ready=1 caller_rva=0x199ea scope=verified-menu-guard
+windows	Existing native regression suites	2026-10-12T21:47:37.4596884Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=1 host_ready=1 caller_rva=0x199ea scope=verified-menu-guard
+windows	Existing native regression suites	2026-10-12T21:47:37.4599460Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=0 host_ready=0 caller_rva=0x199ea scope=verified-menu-guard
+windows	Existing native regression suites	2026-10-12T21:47:37.4600033Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=0 host_ready=0 caller_rva=0x199ea scope=verified-menu-guard
+windows	Existing native regression suites	2026-10-12T21:47:37.4600588Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=0 host_ready=0 caller_rva=0x199ea scope=verified-menu-guard
+windows	Existing native regression suites	2026-10-12T21:47:37.4601133Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=1 host_ready=1 caller_rva=0x199ea scope=verified-menu-guard
+windows	Existing native regression suites	2026-10-12T21:47:37.4601679Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=1 host_ready=1 caller_rva=0x199ea scope=verified-menu-guard
+windows	Existing native regression suites	2026-10-12T21:47:37.4602405Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=1 host_ready=1 caller_rva=0x19aca scope=verified-menu-guard
+windows	Existing native regression suites	2026-10-12T21:47:37.4602998Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=1 host_ready=1 caller_rva=0x6ea9a scope=verified-menu-guard
+windows	Existing native regression suites	2026-10-12T21:47:37.4603567Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=1 host_ready=1 caller_rva=0x11a03 scope=verified-menu-guard
+windows	Existing native regression suites	2026-10-12T21:47:37.4604615Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=1 host_ready=1 caller_rva=0x11a03 scope=verified-menu-guard
+windows	Existing native regression suites	2026-10-12T21:47:37.4606655Z L4D2_STEAM_INVITE event=request api=ActivateGameOverlay dialog_class=lobby-invite caller_rva=0x11a1a verified_helper=1 action=observe-only
+windows	Existing native regression suites	2026-10-12T21:47:37.4608028Z L4D2_STEAM_INVITE event=request api=ActivateGameOverlay dialog_class=lobby-invite caller_rva=0x0 verified_helper=0 action=observe-only
+windows	Existing native regression suites	2026-10-12T21:47:37.4609064Z L4D2_STEAM_INVITE event=request api=ActivateGameOverlay dialog_class=null caller_rva=0x0 verified_helper=0 action=observe-only
+windows	Existing native regression suites	2026-10-12T21:47:37.4610191Z L4D2_STEAM_INVITE event=request api=ActivateGameOverlay dialog_class=other caller_rva=0x0 verified_helper=0 action=observe-only
+windows	Existing native regression suites	2026-10-12T21:47:37.4611185Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=0 host_ready=0 caller_rva=0x11a03 scope=verified-menu-guard
+windows	Existing native regression suites	2026-10-12T21:47:37.4612394Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=0 host_ready=0 caller_rva=0x11a03 scope=verified-menu-guard
+windows	Existing native regression suites	2026-10-12T21:47:37.4612974Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=0 host_ready=0 caller_rva=0x11a03 scope=verified-menu-guard
+windows	Existing native regression suites	2026-10-12T21:47:37.4613532Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=0 host_ready=0 caller_rva=0x11a03 scope=verified-menu-guard
+windows	Existing native regression suites	2026-10-12T21:47:37.4616330Z PASS steam-web-invite-observer x86 actual-thiscall-ABI, four scoped guards, LobbyInvite borrowed-argument, once-only request, LastError, logger-exception, stale/future/disabled refusal, hash-gate, conditional-restore
+windows	Existing native regression suites	2026-10-12T21:47:39.3584692Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-availability-x86\availability-test.exe
+windows	Existing native regression suites	2026-10-12T21:47:39.3655333Z PASS host-renderer-availability: actual getter layout, ASLR, signed displacement, bounds, refusal, disabled observer; no supplied code executed
+windows	Existing native regression suites	2026-10-12T21:47:41.1483964Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-availability-x64\availability-test.exe
+windows	Existing native regression suites	2026-10-12T21:47:41.1535511Z PASS host-renderer-availability: actual getter layout, ASLR, signed displacement, bounds, refusal, disabled observer; no supplied code executed
+windows	Existing native regression suites	2026-10-12T21:47:43.3893941Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-workshop-x86\status-test.exe
+windows	Existing native regression suites	2026-10-12T21:47:45.4398113Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-workshop-x64\status-test.exe
+windows	Existing native regression suites	2026-10-12T21:47:47.0395476Z PASS workshop-status: cross-process, cross-bitness, identity, exclusive ownership, missing, false, unknown, stale, future, tick-wrap, host-death, scoped selection
+windows	Existing native regression suites	2026-10-12T21:47:48.5535435Z PASS workshop-status: cross-process, cross-bitness, identity, exclusive ownership, missing, false, unknown, stale, future, tick-wrap, host-death, scoped selection
+windows	Existing native regression suites	2026-10-12T21:47:50.0747580Z PASS workshop-status: cross-process, cross-bitness, identity, exclusive ownership, missing, false, unknown, stale, future, tick-wrap, host-death, scoped selection
+windows	Existing native regression suites	2026-10-12T21:47:51.5902436Z PASS workshop-status: cross-process, cross-bitness, identity, exclusive ownership, missing, false, unknown, stale, future, tick-wrap, host-death, scoped selection
+windows	Existing native regression suites	2026-10-12T21:47:55.6604650Z PASS: native 32-bit reader decoded D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\adapter-test\x86 identifier and full caps; malformed packets rejected; Shader versions preserved.
+windows	Existing native regression suites	2026-10-12T21:47:55.6652838Z PASS: native 32-bit reader decoded D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\adapter-test\x64 identifier and full caps; malformed packets rejected; Shader versions preserved.
+windows	Existing native regression suites	2026-10-12T21:47:55.6690499Z PASS: native 64-bit reader decoded D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\adapter-test\x86 identifier and full caps; malformed packets rejected; Shader versions preserved.
+windows	Existing native regression suites	2026-10-12T21:47:55.6726634Z PASS: native 64-bit reader decoded D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\adapter-test\x64 identifier and full caps; malformed packets rejected; Shader versions preserved.
+windows	Existing native regression suites	2026-10-12T21:47:57.9044220Z PASS: ATI1/ATI2 native API pitch, full mip chains, partial copies, shared storage and guarded upload/readback bounds
+windows	Existing native regression suites	2026-10-12T21:47:59.7808261Z PASS: ATI1/ATI2 native API pitch, full mip chains, partial copies, shared storage and guarded upload/readback bounds
+windows	Python contracts	2026-10-12T21:48:08.3111270Z Ran 39 tests in 0.799s
+windows	Compile public-source experimental ReShade x86 and x64	2026-10-12T21:51:02.5893737Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\reshade\bin\Win32\Release\ReShade32.dll
+windows	Compile public-source experimental ReShade x86 and x64	2026-10-12T21:51:03.4348603Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\reshade-input-x86\dll-test.exe
+windows	Compile public-source experimental ReShade x86 and x64	2026-10-12T21:51:04.1774294Z PASS compiled public-source ReShade DLL: named Win32/Win64 exports, full build identity, size/version/mismatch rejection, real mapping and peer process, single configuration; no GPU runtime asserted
+windows	Compile public-source experimental ReShade x86 and x64	2026-10-12T21:52:24.3654117Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\reshade\bin\x64\Release\ReShade64.dll
+windows	Compile public-source experimental ReShade x86 and x64	2026-10-12T21:52:25.1297698Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\reshade-input-x64\dll-test.exe
+windows	Compile public-source experimental ReShade x86 and x64	2026-10-12T21:52:25.2510392Z PASS compiled public-source ReShade DLL: named Win32/Win64 exports, full build identity, size/version/mismatch rejection, real mapping and peer process, single configuration; no GPU runtime asserted

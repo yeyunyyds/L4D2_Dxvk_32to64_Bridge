@@ -1,7 +1,27 @@
 # Steam GameUI invitation availability experiment
 
-Status: IMPLEMENTED; native build and gameplay validation pending.
+Status: AWAITING GAME VALIDATION; native tests, full build and package verification PASS.
 Branch: `codex/steam-invite-availability`. No main merge, VERSION or release change.
+
+## Verified experimental download
+
+- Build: `ldb-ipc-c32-dev+b0a628e02609a4b4`; matching ReShade:
+  `ldb-reshade-input-dev+b0a628e02609a4b4`.
+- Compiled and packaging source: `6705e3086f4550ece1b43f5cd30ee8d508be66c3`.
+- [Download the matched invitation/ReShade ZIP](https://raw.githubusercontent.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/e2d6b576bf216675d57f59564f1b10db4159e9df/l4d2-bridge-steam-invite-reshade-dev-b0a628e02609a4b4-r38312406560.zip), 5,061,797 bytes.
+- SHA-256: `5aef2b624e02b957781cb98ba858c6d17730cc57c18dd8b5e304e77385889c29`.
+- [Full Windows native gate and build](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38312406560): PASS.
+- [Permanent native/raw transport/binary/upload evidence](steam-input-evidence/38312406560/).
+
+The invitation ABI test, 13 existing native suites, four status/input architecture
+pairs, 252 production transport cases, 30 failure cases, 39 Python contracts, and
+both compiled ReShade DLL ABI probes passed. Offline verification independently
+checked all five binaries against the original native outputs, actual named build
+getter words, PE bitness, Release `/O2`+`NDEBUG` receipts, local-layer manifests,
+license files and every packaged file hash. The append-only ZIP upload was
+downloaded again and its SHA-256 checked. Supplied GameUI/Steam DLLs were not
+executed or bundled. Native synthetic LobbyInvite events in the retained test log
+are authored ABI fixtures, not real L4D2 invitation evidence.
 
 ## Evidence and minimal repair
 

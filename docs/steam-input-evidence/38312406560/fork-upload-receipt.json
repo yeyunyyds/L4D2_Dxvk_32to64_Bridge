@@ -1,0 +1,9 @@
+{
+  "branch": "experimental-downloads-1.1.2-dev.2",
+  "commit": "e2d6b576bf216675d57f59564f1b10db4159e9df",
+  "zip": "l4d2-bridge-steam-invite-reshade-dev-b0a628e02609a4b4-r38312406560.zip",
+  "sha256": "5aef2b624e02b957781cb98ba858c6d17730cc57c18dd8b5e304e77385889c29",
+  "bytes": 5061797,
+  "download_url": "https://raw.githubusercontent.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/e2d6b576bf216675d57f59564f1b10db4159e9df/l4d2-bridge-steam-invite-reshade-dev-b0a628e02609a4b4-r38312406560.zip",
+  "build": "ldb-ipc-c32-dev+b0a628e02609a4b4"
+}

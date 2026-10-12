@@ -1,0 +1,13 @@
+{
+  "compiled_source": "6705e3086f4550ece1b43f5cd30ee8d508be66c3",
+  "protocol_source_sha256": "b0a628e02609a4b4c83d84047de94b59d1c1a8332901716b83a29b1bec23a2a5",
+  "native_run": 38312406560,
+  "native_job": 115021018225,
+  "build_id": "ldb-ipc-c32-dev+b0a628e02609a4b4",
+  "steam_guard": "0x11a03",
+  "steam_request_return": "0x11a1a",
+  "steam_friends_slot": 28,
+  "reshade_implementation_changed": false,
+  "ipc_transport_changed": false,
+  "invitation_gameplay_validated": false
+}
