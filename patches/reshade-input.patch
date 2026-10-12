@@ -12,10 +12,24 @@ index 8899963..690cc21 100644
 +	ReShadeLDBConfigureInputV1 PRIVATE
 +	ReShadeLDBExperimentalBuildV1 PRIVATE
 diff --git a/source/input.cpp b/source/input.cpp
-index 0620062..7d8f33a 100644
+index 0620062..a5e9a82 100644
 --- a/source/input.cpp
 +++ b/source/input.cpp
-@@ -389,7 +389,7 @@ void reshade::input::next_frame()
+@@ -367,6 +367,13 @@ bool reshade::input::is_any_mouse_button_released() const
+ 
+ void reshade::input::max_mouse_position(unsigned int position[2]) const
+ {
++    if (_ldb_context) {
++        // Client coordinates and bounds must use the same DPI-awareness context.
++        const auto size=_ldb_context->data->geometry.load(std::memory_order_acquire);
++        position[0]=static_cast<unsigned int>(std::max(1,ldb_reshade::x(size)));
++        position[1]=static_cast<unsigned int>(std::max(1,ldb_reshade::y(size)));
++        return;
++    }
+ 	RECT rect = {};
+ 	GetClientRect(static_cast<HWND>(_window), &rect);
+ 	position[0] = rect.right;
+@@ -389,7 +396,7 @@ void reshade::input::next_frame()
  	// And time is not tracked for mouse buttons anyway
  	const DWORD time = GetTickCount();
  	for (unsigned int i = 8; i < 256; ++i)
@@ -24,7 +38,7 @@ index 0620062..7d8f33a 100644
  			(time - _keys_time[i]) > 5000 &&
  			(GetAsyncKeyState(i) & 0x8000) == 0)
  			(_keys[i] = 0x08);
-@@ -399,6 +399,8 @@ void reshade::input::next_frame()
+@@ -399,6 +406,8 @@ void reshade::input::next_frame()
  	_last_mouse_position[0] = _mouse_position[0];
  	_last_mouse_position[1] = _mouse_position[1];
  
@@ -33,7 +47,7 @@ index 0620062..7d8f33a 100644
  	// Update caps lock state
  	_keys[VK_CAPITAL] |= GetKeyState(VK_CAPITAL) & 0x1;
  
-@@ -456,7 +458,7 @@ void reshade::input::block_mouse_input(bool enable)
+@@ -456,7 +465,7 @@ void reshade::input::block_mouse_input(bool enable)
  	_block_mouse = enable;
  
  	// Some games setup ClipCursor with a tiny area which could make the cursor stay in that area instead of the whole window
@@ -42,7 +56,7 @@ index 0620062..7d8f33a 100644
  		ClipCursor(nullptr);
  }
  void reshade::input::block_keyboard_input(bool enable)
-@@ -721,3 +723,72 @@ extern "C" BOOL WINAPI HookGetCursorPosition(LPPOINT lpPoint)
+@@ -721,3 +730,72 @@ extern "C" BOOL WINAPI HookGetCursorPosition(LPPOINT lpPoint)
  	static const auto trampoline = reshade::hooks::call(HookGetCursorPosition);
  	return trampoline(lpPoint);
  }

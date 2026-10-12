@@ -24,3 +24,6 @@ inline DWORD WaitForSingleObject(HANDLE,DWORD){return fixture_alive?WAIT_TIMEOUT
 inline DWORD GetWindowThreadProcessId(HWND,DWORD* pid){*pid=10;return 99;}
 inline ULONGLONG GetTickCount64(){return fixture_now;}inline DWORD GetTickCount(){return static_cast<DWORD>(fixture_now); }
 inline short GetKeyState(unsigned){return 0;}inline short GetAsyncKeyState(unsigned){return 0;}
+
+struct RECT {int left,top,right,bottom;};
+inline BOOL GetClientRect(HWND,RECT* r){*r={0,0,111,222};return TRUE;}

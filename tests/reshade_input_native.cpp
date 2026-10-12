@@ -18,7 +18,8 @@ int main(){using namespace ldb_reshade;fixture_data.signature=magic;fixture_data
  check(!reshade::input::ldb_register(reinterpret_cast<void*>(uintptr_t(0x1234)),reinterpret_cast<void*>(uintptr_t(3))));
  auto input=reshade::input::ldb_register(reinterpret_cast<void*>(uintptr_t(0x1122)),reinterpret_cast<void*>(uintptr_t(3)));check(input&&input->ldb_external());auto epoch=fixture_data.epoch.load();check(epoch==1);
  check(!reshade::input::ldb_register(reinterpret_cast<void*>(uintptr_t(0x1122)),reinterpret_cast<void*>(uintptr_t(4)))); // Explicit single-primary-runtime contract.
- fixture_data.sourceFlags=Focused|Alt|CapsLock;fixture_data.position=xy(430,250);
+ fixture_data.sourceFlags=Focused|Alt|CapsLock;fixture_data.position=xy(430,250);fixture_data.geometry=xy(1920,1080);
+ unsigned bounds[2]{};input->max_mouse_position(bounds);check(bounds[0]==1920&&bounds[1]==1080);fixture_data.geometry=0;input->max_mouse_position(bounds);check(bounds[0]==1&&bounds[1]==1);fixture_data.geometry=xy(1920,1080);
  check(push(fixture_data,{epoch,1000,uint32_t(Kind::Key),VK_MENU,0,0,Down,0}));check(push(fixture_data,{epoch,1000,uint32_t(Kind::Key),65,0,0,Down,0}));
  check(push(fixture_data,{epoch,1000,uint32_t(Kind::Text),0xd834,0,0,0,0}));check(push(fixture_data,{epoch,1000,uint32_t(Kind::Text),0xdd1e,0,0,0,0}));check(push(fixture_data,{epoch,1000,uint32_t(Kind::Wheel),0,240,0,0,0}));
  input->ldb_begin_frame();check(input->is_key_pressed(65)&&input->is_key_down(VK_MENU));check(input->mouse_wheel_delta()==2&&input->text_input().size()==2&&input->text_input()[0]==0xd834&&input->text_input()[1]==0xdd1e);check(input->mouse_position_x()==430&&input->mouse_position_y()==250&&(input->_keys[VK_CAPITAL]&1));

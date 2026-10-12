@@ -15,7 +15,7 @@ static_assert(sizeof(Event)==32,"Cross-bitness input record");
 struct alignas(64) Shared {
  uint32_t signature=magic,protocol=version,bytes=sizeof(Shared),clientPid=0,hostPid=0;
  std::atomic<uint32_t> window{0},epoch{0},fault{0};
- uint32_t build[4]{};std::atomic<uint64_t> sourceTime{0};uint8_t headerPad[8]{};
+ uint32_t build[4]{};std::atomic<uint64_t> sourceTime{0};std::atomic<uint64_t> geometry{0};
  alignas(64) std::atomic<uint32_t> write{0};uint8_t writePad[60]{};
  alignas(64) std::atomic<uint32_t> read{0};uint8_t readPad[60]{};
  alignas(64) std::atomic<uint32_t> captureEpoch{0};

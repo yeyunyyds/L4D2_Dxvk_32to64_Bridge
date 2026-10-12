@@ -7,7 +7,7 @@ import argparse,hashlib,json,shutil
 parser=argparse.ArgumentParser();parser.add_argument('--source',type=Path,required=True);parser.add_argument('--out',type=Path,required=True);args=parser.parse_args();out=args.out;out.mkdir(parents=True,exist_ok=True)
 header=(args.source/'source/input.hpp').read_text(encoding='utf-8-sig');text=(args.source/'source/input.cpp').read_text(encoding='utf-8-sig')
 (out/'input_fixture.hpp').write_text(header.replace('\tprivate:','\tpublic:'),encoding='utf-8')
-names=['reshade::input::input(','reshade::input::~input(','reshade::input::is_key_down(','reshade::input::is_key_pressed(unsigned int keycode) const','reshade::input::is_key_released(','reshade::input::is_key_repeated(','reshade::input::next_frame(','reshade::input::ldb_register(','reshade::input::ldb_begin_frame(','reshade::input::ldb_capture(']
+names=['reshade::input::input(','reshade::input::~input(','reshade::input::is_key_down(','reshade::input::is_key_pressed(unsigned int keycode) const','reshade::input::is_key_released(','reshade::input::is_key_repeated(','reshade::input::next_frame(','reshade::input::max_mouse_position(','reshade::input::ldb_register(','reshade::input::ldb_begin_frame(','reshade::input::ldb_capture(']
 parts=[]
 for name in names:
  i=text.index(name);start=text.rfind('\n',0,i)+1;brace=text.index('{',i);depth=1;end=brace+1
