@@ -1,25 +1,35 @@
 # Steam GameUI invitation availability experiment
 
-Status: BLOCKED — user reports L4D2 cannot start with the delivered invitation build.
-Native tests, full build and package verification remain PASS; they did not verify
-actual L4D2 startup. Do not recommend this package pending failure evidence/fix.
+Status: AWAITING MATCHED-INSTALL GAME VALIDATION. Supplied failure logs establish
+experimental Client + formal 1.3.0 Host mixing and an explicit handshake rejection.
+Native tests, full build and package verification remain PASS; actual L4D2 startup
+with the full matched set and invitation delivery are still unverified.
 Branch: `codex/steam-invite-availability`. No main merge, VERSION or release change.
 
 ## Reported startup regression
 
 After delivery of `b0a628e02609a4b4`, the user reported: "游戏都打不开了".
-Failure-session logs, active config and the exact visible failure have not yet
-been supplied. Do not infer that version mixing, installation or the new hook is
-the proven cause. Static old/new comparison found identical PE loader imports,
-export names, architectures and subsystem/characteristics for all five binaries;
-the Vulkan manifests differ only in their build descriptions. These checks do
-not establish actual startup correctness.
+Subsequently supplied Client/Host logs have the same session identifier. Client
+reports `ldb-ipc-c32-dev+b0a628e02609a4b4`; Host reports
+`l4d2-1.3.0+7c1982f257ea333b` and explicitly exits because their versions differ.
+The Host exits with code 1 before backend initialization, ACK, or the invitation
+observer. Thus these logs do not demonstrate a startup regression in the invitation
+hook. The Client then faults with `0xc0000005`, read address `0x8`, at bridge RVA
+`0xcc295` while handling startup failure; this secondary failure is retained as a
+separate unresolved failure-path issue, not used as evidence of Steam hook failure.
+
+The effective config also lacks an explicit `server.reshadeExternalInput=True`
+and has `client.hookMessagePump=True`, unlike the accepted external-input run.
+Restore the required mode flags when testing the full matched set. Static package
+comparison found identical loader metadata and no new dependency. This does not
+substitute for a successful matched-install gameplay run.
 
 Retain the failed session logs before rollback. Restore the complete user-accepted
 `8fffd697a6a95120` Bridge/ReShade set together; keep its known working config.
-The original-window ReShade pass is retained independently of this invitation
-regression. The immutable ZIP/evidence below are historical failed-candidate
-records, not a current recommendation.
+The original-window ReShade pass is retained independently. Before retesting
+invitation, replace all three Bridge binaries and both custom ReShade DLLs from
+the same archive and verify both logs report the same experimental build. This
+record does not blame a particular installer or updater; none has been evidenced.
 
 ## Verified experimental download
 
