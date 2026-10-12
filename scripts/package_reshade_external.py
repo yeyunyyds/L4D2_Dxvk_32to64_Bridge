@@ -17,9 +17,15 @@ shutil.copytree(base/'bin',out/'bin');shutil.copytree(base/'licenses',out/'licen
 shutil.copy2(source/'LICENSE.md',out/'licenses/ReShade-BSD-3-Clause.md')
 # Include vendor source/submodule notices used by the compiled public-source DLLs.
 for p in source.rglob('*'):
- if p.is_file() and '.git' not in p.parts and p.name.lower().startswith(('license','copying')):
+ if p.is_file() and '.git' not in p.parts and ('license' in p.name.lower() or p.name.lower().startswith('copying')):
   rel=p.relative_to(source);dest=out/'licenses/ReShade'/rel;dest.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(p,dest)
-required=[b'ReShadeLDBInputBuildV1',b'ReShadeLDBConfigureInputV1',b'ReShadeLDBExperimentalBuildV1',f'ldb-reshade-input-dev+{digest[:16]}'.encode()]
+# Khronos copyrights are embedded in these headers, not a standalone LICENSE.
+for item in json.loads((ROOT/'experiments/reshade-input/gl3w-headers.json').read_text()):
+ p=source/'deps/gl3w'/item['path'];assert hashlib.sha256(p.read_bytes()).hexdigest()==item['sha256']
+ dest=out/'licenses/Khronos'/item['path'];dest.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(p,dest)
+shutil.copy2(ROOT/'experiments/reshade-input/gl3w-headers.json',out/'licenses/Khronos/source-manifest.json')
+receipt['packaging_source_commit']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+required=[b'ReShadeLDBInputBuildV1' ,b'ReShadeLDBConfigureInputV1',b'ReShadeLDBExperimentalBuildV1',f'ldb-reshade-input-dev+{digest[:16]}'.encode()]
 for arch,platform,bits,pe in [('x86','Win32',32,0x14c),('x64','x64',64,0x8664)]:
  dll=source/f'bin/{platform}/Release/ReShade{bits}.dll';raw=dll.read_bytes()
  assert machine(dll)==pe and all(item in raw for item in required),f'Custom DLL identity/exports missing: {dll}'

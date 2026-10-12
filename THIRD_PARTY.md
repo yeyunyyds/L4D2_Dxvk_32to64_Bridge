@@ -48,11 +48,13 @@ TXVK 的跨进程桥思路提供了早期启发，感谢 tianxiaols / TXVK contr
 
 L4D2 与 Steam 属于 Valve，游戏及平台不包含在本项目的授权范围内。显卡驱动亦遵循各厂商自己的许可。
 
-## ReShade 接口参考
+## ReShade 接口参考与原窗口输入实验
 
 - 来源：https://github.com/crosire/reshade/tree/v6.0.1
 - 作者：Patrick Mours；SDK 标注 `Copyright (C) 2021 Patrick Mours`、`BSD-3-Clause OR MIT`。
-- 使用范围：核对输入窗口所有权检查及 API 10 的公开插件 ABI、overlay 事件编号与签名。只新增独立的动态接口绑定，不复制或分发 SDK 实现、头文件或 ReShade DLL；不把 ReShade 代码归为本项目原创。
+- 普通桥发行包的使用范围：核对输入窗口所有权检查及 API 10 的公开插件 ABI、overlay 事件编号与签名，独立动态接口绑定。
+- `codex/reshade-external-input` 实验包额外从固定公开提交 `1c952ec211a91b9ebbf9042e23a4a810feba44ff` 编译修改后的 ReShade32/64，核心按 BSD-3-Clause 分发；包内保留 ReShade 和子模块许可。修改差分在 `patches/reshade-input.patch`，新增外部输入协议在 `experiments/reshade-input/`。不分发用户上传的 DLL，也不把上游代码归为本项目原创。
+- gl3w 生成所需官方 Khronos 头文件固定提交、URL 和 SHA-256 见 `experiments/reshade-input/gl3w-headers.json`；头文件版权/许可同时保留。
 - 窗口/输入方案还参考 TXVK 固定提交 `7d466d794926ce26c113d810172c2abc37058319` 的公开说明与二进制静态分析，参考范围与上文归属一致。
 
 ## 可选 L4N v2 控制插件 SDK

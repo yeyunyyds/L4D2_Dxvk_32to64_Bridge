@@ -181,7 +181,7 @@ Client/Host logs are `bridge32.log` and `bridge-host32.log`/`bridge64.log`. Keep
 | [Microsoft Detours](https://github.com/microsoft/Detours) | Microsoft Corporation and contributors; API hooks | MIT |
 | [Tracy](https://github.com/wolfpld/tracy) | Bartosz Taudul and contributors; upstream profiling component | BSD-3-Clause |
 | [TXVK](https://github.com/tianxiaols/TXVK) | tianxiaols / TXVK contributors; public documentation/binary analysis reference, no custom code copied or binaries redistributed | Closed source; current TXVK license reserves all rights; reference only |
-| [ReShade 6.0.1](https://github.com/crosire/reshade/tree/v6.0.1) | Patrick Mours; public ABI and input reference, no SDK implementation or DLL redistributed | SDK: BSD-3-Clause OR MIT |
+| [ReShade 6.0.1](https://github.com/crosire/reshade/tree/v6.0.1) | Patrick Mours; public ABI/input reference; original-window experiment also builds modified BSD-3-Clause DLLs | SDK: BSD-3-Clause OR MIT |
 | L4N plugin SDK v2 | User-provided official interface header; preserved verbatim, optional HUD controls | License unspecified in supplied header; not relicensed as MIT |
 | L4D2 / Steam | Valve; game/platform, not distributed here | Valve's terms |
 

@@ -1,5 +1,11 @@
 # ReShade 原游戏窗口与无 Presenter 输入方案调查
 
+> 后续执行状态：独立 Windows 输入/跨进程验证已通过，外部输入已接入实验分支。
+> 当前实现与实机安装范围见 [生产接入实验说明](RESHADE-EXTERNAL-INPUT-EXPERIMENT.md)。
+> 以下调查是原始阶段记录；完整构建和下载证据另行记录，不能当作 gameplay 通过声明。
+> 实际实现持续传递面板关闭时的输入，以支持效果热键及 input 源 shader。
+
+
 状态：**INVESTIGATED — 原型尚未实现，性能与实机兼容尚未验证**。
 调查日期2026-10-12；保留 Steam 已验收的 `83ec0fca6f5fb2f1` 二进制、配置和当前生产补丁。
 本次仅新增静态分析工具、证据元数据与设计文档；不修改用户 DLL、main、VERSION 或 Release。
