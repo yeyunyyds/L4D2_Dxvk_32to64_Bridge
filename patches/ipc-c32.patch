@@ -3273,7 +3273,7 @@ new file mode 100644
 +   if(raw.header.dwType==RIM_TYPEKEYBOARD && noLegacyKeys) {
 +    const auto& k=raw.data.keyboard;key(k.VKey,(k.Flags&RI_KEY_BREAK)==0,state,true);
 +    if(!(k.Flags&RI_KEY_BREAK)) {
-+     BYTE keyboard[256]{};for(unsigned i=0;i<256;++i){const auto value=getKey(static_cast<int>(i));keyboard[i]=static_cast<BYTE>(((value&0x8000)?0x80:0)|(value&1));}
++     BYTE keyboard[256]{};for(unsigned i=0;i<256;++i){const auto value=getKey(static_cast<int>(i));keyboard[i]=static_cast<BYTE>((down[i]?0x80:0)|(value&1));}
 +     WCHAR text[4]{};const int n=ToUnicode(k.VKey,k.MakeCode,keyboard,text,4,4);
 +     for(int i=0;i<n&&i<4;++i)event(Kind::Text,text[i],0,0,state);
 +    }

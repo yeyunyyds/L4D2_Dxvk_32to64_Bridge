@@ -46,6 +46,10 @@ int main(){
  check((data->sourceFlags.load()&Ctrl)!=0);unsigned ctrlDown=0,ctrlUp=0;
  consume(*data,epoch,[&](const Event& e){if(e.kind==uint32_t(Kind::Key)&&e.code==VK_CONTROL){if(e.flags&Down)++ctrlDown;else ++ctrlUp;}});check(ctrlDown==1&&ctrlUp==0);
  packet.data.keyboard.Flags=RI_KEY_BREAK;Client::message(hwnd,WM_INPUT,RIM_INPUT,0,false,key,cursor,rawKeyboard);check(!(data->sourceFlags.load()&Ctrl));consume(*data,epoch,[](const Event&){});
+ packet.data.keyboard.Flags=0;packet.data.keyboard.VKey=VK_SHIFT;packet.data.keyboard.MakeCode=0x2a;Client::message(hwnd,WM_INPUT,RIM_INPUT,0,false,key,cursor,rawKeyboard);
+ packet.data.keyboard.VKey=65;packet.data.keyboard.MakeCode=0x1e;Client::message(hwnd,WM_INPUT,RIM_INPUT,0,false,key,cursor,rawKeyboard);
+ bool uppercase=false;consume(*data,epoch,[&](const Event& e){if(e.kind==uint32_t(Kind::Text)&&e.code==65)uppercase=true;});check(uppercase);
+ packet.data.keyboard.Flags=RI_KEY_BREAK;Client::message(hwnd,WM_INPUT,RIM_INPUT,0,false,key,cursor,rawKeyboard);packet.data.keyboard.VKey=VK_SHIFT;packet.data.keyboard.MakeCode=0x2a;Client::message(hwnd,WM_INPUT,RIM_INPUT,0,false,key,cursor,rawKeyboard);consume(*data,epoch,[](const Event&){});
  registration.dwFlags=RIDEV_REMOVE;registration.hwndTarget=nullptr;check(RegisterRawInputDevices(&registration,1,sizeof(registration))!=FALSE);Client::set(hwnd);
  // Focus loss must leave the OS cursor unclipped; never restore game-only
  // clip/cursor state while another application owns the foreground.
