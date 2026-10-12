@@ -7,17 +7,20 @@
 #include <iostream>
 #include <cstdlib>
 static void check(bool v){if(!v){std::cerr<<"FAIL external-input wire\n";std::exit(2);}}
-int main(){using namespace ldb_reshade;Shared s;s.clientPid=10;s.hostPid=20;check(valid(s,10,20)&&!valid(s,20,10));s.protocol=2;check(!valid(s,10,20));s.protocol=version;
+int main(){using namespace ldb_reshade;Shared s;s.epoch=1;s.clientPid=10;s.hostPid=20;check(valid(s,10,20)&&!valid(s,20,10));s.protocol=2;check(!valid(s,10,20));s.protocol=version;
  check(x(xy(-800,90000))==-800&&y(xy(-800,90000))==90000);
  std::vector<uint32_t> received;
  check(push(s,{1,0,uint32_t(Kind::Key),65,0,0,Down,0}));check(push(s,{1,1,uint32_t(Kind::Key),65,0,0,0,0}));
  check(consume(s,1,[&](const Event& e){received.push_back(e.flags);})==2 && received==std::vector<uint32_t>({Down,0}));
- check(push(s,{2,0,1,0,0,0,0,0}));check(consume(s,1,[&](const Event&){check(false);})==1);
+ check(push(s,{0,0,1,0,0,0,0,0}));check(consume(s,1,[&](const Event&){check(false);})==1);
  s.read=0xfffffff0u;s.write=0xfffffff0u;for(uint32_t i=0;i<capacity;++i)check(push(s,{1,i,1,i,0,0,0,0}));uint32_t seq=0;check(consume(s,1,[&](const Event& e){check(e.code==seq++);})==capacity);
  for(uint32_t i=0;i<capacity;++i){check(push(s,{1,i,1,i,0,0,0,0}));}
  check(!push(s,{1,0,1,0,0,0,0,0})&&s.fault==1);check(!captureMask(s,1,100));s.fault=0;consume(s,1,[](const Event&){});
  s.epoch=1;publishCapture(s,1,7,1000);check(captureMask(s,1,1000)==7&&captureMask(s,1,2000)==7&&!captureMask(s,1,2001)&&!captureMask(s,2,1000)&&!captureMask(s,1,999));s.captureSequence.fetch_add(1);check(!captureMask(s,1,1000));s.captureSequence.fetch_add(1);
- constexpr uint32_t n=200000;Shared concurrent;
+ Shared rebind;rebind.epoch=1;check(push(rebind,{1,0,1,65,0,0,Down,0}));
+ check(consume(rebind,1,[&](const Event&){rebind.epoch=2;check(push(rebind,{2,0,1,66,0,0,Down,0}));})==0&&rebind.read==0);
+ unsigned delivered=0;check(consume(rebind,2,[&](const Event& e){check(e.code==66);++delivered;})==2&&delivered==1);
+ constexpr uint32_t n=200000;Shared concurrent;concurrent.epoch=1;
  std::thread producer([&]{for(uint32_t i=0;i<n;++i){while(concurrent.write.load()-concurrent.read.load(std::memory_order_acquire)>=capacity)std::this_thread::yield();check(push(concurrent,{1,i,1,i,0,0,0,0}));}});
  uint32_t next=0;while(next<n){consume(concurrent,1,[&](const Event& e){check(e.code==next++);});std::this_thread::yield();}producer.join();check(!concurrent.fault);
  Shared captureStress;std::atomic<bool> done{false};

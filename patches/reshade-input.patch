@@ -12,9 +12,18 @@ index 8899963..690cc21 100644
 +	ReShadeLDBConfigureInputV1 PRIVATE
 +	ReShadeLDBExperimentalBuildV1 PRIVATE
 diff --git a/source/input.cpp b/source/input.cpp
-index 0620062..9974d65 100644
+index 0620062..56d3ef9 100644
 --- a/source/input.cpp
 +++ b/source/input.cpp
+@@ -389,7 +389,7 @@ void reshade::input::next_frame()
+ 	// And time is not tracked for mouse buttons anyway
+ 	const DWORD time = GetTickCount();
+ 	for (unsigned int i = 8; i < 256; ++i)
+-		if ((_keys[i] & 0x80) != 0 &&
++		if (_ldb_context == nullptr && (_keys[i] & 0x80) != 0 &&
+ 			(time - _keys_time[i]) > 5000 &&
+ 			(GetAsyncKeyState(i) & 0x8000) == 0)
+ 			(_keys[i] = 0x08);
 @@ -399,6 +399,8 @@ void reshade::input::next_frame()
  	_last_mouse_position[0] = _mouse_position[0];
  	_last_mouse_position[1] = _mouse_position[1];

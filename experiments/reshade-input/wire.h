@@ -38,10 +38,13 @@ inline bool push(Shared& s,const Event& e) {
 // Commit one read acknowledgement after the entire available batch. Consumer
 // runs only on the primary runtime's actual input-consumption thread.
 template<class F> inline uint32_t consume(Shared& s,uint32_t epoch,F&& fn) {
- if(s.fault.load(std::memory_order_acquire))return 0;
+ if(s.fault.load(std::memory_order_acquire) || s.epoch.load(std::memory_order_acquire)!=epoch)return 0;
  uint32_t read=s.read.load(std::memory_order_relaxed);const uint32_t end=s.write.load(std::memory_order_acquire),count=end-read;
  if(count>capacity){s.fault.store(2,std::memory_order_release);return 0;}
  for(uint32_t i=0;i<count;++i){const Event& e=s.events[(read+i)%capacity];if(e.epoch==epoch)fn(e);}
+ // A generation change while this batch is being decoded must not retire
+ // newer-generation records included in the initial acquired write boundary.
+ if(s.epoch.load(std::memory_order_acquire)!=epoch)return 0;
  s.read.store(end,std::memory_order_release);return count;
 }
 inline uint64_t xy(int32_t x,int32_t y){return uint64_t(uint32_t(x))|(uint64_t(uint32_t(y))<<32);}

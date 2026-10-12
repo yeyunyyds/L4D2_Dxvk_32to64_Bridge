@@ -25,6 +25,7 @@ int main(){using namespace ldb_reshade;fixture_data.signature=magic;fixture_data
  input->ldb_capture(true);check(captureMask(fixture_data,epoch,1000)==7);
  input->next_frame();check(input->is_key_down(VK_MENU)&&!input->is_key_pressed(65)); // Host GetKeyState returns0; external Alt remains held.
  check(input->text_input().empty()&&input->mouse_wheel_delta()==0);
+ fixture_now=7001;input->next_frame();check(input->is_key_down(65));fixture_now=1000; // No Host-local stale-key probe may cancel a Client-held key.
  check(push(fixture_data,{epoch,1000,uint32_t(Kind::Key),65,0,0,0,0}));input->ldb_begin_frame();check(input->is_key_released(65));
  fixture_data.sourceFlags=0;input->ldb_begin_frame();input->ldb_capture(true);check(!input->is_key_down(VK_MENU)&&!captureMask(fixture_data,epoch,1000));
  fixture_data.sourceFlags=Focused;fixture_now=2001;fixture_data.sourceTime=1000;input->ldb_begin_frame();input->ldb_capture(true);check(!captureMask(fixture_data,epoch,2001));fixture_now=1000;

@@ -1,0 +1,12 @@
+[
+  {
+    "url": "https://raw.githubusercontent.com/KhronosGroup/OpenGL-Registry/fbe417f909b6a0fb5e8ff7f9b506058a37f1e93c/api/GL/glcorearb.h",
+    "path": "include/GL/glcorearb.h",
+    "sha256": "4a82c30af4892ba19f7b6e67536fb03eec609e878832807a7d9c65506f709ec6"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/KhronosGroup/EGL-Registry/57b4876de0f33677ece92dd9de0ef105ce69139d/api/KHR/khrplatform.h",
+    "path": "include/KHR/khrplatform.h",
+    "sha256": "7b1e01aaa7ad8f6fc34b5c7bdf79ebf5189bb09e2c4d2e79fc5d350623d11e83"
+  }
+]
