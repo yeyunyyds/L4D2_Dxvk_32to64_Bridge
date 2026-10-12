@@ -1,0 +1,42 @@
+{
+  "bin/dxvk_d3d9.dll": {
+    "machine": "0x14c",
+    "sha256": "3eac66798a89a6a44f41e502acec8814d7b8799a5be768907c621a04fbf12ab8"
+  },
+  "bin/.l4d2bridge/L4D2Bridge32.exe": {
+    "machine": "0x14c",
+    "sha256": "b986c73e1e60167243ce7489db5ac8cc7e58c5f4ba03d40bc42fcc2c457c9566"
+  },
+  "bin/.l4d2bridge/L4D2Bridge64.exe": {
+    "machine": "0x8664",
+    "sha256": "3416c54ee8c116ac173ea100679fe1c8beee527fc689bf0642e7e297dcde71fc"
+  },
+  "bin/.l4d2bridge/reshade-external/x86/ReShade32.dll": {
+    "machine": "0x14c",
+    "sha256": "a63647641cc6771fcb36eeec3d52745e6d948fa3475a7b15597712ec58147881",
+    "actual_named_getter_words": [
+      "0x8fffd697",
+      "0xa6a95120",
+      "0x6827597d",
+      "0xa67bff36"
+    ]
+  },
+  "bin/.l4d2bridge/reshade-external/x64/ReShade64.dll": {
+    "machine": "0x8664",
+    "sha256": "03446f4a24d44b742fe2c7f5331b0408f9ce9431d4a06a1b9ff72bc211790c06",
+    "actual_named_getter_words": [
+      "0x8fffd697",
+      "0xa6a95120",
+      "0x6827597d",
+      "0xa67bff36"
+    ]
+  },
+  "zip": "l4d2-bridge-reshade-original-window-dev-8fffd697a6a95120-r38290865181.zip",
+  "sha256": "45c28732d09f1c2a8fbce5633ac70f9a4cacb5e41f288f42dda6dad76fc93497",
+  "bytes": 5057573,
+  "native_source": "4ce6441027b4f26245f63d80b37a170bde71a654",
+  "packaging_source": "4ce6441027b4f26245f63d80b37a170bde71a654",
+  "native_run": "38290865181",
+  "all_native_binaries_unchanged": true,
+  "gameplay_validated": false
+}

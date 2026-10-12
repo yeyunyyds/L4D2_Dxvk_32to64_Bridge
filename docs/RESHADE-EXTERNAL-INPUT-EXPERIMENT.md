@@ -4,6 +4,25 @@ Status: AWAITING GAME VALIDATION. Experimental branch: `codex/reshade-external-i
 Formal VERSION/main/tags/releases are unchanged. This is an update to an existing
 working LDB install; DXVK backend, presets, textures and effects are not bundled.
 
+## Verified experimental download
+
+Recommended build: `ldb-ipc-c32-dev+8fffd697a6a95120` with
+`ldb-reshade-input-dev+8fffd697a6a95120`.
+
+- Native source: `4ce6441027b4f26245f63d80b37a170bde71a654`.
+- [Windows full build and native gate](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38290865181): PASS.
+- [Download the matched experimental ZIP](https://raw.githubusercontent.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/e2557536e4e07befb950895cb9fabf6b3a75496c/l4d2-bridge-reshade-original-window-dev-8fffd697a6a95120-r38290865181.zip).
+- ZIP SHA-256: `45c28732d09f1c2a8fbce5633ac70f9a4cacb5e41f288f42dda6dad76fc93497`.
+- [Permanent native and binary verification evidence](reshade-input-evidence/38290865181/).
+- The earlier `67b3c8d0ad086d8d` candidate is superseded; this build additionally
+  corrects no-legacy Raw Input Shift text translation and contains its native test.
+
+All three Bridge binaries and both ReShade DLLs are identical to native CI outputs.
+13 existing native suites, 252 production transport cases, 30 failure cases,
+39 Python contracts, x86/x64 source-method/Client window/capture tests, four input
+process-architecture pairs, and both compiled-DLL ABI probes passed. These gates
+exercise source and OS transport; they do not claim L4D2/GPU validation.
+
 ## Architecture and gates
 
 The game keeps its original x86 HWND. The x86 Client observes that window's actual
@@ -61,6 +80,7 @@ ABI and mapping; those probes do not claim a GPU runtime/gameplay pass.
 5. Start normally. Host64 uses custom ReShade64 despite the x86-owned game HWND;
    Host32 uses custom ReShade32. Existing ReShade.ini, effects and presets remain
    in their original Host configuration location (normally `.l4d2bridge/ReShade.ini`).
+   Do not turn the old Presenter on through L4N while this mode is enabled.
    Prefer `InputProcessing=2` in its `[INPUT]` section for this first experiment.
 
 Required new mode:
