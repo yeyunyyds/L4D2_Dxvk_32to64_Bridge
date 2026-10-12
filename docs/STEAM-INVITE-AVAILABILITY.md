@@ -1,7 +1,25 @@
 # Steam GameUI invitation availability experiment
 
-Status: AWAITING GAME VALIDATION; native tests, full build and package verification PASS.
+Status: BLOCKED — user reports L4D2 cannot start with the delivered invitation build.
+Native tests, full build and package verification remain PASS; they did not verify
+actual L4D2 startup. Do not recommend this package pending failure evidence/fix.
 Branch: `codex/steam-invite-availability`. No main merge, VERSION or release change.
+
+## Reported startup regression
+
+After delivery of `b0a628e02609a4b4`, the user reported: "游戏都打不开了".
+Failure-session logs, active config and the exact visible failure have not yet
+been supplied. Do not infer that version mixing, installation or the new hook is
+the proven cause. Static old/new comparison found identical PE loader imports,
+export names, architectures and subsystem/characteristics for all five binaries;
+the Vulkan manifests differ only in their build descriptions. These checks do
+not establish actual startup correctness.
+
+Retain the failed session logs before rollback. Restore the complete user-accepted
+`8fffd697a6a95120` Bridge/ReShade set together; keep its known working config.
+The original-window ReShade pass is retained independently of this invitation
+regression. The immutable ZIP/evidence below are historical failed-candidate
+records, not a current recommendation.
 
 ## Verified experimental download
 

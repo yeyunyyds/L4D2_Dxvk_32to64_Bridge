@@ -1,0 +1,11 @@
+{
+  "status": "BLOCKED",
+  "build": "ldb-ipc-c32-dev+b0a628e02609a4b4",
+  "user_report": "游戏都打不开了",
+  "failure_session_logs_received": false,
+  "exact_startup_symptom_received": false,
+  "root_cause_established": false,
+  "static_comparison": "All five binaries have the same loader imports, named exports, PE bitness, subsystem and characteristics as accepted 8fffd697a6a95120; local layer manifests differ only in build descriptions",
+  "native_gate_result": "PASS; no actual L4D2 startup validation was performed",
+  "rollback": "Restore the full accepted 8fffd697a6a95120 Bridge/ReShade set together and retain working config"
+}
