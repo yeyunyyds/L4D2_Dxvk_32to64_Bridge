@@ -418,3 +418,14 @@ ZIP, opt-in config and rollback](STEAM-WORKSHOP-DIAGNOSTICS.md#verified-scoped-c
 Native validation passed. The subsequent user-reported gameplay acceptance
 marks the reported Steam issues passed on83ec0fca6f5fb2f1; see the acceptance
 record above. This does not extend native fixtures into untested game coverage.
+
+## 用户追加验证：L4N Presenter Disable 不影响报告场景
+
+用户随后明确确认 server.presenterWindow=False 时 Steam 正常，并测试 L4N Disable
+对应的三项（server.presenterWindow、client.hookMessagePump、client.overrideCustomWinHooks）
+关闭后仍全部正常。此结论为用户实机反馈，未伴随新日志、配置文件或性能采样；不应把这
+三项重新认定为当前报告配置的 Steam 硬性依赖，也未据此认定所有其他输入补丁都必要。
+
+ReShade 的原窗口输入另有 PID 注册和消息来源两个问题；见
+[独立优化调查](RESHADE-ORIGINAL-WINDOW-INVESTIGATION.md)。已有 Steam 验收与 Presenter
+控制包均保留，本次调查没有更换桥或后端。

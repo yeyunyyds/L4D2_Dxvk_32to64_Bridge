@@ -1,0 +1,86 @@
+{
+  "repository": "crosire/reshade",
+  "commit": "1c952ec211a91b9ebbf9042e23a4a810feba44ff",
+  "files": [
+    {
+      "path": "include/reshade.hpp",
+      "sha256": "e3f464ecb8e49caa7e168a9770cd22c74d4a8f4ca99c7d0cf5b7087c93a203f6",
+      "bytes": 17822
+    },
+    {
+      "path": "include/reshade_api.hpp",
+      "sha256": "d01c7d33deaf1f0eb430c0f24d249c047bcb047f3b9c2e3e6a07f3cb723dc999",
+      "bytes": 55603
+    },
+    {
+      "path": "include/reshade_events.hpp",
+      "sha256": "c0cd8b7bc7b15d81640b5573023c62b07965cdd060f94ce2a452082ad9996735",
+      "bytes": 113270
+    },
+    {
+      "path": "source/addon_manager.cpp",
+      "sha256": "6c2367d4829ab9f1655ceee96050ed89331ad69568b8d39bcc532fe88f64c881",
+      "bytes": 19215
+    },
+    {
+      "path": "source/input.cpp",
+      "sha256": "ff761acf39a2430b81f85c7ef32178973ae1b960c9fa7fef77a339156677fe67",
+      "bytes": 27597
+    },
+    {
+      "path": "source/input.hpp",
+      "sha256": "34096693af2c29549dad5b20a721745607b15c3e52b8cc84841813c30f255492",
+      "bytes": 5647
+    },
+    {
+      "path": "source/runtime.cpp",
+      "sha256": "2ac110f79a2235a639848d8bbd868f6c1d52967056297b749fdb3c60661c5c79",
+      "bytes": 196025
+    },
+    {
+      "path": "source/runtime.hpp",
+      "sha256": "111c8da41bfb138dcb0bf7d64e35b06c756d8ed68b077cdabe916dea5007b1ca",
+      "bytes": 24983
+    },
+    {
+      "path": "source/runtime_api.cpp",
+      "sha256": "b1ae312c01f92cd7608203c0cd34759f2edac7755d16a43fb458bb5d08b53f45",
+      "bytes": 47098
+    },
+    {
+      "path": "source/runtime_gui.cpp",
+      "sha256": "6bcc417c4808cc48c0e61144e35b3e402cb754407beda91532d72cde7cfda94c",
+      "bytes": 191155
+    },
+    {
+      "path": "source/runtime_internal.hpp",
+      "sha256": "02415ea6211eb75bcf0ec40e406ac2f8c3d1b2b41a5635b2ed0108fd2e09c349",
+      "bytes": 8716
+    },
+    {
+      "path": "source/runtime_manager.cpp",
+      "sha256": "657a61d205541a6ab502d68faec0574e9ba437a8f323cc2884b5b0dac1f64796",
+      "bytes": 2530
+    },
+    {
+      "path": "source/vulkan/vulkan_hooks_device.cpp",
+      "sha256": "c7b5fe9c9b92801d741136b011ff642a0b31deaa447d3ea1f8bfa5973d61c402",
+      "bytes": 123164
+    },
+    {
+      "path": "source/vulkan/vulkan_hooks_instance.cpp",
+      "sha256": "b7fc7821310bdfc4a43d1ba597f941f7c749720877e74731259e484094c4b665",
+      "bytes": 10052
+    },
+    {
+      "path": "source/vulkan/vulkan_impl_swapchain.cpp",
+      "sha256": "ae5f040845d23ba97506af609ca1796e6b7ddb8b7c2074859b13346e0a02df0f",
+      "bytes": 2246
+    },
+    {
+      "path": "source/windows/user32.cpp",
+      "sha256": "ee84ae5a2be432bfda1136ea8d0ebbcb8eb71fc58718709ec0f52f120d5c0e84",
+      "bytes": 4012
+    }
+  ]
+}

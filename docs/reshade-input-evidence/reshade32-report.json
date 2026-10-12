@@ -1,0 +1,169 @@
+{
+  "file": "ReShade32.dll",
+  "bytes": 3541728,
+  "sha256": "613ec48122a7df9547bad83bdfcd07a41397424e8a6a79f1abd885cf3bf5e1a0",
+  "machine": "0x14c",
+  "architecture": "x86",
+  "image_base": "0x10000000",
+  "version_records": [
+    {
+      "file": "6.0.1.1824",
+      "product": "6.0.1.1824"
+    }
+  ],
+  "markers": {
+    "Cannot capture input for window ": [
+      {
+        "rva": "0x2e513c",
+        "file_offset": "0x2e3f3c"
+      }
+    ],
+    " created by a different process.": [
+      {
+        "rva": "0x2e5160",
+        "file_offset": "0x2e3f60"
+      }
+    ],
+    "VK_LAYER_reshade": [
+      {
+        "rva": "0x2f72a8",
+        "file_offset": "0x2f60a8"
+      }
+    ],
+    "No keyboard or mouse input available.": []
+  },
+  "relevant_import_iat_rvas": {
+    "KERNEL32.dll": {
+      "GetCurrentProcessId": "0x2c20c8",
+      "FormatMessageW": "0x2c2188"
+    },
+    "USER32.dll": {
+      "GetWindowThreadProcessId": "0x2c2324",
+      "PeekMessageW": "0x2c233c",
+      "GetRawInputData": "0x2c2340",
+      "GetKeyboardLayout": "0x2c2344",
+      "TranslateMessage": "0x2c2348",
+      "ClipCursor": "0x2c234c",
+      "PeekMessageA": "0x2c2368"
+    }
+  },
+  "selected_exports": {
+    "GetMessageA": {
+      "rva": "0x531e0",
+      "forwarder": null
+    },
+    "GetMessageW": {
+      "rva": "0x53300",
+      "forwarder": null
+    },
+    "PeekMessageA": {
+      "rva": "0x53420",
+      "forwarder": null
+    },
+    "PeekMessageW": {
+      "rva": "0x534a0",
+      "forwarder": null
+    },
+    "ReShadeCreateEffectRuntime": {
+      "rva": "0x22810",
+      "forwarder": null
+    },
+    "ReShadeDestroyEffectRuntime": {
+      "rva": "0x22d70",
+      "forwarder": null
+    },
+    "ReShadeGetBasePath": {
+      "rva": "0x21f60",
+      "forwarder": null
+    },
+    "ReShadeGetConfigValue": {
+      "rva": "0x22030",
+      "forwarder": null
+    },
+    "ReShadeGetImGuiFunctionTable": {
+      "rva": "0x235a0",
+      "forwarder": null
+    },
+    "ReShadeLogMessage": {
+      "rva": "0x21cf0",
+      "forwarder": null
+    },
+    "ReShadeRegisterAddon": {
+      "rva": "0x2bd70",
+      "forwarder": null
+    },
+    "ReShadeRegisterEvent": {
+      "rva": "0x2c900",
+      "forwarder": null
+    },
+    "ReShadeRegisterOverlay": {
+      "rva": "0x2cb50",
+      "forwarder": null
+    },
+    "ReShadeSetConfigValue": {
+      "rva": "0x223a0",
+      "forwarder": null
+    },
+    "ReShadeUnregisterAddon": {
+      "rva": "0x2c7b0",
+      "forwarder": null
+    },
+    "ReShadeUnregisterEvent": {
+      "rva": "0x2c9f0",
+      "forwarder": null
+    },
+    "ReShadeUnregisterOverlay": {
+      "rva": "0x2cc70",
+      "forwarder": null
+    },
+    "ReShadeUpdateAndPresentEffectRuntime": {
+      "rva": "0x23560",
+      "forwarder": null
+    },
+    "ReShadeVersion": {
+      "rva": "0x3109b4",
+      "forwarder": null
+    },
+    "RegisterRawInputDevices": {
+      "rva": "0x535c0",
+      "forwarder": null
+    },
+    "vkCreateDevice": {
+      "rva": "0x12c6e0",
+      "forwarder": null
+    },
+    "vkCreateInstance": {
+      "rva": "0x134dc0",
+      "forwarder": null
+    },
+    "vkGetDeviceProcAddr": {
+      "rva": "0x1288f0",
+      "forwarder": null
+    },
+    "vkGetInstanceProcAddr": {
+      "rva": "0x129ae0",
+      "forwarder": null
+    },
+    "vkGetPhysicalDeviceToolPropertiesEXT": {
+      "rva": "0x135830",
+      "forwarder": null
+    }
+  },
+  "all_named_export_count": 457,
+  "executed": false,
+  "modified": false,
+  "claim_scope": "Static file metadata only; no runtime load or input/navigation/performance validation",
+  "sample_only_annotations": {
+    "register_window_entry_rva": "0x51c81",
+    "owner_pid_call_rva": "0x51cb1",
+    "current_pid_call_rva": "0x51cb7",
+    "equal_pid_branch_rva": "0x51cc0",
+    "equal_pid_target_rva": "0x51d17",
+    "mismatch_empty_result_write_rvas": [
+      "0x51cff",
+      "0x51d07"
+    ],
+    "registration_prefix_sha256": "8c5ce04138c6a201c59837db72c185ad38beec88d0d35da4cd1732793ff8ccff",
+    "annotation_scope": "Static supplied file only; semantic correspondence to source is not reproducible-build provenance; no runtime hook offsets adopted"
+  }
+}

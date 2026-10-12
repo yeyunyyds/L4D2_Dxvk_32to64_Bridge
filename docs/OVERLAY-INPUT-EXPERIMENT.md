@@ -4,6 +4,15 @@
 
 **v1.1 状态：**Windows 窗口模式、标准 x64 DXVK、Vulkan ReShade 6.0.1 的 Home / 公开接口开关已经过实机验证；功能仍按需启用，正常资源策略不变。完整 Steam Shift+Tab 实机不可用，v1.1 不支持/不继续修复。鼠标操作、长期运行、其他版本与 Reset 仍按各自验证范围判断。正常安装见 [README](../README.md)，下文保留实现、回退和实验方法。
 
+## 后续原窗口优化调查
+
+2026-10-12 完成两份用户 ReShade 6.0.1 x86/x64 DLL 的静态调查。使用游戏原窗口不要求
+把 Host 的 ReShade64 换成 ReShade32；两份样本都按 PID 拒绝跨进程输入注册，输入消息来源
+还需单独解决。[证据、外部输入接口方案及成本验证步骤](RESHADE-ORIGINAL-WINDOW-INVESTIGATION.md)。
+本次未实现新原型或修改已验收二进制；本文后续安装段仍描述旧 Presenter 方案。
+Steam 的最新用户验收见 [通过记录](steam-input-evidence/steam-hardware-acceptance.json)，
+不能把本文 v1.1 的历史 Steam 失败状态当作当前分支状态。
+
 ## 安装与启用
 
 1. 完全退出游戏与桥，备份当前 `bin/dxvk_d3d9.dll` 和 `bin/.l4d2bridge/L4D2Bridge64.exe`。
