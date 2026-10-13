@@ -1,0 +1,16 @@
+{
+  "BUILD-INFO.json": "0777b85f3e754b397574316b5290ab8364c1ca9462dc29ab0640745ddca75137",
+  "artifact-inspection.json": "b29b9d067a3141e9e9cfddb964b2789cf0f9ed0413aa0fe10aa9829210f428e7",
+  "compiled-protocol-verification.json": "4a47ea231b0dd713c097f7104336f3bf410d4bd68e9cd04d822f57f897980432",
+  "first-native-failed.log": "c408ff9a8809c2814bd3a232645a08c12d73f7e5dfa3d34745c0474af28157e1",
+  "first-native-result.json": "e761c9a93b187f147f2fd349132e68774a1cbba7f06c751f031df7343dba0b3f",
+  "fork-upload-receipt.json": "fbf4022f615091d8924040852f9594a706a79f2080de9c7cc2e4b02d140ed266",
+  "ipc-faults.json": "654f7d9339e2e718daaa1bec26514f635c3dd8d100dbf6367f6adcdcc2f62d6a",
+  "ipc-raw.json": "a3c9fb39cd293fdc05a344e21d926e401427113bde30d1ff6470935697834062",
+  "native-pass.log": "10b997ff00d7e50f3cfb1f7fa25a3c48a056826c6b54c7d7cef75daae07994f3",
+  "native-run.json": "59118ca5859f4ab7b8995261fa889bd88c42e5acbb2e7ec11627a319136c50c8",
+  "production-removal-audit.json": "46a961edc5af3879d7df7d0ba49386a91263fd28b4ea60f2f0a943722184d8bf",
+  "source-verification.json": "c50df303d8be4274043b8ee7943c6059678f323cb46b52586c0f7452e945e0cd",
+  "verify-compiled-protocol.py": "3aede9470cdfac87a98bcf9f7fed6784c68bb2432a1db0ebb28fc6ee3f677baa",
+  "verify-delivery.py": "a3d22e9e223e91876d767efe44fb04c17053b1c15296ff675c0e52f9cebdc55a"
+}

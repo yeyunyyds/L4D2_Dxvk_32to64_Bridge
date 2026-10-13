@@ -1,0 +1,80 @@
+{
+  "bin/dxvk_d3d9.dll": {
+    "actual_build_words": [
+      "0x2da41c97",
+      "0x6cf19b26",
+      "0xa435ba1c",
+      "0x7c9bcd31"
+    ],
+    "compiled_stores": [
+      {
+        "rva": "0xb655e",
+        "instruction": "mov dword ptr [eax + 0x1c], 0x2da41c97"
+      },
+      {
+        "rva": "0xb6565",
+        "instruction": "mov dword ptr [eax + 0x20], 0x6cf19b26"
+      },
+      {
+        "rva": "0xb656c",
+        "instruction": "mov dword ptr [eax + 0x24], 0xa435ba1c"
+      },
+      {
+        "rva": "0xb6573",
+        "instruction": "mov dword ptr [eax + 0x28], 0x7c9bcd31"
+      }
+    ]
+  },
+  "bin/.l4d2bridge/L4D2Bridge64.exe": {
+    "actual_build_words": [
+      "0x2da41c97",
+      "0x6cf19b26",
+      "0xa435ba1c",
+      "0x7c9bcd31"
+    ],
+    "compiled_stores": [
+      {
+        "rva": "0x50fe0",
+        "instruction": "mov dword ptr [rax + 0x1c], 0x2da41c97"
+      },
+      {
+        "rva": "0x50fe7",
+        "instruction": "mov dword ptr [rax + 0x20], 0x6cf19b26"
+      },
+      {
+        "rva": "0x50fee",
+        "instruction": "mov dword ptr [rax + 0x24], 0xa435ba1c"
+      },
+      {
+        "rva": "0x50ff5",
+        "instruction": "mov qword ptr [rax + 0x28], 0x7c9bcd31"
+      }
+    ]
+  },
+  "bin/.l4d2bridge/L4D2Bridge32.exe": {
+    "actual_build_words": [
+      "0x2da41c97",
+      "0x6cf19b26",
+      "0xa435ba1c",
+      "0x7c9bcd31"
+    ],
+    "compiled_stores": [
+      {
+        "rva": "0x496fe",
+        "instruction": "mov dword ptr [eax + 0x1c], 0x2da41c97"
+      },
+      {
+        "rva": "0x49705",
+        "instruction": "mov dword ptr [eax + 0x20], 0x6cf19b26"
+      },
+      {
+        "rva": "0x4970c",
+        "instruction": "mov dword ptr [eax + 0x24], 0xa435ba1c"
+      },
+      {
+        "rva": "0x49713",
+        "instruction": "mov dword ptr [eax + 0x28], 0x7c9bcd31"
+      }
+    ]
+  }
+}

@@ -4,6 +4,13 @@
 
 # 配置逐项说明与性能影响
 
+本分支 `codex/steam-only-experiment` 提供独立 Steam 实验包；以下正式版表格不是
+该实验的默认配置表。实验参考配置默认 x64 Host，Steam 输入、窗口适配及 Presenter
+window/input 开启，诊断关闭，IPC 默认 C1；已移除 `server.reshadeExternalInput`
+及 ReShade 原窗口输入实验。安装时保留已有资源/内存/IPC 配置，合并
+[Steam 专用片段](../config/STEAM-ONLY-EXPERIMENT.conf)，详见
+[Steam 实验说明](STEAM-ONLY-DEVELOPMENT.md)。正式版及先前实验分支不受影响。
+
 配置所有权与 Client 安全持久化实现见 [技术架构](ARCHITECTURE.md#configuration-persistence)，接口的分别失败和重启判定见 [API 参考](API.md#general-control)。
 
 本文对应正式版 **1.2.0**，新增项与仓库 `v1.1.0`（版本 1.1）比较。表中的“随包值”是当前 [config/bridge.conf](../config/bridge.conf) 写明的值；“缺省值”指不写该键时实现采用的值，两者不一定相同。旧实验 ZIP 保持原样；升级保留已有配置，不能用本文的推荐值代替实际安装配置。下载与安装见 [正式发布说明](RELEASE-V1.2.0.md)。

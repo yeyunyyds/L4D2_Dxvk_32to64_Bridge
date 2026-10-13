@@ -5,6 +5,31 @@ its own gameplay test. Native build and package results are retained with the
 workflow and BUILD-INFO receipt. Branch `codex/steam-only-experiment`. main, VERSION, tags,
 releases and the retained combined experiment branch are not changed.
 
+## Verified experimental delivery
+
+- [Download Steam-only ZIP](https://raw.githubusercontent.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/9e8d69b8d014cd2c29965069fbd183ac6760aaf9/l4d2-bridge-steam-only-dev-2da41c976cf19b26-r38334235685.zip).
+- Build `ldb-ipc-c32-dev+2da41c976cf19b26`; source `e3e66652a9b031f5508e11f926a9adad4e8bc8dd`.
+- ZIP size1,358,834 bytes; SHA-256 `b4c50828f607e8c2174d360e1608235da6f15f8c9390bed9ccc537dfefdca95c`.
+- [Windows native build38334235685](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38334235685): PASS.
+- [Permanent native, removal, package and upload evidence](steam-only-evidence/38334235685/).
+
+Actual two-owner capture/helpers passed on x86/x64, including30,000 concurrent
+open/close pairs per architecture. All252 IPC cases,30 failure cases,13 retained
+native suites and39 Python contracts passed before all three Release binaries
+were built. Source preparation checked234 production files for removed paths.
+The production removal audit identifies11 changed/removed files and223 unchanged
+files relative to the prior combined source; it introduces no resource or IPC
+rework. An initial native attempt stopped on a stale external-ReShade test
+expectation; its failure log and correction are retained instead of omitted.
+
+Offline inspection verifies all three PE architectures, x86 Host LAA, matching
+actual compiled four-word protocol identities, Release/O2/NDEBUG receipts,
+binary hashes, retained Steam functionality, absent experimental ReShade strings,
+only three packaged binaries, default-off diagnostics and the required x64
+Presenter config. Native artifact SHA-256 and the immutable uploaded ZIP were
+independently verified; the upload is append-only on the existing download branch.
+The stripped build itself remains AWAITING GAME VALIDATION.
+
 ## Scope
 
 Based on compiled production source817e7d1 and the user-accepted matched0901

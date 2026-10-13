@@ -1,0 +1,11 @@
+{
+  "run_id": 38333807466,
+  "job_id": 115089273820,
+  "source": "9530ca92eb7548fbe2ac41c4fbbed16e86fdfecf",
+  "status": "FAILED_EXPECTED_REMOVED_FEATURE_TEST",
+  "log_sha256": "c408ff9a8809c2814bd3a232645a08c12d73f7e5dfa3d34745c0474af28157e1",
+  "reason": "Input fixture retained an external ReShade recapture expectation after that production feature was removed. No binary was built or delivered from this run.",
+  "correction": "e3e66652a9b031f5508e11f926a9adad4e8bc8dd tests inactive-Steam original capture delegation instead, with all six existing Steam policies retained.",
+  "local_corrected_fixture_modes_passed": 6,
+  "corrected_native_run": 38334235685
+}

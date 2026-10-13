@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "build": "ldb-ipc-c32-dev+2da41c976cf19b26",
+  "source_commit": "e3e66652a9b031f5508e11f926a9adad4e8bc8dd",
+  "native_run": "38334235685",
+  "zip": "l4d2-bridge-steam-only-dev-2da41c976cf19b26-r38334235685.zip",
+  "sha256": "b4c50828f607e8c2174d360e1608235da6f15f8c9390bed9ccc537dfefdca95c",
+  "bytes": 1358834,
+  "binaries": [
+    {
+      "path": "bin/dxvk_d3d9.dll",
+      "machine": "0x14c",
+      "sha256": "7d2f6fca266006e47172f9bebe9179e60b0dd60cfe0cb80b823151abf0c1c84c",
+      "bytes": 1393664
+    },
+    {
+      "path": "bin/.l4d2bridge/L4D2Bridge32.exe",
+      "machine": "0x14c",
+      "sha256": "ce7e462f8432beb192eb652b3041cc38ee6fd7a33463811ed3af23de98afcd3b",
+      "bytes": 1174528
+    },
+    {
+      "path": "bin/.l4d2bridge/L4D2Bridge64.exe",
+      "machine": "0x8664",
+      "sha256": "7f10c6f0fc93d2e5135ea8f67e8896ad360e7595b9273715808449f22d35133e",
+      "bytes": 1269248
+    }
+  ],
+  "ipc_cases": 252,
+  "fault_cases": 30,
+  "experimental_reshade_removed": true,
+  "no_reshade_or_proprietary_binaries_bundled": true,
+  "gameplay_validated": false
+}

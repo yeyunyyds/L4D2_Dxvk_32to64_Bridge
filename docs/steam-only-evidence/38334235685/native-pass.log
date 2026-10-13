@@ -1,0 +1,1392 @@
+﻿2026-10-13T01:53:00.5053731Z Current runner version: '2.337.0'
+2026-10-13T01:53:00.5078315Z ##[group]Runner Image Provisioner
+2026-10-13T01:53:00.5079136Z Hosted Compute Agent
+2026-10-13T01:53:00.5079704Z Version: 20261002.596
+2026-10-13T01:53:00.5080251Z Commit: c3d12f3313a95f25162a1503be624f3b0617f8c0
+2026-10-13T01:53:00.5080949Z Build Date: 2026-10-02T22:28:27Z
+2026-10-13T01:53:00.5081553Z Worker ID: {796465e0-560b-4d22-bd78-e2423b1a7e3e}
+2026-10-13T01:53:00.5082179Z Region: westus
+2026-10-13T01:53:00.5082696Z Cloud: Azure
+2026-10-13T01:53:00.5083159Z ##[endgroup]
+2026-10-13T01:53:00.5084597Z ##[group]Operating System
+2026-10-13T01:53:00.5085230Z Microsoft Windows Server 2022
+2026-10-13T01:53:00.5085769Z 10.0.20348
+2026-10-13T01:53:00.5086299Z Datacenter
+2026-10-13T01:53:00.5086754Z ##[endgroup]
+2026-10-13T01:53:00.5087238Z ##[group]Runner Image
+2026-10-13T01:53:00.5087752Z Image: windows-2022
+2026-10-13T01:53:00.5088240Z Version: 20261004.326.1
+2026-10-13T01:53:00.5089642Z Included Software: https://github.com/actions/runner-images/blob/win22/20261004.326/images/windows/Windows2022-Readme.md
+2026-10-13T01:53:00.5091146Z Image Release: https://github.com/actions/runner-images/releases/tag/win22%2F20261004.326
+2026-10-13T01:53:00.5092022Z ##[endgroup]
+2026-10-13T01:53:00.5093037Z ##[group]GITHUB_TOKEN Permissions
+2026-10-13T01:53:00.5094809Z Contents: read
+2026-10-13T01:53:00.5095348Z Metadata: read
+2026-10-13T01:53:00.5095872Z ##[endgroup]
+2026-10-13T01:53:00.5097887Z Secret source: Actions
+2026-10-13T01:53:00.5098771Z Cache mode: write
+2026-10-13T01:53:00.5099411Z Prepare workflow directory
+2026-10-13T01:53:00.5475669Z Prepare all required actions
+2026-10-13T01:53:00.5546755Z Getting action download info
+2026-10-13T01:53:00.9738434Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-13T01:53:01.0775046Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-13T01:53:01.2087688Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-13T01:53:01.5355042Z Complete job name: windows
+2026-10-13T01:53:01.6948164Z ##[group]Run actions/checkout@v4
+2026-10-13T01:53:01.6949510Z with:
+2026-10-13T01:53:01.6950061Z   repository: yeyunyyds/L4D2_Dxvk_32to64_Bridge
+2026-10-13T01:53:01.6955153Z   token: ***
+2026-10-13T01:53:01.6955629Z   ssh-strict: true
+2026-10-13T01:53:01.6956111Z   ssh-user: git
+2026-10-13T01:53:01.6956600Z   persist-credentials: true
+2026-10-13T01:53:01.6957138Z   clean: true
+2026-10-13T01:53:01.6957627Z   sparse-checkout-cone-mode: true
+2026-10-13T01:53:01.6958186Z   fetch-depth: 1
+2026-10-13T01:53:01.6958576Z   fetch-tags: false
+2026-10-13T01:53:01.6958969Z   show-progress: true
+2026-10-13T01:53:01.6959366Z   lfs: false
+2026-10-13T01:53:01.6959734Z   submodules: false
+2026-10-13T01:53:01.6960138Z   set-safe-directory: true
+2026-10-13T01:53:01.6960608Z   allow-unsafe-pr-checkout: false
+2026-10-13T01:53:01.6961302Z ##[endgroup]
+2026-10-13T01:53:01.8529126Z Syncing repository: yeyunyyds/L4D2_Dxvk_32to64_Bridge
+2026-10-13T01:53:01.8531008Z ##[group]Getting Git version info
+2026-10-13T01:53:01.8531762Z Working directory is 'D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge'
+2026-10-13T01:53:01.9501940Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-13T01:53:02.2635217Z git version 2.56.0.windows.1
+2026-10-13T01:53:02.2680218Z ##[endgroup]
+2026-10-13T01:53:02.2699702Z Temporarily overriding HOME='D:\a\_temp\d45c5bf8-b0e8-4ad1-91f0-d5f8d5bd5104' before making global git config changes
+2026-10-13T01:53:02.2702219Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-13T01:53:02.2711275Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge
+2026-10-13T01:53:02.3246244Z Deleting the contents of 'D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge'
+2026-10-13T01:53:02.3251191Z ##[group]Initializing the repository
+2026-10-13T01:53:02.3260691Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge
+2026-10-13T01:53:02.4017133Z Initialized empty Git repository in D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.git/
+2026-10-13T01:53:02.4054629Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge
+2026-10-13T01:53:02.4811025Z ##[endgroup]
+2026-10-13T01:53:02.4812077Z ##[group]Disabling automatic garbage collection
+2026-10-13T01:53:02.4818480Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-10-13T01:53:02.5102730Z ##[endgroup]
+2026-10-13T01:53:02.5103539Z ##[group]Setting up auth
+2026-10-13T01:53:02.5115127Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-13T01:53:02.5403795Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-13T01:53:03.8325469Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-13T01:53:03.8631488Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-13T01:53:04.3269576Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-13T01:53:04.3569684Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-13T01:53:04.8276833Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-10-13T01:53:04.8568861Z ##[endgroup]
+2026-10-13T01:53:04.8569538Z ##[group]Fetching the repository
+2026-10-13T01:53:04.8584260Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +e3e66652a9b031f5508e11f926a9adad4e8bc8dd:refs/remotes/origin/codex/steam-only-experiment
+2026-10-13T01:53:06.1246375Z From https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge
+2026-10-13T01:53:06.1248112Z  * [new ref]         e3e66652a9b031f5508e11f926a9adad4e8bc8dd -> origin/codex/steam-only-experiment
+2026-10-13T01:53:06.1278161Z ##[endgroup]
+2026-10-13T01:53:06.1278804Z ##[group]Determining the checkout info
+2026-10-13T01:53:06.1281640Z ##[endgroup]
+2026-10-13T01:53:06.1291227Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-10-13T01:53:06.1714510Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-10-13T01:53:06.2001433Z ##[group]Checking out the ref
+2026-10-13T01:53:06.2010155Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B codex/steam-only-experiment refs/remotes/origin/codex/steam-only-experiment
+2026-10-13T01:53:06.3525603Z Switched to a new branch 'codex/steam-only-experiment'
+2026-10-13T01:53:06.3546610Z branch 'codex/steam-only-experiment' set up to track 'origin/codex/steam-only-experiment'.
+2026-10-13T01:53:06.3582885Z ##[endgroup]
+2026-10-13T01:53:06.3946500Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-10-13T01:53:06.4211492Z e3e66652a9b031f5508e11f926a9adad4e8bc8dd
+2026-10-13T01:53:06.4638862Z ##[group]Run actions/checkout@v4
+2026-10-13T01:53:06.4639218Z with:
+2026-10-13T01:53:06.4639469Z   repository: yeyunyyds/L4D2_Dxvk_32to64_Bridge
+2026-10-13T01:53:06.4639793Z   ref: 8730d84b77c596efdabfad54b7458a8f0aeb01a4
+2026-10-13T01:53:06.4640085Z   path: .deps/ipc-v2-pr6
+2026-10-13T01:53:06.4642867Z   token: ***
+2026-10-13T01:53:06.4643069Z   ssh-strict: true
+2026-10-13T01:53:06.4643262Z   ssh-user: git
+2026-10-13T01:53:06.4644891Z   persist-credentials: true
+2026-10-13T01:53:06.4645272Z   clean: true
+2026-10-13T01:53:06.4645487Z   sparse-checkout-cone-mode: true
+2026-10-13T01:53:06.4645747Z   fetch-depth: 1
+2026-10-13T01:53:06.4645936Z   fetch-tags: false
+2026-10-13T01:53:06.4646135Z   show-progress: true
+2026-10-13T01:53:06.4646337Z   lfs: false
+2026-10-13T01:53:06.4646530Z   submodules: false
+2026-10-13T01:53:06.4646722Z   set-safe-directory: true
+2026-10-13T01:53:06.4646955Z   allow-unsafe-pr-checkout: false
+2026-10-13T01:53:06.4647194Z ##[endgroup]
+2026-10-13T01:53:06.5694338Z Syncing repository: yeyunyyds/L4D2_Dxvk_32to64_Bridge
+2026-10-13T01:53:06.5704633Z ##[group]Getting Git version info
+2026-10-13T01:53:06.5705711Z Working directory is 'D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\ipc-v2-pr6'
+2026-10-13T01:53:06.6605634Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-13T01:53:06.6881863Z git version 2.56.0.windows.1
+2026-10-13T01:53:06.6919719Z ##[endgroup]
+2026-10-13T01:53:06.6936584Z Temporarily overriding HOME='D:\a\_temp\8408008c-c99b-4f68-a6a9-08d18c0ab078' before making global git config changes
+2026-10-13T01:53:06.6937854Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-13T01:53:06.6948382Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\ipc-v2-pr6
+2026-10-13T01:53:06.7259901Z ##[group]Initializing the repository
+2026-10-13T01:53:06.7269289Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\ipc-v2-pr6
+2026-10-13T01:53:06.7709710Z Initialized empty Git repository in D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.deps/ipc-v2-pr6/.git/
+2026-10-13T01:53:06.7769664Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge
+2026-10-13T01:53:06.8130024Z ##[endgroup]
+2026-10-13T01:53:06.8130822Z ##[group]Disabling automatic garbage collection
+2026-10-13T01:53:06.8141749Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-10-13T01:53:06.8524421Z ##[endgroup]
+2026-10-13T01:53:06.8525171Z ##[group]Setting up auth
+2026-10-13T01:53:06.8538176Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-13T01:53:06.8912592Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-13T01:53:07.4557528Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-13T01:53:07.4923595Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-13T01:53:08.0066574Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-13T01:53:08.0387758Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-13T01:53:08.5382994Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-10-13T01:53:08.5757191Z ##[endgroup]
+2026-10-13T01:53:08.5759945Z ##[group]Fetching the repository
+2026-10-13T01:53:08.5771632Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin 8730d84b77c596efdabfad54b7458a8f0aeb01a4
+2026-10-13T01:53:09.0899146Z From https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge
+2026-10-13T01:53:09.0900171Z  * branch            8730d84b77c596efdabfad54b7458a8f0aeb01a4 -> FETCH_HEAD
+2026-10-13T01:53:09.0930175Z ##[endgroup]
+2026-10-13T01:53:09.0931060Z ##[group]Determining the checkout info
+2026-10-13T01:53:09.0933829Z ##[endgroup]
+2026-10-13T01:53:09.0946351Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-10-13T01:53:09.1281705Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-10-13T01:53:09.1581996Z ##[group]Checking out the ref
+2026-10-13T01:53:09.1595216Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force 8730d84b77c596efdabfad54b7458a8f0aeb01a4
+2026-10-13T01:53:09.2367432Z Note: switching to '8730d84b77c596efdabfad54b7458a8f0aeb01a4'.
+2026-10-13T01:53:09.2368085Z 
+2026-10-13T01:53:09.2368570Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-13T01:53:09.2369366Z changes and commit them, and you can discard any commits you make in this
+2026-10-13T01:53:09.2370100Z state without impacting any branches by switching back to a branch.
+2026-10-13T01:53:09.2370575Z 
+2026-10-13T01:53:09.2370874Z If you want to create a new branch to retain commits you create, you may
+2026-10-13T01:53:09.2371615Z do so (now or later) by using -c with the switch command. Example:
+2026-10-13T01:53:09.2372021Z 
+2026-10-13T01:53:09.2372223Z   git switch -c <new-branch-name>
+2026-10-13T01:53:09.2372495Z 
+2026-10-13T01:53:09.2372631Z Or undo this operation with:
+2026-10-13T01:53:09.2372871Z 
+2026-10-13T01:53:09.2373011Z   git switch -
+2026-10-13T01:53:09.2373165Z 
+2026-10-13T01:53:09.2373400Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-13T01:53:09.2373711Z 
+2026-10-13T01:53:09.2373996Z HEAD is now at 8730d84 docs(ipc): report validated normal-path gains and remaining regression [skip ci]
+2026-10-13T01:53:09.2426640Z ##[endgroup]
+2026-10-13T01:53:09.2756790Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-10-13T01:53:09.3103011Z 8730d84b77c596efdabfad54b7458a8f0aeb01a4
+2026-10-13T01:53:09.3480943Z ##[group]Run actions/setup-python@v5
+2026-10-13T01:53:09.3481288Z with:
+2026-10-13T01:53:09.3481476Z   python-version: 3.11
+2026-10-13T01:53:09.3481700Z   check-latest: false
+2026-10-13T01:53:09.3484971Z   token: ***
+2026-10-13T01:53:09.3485229Z   update-environment: true
+2026-10-13T01:53:09.3485462Z   allow-prereleases: false
+2026-10-13T01:53:09.3485686Z   freethreaded: false
+2026-10-13T01:53:09.3485874Z ##[endgroup]
+2026-10-13T01:53:09.5283842Z ##[group]Installed versions
+2026-10-13T01:53:09.5425579Z (node:3284) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-13T01:53:09.5426829Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-13T01:53:09.5427569Z Successfully set up CPython (3.11.9)
+2026-10-13T01:53:09.5428265Z ##[endgroup]
+2026-10-13T01:53:09.5729741Z ##[group]Run python -m pip install meson==1.3.2 ninja==1.11.1.1
+2026-10-13T01:53:09.5730546Z [36;1mpython -m pip install meson==1.3.2 ninja==1.11.1.1[0m
+2026-10-13T01:53:09.5897386Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-13T01:53:09.5897768Z env:
+2026-10-13T01:53:09.5898042Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:53:09.5898518Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.11.9\x64/lib/pkgconfig
+2026-10-13T01:53:09.5898973Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:53:09.5899363Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:53:09.5899756Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:53:09.5900081Z ##[endgroup]
+2026-10-13T01:53:14.3404445Z Collecting meson==1.3.2
+2026-10-13T01:53:14.5059257Z   Downloading meson-1.3.2-py3-none-any.whl.metadata (1.8 kB)
+2026-10-13T01:53:14.6073341Z Collecting ninja==1.11.1.1
+2026-10-13T01:53:14.6176958Z   Downloading ninja-1.11.1.1-py2.py3-none-win_amd64.whl.metadata (5.4 kB)
+2026-10-13T01:53:14.6516070Z Downloading meson-1.3.2-py3-none-any.whl (977 kB)
+2026-10-13T01:53:14.7902183Z    ---------------------------------------- 977.7/977.7 kB 23.1 MB/s  0:00:00
+2026-10-13T01:53:14.7968486Z Downloading ninja-1.11.1.1-py2.py3-none-win_amd64.whl (312 kB)
+2026-10-13T01:53:14.9957778Z Installing collected packages: ninja, meson
+2026-10-13T01:53:16.2176295Z 
+2026-10-13T01:53:16.2187455Z Successfully installed meson-1.3.2 ninja-1.11.1.1
+2026-10-13T01:53:16.3964934Z ##[group]Run python scripts/prepare_bridge.py
+2026-10-13T01:53:16.3965363Z [36;1mpython scripts/prepare_bridge.py[0m
+2026-10-13T01:53:16.3965664Z [36;1mpython scripts/prepare_ipc_c32.py[0m
+2026-10-13T01:53:16.3966066Z [36;1mpython scripts/verify_steam_only_source.py --source .deps/dxvk-remix[0m
+2026-10-13T01:53:16.4030208Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-13T01:53:16.4030557Z env:
+2026-10-13T01:53:16.4030837Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:53:16.4031286Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.11.9\x64/lib/pkgconfig
+2026-10-13T01:53:16.4031747Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:53:16.4032143Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:53:16.4032544Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:53:16.4032857Z ##[endgroup]
+2026-10-13T01:53:16.7215577Z Initialized empty Git repository in D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.deps/dxvk-remix/.git/
+2026-10-13T01:53:18.5388159Z From https://github.com/NVIDIAGameWorks/dxvk-remix
+2026-10-13T01:53:18.5388661Z  * branch            9aa74f8dfad2188efbd0f717c64d9f8fa909787e -> FETCH_HEAD
+2026-10-13T01:53:19.1305960Z HEAD is now at 9aa74f8 Merge branch 'dev/rtxio_woa_update' into 'main'
+2026-10-13T01:53:19.8348752Z Submodule 'submodules/Detours' (https://github.com/microsoft/Detours.git) registered for path 'submodules/Detours'
+2026-10-13T01:53:19.8797109Z Cloning into 'D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.deps/dxvk-remix/submodules/Detours'...
+2026-10-13T01:53:21.7751414Z From https://github.com/microsoft/Detours
+2026-10-13T01:53:21.7751865Z  * branch            ea6c4ae7f3f1b1772b8a7cda4199230b932f5a50 -> FETCH_HEAD
+2026-10-13T01:53:21.8772917Z Submodule path 'submodules/Detours': checked out 'ea6c4ae7f3f1b1772b8a7cda4199230b932f5a50'
+2026-10-13T01:53:21.8835838Z Prepared D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\dxvk-remix; RTX renderer and NVIDIA GPU SDK submodules are not fetched
+2026-10-13T01:53:22.0058876Z D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/patches/ipc-c32.patch:1495: trailing whitespace.
+2026-10-13T01:53:22.0059569Z } catch (const BridgeReadFailure&) { return D3DERR_DEVICELOST; } 
+2026-10-13T01:53:22.0185400Z D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/patches/ipc-c32.patch:2900: new blank line at EOF.
+2026-10-13T01:53:22.0186071Z +
+2026-10-13T01:53:22.0315502Z warning: 2 lines add whitespace errors.
+2026-10-13T01:53:22.0391868Z ldb-ipc-c32-dev+2da41c976cf19b26
+2026-10-13T01:53:22.1348959Z PASS Steam-only production: 234 files checked, external ReShade absent, Steam paths present
+2026-10-13T01:53:22.2483099Z ##[group]Run ./scripts/test_steam_capture_state.ps1
+2026-10-13T01:53:22.2483529Z [36;1m./scripts/test_steam_capture_state.ps1[0m
+2026-10-13T01:53:22.2524117Z shell: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.EXE -command ". '{0}'"
+2026-10-13T01:53:22.2524519Z env:
+2026-10-13T01:53:22.2524790Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:53:22.2525241Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.11.9\x64/lib/pkgconfig
+2026-10-13T01:53:22.2525687Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:53:22.2526077Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:53:22.2526464Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:53:22.2526773Z ##[endgroup]
+2026-10-13T01:53:26.1243511Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:53:26.5612803Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:53:26.5671970Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:53:28.9292857Z Visual Studio Command Prompt variables set.
+2026-10-13T01:53:29.1653126Z capture-state-x86.cpp
+2026-10-13T01:53:39.5495104Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\steam-capture\capture-state-x86.exe
+2026-10-13T01:53:39.5984189Z PASS actual Steam-only capture state: two independent owners, both close orders, balanced transitions, real owner-thread notification, duplicate/stale/no-window refusal, 30000 concurrent open/close pairs
+2026-10-13T01:53:39.9806135Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:53:40.0519688Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:53:40.0557994Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:53:41.6342352Z Visual Studio Command Prompt variables set.
+2026-10-13T01:53:41.8060747Z capture-state-x64.cpp
+2026-10-13T01:53:46.5085845Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\steam-capture\capture-state-x64.exe
+2026-10-13T01:53:46.5241380Z PASS actual Steam-only capture state: two independent owners, both close orders, balanced transitions, real owner-thread notification, duplicate/stale/no-window refusal, 30000 concurrent open/close pairs
+2026-10-13T01:53:46.5799439Z ##[group]Run ./scripts/test_ipc_c32.ps1
+2026-10-13T01:53:46.5799819Z [36;1m./scripts/test_ipc_c32.ps1[0m
+2026-10-13T01:53:46.5837219Z shell: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.EXE -command ". '{0}'"
+2026-10-13T01:53:46.5837625Z env:
+2026-10-13T01:53:46.5837885Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:53:46.5838331Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.11.9\x64/lib/pkgconfig
+2026-10-13T01:53:46.5838781Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:53:46.5839174Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:53:46.5839568Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:53:46.5839874Z ##[endgroup]
+2026-10-13T01:53:47.2268931Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:53:47.2912331Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:53:47.2946650Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:53:48.6996141Z Visual Studio Command Prompt variables set.
+2026-10-13T01:53:48.7160536Z ipc_transport.cpp
+2026-10-13T01:53:49.7704031Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\c32_bridge_cases.cpp(174): warning C4996: 'getenv': This function or variable may be unsafe. Consider using _dupenv_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+2026-10-13T01:53:49.7735692Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\c32_bridge_cases.cpp(218): warning C4996: 'getenv': This function or variable may be unsafe. Consider using _dupenv_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+2026-10-13T01:53:49.8460313Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_atomiccircularqueue.h(271): warning C4018: '<': signed/unsigned mismatch
+2026-10-13T01:53:49.8495045Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_atomiccircularqueue.h(268): note: while compiling class template member function 'std::vector<Commands::D3D9Command,std::allocator<Commands::D3D9Command>> bridge_util::AtomicCircularQueue<Header,bridge_util::Accessor::Reader>::buildQueueData(int,int)'
+2026-10-13T01:53:49.8500219Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_atomiccircularqueue.h(291): note: see reference to function template instantiation 'std::vector<Commands::D3D9Command,std::allocator<Commands::D3D9Command>> bridge_util::AtomicCircularQueue<Header,bridge_util::Accessor::Reader>::buildQueueData(int,int)' being compiled
+2026-10-13T01:53:49.8504105Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_ipcchannel.h(94): note: see reference to class template instantiation 'bridge_util::AtomicCircularQueue<Header,bridge_util::Accessor::Reader>' being compiled
+2026-10-13T01:53:49.8506972Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_ipcchannel.h(93): note: while compiling class template member function 'IpcChannel<bridge_util::Accessor::Reader>::~IpcChannel(void)'
+2026-10-13T01:53:49.8509619Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\c32_bridge_cases.cpp(173): note: see reference to function template instantiation 'IpcChannel<bridge_util::Accessor::Reader>::~IpcChannel(void)' being compiled
+2026-10-13T01:53:49.8512384Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\c32_bridge_cases.cpp(173): note: see reference to class template instantiation 'IpcChannel<bridge_util::Accessor::Reader>' being compiled
+2026-10-13T01:53:49.8710492Z ipc_transport.cpp(532): warning C4661: 'void Bridge<BridgeId::Device>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:53:49.8714980Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Device>::init'
+2026-10-13T01:53:49.8716339Z ipc_transport.cpp(532): warning C4661: 'bridge_util::Result Bridge<BridgeId::Device>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:53:49.8717767Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Device>::ensureQueueEmpty'
+2026-10-13T01:53:49.8719332Z ipc_transport.cpp(532): warning C4661: 'void Bridge<BridgeId::Module>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:53:49.8720445Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Module>::init'
+2026-10-13T01:53:49.8721319Z ipc_transport.cpp(532): warning C4661: 'bridge_util::Result Bridge<BridgeId::Module>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:53:49.8722236Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Module>::ensureQueueEmpty'
+2026-10-13T01:53:49.9716161Z ipc_transport.cpp(1077): warning C4661: 'void Bridge<BridgeId::Device>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:53:49.9717884Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Device>::init'
+2026-10-13T01:53:49.9719064Z ipc_transport.cpp(1077): warning C4661: 'bridge_util::Result Bridge<BridgeId::Device>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:53:49.9719996Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Device>::ensureQueueEmpty'
+2026-10-13T01:53:49.9722418Z ipc_transport.cpp(1077): warning C4661: 'void Bridge<BridgeId::Module>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:53:49.9724263Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Module>::init'
+2026-10-13T01:53:49.9725177Z ipc_transport.cpp(1077): warning C4661: 'bridge_util::Result Bridge<BridgeId::Module>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:53:49.9726099Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Module>::ensureQueueEmpty'
+2026-10-13T01:53:50.0110265Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\data_ring_contract.h(143): warning C4661: 'void Bridge<BridgeId::Device>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:53:50.0112441Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Device>::init'
+2026-10-13T01:53:50.0113890Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\data_ring_contract.h(143): warning C4661: 'bridge_util::Result Bridge<BridgeId::Device>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:53:50.0115858Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Device>::ensureQueueEmpty'
+2026-10-13T01:53:50.0117810Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\data_ring_contract.h(143): warning C4661: 'void Bridge<BridgeId::Module>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:53:50.0119164Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Module>::init'
+2026-10-13T01:53:50.0121503Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\data_ring_contract.h(143): warning C4661: 'bridge_util::Result Bridge<BridgeId::Module>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:53:50.0123134Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Module>::ensureQueueEmpty'
+2026-10-13T01:53:50.0264159Z ipc_transport.cpp(477): warning C4661: 'void Bridge<BridgeId::Device>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:53:50.0266544Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Device>::init'
+2026-10-13T01:53:50.0268417Z ipc_transport.cpp(477): warning C4661: 'bridge_util::Result Bridge<BridgeId::Device>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:53:50.0270049Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Device>::ensureQueueEmpty'
+2026-10-13T01:53:50.0271507Z ipc_transport.cpp(477): warning C4661: 'void Bridge<BridgeId::Module>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:53:50.0272843Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Module>::init'
+2026-10-13T01:53:50.0273837Z ipc_transport.cpp(477): warning C4661: 'bridge_util::Result Bridge<BridgeId::Module>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:53:50.0274757Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Module>::ensureQueueEmpty'
+2026-10-13T01:53:50.0815649Z util_sharedmemory.cpp
+2026-10-13T01:53:50.8582770Z util_semaphore.cpp
+2026-10-13T01:53:51.6411987Z data_diagnostics.cpp
+2026-10-13T01:53:55.4758116Z exception_diagnostics.cpp
+2026-10-13T01:53:56.1287478Z Generating Code...
+2026-10-13T01:53:57.5600945Z c32.cpp
+2026-10-13T01:53:59.1824865Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:53:59.2493246Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:53:59.2530094Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:54:00.6973515Z Visual Studio Command Prompt variables set.
+2026-10-13T01:54:00.7130921Z ipc_transport.cpp
+2026-10-13T01:54:01.6750917Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_atomiccircularqueue.h(271): warning C4018: '<': signed/unsigned mismatch
+2026-10-13T01:54:01.6754506Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_atomiccircularqueue.h(268): note: while compiling class template member function 'std::vector<Commands::D3D9Command,std::allocator<Commands::D3D9Command>> bridge_util::AtomicCircularQueue<Header,bridge_util::Accessor::Writer>::buildQueueData(int,int)'
+2026-10-13T01:54:01.6758329Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_atomiccircularqueue.h(291): note: see reference to function template instantiation 'std::vector<Commands::D3D9Command,std::allocator<Commands::D3D9Command>> bridge_util::AtomicCircularQueue<Header,bridge_util::Accessor::Writer>::buildQueueData(int,int)' being compiled
+2026-10-13T01:54:01.6760477Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_ipcchannel.h(94): note: see reference to class template instantiation 'bridge_util::AtomicCircularQueue<Header,bridge_util::Accessor::Writer>' being compiled
+2026-10-13T01:54:01.6762119Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_ipcchannel.h(93): note: while compiling class template member function 'IpcChannel<bridge_util::Accessor::Writer>::~IpcChannel(void)'
+2026-10-13T01:54:01.6763896Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\c32_bridge_cases.cpp(214): note: see reference to function template instantiation 'IpcChannel<bridge_util::Accessor::Writer>::~IpcChannel(void)' being compiled
+2026-10-13T01:54:01.6765466Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\c32_bridge_cases.cpp(214): note: see reference to class template instantiation 'IpcChannel<bridge_util::Accessor::Writer>' being compiled
+2026-10-13T01:54:01.6900305Z ipc_transport.cpp(532): warning C4661: 'void Bridge<BridgeId::Device>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:54:01.6902067Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Device>::init'
+2026-10-13T01:54:01.6903525Z ipc_transport.cpp(532): warning C4661: 'bridge_util::Result Bridge<BridgeId::Device>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:54:01.6904740Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Device>::ensureQueueEmpty'
+2026-10-13T01:54:01.6906497Z ipc_transport.cpp(532): warning C4661: 'void Bridge<BridgeId::Module>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:54:01.6908133Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Module>::init'
+2026-10-13T01:54:01.6909602Z ipc_transport.cpp(532): warning C4661: 'bridge_util::Result Bridge<BridgeId::Module>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:54:01.6911342Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Module>::ensureQueueEmpty'
+2026-10-13T01:54:01.7743168Z ipc_transport.cpp(1075): warning C4661: 'void Bridge<BridgeId::Device>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:54:01.7745094Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Device>::init'
+2026-10-13T01:54:01.7746638Z ipc_transport.cpp(1075): warning C4661: 'bridge_util::Result Bridge<BridgeId::Device>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:54:01.7748093Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Device>::ensureQueueEmpty'
+2026-10-13T01:54:01.7749943Z ipc_transport.cpp(1075): warning C4661: 'void Bridge<BridgeId::Module>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:54:01.7752421Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Module>::init'
+2026-10-13T01:54:01.7753386Z ipc_transport.cpp(1075): warning C4661: 'bridge_util::Result Bridge<BridgeId::Module>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:54:01.7754865Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Module>::ensureQueueEmpty'
+2026-10-13T01:54:01.7968032Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\data_ring_contract.h(143): warning C4661: 'void Bridge<BridgeId::Device>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:54:01.7970096Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Device>::init'
+2026-10-13T01:54:01.7971701Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\data_ring_contract.h(143): warning C4661: 'bridge_util::Result Bridge<BridgeId::Device>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:54:01.7973680Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Device>::ensureQueueEmpty'
+2026-10-13T01:54:01.7975642Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\data_ring_contract.h(143): warning C4661: 'void Bridge<BridgeId::Module>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:54:01.7977082Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Module>::init'
+2026-10-13T01:54:01.7978356Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\data_ring_contract.h(143): warning C4661: 'bridge_util::Result Bridge<BridgeId::Module>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:54:01.7979614Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Module>::ensureQueueEmpty'
+2026-10-13T01:54:01.8336184Z util_sharedmemory.cpp
+2026-10-13T01:54:02.6119556Z util_semaphore.cpp
+2026-10-13T01:54:03.3751261Z data_diagnostics.cpp
+2026-10-13T01:54:07.2616622Z exception_diagnostics.cpp
+2026-10-13T01:54:07.9066145Z Generating Code...
+2026-10-13T01:54:09.0019977Z c32.cpp
+2026-10-13T01:54:10.6347066Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:54:10.7008087Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:54:10.7043274Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:54:12.0986014Z Visual Studio Command Prompt variables set.
+2026-10-13T01:54:12.1114741Z ipc_transport.cpp
+2026-10-13T01:54:12.8148288Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_semaphore.h(64): warning C4267: 'argument': conversion from 'size_t' to 'LONG', possible loss of data
+2026-10-13T01:54:12.9825922Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_atomiccircularqueue.h(299): warning C4267: 'return': conversion from 'size_t' to 'uint32_t', possible loss of data
+2026-10-13T01:54:12.9832769Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_atomiccircularqueue.h(298): note: while compiling class template member function 'uint32_t bridge_util::AtomicCircularQueue<Header,bridge_util::Accessor::Writer>::queueIdxDec(uint32_t) const'
+2026-10-13T01:54:12.9836672Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_atomiccircularqueue.h(290): note: see reference to function template instantiation 'uint32_t bridge_util::AtomicCircularQueue<Header,bridge_util::Accessor::Writer>::queueIdxDec(uint32_t) const' being compiled
+2026-10-13T01:54:12.9838825Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_ipcchannel.h(94): note: see reference to class template instantiation 'bridge_util::AtomicCircularQueue<Header,bridge_util::Accessor::Writer>' being compiled
+2026-10-13T01:54:12.9840316Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_ipcchannel.h(93): note: while compiling class template member function 'IpcChannel<bridge_util::Accessor::Writer>::~IpcChannel(void)'
+2026-10-13T01:54:12.9841770Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\c32_bridge_cases.cpp(214): note: see reference to function template instantiation 'IpcChannel<bridge_util::Accessor::Writer>::~IpcChannel(void)' being compiled
+2026-10-13T01:54:12.9843220Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\c32_bridge_cases.cpp(214): note: see reference to class template instantiation 'IpcChannel<bridge_util::Accessor::Writer>' being compiled
+2026-10-13T01:54:13.0009597Z ipc_transport.cpp(532): warning C4661: 'void Bridge<BridgeId::Device>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:54:13.0011823Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Device>::init'
+2026-10-13T01:54:13.0014755Z ipc_transport.cpp(532): warning C4661: 'bridge_util::Result Bridge<BridgeId::Device>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:54:13.0016845Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Device>::ensureQueueEmpty'
+2026-10-13T01:54:13.0018471Z ipc_transport.cpp(532): warning C4661: 'void Bridge<BridgeId::Module>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:54:13.0019615Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Module>::init'
+2026-10-13T01:54:13.0020558Z ipc_transport.cpp(532): warning C4661: 'bridge_util::Result Bridge<BridgeId::Module>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:54:13.0021529Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Module>::ensureQueueEmpty'
+2026-10-13T01:54:13.0795986Z ipc_transport.cpp(1075): warning C4661: 'void Bridge<BridgeId::Device>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:54:13.0797668Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Device>::init'
+2026-10-13T01:54:13.0799027Z ipc_transport.cpp(1075): warning C4661: 'bridge_util::Result Bridge<BridgeId::Device>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:54:13.0800345Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Device>::ensureQueueEmpty'
+2026-10-13T01:54:13.0802078Z ipc_transport.cpp(1075): warning C4661: 'void Bridge<BridgeId::Module>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:54:13.0803466Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Module>::init'
+2026-10-13T01:54:13.0804357Z ipc_transport.cpp(1075): warning C4661: 'bridge_util::Result Bridge<BridgeId::Module>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:54:13.0805276Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Module>::ensureQueueEmpty'
+2026-10-13T01:54:13.0995944Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\data_ring_contract.h(143): warning C4661: 'void Bridge<BridgeId::Device>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:54:13.0998216Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Device>::init'
+2026-10-13T01:54:13.1000288Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\data_ring_contract.h(143): warning C4661: 'bridge_util::Result Bridge<BridgeId::Device>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:54:13.1002056Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Device>::ensureQueueEmpty'
+2026-10-13T01:54:13.1004300Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\data_ring_contract.h(143): warning C4661: 'void Bridge<BridgeId::Module>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:54:13.1007021Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Module>::init'
+2026-10-13T01:54:13.1009626Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\data_ring_contract.h(143): warning C4661: 'bridge_util::Result Bridge<BridgeId::Module>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:54:13.1011928Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Module>::ensureQueueEmpty'
+2026-10-13T01:54:13.1376565Z util_sharedmemory.cpp
+2026-10-13T01:54:13.7621673Z util_sharedmemory.cpp(47): warning C4267: 'argument': conversion from 'size_t' to 'DWORD', possible loss of data
+2026-10-13T01:54:13.8350821Z util_semaphore.cpp
+2026-10-13T01:54:14.4333029Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_semaphore.h(64): warning C4267: 'argument': conversion from 'size_t' to 'LONG', possible loss of data
+2026-10-13T01:54:14.5231201Z data_diagnostics.cpp
+2026-10-13T01:54:18.0842005Z exception_diagnostics.cpp
+2026-10-13T01:54:18.6821423Z Generating Code...
+2026-10-13T01:54:20.1367052Z c32.cpp
+2026-10-13T01:54:23.8036376Z C32_PASS batches/boundaries/lazy/abort/external/wrap/cancel/fault/protocol/malformed/full-pool
+2026-10-13T01:54:26.0564358Z C32_PASS batches/boundaries/lazy/abort/external/wrap/cancel/fault/protocol/malformed/full-pool
+2026-10-13T01:54:26.8120271Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x32 mode=stream
+2026-10-13T01:54:27.1726673Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x32 mode=mixed
+2026-10-13T01:54:27.5471007Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x32 mode=threaded
+2026-10-13T01:54:27.5661443Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x32 mode=upload-wrap
+2026-10-13T01:54:27.5790194Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x32 mode=surface-boundaries
+2026-10-13T01:54:27.6029360Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x32 mode=surface-small-generic
+2026-10-13T01:54:27.6274074Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x32 mode=surface-small-declared
+2026-10-13T01:54:28.0164193Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x64 mode=stream
+2026-10-13T01:54:28.3922969Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x64 mode=mixed
+2026-10-13T01:54:28.7516510Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x64 mode=threaded
+2026-10-13T01:54:28.7717410Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x64 mode=upload-wrap
+2026-10-13T01:54:28.7856313Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x64 mode=surface-boundaries
+2026-10-13T01:54:28.8104604Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x64 mode=surface-small-generic
+2026-10-13T01:54:28.8356225Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x64 mode=surface-small-declared
+2026-10-13T01:54:29.2206917Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x32 mode=stream
+2026-10-13T01:54:29.5962792Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x32 mode=mixed
+2026-10-13T01:54:29.9706575Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x32 mode=threaded
+2026-10-13T01:54:29.9900170Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x32 mode=upload-wrap
+2026-10-13T01:54:30.0032438Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x32 mode=surface-boundaries
+2026-10-13T01:54:30.0289352Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x32 mode=surface-small-generic
+2026-10-13T01:54:30.0552235Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x32 mode=surface-small-declared
+2026-10-13T01:54:30.4400276Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x64 mode=stream
+2026-10-13T01:54:30.8306922Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x64 mode=mixed
+2026-10-13T01:54:31.2055295Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x64 mode=threaded
+2026-10-13T01:54:31.2266937Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x64 mode=upload-wrap
+2026-10-13T01:54:31.2406652Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x64 mode=surface-boundaries
+2026-10-13T01:54:31.2650659Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x64 mode=surface-small-generic
+2026-10-13T01:54:31.2920055Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x64 mode=surface-small-declared
+2026-10-13T01:54:31.6750365Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x32 mode=stream
+2026-10-13T01:54:32.0503640Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x32 mode=mixed
+2026-10-13T01:54:32.4403826Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x32 mode=threaded
+2026-10-13T01:54:32.4602565Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x32 mode=upload-wrap
+2026-10-13T01:54:32.4731173Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x32 mode=surface-boundaries
+2026-10-13T01:54:32.4971471Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x32 mode=surface-small-generic
+2026-10-13T01:54:32.5224100Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x32 mode=surface-small-declared
+2026-10-13T01:54:32.9095019Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x64 mode=stream
+2026-10-13T01:54:33.2852682Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x64 mode=mixed
+2026-10-13T01:54:33.6599637Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x64 mode=threaded
+2026-10-13T01:54:33.6805073Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x64 mode=upload-wrap
+2026-10-13T01:54:33.6955722Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x64 mode=surface-boundaries
+2026-10-13T01:54:33.7205911Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x64 mode=surface-small-generic
+2026-10-13T01:54:33.7472291Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x64 mode=surface-small-declared
+2026-10-13T01:54:34.1140099Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x32 mode=stream
+2026-10-13T01:54:34.4891491Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x32 mode=mixed
+2026-10-13T01:54:34.8328289Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x32 mode=threaded
+2026-10-13T01:54:34.8531426Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x32 mode=upload-wrap
+2026-10-13T01:54:34.8664209Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x32 mode=surface-boundaries
+2026-10-13T01:54:34.8916803Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x32 mode=surface-small-generic
+2026-10-13T01:54:34.9161361Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x32 mode=surface-small-declared
+2026-10-13T01:54:35.3020299Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x64 mode=stream
+2026-10-13T01:54:35.6774228Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x64 mode=mixed
+2026-10-13T01:54:36.0367298Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x64 mode=threaded
+2026-10-13T01:54:36.0583692Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x64 mode=upload-wrap
+2026-10-13T01:54:36.0723140Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x64 mode=surface-boundaries
+2026-10-13T01:54:36.0977537Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x64 mode=surface-small-generic
+2026-10-13T01:54:36.1237538Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x64 mode=surface-small-declared
+2026-10-13T01:54:36.5132188Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x32 mode=stream
+2026-10-13T01:54:36.8897030Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x32 mode=mixed
+2026-10-13T01:54:37.2648528Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x32 mode=threaded
+2026-10-13T01:54:37.2853159Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x32 mode=upload-wrap
+2026-10-13T01:54:37.2989581Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x32 mode=surface-boundaries
+2026-10-13T01:54:37.3241345Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x32 mode=surface-small-generic
+2026-10-13T01:54:37.3498475Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x32 mode=surface-small-declared
+2026-10-13T01:54:37.7345219Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x64 mode=stream
+2026-10-13T01:54:38.1254146Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x64 mode=mixed
+2026-10-13T01:54:38.5163419Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x64 mode=threaded
+2026-10-13T01:54:38.5385117Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x64 mode=upload-wrap
+2026-10-13T01:54:38.5531512Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x64 mode=surface-boundaries
+2026-10-13T01:54:38.5791488Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x64 mode=surface-small-generic
+2026-10-13T01:54:38.6051454Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x64 mode=surface-small-declared
+2026-10-13T01:54:38.9858761Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x32 mode=stream
+2026-10-13T01:54:39.3764202Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x32 mode=mixed
+2026-10-13T01:54:39.7669251Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x32 mode=threaded
+2026-10-13T01:54:39.7884614Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x32 mode=upload-wrap
+2026-10-13T01:54:39.8038059Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x32 mode=surface-boundaries
+2026-10-13T01:54:39.8291622Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x32 mode=surface-small-generic
+2026-10-13T01:54:39.8550681Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x32 mode=surface-small-declared
+2026-10-13T01:54:40.2373294Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x64 mode=stream
+2026-10-13T01:54:40.6277690Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x64 mode=mixed
+2026-10-13T01:54:41.0187495Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x64 mode=threaded
+2026-10-13T01:54:41.0404896Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x64 mode=upload-wrap
+2026-10-13T01:54:41.0551105Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x64 mode=surface-boundaries
+2026-10-13T01:54:41.0810830Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x64 mode=surface-small-generic
+2026-10-13T01:54:41.1079554Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x64 mode=surface-small-declared
+2026-10-13T01:54:41.1343826Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x32 mode=surface-small-declared
+2026-10-13T01:54:41.1600284Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x32 mode=surface-small-generic
+2026-10-13T01:54:41.1748390Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x32 mode=surface-boundaries
+2026-10-13T01:54:41.1955337Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x32 mode=upload-wrap
+2026-10-13T01:54:41.5815461Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x32 mode=threaded
+2026-10-13T01:54:41.9578627Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x32 mode=mixed
+2026-10-13T01:54:42.3482712Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x32 mode=stream
+2026-10-13T01:54:42.3745770Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x64 mode=surface-small-declared
+2026-10-13T01:54:42.4004048Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x64 mode=surface-small-generic
+2026-10-13T01:54:42.4152279Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x64 mode=surface-boundaries
+2026-10-13T01:54:42.4364441Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x64 mode=upload-wrap
+2026-10-13T01:54:42.8168433Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x64 mode=threaded
+2026-10-13T01:54:43.2086536Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x64 mode=mixed
+2026-10-13T01:54:43.5853918Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x64 mode=stream
+2026-10-13T01:54:43.6110742Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x32 mode=surface-small-declared
+2026-10-13T01:54:43.6372467Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x32 mode=surface-small-generic
+2026-10-13T01:54:43.6514767Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x32 mode=surface-boundaries
+2026-10-13T01:54:43.6725793Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x32 mode=upload-wrap
+2026-10-13T01:54:44.0519659Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x32 mode=threaded
+2026-10-13T01:54:44.4433277Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x32 mode=mixed
+2026-10-13T01:54:44.8349484Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x32 mode=stream
+2026-10-13T01:54:44.8615843Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x64 mode=surface-small-declared
+2026-10-13T01:54:44.8877524Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x64 mode=surface-small-generic
+2026-10-13T01:54:44.9031651Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x64 mode=surface-boundaries
+2026-10-13T01:54:44.9245753Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x64 mode=upload-wrap
+2026-10-13T01:54:45.3030986Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x64 mode=threaded
+2026-10-13T01:54:45.6951629Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x64 mode=mixed
+2026-10-13T01:54:46.0856845Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x64 mode=stream
+2026-10-13T01:54:46.1123063Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x32 mode=surface-small-declared
+2026-10-13T01:54:46.1378176Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x32 mode=surface-small-generic
+2026-10-13T01:54:46.1524075Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x32 mode=surface-boundaries
+2026-10-13T01:54:46.1728412Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x32 mode=upload-wrap
+2026-10-13T01:54:46.5540526Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x32 mode=threaded
+2026-10-13T01:54:46.9473761Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x32 mode=mixed
+2026-10-13T01:54:47.3376840Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x32 mode=stream
+2026-10-13T01:54:47.3643412Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x64 mode=surface-small-declared
+2026-10-13T01:54:47.3900444Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x64 mode=surface-small-generic
+2026-10-13T01:54:47.4054125Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x64 mode=surface-boundaries
+2026-10-13T01:54:47.4270194Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x64 mode=upload-wrap
+2026-10-13T01:54:47.8063132Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x64 mode=threaded
+2026-10-13T01:54:48.1971955Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x64 mode=mixed
+2026-10-13T01:54:48.5882461Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x64 mode=stream
+2026-10-13T01:54:48.6161960Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x32 mode=surface-small-declared
+2026-10-13T01:54:48.6418203Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x32 mode=surface-small-generic
+2026-10-13T01:54:48.6570621Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x32 mode=surface-boundaries
+2026-10-13T01:54:48.6805024Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x32 mode=upload-wrap
+2026-10-13T01:54:49.0566775Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x32 mode=threaded
+2026-10-13T01:54:49.4483143Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x32 mode=mixed
+2026-10-13T01:54:49.8391652Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x32 mode=stream
+2026-10-13T01:54:49.8653518Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x64 mode=surface-small-declared
+2026-10-13T01:54:49.8909223Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x64 mode=surface-small-generic
+2026-10-13T01:54:49.9062931Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x64 mode=surface-boundaries
+2026-10-13T01:54:49.9279286Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x64 mode=upload-wrap
+2026-10-13T01:54:50.3085169Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x64 mode=threaded
+2026-10-13T01:54:50.6995738Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x64 mode=mixed
+2026-10-13T01:54:51.0902048Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x64 mode=stream
+2026-10-13T01:54:51.1168141Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x32 mode=surface-small-declared
+2026-10-13T01:54:51.1431203Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x32 mode=surface-small-generic
+2026-10-13T01:54:51.1587804Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x32 mode=surface-boundaries
+2026-10-13T01:54:51.1804684Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x32 mode=upload-wrap
+2026-10-13T01:54:51.5584278Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x32 mode=threaded
+2026-10-13T01:54:51.9508807Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x32 mode=mixed
+2026-10-13T01:54:52.3412351Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x32 mode=stream
+2026-10-13T01:54:52.3685276Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x64 mode=surface-small-declared
+2026-10-13T01:54:52.3950961Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x64 mode=surface-small-generic
+2026-10-13T01:54:52.4111368Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x64 mode=surface-boundaries
+2026-10-13T01:54:52.4330707Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x64 mode=upload-wrap
+2026-10-13T01:54:52.8099389Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x64 mode=threaded
+2026-10-13T01:54:53.2011435Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x64 mode=mixed
+2026-10-13T01:54:53.5918249Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x64 mode=stream
+2026-10-13T01:54:53.6179108Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x32 mode=surface-small-declared
+2026-10-13T01:54:53.6437440Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x32 mode=surface-small-generic
+2026-10-13T01:54:53.6589300Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x32 mode=surface-boundaries
+2026-10-13T01:54:53.6800039Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x32 mode=upload-wrap
+2026-10-13T01:54:54.0604284Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x32 mode=threaded
+2026-10-13T01:54:54.4518884Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x32 mode=mixed
+2026-10-13T01:54:54.8430780Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x32 mode=stream
+2026-10-13T01:54:54.8705859Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x64 mode=surface-small-declared
+2026-10-13T01:54:54.8988208Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x64 mode=surface-small-generic
+2026-10-13T01:54:54.9154551Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x64 mode=surface-boundaries
+2026-10-13T01:54:54.9384464Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x64 mode=upload-wrap
+2026-10-13T01:54:55.3271494Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x64 mode=threaded
+2026-10-13T01:54:55.7184117Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x64 mode=mixed
+2026-10-13T01:54:56.1088572Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x64 mode=stream
+2026-10-13T01:54:56.4995407Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x32 mode=stream
+2026-10-13T01:54:56.8920997Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x32 mode=mixed
+2026-10-13T01:54:57.2832799Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x32 mode=threaded
+2026-10-13T01:54:57.3054573Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x32 mode=upload-wrap
+2026-10-13T01:54:57.3208854Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x32 mode=surface-boundaries
+2026-10-13T01:54:57.3473579Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x32 mode=surface-small-generic
+2026-10-13T01:54:57.3737049Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x32 mode=surface-small-declared
+2026-10-13T01:54:57.7375073Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x64 mode=stream
+2026-10-13T01:54:58.1282541Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x64 mode=mixed
+2026-10-13T01:54:58.5190952Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x64 mode=threaded
+2026-10-13T01:54:58.5424900Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x64 mode=upload-wrap
+2026-10-13T01:54:58.5587582Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x64 mode=surface-boundaries
+2026-10-13T01:54:58.5867580Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x64 mode=surface-small-generic
+2026-10-13T01:54:58.6144349Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x64 mode=surface-small-declared
+2026-10-13T01:54:59.0040610Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x32 mode=stream
+2026-10-13T01:54:59.3950551Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x32 mode=mixed
+2026-10-13T01:54:59.7695824Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x32 mode=threaded
+2026-10-13T01:54:59.7920753Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x32 mode=upload-wrap
+2026-10-13T01:54:59.8076059Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x32 mode=surface-boundaries
+2026-10-13T01:54:59.8346890Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x32 mode=surface-small-generic
+2026-10-13T01:54:59.8618718Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x32 mode=surface-small-declared
+2026-10-13T01:55:00.2407888Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x64 mode=stream
+2026-10-13T01:55:00.6320109Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x64 mode=mixed
+2026-10-13T01:55:01.0225970Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x64 mode=threaded
+2026-10-13T01:55:01.0459594Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x64 mode=upload-wrap
+2026-10-13T01:55:01.0625066Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x64 mode=surface-boundaries
+2026-10-13T01:55:01.0896289Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x64 mode=surface-small-generic
+2026-10-13T01:55:01.1172142Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x64 mode=surface-small-declared
+2026-10-13T01:55:01.5075416Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x32 mode=stream
+2026-10-13T01:55:01.8991121Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x32 mode=mixed
+2026-10-13T01:55:02.2893105Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x32 mode=threaded
+2026-10-13T01:55:02.3113011Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x32 mode=upload-wrap
+2026-10-13T01:55:02.3271770Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x32 mode=surface-boundaries
+2026-10-13T01:55:02.3553278Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x32 mode=surface-small-generic
+2026-10-13T01:55:02.3836877Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x32 mode=surface-small-declared
+2026-10-13T01:55:02.7741873Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x64 mode=stream
+2026-10-13T01:55:03.1654852Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x64 mode=mixed
+2026-10-13T01:55:03.5567698Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x64 mode=threaded
+2026-10-13T01:55:03.5803390Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x64 mode=upload-wrap
+2026-10-13T01:55:03.5975970Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x64 mode=surface-boundaries
+2026-10-13T01:55:03.6253121Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x64 mode=surface-small-generic
+2026-10-13T01:55:03.6538056Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x64 mode=surface-small-declared
+2026-10-13T01:55:04.0420224Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x32 mode=stream
+2026-10-13T01:55:04.4327919Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x32 mode=mixed
+2026-10-13T01:55:04.8233819Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x32 mode=threaded
+2026-10-13T01:55:04.8453879Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x32 mode=upload-wrap
+2026-10-13T01:55:04.8616117Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x32 mode=surface-boundaries
+2026-10-13T01:55:04.8880746Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x32 mode=surface-small-generic
+2026-10-13T01:55:04.9168243Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x32 mode=surface-small-declared
+2026-10-13T01:55:05.3012994Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x64 mode=stream
+2026-10-13T01:55:05.6919501Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x64 mode=mixed
+2026-10-13T01:55:06.0667304Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x64 mode=threaded
+2026-10-13T01:55:06.0907695Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x64 mode=upload-wrap
+2026-10-13T01:55:06.1072248Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x64 mode=surface-boundaries
+2026-10-13T01:55:06.1345598Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x64 mode=surface-small-generic
+2026-10-13T01:55:06.1631014Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x64 mode=surface-small-declared
+2026-10-13T01:55:06.5516626Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x32 mode=stream
+2026-10-13T01:55:06.9452493Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x32 mode=mixed
+2026-10-13T01:55:07.3343392Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x32 mode=threaded
+2026-10-13T01:55:07.3570660Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x32 mode=upload-wrap
+2026-10-13T01:55:07.3730201Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x32 mode=surface-boundaries
+2026-10-13T01:55:07.3999121Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x32 mode=surface-small-generic
+2026-10-13T01:55:07.4274336Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x32 mode=surface-small-declared
+2026-10-13T01:55:07.8193887Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x64 mode=stream
+2026-10-13T01:55:08.2114440Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x64 mode=mixed
+2026-10-13T01:55:08.6017736Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x64 mode=threaded
+2026-10-13T01:55:08.6259133Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x64 mode=upload-wrap
+2026-10-13T01:55:08.6428817Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x64 mode=surface-boundaries
+2026-10-13T01:55:08.6709662Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x64 mode=surface-small-generic
+2026-10-13T01:55:08.6997207Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x64 mode=surface-small-declared
+2026-10-13T01:55:09.0868665Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x32 mode=stream
+2026-10-13T01:55:09.4778498Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x32 mode=mixed
+2026-10-13T01:55:09.8687160Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x32 mode=threaded
+2026-10-13T01:55:09.8910749Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x32 mode=upload-wrap
+2026-10-13T01:55:09.9077406Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x32 mode=surface-boundaries
+2026-10-13T01:55:09.9351200Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x32 mode=surface-small-generic
+2026-10-13T01:55:09.9696452Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x32 mode=surface-small-declared
+2026-10-13T01:55:10.3233903Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x64 mode=stream
+2026-10-13T01:55:10.7147458Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x64 mode=mixed
+2026-10-13T01:55:11.1047214Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x64 mode=threaded
+2026-10-13T01:55:11.1287131Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x64 mode=upload-wrap
+2026-10-13T01:55:11.1453496Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x64 mode=surface-boundaries
+2026-10-13T01:55:11.1728065Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x64 mode=surface-small-generic
+2026-10-13T01:55:11.2011066Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x64 mode=surface-small-declared
+2026-10-13T01:55:11.2371969Z ##[group]Run foreach ($suite in @('buffer_contract','volume_layout','device_reset','readback_recovery','input_hooks','overlay_presenter','steam_window_diagnostics','steam_web_diagnostics','steam_availability_diagnostics','steam_workshop_status','adapter_information','ati_texture_layout','command_queue')) {
+2026-10-13T01:55:11.2375835Z [36;1mforeach ($suite in @('buffer_contract','volume_layout','device_reset','readback_recovery','input_hooks','overlay_presenter','steam_window_diagnostics','steam_web_diagnostics','steam_availability_diagnostics','steam_workshop_status','adapter_information','ati_texture_layout','command_queue')) {[0m
+2026-10-13T01:55:11.2378435Z [36;1m  & powershell.exe -NoProfile -File "./scripts/test_$suite.ps1"[0m
+2026-10-13T01:55:11.2379302Z [36;1m  if ($LASTEXITCODE -ne 0) { throw "Native regression failed: $suite" }[0m
+2026-10-13T01:55:11.2379950Z [36;1m}[0m
+2026-10-13T01:55:11.2422702Z shell: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.EXE -command ". '{0}'"
+2026-10-13T01:55:11.2423116Z env:
+2026-10-13T01:55:11.2423370Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:55:11.2423811Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.11.9\x64/lib/pkgconfig
+2026-10-13T01:55:11.2424246Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:55:11.2424641Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:55:11.2425028Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:55:11.2425357Z ##[endgroup]
+2026-10-13T01:55:11.7211558Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:55:11.7912356Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:55:11.7950815Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:55:13.2336627Z Visual Studio Command Prompt variables set.
+2026-10-13T01:55:13.2991372Z actual_buffer_contract.cpp
+2026-10-13T01:55:14.3036367Z data_diagnostics.cpp
+2026-10-13T01:55:18.1943887Z Generating Code...
+2026-10-13T01:55:18.3713586Z VB: existing partial-write preservation and overlapping Lock verified; fresh staging counterexample reproduced
+2026-10-13T01:55:18.3714480Z VB managed: existing partial-write preservation and overlapping Lock verified; fresh staging counterexample reproduced
+2026-10-13T01:55:18.3715294Z IB16: existing partial-write preservation and overlapping Lock verified; fresh staging counterexample reproduced
+2026-10-13T01:55:18.3716084Z IB32: existing partial-write preservation and overlapping Lock verified; fresh staging counterexample reproduced
+2026-10-13T01:55:18.8745596Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:55:18.9425803Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:55:18.9463608Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:55:20.3479607Z Visual Studio Command Prompt variables set.
+2026-10-13T01:55:20.3655879Z volume_layout_test.cpp
+2026-10-13T01:55:21.0504886Z PASS: 59 Volume layout/transfer cases, game writes through API pitches, unchanged wire, padded backend and partial-box guards; padded source and invalid stride rejection.
+2026-10-13T01:55:21.3960813Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:55:21.4630031Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:55:21.4668317Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:55:22.8578187Z Visual Studio Command Prompt variables set.
+2026-10-13T01:55:22.8725756Z volume_layout_test.cpp
+2026-10-13T01:55:23.5156215Z PASS: 59 Volume layout/transfer cases, game writes through API pitches, unchanged wire, padded backend and partial-box guards; padded source and invalid stride rejection.
+2026-10-13T01:55:24.0097832Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:55:24.0774088Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:55:24.0809888Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:55:25.4714297Z Visual Studio Command Prompt variables set.
+2026-10-13T01:55:25.4879200Z device_reset.cpp
+2026-10-13T01:55:26.3390297Z PASS: failed reset, repeated failure, success retry, preserved cache, timeout without read/pop, late success rejected
+2026-10-13T01:55:26.3391697Z PASS: backbuffers 1->2->1, aliased RT0, depth, ordered teardown, repeated unlink, retained external reference
+2026-10-13T01:55:26.3393370Z PASS: first-candidate query leak negative control, 150000 query references balanced, RT/depth/explicit targets, COM identity aliases, null/mismatch/failure results
+2026-10-13T01:55:26.6843856Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:55:26.7503261Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:55:26.7541015Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:55:28.1198339Z Visual Studio Command Prompt variables set.
+2026-10-13T01:55:28.1335037Z device_reset.cpp
+2026-10-13T01:55:28.9020072Z PASS: failed reset, repeated failure, success retry, preserved cache, timeout without read/pop, late success rejected
+2026-10-13T01:55:28.9020913Z PASS: backbuffers 1->2->1, aliased RT0, depth, ordered teardown, repeated unlink, retained external reference
+2026-10-13T01:55:28.9022073Z PASS: first-candidate query leak negative control, 150000 query references balanced, RT/depth/explicit targets, COM identity aliases, null/mismatch/failure results
+2026-10-13T01:55:29.2585726Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:55:29.3249673Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:55:29.3286014Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:55:30.7169886Z Visual Studio Command Prompt variables set.
+2026-10-13T01:55:30.7274121Z readback_recovery.cpp
+2026-10-13T01:55:32.4917115Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:55:32.5540378Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:55:32.5548752Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:55:34.0633540Z Visual Studio Command Prompt variables set.
+2026-10-13T01:55:34.0768793Z readback_layout.cpp
+2026-10-13T01:55:34.3944506Z PASS: compressed block layout, logical rows without padding, mismatch offsets and deterministic selection
+2026-10-13T01:55:34.4086113Z readback_recovery.cpp
+2026-10-13T01:55:39.0919623Z PASS: 18 separate-process Q8W8V8U8/ATI1/ATI2 unload/reconstruction cases and explicit read/pitch/unlock failures; child has no original Client backing
+2026-10-13T01:55:39.0920673Z PASS: 25 independent child-process mock readbacks, reference-only corruption detection, failure stages and original backing retained
+2026-10-13T01:55:39.0921983Z PASS: real backing deletion, hash-only child-process recovery, complete mip restoration, permanent KEEP, cross-run Strong/Content DB hits, overwrite without promotion, hash/readback failures and session fallback (independent mock backend)
+2026-10-13T01:55:39.5859554Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:55:39.6546393Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:55:39.6583994Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:55:41.0676396Z Visual Studio Command Prompt variables set.
+2026-10-13T01:55:41.1373003Z actual_input_hooks.cpp
+2026-10-13T01:55:42.4202130Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\input-hooks-test-x86\input-hooks-test.exe
+2026-10-13T01:55:42.4295689Z PASS: Steam polling chain gating/exact original calls/scratch buffers/errors/failures; gameplay remains neutralized; Steam mouse ownership/foreground/failure/recapture; hook chain arguments/results; hooks OFF/ON/failure; original DirectInput A/W; lazy logs; Query delegation
+2026-10-13T01:55:42.4358905Z PASS: Steam polling chain gating/exact original calls/scratch buffers/errors/failures; gameplay remains neutralized; Steam mouse ownership/foreground/failure/recapture; hook chain arguments/results; hooks OFF/ON/failure; original DirectInput A/W; lazy logs; Query delegation
+2026-10-13T01:55:42.4419991Z PASS: Steam polling chain gating/exact original calls/scratch buffers/errors/failures; gameplay remains neutralized; Steam mouse ownership/foreground/failure/recapture; hook chain arguments/results; hooks OFF/ON/failure; original DirectInput A/W; lazy logs; Query delegation
+2026-10-13T01:55:42.4481224Z PASS: Steam polling chain gating/exact original calls/scratch buffers/errors/failures; gameplay remains neutralized; Steam mouse ownership/foreground/failure/recapture; hook chain arguments/results; hooks OFF/ON/failure; original DirectInput A/W; lazy logs; Query delegation
+2026-10-13T01:55:42.4543724Z PASS: Steam polling chain gating/exact original calls/scratch buffers/errors/failures; gameplay remains neutralized; Steam mouse ownership/foreground/failure/recapture; hook chain arguments/results; hooks OFF/ON/failure; original DirectInput A/W; lazy logs; Query delegation
+2026-10-13T01:55:42.4605685Z PASS: Steam polling chain gating/exact original calls/scratch buffers/errors/failures; gameplay remains neutralized; Steam mouse ownership/foreground/failure/recapture; hook chain arguments/results; hooks OFF/ON/failure; original DirectInput A/W; lazy logs; Query delegation
+2026-10-13T01:55:42.8051657Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:55:42.8738384Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:55:42.8777056Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:55:44.2881988Z Visual Studio Command Prompt variables set.
+2026-10-13T01:55:44.3541300Z actual_input_hooks.cpp
+2026-10-13T01:55:45.5772833Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\input-hooks-test-x64\input-hooks-test.exe
+2026-10-13T01:55:45.5844639Z PASS: Steam polling chain gating/exact original calls/scratch buffers/errors/failures; gameplay remains neutralized; Steam mouse ownership/foreground/failure/recapture; hook chain arguments/results; hooks OFF/ON/failure; original DirectInput A/W; lazy logs; Query delegation
+2026-10-13T01:55:45.5895288Z PASS: Steam polling chain gating/exact original calls/scratch buffers/errors/failures; gameplay remains neutralized; Steam mouse ownership/foreground/failure/recapture; hook chain arguments/results; hooks OFF/ON/failure; original DirectInput A/W; lazy logs; Query delegation
+2026-10-13T01:55:45.5942780Z PASS: Steam polling chain gating/exact original calls/scratch buffers/errors/failures; gameplay remains neutralized; Steam mouse ownership/foreground/failure/recapture; hook chain arguments/results; hooks OFF/ON/failure; original DirectInput A/W; lazy logs; Query delegation
+2026-10-13T01:55:45.5988371Z PASS: Steam polling chain gating/exact original calls/scratch buffers/errors/failures; gameplay remains neutralized; Steam mouse ownership/foreground/failure/recapture; hook chain arguments/results; hooks OFF/ON/failure; original DirectInput A/W; lazy logs; Query delegation
+2026-10-13T01:55:45.6033496Z PASS: Steam polling chain gating/exact original calls/scratch buffers/errors/failures; gameplay remains neutralized; Steam mouse ownership/foreground/failure/recapture; hook chain arguments/results; hooks OFF/ON/failure; original DirectInput A/W; lazy logs; Query delegation
+2026-10-13T01:55:45.6078918Z PASS: Steam polling chain gating/exact original calls/scratch buffers/errors/failures; gameplay remains neutralized; Steam mouse ownership/foreground/failure/recapture; hook chain arguments/results; hooks OFF/ON/failure; original DirectInput A/W; lazy logs; Query delegation
+2026-10-13T01:55:46.2098597Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:55:46.2793427Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:55:46.2831208Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:55:47.6608277Z Visual Studio Command Prompt variables set.
+2026-10-13T01:55:47.6746586Z overlay_fake_reshade.cpp
+2026-10-13T01:55:48.4283027Z    Creating library fake-x86.lib and object fake-x86.exp
+2026-10-13T01:55:48.4805619Z overlay_presenter.cpp
+2026-10-13T01:55:49.4488326Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\overlay-presenter-test\fake-x86.dll
+2026-10-13T01:55:49.4501662Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\overlay-presenter-test\overlay-x86.exe
+2026-10-13T01:55:49.7868972Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:55:49.8534426Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:55:49.8572762Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:55:51.2485930Z Visual Studio Command Prompt variables set.
+2026-10-13T01:55:51.2597336Z overlay_fake_reshade.cpp
+2026-10-13T01:55:51.9487127Z    Creating library fake-x64.lib and object fake-x64.exp
+2026-10-13T01:55:51.9867718Z overlay_presenter.cpp
+2026-10-13T01:55:52.8624376Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\overlay-presenter-test\fake-x64.dll
+2026-10-13T01:55:52.8639737Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\overlay-presenter-test\overlay-x64.exe
+2026-10-13T01:55:53.5816164Z PASS: host-owned cross-process child, capture, reset routing, resizing and teardown (64-bit)
+2026-10-13T01:55:54.0413250Z PASS: host-owned cross-process child, capture, reset routing, resizing and teardown (32-bit)
+2026-10-13T01:55:54.6327264Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:55:54.6978196Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:55:54.7015018Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:55:56.0875440Z Visual Studio Command Prompt variables set.
+2026-10-13T01:55:56.1014587Z steam_window_fixture.cpp
+2026-10-13T01:55:56.5230930Z    Creating library window-fixture-x86.lib and object window-fixture-x86.exp
+2026-10-13T01:55:56.5655843Z steam_window_diagnostics.cpp
+2026-10-13T01:55:57.4018143Z steam_window_adapter.cpp
+2026-10-13T01:55:58.1720245Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-window-test\adapter-test-x86.exe
+2026-10-13T01:55:58.1732169Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-window-test\window-fixture-x86.dll
+2026-10-13T01:55:58.1744419Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-window-test\window-test-x86.exe
+2026-10-13T01:55:58.5147002Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:55:58.5810422Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:55:58.5849567Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:55:59.9842624Z Visual Studio Command Prompt variables set.
+2026-10-13T01:55:59.9954864Z steam_window_fixture.cpp
+2026-10-13T01:56:00.3983493Z    Creating library window-fixture-x64.lib and object window-fixture-x64.exp
+2026-10-13T01:56:00.4344117Z steam_window_diagnostics.cpp
+2026-10-13T01:56:01.1809904Z steam_window_adapter.cpp
+2026-10-13T01:56:01.8688622Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-window-test\adapter-test-x64.exe
+2026-10-13T01:56:01.8701177Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-window-test\window-fixture-x64.dll
+2026-10-13T01:56:01.8713925Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-window-test\window-test-x64.exe
+2026-10-13T01:56:01.9193827Z L4D2_STEAM_WINDOW event=module path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-window-test\window-fixture-x86.dll base=75270000 host_pid=6016 bits=32 reference=process-lifetime role=host
+2026-10-13T01:56:01.9195447Z L4D2_STEAM_WINDOW event=image timestamp=0x6acd8fac image_size=0x19000
+2026-10-13T01:56:01.9196435Z L4D2_STEAM_WINDOW event=import api=SetWindowsHookExW attached=1 slot_rva=0xe120 original=75EB21C0
+2026-10-13T01:56:01.9198322Z L4D2_STEAM_WINDOW event=import api=GetForegroundWindow attached=1 slot_rva=0xe124 original=00261050
+2026-10-13T01:56:01.9199613Z L4D2_STEAM_WINDOW event=import api=GetActiveWindow attached=1 slot_rva=0xe128 original=75EC1BD0
+2026-10-13T01:56:01.9201032Z L4D2_STEAM_WINDOW event=attached mask=7 mode=observe-only coverage=named-iat dynamic-resolution=not-covered role=host
+2026-10-13T01:56:01.9204020Z L4D2_STEAM_WINDOW event=window-query api=GetForegroundWindow caller_rva=0x1019 thread=7872 host_pid=6016 hwnd=00090178 owner_pid=5860 owner_thread=7540 same_process=0 game=00090178 game_pid=5860 game_thread=7540 presenter=001E0046 presenter_pid=6016 presenter_thread=7872 last_error=4660 tick=985765 real_hwnd=00090178 real_pid=5860 result=unchanged role=host
+2026-10-13T01:56:01.9208462Z L4D2_STEAM_WINDOW event=window-query api=GetForegroundWindow caller_rva=0x1019 thread=7872 host_pid=6016 hwnd=001E0046 owner_pid=6016 owner_thread=7872 same_process=1 game=00090178 game_pid=5860 game_thread=7540 presenter=001E0046 presenter_pid=6016 presenter_thread=7872 last_error=4660 tick=985765 real_hwnd=00090178 real_pid=5860 result=mapped role=host
+2026-10-13T01:56:01.9212826Z L4D2_STEAM_WINDOW event=window-query api=GetForegroundWindow caller_rva=0x1019 thread=7872 host_pid=6016 hwnd=00090178 owner_pid=5860 owner_thread=7540 same_process=0 game=00090178 game_pid=5860 game_thread=7540 presenter=001300FA presenter_pid=6016 presenter_thread=7872 last_error=4660 tick=985765 real_hwnd=00090178 real_pid=5860 result=unchanged role=host
+2026-10-13T01:56:01.9215558Z L4D2_STEAM_WINDOW event=summary active_calls=0 foreground_calls=6 hook_calls=0 dropped=0 role=host
+2026-10-13T01:56:01.9216682Z PASS steam-window-adapter host_bits=32 foreign_game_bits=opposite queries=7
+2026-10-13T01:56:01.9381508Z L4D2_STEAM_WINDOW event=waiting reason=renderer-not-loaded mode=observe-only
+2026-10-13T01:56:01.9382725Z L4D2_STEAM_WINDOW event=module path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-window-test\window-fixture-x86.dll base=752F0000 host_pid=7236 bits=32 reference=process-lifetime role=client
+2026-10-13T01:56:01.9383863Z L4D2_STEAM_WINDOW event=image timestamp=0x6acd8fac image_size=0x19000
+2026-10-13T01:56:01.9385888Z L4D2_STEAM_WINDOW event=import api=SetWindowsHookExW attached=1 slot_rva=0xe120 original=75EB21C0
+2026-10-13T01:56:01.9387048Z L4D2_STEAM_WINDOW event=import api=GetForegroundWindow attached=1 slot_rva=0xe124 original=75EC86A0
+2026-10-13T01:56:01.9387785Z L4D2_STEAM_WINDOW event=import api=GetActiveWindow attached=1 slot_rva=0xe128 original=75EC1BD0
+2026-10-13T01:56:01.9388569Z L4D2_STEAM_WINDOW event=attached mask=7 mode=observe-only coverage=named-iat dynamic-resolution=not-covered role=client
+2026-10-13T01:56:01.9390139Z L4D2_STEAM_WINDOW event=window-query api=GetActiveWindow caller_rva=0x1009 thread=3620 host_pid=7236 hwnd=00000000 owner_pid=0 owner_thread=0 same_process=0 game=001400FA game_pid=7236 game_thread=3620 presenter=00000000 presenter_pid=0 presenter_thread=0 last_error=30583 tick=985781 real_hwnd=00000000 real_pid=0 result=unchanged role=client
+2026-10-13T01:56:01.9393184Z L4D2_STEAM_WINDOW event=hook-install api=SetWindowsHookExW caller_rva=0x1039 thread=3620 host_pid=7236 hook_id=3 target_thread=3620 hook_module=00000000 procedure=00E711E0 result=000F017F last_error=30583 game=001400FA game_pid=7236 game_thread=3620 presenter=00000000 presenter_pid=0 presenter_thread=0 tick=985781 role=client
+2026-10-13T01:56:01.9396449Z L4D2_STEAM_WINDOW event=hook-install api=SetWindowsHookExW caller_rva=0x1039 thread=3620 host_pid=7236 hook_id=-999 target_thread=3620 hook_module=00000000 procedure=00000000 result=00000000 last_error=1426 game=001400FA game_pid=7236 game_thread=3620 presenter=00000000 presenter_pid=0 presenter_thread=0 tick=985781 role=client
+2026-10-13T01:56:01.9398823Z L4D2_STEAM_WINDOW event=window-query api=GetForegroundWindow caller_rva=0x1019 thread=3620 host_pid=7236 hwnd=00020198 owner_pid=2132 owner_thread=2136 same_process=0 game=001400FA game_pid=7236 game_thread=3620 presenter=00000000 presenter_pid=0 presenter_thread=0 last_error=1426 tick=985781 real_hwnd=00020198 real_pid=2132 result=unchanged role=client
+2026-10-13T01:56:01.9400555Z L4D2_STEAM_WINDOW event=summary active_calls=1 foreground_calls=1 hook_calls=2 dropped=0 role=client
+2026-10-13T01:56:01.9401480Z PASS steam-window-diagnostics bits=32 mode=real
+2026-10-13T01:56:01.9525566Z L4D2_STEAM_WINDOW event=waiting reason=renderer-not-loaded mode=observe-only
+2026-10-13T01:56:01.9527485Z L4D2_STEAM_WINDOW event=module path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-window-test\window-fixture-x86.dll base=753A0000 host_pid=1136 bits=32 reference=process-lifetime role=client
+2026-10-13T01:56:01.9529247Z L4D2_STEAM_WINDOW event=image timestamp=0x6acd8fac image_size=0x19000
+2026-10-13T01:56:01.9530297Z L4D2_STEAM_WINDOW event=import api=SetWindowsHookExW attached=1 slot_rva=0xe120 original=00E71170
+2026-10-13T01:56:01.9531564Z L4D2_STEAM_WINDOW event=import api=GetForegroundWindow attached=1 slot_rva=0xe124 original=00E71140
+2026-10-13T01:56:01.9532893Z L4D2_STEAM_WINDOW event=import api=GetActiveWindow attached=1 slot_rva=0xe128 original=00E71110
+2026-10-13T01:56:01.9534639Z L4D2_STEAM_WINDOW event=attached mask=7 mode=observe-only coverage=named-iat dynamic-resolution=not-covered role=client
+2026-10-13T01:56:01.9537579Z L4D2_STEAM_WINDOW event=window-query api=GetActiveWindow caller_rva=0x1009 thread=6328 host_pid=1136 hwnd=001500FA owner_pid=1136 owner_thread=6328 same_process=1 game=001500FA game_pid=1136 game_thread=6328 presenter=00000000 presenter_pid=0 presenter_thread=0 last_error=4660 tick=985796 real_hwnd=001500FA real_pid=1136 result=unchanged role=client
+2026-10-13T01:56:01.9542135Z L4D2_STEAM_WINDOW event=window-query api=GetForegroundWindow caller_rva=0x1019 thread=6328 host_pid=1136 hwnd=00010010 owner_pid=6644 owner_thread=6732 same_process=0 game=001500FA game_pid=1136 game_thread=6328 presenter=00000000 presenter_pid=0 presenter_thread=0 last_error=9029 tick=985796 real_hwnd=00010010 real_pid=6644 result=unchanged role=client
+2026-10-13T01:56:01.9545877Z L4D2_STEAM_WINDOW event=hook-install api=SetWindowsHookExW caller_rva=0x1039 thread=6328 host_pid=1136 hook_id=3 target_thread=12345 hook_module=00000000 procedure=00000000 result=00001234 last_error=13398 game=001500FA game_pid=1136 game_thread=6328 presenter=00000000 presenter_pid=0 presenter_thread=0 tick=985796 role=client
+2026-10-13T01:56:01.9548228Z L4D2_STEAM_WINDOW event=window-query api=GetActiveWindow caller_rva=0x1009 thread=7712 host_pid=1136 hwnd=001500FA owner_pid=1136 owner_thread=6328 same_process=1 game=001500FA game_pid=1136 game_thread=6328 presenter=00000000 presenter_pid=0 presenter_thread=0 last_error=4660 tick=985796 real_hwnd=001500FA real_pid=1136 result=unchanged role=client
+2026-10-13T01:56:01.9549832Z L4D2_STEAM_WINDOW event=summary active_calls=1001 foreground_calls=1000 hook_calls=1 dropped=0 role=client
+2026-10-13T01:56:01.9550416Z PASS steam-window-diagnostics bits=32 mode=chain
+2026-10-13T01:56:01.9785492Z L4D2_STEAM_WINDOW event=module path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-window-test\window-fixture-x64.dll base=00007FFF1B590000 host_pid=5360 bits=64 reference=process-lifetime role=host
+2026-10-13T01:56:01.9787144Z L4D2_STEAM_WINDOW event=image timestamp=0x6acd8fb0 image_size=0x1e000
+2026-10-13T01:56:01.9787862Z L4D2_STEAM_WINDOW event=import api=SetWindowsHookExW attached=1 slot_rva=0xe258 original=00007FFF390A2EA0
+2026-10-13T01:56:01.9788937Z L4D2_STEAM_WINDOW event=import api=GetForegroundWindow attached=1 slot_rva=0xe260 original=00007FF711231060
+2026-10-13T01:56:01.9789741Z L4D2_STEAM_WINDOW event=import api=GetActiveWindow attached=1 slot_rva=0xe268 original=00007FFF390CE080
+2026-10-13T01:56:01.9790542Z L4D2_STEAM_WINDOW event=attached mask=7 mode=observe-only coverage=named-iat dynamic-resolution=not-covered role=host
+2026-10-13T01:56:01.9792430Z L4D2_STEAM_WINDOW event=window-query api=GetForegroundWindow caller_rva=0x102a thread=2696 host_pid=5360 hwnd=00000000001600FA owner_pid=7840 owner_thread=5232 same_process=0 game=00000000001600FA game_pid=7840 game_thread=5232 presenter=00000000000A0178 presenter_pid=5360 presenter_thread=2696 last_error=4660 tick=985828 real_hwnd=00000000001600FA real_pid=7840 result=unchanged role=host
+2026-10-13T01:56:01.9795604Z L4D2_STEAM_WINDOW event=window-query api=GetForegroundWindow caller_rva=0x102a thread=2696 host_pid=5360 hwnd=00000000000A0178 owner_pid=5360 owner_thread=2696 same_process=1 game=00000000001600FA game_pid=7840 game_thread=5232 presenter=00000000000A0178 presenter_pid=5360 presenter_thread=2696 last_error=4660 tick=985828 real_hwnd=00000000001600FA real_pid=7840 result=mapped role=host
+2026-10-13T01:56:01.9798236Z L4D2_STEAM_WINDOW event=window-query api=GetForegroundWindow caller_rva=0x102a thread=2696 host_pid=5360 hwnd=00000000001600FA owner_pid=7840 owner_thread=5232 same_process=0 game=00000000001600FA game_pid=7840 game_thread=5232 presenter=000000000012017A presenter_pid=5360 presenter_thread=2696 last_error=4660 tick=985828 real_hwnd=00000000001600FA real_pid=7840 result=unchanged role=host
+2026-10-13T01:56:01.9800341Z L4D2_STEAM_WINDOW event=summary active_calls=0 foreground_calls=6 hook_calls=0 dropped=0 role=host
+2026-10-13T01:56:01.9800988Z PASS steam-window-adapter host_bits=64 foreign_game_bits=opposite queries=7
+2026-10-13T01:56:01.9932648Z L4D2_STEAM_WINDOW event=waiting reason=renderer-not-loaded mode=observe-only
+2026-10-13T01:56:01.9934688Z L4D2_STEAM_WINDOW event=module path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-window-test\window-fixture-x64.dll base=00007FFF1B590000 host_pid=7880 bits=64 reference=process-lifetime role=host
+2026-10-13T01:56:01.9936371Z L4D2_STEAM_WINDOW event=image timestamp=0x6acd8fb0 image_size=0x1e000
+2026-10-13T01:56:01.9937052Z L4D2_STEAM_WINDOW event=import api=SetWindowsHookExW attached=1 slot_rva=0xe258 original=00007FFF390A2EA0
+2026-10-13T01:56:01.9937841Z L4D2_STEAM_WINDOW event=import api=GetForegroundWindow attached=1 slot_rva=0xe260 original=00007FFF390D4730
+2026-10-13T01:56:01.9938650Z L4D2_STEAM_WINDOW event=import api=GetActiveWindow attached=1 slot_rva=0xe268 original=00007FFF390CE080
+2026-10-13T01:56:01.9939454Z L4D2_STEAM_WINDOW event=attached mask=7 mode=observe-only coverage=named-iat dynamic-resolution=not-covered role=host
+2026-10-13T01:56:01.9941360Z L4D2_STEAM_WINDOW event=window-query api=GetActiveWindow caller_rva=0x100a thread=3052 host_pid=7880 hwnd=0000000000000000 owner_pid=0 owner_thread=0 same_process=0 game=000000000013017A game_pid=7880 game_thread=3052 presenter=0000000000000000 presenter_pid=0 presenter_thread=0 last_error=30583 tick=985843 real_hwnd=0000000000000000 real_pid=0 result=unchanged role=host
+2026-10-13T01:56:01.9944136Z L4D2_STEAM_WINDOW event=hook-install api=SetWindowsHookExW caller_rva=0x1070 thread=3052 host_pid=7880 hook_id=3 target_thread=3052 hook_module=0000000000000000 procedure=00007FF71ACB1260 result=000000000012017F last_error=30583 game=000000000013017A game_pid=7880 game_thread=3052 presenter=0000000000000000 presenter_pid=0 presenter_thread=0 tick=985843 role=host
+2026-10-13T01:56:01.9946582Z L4D2_STEAM_WINDOW event=hook-install api=SetWindowsHookExW caller_rva=0x1070 thread=3052 host_pid=7880 hook_id=-999 target_thread=3052 hook_module=0000000000000000 procedure=0000000000000000 result=0000000000000000 last_error=1426 game=000000000013017A game_pid=7880 game_thread=3052 presenter=0000000000000000 presenter_pid=0 presenter_thread=0 tick=985843 role=host
+2026-10-13T01:56:01.9949511Z L4D2_STEAM_WINDOW event=window-query api=GetForegroundWindow caller_rva=0x102a thread=3052 host_pid=7880 hwnd=0000000000020198 owner_pid=2132 owner_thread=2136 same_process=0 game=000000000013017A game_pid=7880 game_thread=3052 presenter=0000000000000000 presenter_pid=0 presenter_thread=0 last_error=1426 tick=985843 real_hwnd=0000000000020198 real_pid=2132 result=unchanged role=host
+2026-10-13T01:56:01.9951172Z L4D2_STEAM_WINDOW event=summary active_calls=1 foreground_calls=1 hook_calls=2 dropped=0 role=host
+2026-10-13T01:56:01.9951845Z PASS steam-window-diagnostics bits=64 mode=real
+2026-10-13T01:56:02.0053380Z L4D2_STEAM_WINDOW event=waiting reason=renderer-not-loaded mode=observe-only
+2026-10-13T01:56:02.0055283Z L4D2_STEAM_WINDOW event=module path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-window-test\window-fixture-x64.dll base=00007FFF1B590000 host_pid=4464 bits=64 reference=process-lifetime role=host
+2026-10-13T01:56:02.0057215Z L4D2_STEAM_WINDOW event=image timestamp=0x6acd8fb0 image_size=0x1e000
+2026-10-13T01:56:02.0058363Z L4D2_STEAM_WINDOW event=import api=SetWindowsHookExW attached=1 slot_rva=0xe258 original=00007FF71ACB11D0
+2026-10-13T01:56:02.0059769Z L4D2_STEAM_WINDOW event=import api=GetForegroundWindow attached=1 slot_rva=0xe260 original=00007FF71ACB11A0
+2026-10-13T01:56:02.0061107Z L4D2_STEAM_WINDOW event=import api=GetActiveWindow attached=1 slot_rva=0xe268 original=00007FF71ACB1170
+2026-10-13T01:56:02.0062515Z L4D2_STEAM_WINDOW event=attached mask=7 mode=observe-only coverage=named-iat dynamic-resolution=not-covered role=host
+2026-10-13T01:56:02.0065665Z L4D2_STEAM_WINDOW event=window-query api=GetActiveWindow caller_rva=0x100a thread=7384 host_pid=4464 hwnd=000000000014017A owner_pid=4464 owner_thread=7384 same_process=1 game=000000000014017A game_pid=4464 game_thread=7384 presenter=0000000000000000 presenter_pid=0 presenter_thread=0 last_error=4660 tick=985859 real_hwnd=000000000014017A real_pid=4464 result=unchanged role=host
+2026-10-13T01:56:02.0070492Z L4D2_STEAM_WINDOW event=window-query api=GetForegroundWindow caller_rva=0x102a thread=7384 host_pid=4464 hwnd=0000000000010010 owner_pid=6644 owner_thread=6732 same_process=0 game=000000000014017A game_pid=4464 game_thread=7384 presenter=0000000000000000 presenter_pid=0 presenter_thread=0 last_error=9029 tick=985859 real_hwnd=0000000000010010 real_pid=6644 result=unchanged role=host
+2026-10-13T01:56:02.0075406Z L4D2_STEAM_WINDOW event=hook-install api=SetWindowsHookExW caller_rva=0x1070 thread=7384 host_pid=4464 hook_id=3 target_thread=12345 hook_module=0000000000000000 procedure=0000000000000000 result=0000000000001234 last_error=13398 game=000000000014017A game_pid=4464 game_thread=7384 presenter=0000000000000000 presenter_pid=0 presenter_thread=0 tick=985859 role=host
+2026-10-13T01:56:02.0079694Z L4D2_STEAM_WINDOW event=window-query api=GetActiveWindow caller_rva=0x100a thread=6000 host_pid=4464 hwnd=000000000014017A owner_pid=4464 owner_thread=7384 same_process=1 game=000000000014017A game_pid=4464 game_thread=7384 presenter=0000000000000000 presenter_pid=0 presenter_thread=0 last_error=4660 tick=985859 real_hwnd=000000000014017A real_pid=4464 result=unchanged role=host
+2026-10-13T01:56:02.0082503Z L4D2_STEAM_WINDOW event=summary active_calls=1001 foreground_calls=1000 hook_calls=1 dropped=0 role=host
+2026-10-13T01:56:02.0083469Z PASS steam-window-diagnostics bits=64 mode=chain
+2026-10-13T01:56:02.3369819Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:56:02.4031926Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:56:02.4069024Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:56:03.8001147Z Visual Studio Command Prompt variables set.
+2026-10-13T01:56:03.8172355Z steam_web_diagnostics.cpp
+2026-10-13T01:56:04.8186088Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-web-test\web-test.exe
+2026-10-13T01:56:04.8289360Z L4D2_STEAM_WEB event=attached utils010=1 friends017=1 overlay017=1 scope=verified-menu-interfaces mode=observe-only
+2026-10-13T01:56:04.8291911Z L4D2_STEAM_WEB event=request api=IsOverlayEnabled pid=6636 thread=3088 caller_path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-web-test\web-test.exe caller_rva=0x2c2c overlay_enabled=0 mode=0 url_class=not-applicable last_error=4660 tick=988687 action=observe-only
+2026-10-13T01:56:04.8295508Z L4D2_STEAM_WEB event=request api=IsOverlayEnabled pid=6636 thread=3088 caller_path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-web-test\web-test.exe caller_rva=0x2c5b overlay_enabled=0 mode=0 url_class=not-applicable last_error=4660 tick=988687 action=observe-only
+2026-10-13T01:56:04.8299109Z L4D2_STEAM_WEB event=request api=IsOverlayEnabled pid=6636 thread=3088 caller_path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-web-test\web-test.exe caller_rva=0x2c9b overlay_enabled=1 mode=0 url_class=not-applicable last_error=4660 tick=988687 action=observe-only
+2026-10-13T01:56:04.8302436Z L4D2_STEAM_WEB event=request api=ActivateGameOverlayToWebPage pid=6636 thread=3088 caller_path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-web-test\web-test.exe caller_rva=0x2cbe overlay_enabled=-1 mode=0 url_class=steam-workshop last_error=4660 tick=988687 action=observe-only
+2026-10-13T01:56:04.8303800Z L4D2_STEAM_WEB event=web-return pid=6636 thread=3088 last_error=9029 tick=988687
+2026-10-13T01:56:04.8305084Z L4D2_STEAM_WEB event=request api=ActivateGameOverlayToWebPage pid=6636 thread=3088 caller_path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-web-test\web-test.exe caller_rva=0x2cf8 overlay_enabled=-1 mode=7 url_class=null last_error=9029 tick=988687 action=observe-only
+2026-10-13T01:56:04.8306339Z L4D2_STEAM_WEB event=web-return pid=6636 thread=3088 last_error=9029 tick=988687
+2026-10-13T01:56:04.8308279Z L4D2_STEAM_WEB event=request api=ActivateGameOverlayToWebPage pid=6636 thread=3088 caller_path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-web-test\web-test.exe caller_rva=0x2d3c overlay_enabled=-1 mode=2 url_class=steam-workshop last_error=9029 tick=988687 action=observe-only
+2026-10-13T01:56:04.8309633Z L4D2_STEAM_WEB event=web-return pid=6636 thread=3088 last_error=9029 tick=988687
+2026-10-13T01:56:04.8310332Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=1 host_ready=1 caller_rva=0x199ea scope=verified-menu-guard
+2026-10-13T01:56:04.8311182Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=1 host_ready=1 caller_rva=0x199ea scope=verified-menu-guard
+2026-10-13T01:56:04.8312690Z L4D2_STEAM_WEB event=request api=ActivateGameOverlayToWebPage pid=6636 thread=3088 caller_path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-web-test\web-test.exe caller_rva=0x32cb overlay_enabled=-1 mode=0 url_class=steam-workshop last_error=4660 tick=988687 action=observe-only
+2026-10-13T01:56:04.8314029Z L4D2_STEAM_WEB event=web-return pid=6636 thread=3088 last_error=9029 tick=988687
+2026-10-13T01:56:04.8314717Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=0 host_ready=0 caller_rva=0x199ea scope=verified-menu-guard
+2026-10-13T01:56:04.8315752Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=0 host_ready=0 caller_rva=0x199ea scope=verified-menu-guard
+2026-10-13T01:56:04.8316572Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=0 host_ready=0 caller_rva=0x199ea scope=verified-menu-guard
+2026-10-13T01:56:04.8317510Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=1 host_ready=1 caller_rva=0x199ea scope=verified-menu-guard
+2026-10-13T01:56:04.8318451Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=1 host_ready=1 caller_rva=0x199ea scope=verified-menu-guard
+2026-10-13T01:56:04.8319282Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=1 host_ready=1 caller_rva=0x19aca scope=verified-menu-guard
+2026-10-13T01:56:04.8321049Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=1 host_ready=1 caller_rva=0x6ea9a scope=verified-menu-guard
+2026-10-13T01:56:04.8321893Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=1 host_ready=1 caller_rva=0x11a03 scope=verified-menu-guard
+2026-10-13T01:56:04.8322675Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=1 host_ready=1 caller_rva=0x11a03 scope=verified-menu-guard
+2026-10-13T01:56:04.8323530Z L4D2_STEAM_INVITE event=request api=ActivateGameOverlay dialog_class=lobby-invite caller_rva=0x11a1a verified_helper=1 action=observe-only
+2026-10-13T01:56:04.8324404Z L4D2_STEAM_INVITE event=return pid=6636 thread=3088 last_error=13398 tick=988687
+2026-10-13T01:56:04.8325350Z L4D2_STEAM_INVITE event=request api=ActivateGameOverlay dialog_class=lobby-invite caller_rva=0x0 verified_helper=0 action=observe-only
+2026-10-13T01:56:04.8326061Z L4D2_STEAM_INVITE event=return pid=6636 thread=3088 last_error=13398 tick=988687
+2026-10-13T01:56:04.8326737Z L4D2_STEAM_INVITE event=request api=ActivateGameOverlay dialog_class=null caller_rva=0x0 verified_helper=0 action=observe-only
+2026-10-13T01:56:04.8327403Z L4D2_STEAM_INVITE event=return pid=6636 thread=3088 last_error=13398 tick=988687
+2026-10-13T01:56:04.8328066Z L4D2_STEAM_INVITE event=request api=ActivateGameOverlay dialog_class=other caller_rva=0x0 verified_helper=0 action=observe-only
+2026-10-13T01:56:04.8328724Z L4D2_STEAM_INVITE event=return pid=6636 thread=3088 last_error=13398 tick=988687
+2026-10-13T01:56:04.8329367Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=0 host_ready=0 caller_rva=0x11a03 scope=verified-menu-guard
+2026-10-13T01:56:04.8330127Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=0 host_ready=0 caller_rva=0x11a03 scope=verified-menu-guard
+2026-10-13T01:56:04.8330871Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=0 host_ready=0 caller_rva=0x11a03 scope=verified-menu-guard
+2026-10-13T01:56:04.8331613Z L4D2_STEAM_WORKSHOP event=availability original=0 returned=0 host_ready=0 caller_rva=0x11a03 scope=verified-menu-guard
+2026-10-13T01:56:04.8332670Z L4D2_STEAM_WEB event=request api=IsOverlayEnabled pid=6636 thread=3088 caller_path=unresolved caller_rva=0x0 overlay_enabled=0 mode=0 url_class=not-applicable last_error=4660 tick=988687 action=observe-only
+2026-10-13T01:56:04.8333665Z L4D2_STEAM_WEB event=summary availability_calls=22 web_calls=4 overlay_calls=4 emitted_attempts=36
+2026-10-13T01:56:04.8334299Z L4D2_STEAM_WEB event=summary availability_calls=22 web_calls=4 overlay_calls=5 emitted_attempts=37
+2026-10-13T01:56:04.8335414Z PASS steam-web-invite-observer x86 actual-thiscall-ABI, four scoped guards, LobbyInvite borrowed-argument, once-only request, LastError, logger-exception, stale/future/disabled refusal, hash-gate, conditional-restore
+2026-10-13T01:56:05.3210371Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:56:05.3873848Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:56:05.3912272Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:56:06.7873034Z Visual Studio Command Prompt variables set.
+2026-10-13T01:56:06.8047417Z steam_availability_diagnostics.cpp
+2026-10-13T01:56:07.3894801Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-availability-x86\availability-test.exe
+2026-10-13T01:56:07.3986734Z PASS host-renderer-availability: actual getter layout, ASLR, signed displacement, bounds, refusal, disabled observer; no supplied code executed
+2026-10-13T01:56:07.7425915Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:56:07.8091004Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:56:07.8129887Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:56:09.2146844Z Visual Studio Command Prompt variables set.
+2026-10-13T01:56:09.2284927Z steam_availability_diagnostics.cpp
+2026-10-13T01:56:09.7819583Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-availability-x64\availability-test.exe
+2026-10-13T01:56:09.7885870Z PASS host-renderer-availability: actual getter layout, ASLR, signed displacement, bounds, refusal, disabled observer; no supplied code executed
+2026-10-13T01:56:10.2866551Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:56:10.3530137Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:56:10.3571716Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:56:11.7378498Z Visual Studio Command Prompt variables set.
+2026-10-13T01:56:11.7541892Z steam_workshop_status.cpp
+2026-10-13T01:56:12.6662829Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-workshop-x86\status-test.exe
+2026-10-13T01:56:13.0168593Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:56:13.0846934Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:56:13.0884256Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:56:14.4668812Z Visual Studio Command Prompt variables set.
+2026-10-13T01:56:14.4805938Z steam_workshop_status.cpp
+2026-10-13T01:56:15.3958125Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\steam-workshop-x64\status-test.exe
+2026-10-13T01:56:17.0248105Z PASS workshop-status: cross-process, cross-bitness, identity, exclusive ownership, missing, false, unknown, stale, future, tick-wrap, host-death, scoped selection
+2026-10-13T01:56:18.5551132Z PASS workshop-status: cross-process, cross-bitness, identity, exclusive ownership, missing, false, unknown, stale, future, tick-wrap, host-death, scoped selection
+2026-10-13T01:56:20.0714111Z PASS workshop-status: cross-process, cross-bitness, identity, exclusive ownership, missing, false, unknown, stale, future, tick-wrap, host-death, scoped selection
+2026-10-13T01:56:21.5979649Z PASS workshop-status: cross-process, cross-bitness, identity, exclusive ownership, missing, false, unknown, stale, future, tick-wrap, host-death, scoped selection
+2026-10-13T01:56:22.1714136Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:56:22.2382410Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:56:22.2421301Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:56:23.6342204Z Visual Studio Command Prompt variables set.
+2026-10-13T01:56:23.6481283Z adapter_information.cpp
+2026-10-13T01:56:24.4721057Z native bits=32 identifier_bytes=1100 prefix_bytes=1100 caps_bytes=304
+2026-10-13T01:56:24.7915187Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:56:24.8586490Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:56:24.8624772Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:56:26.2474213Z Visual Studio Command Prompt variables set.
+2026-10-13T01:56:26.2581276Z adapter_information.cpp
+2026-10-13T01:56:27.0097520Z native bits=64 identifier_bytes=1104 prefix_bytes=1100 caps_bytes=304
+2026-10-13T01:56:27.0160961Z PASS: native 32-bit reader decoded D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\adapter-test\x86 identifier and full caps; malformed packets rejected; Shader versions preserved.
+2026-10-13T01:56:27.0224264Z PASS: native 32-bit reader decoded D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\adapter-test\x64 identifier and full caps; malformed packets rejected; Shader versions preserved.
+2026-10-13T01:56:27.0275749Z PASS: native 64-bit reader decoded D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\adapter-test\x86 identifier and full caps; malformed packets rejected; Shader versions preserved.
+2026-10-13T01:56:27.0324417Z PASS: native 64-bit reader decoded D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\adapter-test\x64 identifier and full caps; malformed packets rejected; Shader versions preserved.
+2026-10-13T01:56:27.6127332Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:56:27.6806601Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:56:27.6843380Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:56:29.0906832Z Visual Studio Command Prompt variables set.
+2026-10-13T01:56:29.1044506Z ati_texture_layout.cpp
+2026-10-13T01:56:29.8362472Z PASS: ATI1/ATI2 native API pitch, full mip chains, partial copies, shared storage and guarded upload/readback bounds
+2026-10-13T01:56:30.1804832Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:56:30.2467720Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:56:30.2505273Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:56:31.6498163Z Visual Studio Command Prompt variables set.
+2026-10-13T01:56:31.6611168Z ati_texture_layout.cpp
+2026-10-13T01:56:32.3422125Z PASS: ATI1/ATI2 native API pitch, full mip chains, partial copies, shared storage and guarded upload/readback bounds
+2026-10-13T01:56:32.9334250Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:56:33.0029440Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:56:33.0069709Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:56:34.3916903Z Visual Studio Command Prompt variables set.
+2026-10-13T01:56:34.4051381Z command_queue.cpp
+2026-10-13T01:56:35.8687527Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:56:35.9361253Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:56:35.9400828Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:56:37.3392823Z Visual Studio Command Prompt variables set.
+2026-10-13T01:56:37.3502463Z command_queue.cpp
+2026-10-13T01:56:39.2671688Z idle reader CPU: 0.000 ms / 500 ms
+2026-10-13T01:56:39.2672404Z Command queue tests passed
+2026-10-13T01:56:40.1737606Z idle reader CPU: 0.000 ms / 500 ms
+2026-10-13T01:56:40.1738132Z Command queue tests passed
+2026-10-13T01:56:40.3017185Z ##[group]Run python -m unittest discover -s tests -p 'test_*.py'
+2026-10-13T01:56:40.3017726Z [36;1mpython -m unittest discover -s tests -p 'test_*.py'[0m
+2026-10-13T01:56:40.3057496Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-13T01:56:40.3057851Z env:
+2026-10-13T01:56:40.3058127Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:56:40.3058608Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.11.9\x64/lib/pkgconfig
+2026-10-13T01:56:40.3059075Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:56:40.3059485Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:56:40.3059889Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:56:40.3060213Z ##[endgroup]
+2026-10-13T01:56:41.4220532Z .......................................
+2026-10-13T01:56:41.4220986Z ----------------------------------------------------------------------
+2026-10-13T01:56:41.4221701Z Ran 39 tests in 0.516s
+2026-10-13T01:56:41.4221961Z 
+2026-10-13T01:56:41.4222305Z OK
+2026-10-13T01:56:41.4222732Z C:\Users\RUNNER~1\AppData\Local\Temp\tmpgy9f5inu\out\l4d2-bridge-patch
+2026-10-13T01:56:41.4223277Z C:\Users\RUNNER~1\AppData\Local\Temp\tmpgy9f5inu\out\l4d2-bridge
+2026-10-13T01:56:41.4223797Z C:\Users\RUNNER~1\AppData\Local\Temp\tmpyqt44z1w\out\l4d2-bridge-patch
+2026-10-13T01:56:41.4224326Z C:\Users\RUNNER~1\AppData\Local\Temp\tmpyqt44z1w\out\l4d2-bridge
+2026-10-13T01:56:41.4224835Z C:\Users\RUNNER~1\AppData\Local\Temp\tmpyqt44z1w\out\l4d2-bridge-l4n
+2026-10-13T01:56:41.4225353Z C:\Users\RUNNER~1\AppData\Local\Temp\tmpduc82tl7\out\l4d2-bridge-patch
+2026-10-13T01:56:41.4225854Z C:\Users\RUNNER~1\AppData\Local\Temp\tmpduc82tl7\out\l4d2-bridge
+2026-10-13T01:56:41.4226346Z C:\Users\RUNNER~1\AppData\Local\Temp\tmpduc82tl7\out\l4d2-bridge-l4n
+2026-10-13T01:56:41.4226865Z C:\Users\RUNNER~1\AppData\Local\Temp\tmpnjsic2q6\out\l4d2-bridge-patch
+2026-10-13T01:56:41.4227374Z C:\Users\RUNNER~1\AppData\Local\Temp\tmpnjsic2q6\out\l4d2-bridge
+2026-10-13T01:56:41.4227866Z C:\Users\RUNNER~1\AppData\Local\Temp\tmpnjsic2q6\out\l4d2-bridge-l4n
+2026-10-13T01:56:41.5441230Z ##[group]Run ./scripts/build_ipc_c32.ps1
+2026-10-13T01:56:41.5441653Z [36;1m./scripts/build_ipc_c32.ps1[0m
+2026-10-13T01:56:41.5482002Z shell: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.EXE -command ". '{0}'"
+2026-10-13T01:56:41.5482599Z env:
+2026-10-13T01:56:41.5482874Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:56:41.5483335Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.11.9\x64/lib/pkgconfig
+2026-10-13T01:56:41.5483791Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:56:41.5484197Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:56:41.5484611Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:56:41.5484933Z ##[endgroup]
+2026-10-13T01:56:42.8701812Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:56:42.9380075Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:56:42.9418711Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:56:44.4155212Z Visual Studio Command Prompt variables set.
+2026-10-13T01:56:46.6909962Z The Meson build system
+2026-10-13T01:56:46.6910520Z Version: 1.3.2
+2026-10-13T01:56:46.6911335Z Source dir: D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\dxvk-remix\bridge
+2026-10-13T01:56:46.6912671Z Build dir: D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\dxvk-remix\bridge\_ipcC32_x64
+2026-10-13T01:56:46.6913415Z Build type: native build
+2026-10-13T01:56:46.6913732Z Project name: bridge
+2026-10-13T01:56:46.6914036Z Project version: remix-main
+2026-10-13T01:56:46.6914744Z C compiler for the host machine: cl (msvc 19.29.30159 "Microsoft (R) C/C++ Optimizing Compiler Version 19.29.30159 for x64")
+2026-10-13T01:56:46.6915555Z C linker for the host machine: link link 14.29.30159.0
+2026-10-13T01:56:46.6916383Z C++ compiler for the host machine: cl (msvc 19.29.30159 "Microsoft (R) C/C++ Optimizing Compiler Version 19.29.30159 for x64")
+2026-10-13T01:56:46.6917206Z C++ linker for the host machine: link link 14.29.30159.0
+2026-10-13T01:56:46.6917721Z Host machine cpu family: x86_64
+2026-10-13T01:56:46.6918055Z Host machine cpu: x86_64
+2026-10-13T01:56:46.6918576Z Program python3 found: YES (C:\hostedtoolcache\windows\Python\3.11.9\x64\python3.EXE)
+2026-10-13T01:56:46.6919374Z Program rc found: YES (C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\\x64\rc.EXE)
+2026-10-13T01:56:46.6920018Z Compiler for C++ supports arguments -msse3: NO 
+2026-10-13T01:56:46.6920425Z Library Version found: YES
+2026-10-13T01:56:46.6920743Z Library Comctl32 found: YES
+2026-10-13T01:56:46.6921045Z Message: ##############
+2026-10-13T01:56:46.6921331Z Message: # Versioning #
+2026-10-13T01:56:46.6921598Z Message: ##############
+2026-10-13T01:56:46.6922024Z WARNING: You should add the boolean check kwarg to the run_command call.
+2026-10-13T01:56:46.6922564Z          It currently defaults to false,
+2026-10-13T01:56:46.6923021Z          but it will default to true in future releases of meson.
+2026-10-13T01:56:46.6923584Z          See also: https://github.com/mesonbuild/meson/issues/9300
+2026-10-13T01:56:46.6924078Z Message: Current git hash: 9aa74f8d
+2026-10-13T01:56:46.6924442Z Message: No tag found at current commit.
+2026-10-13T01:56:46.6924819Z Message: This is NOT a release version
+2026-10-13T01:56:46.6925200Z Message: Full version: remix-main+9aa74f8d
+2026-10-13T01:56:46.6925648Z Message: L4D2 fork build: ldb-ipc-c32-dev+2da41c976cf19b26
+2026-10-13T01:56:46.6926116Z Run-time dependency threads found: YES
+2026-10-13T01:56:46.6926517Z Dependency threads found: YES unknown (cached)
+2026-10-13T01:56:46.6927171Z Windows resource compiler: Microsoft (R) Windows (R) Resource Compiler Version 10.0.10011.16384
+2026-10-13T01:56:46.6927704Z 
+2026-10-13T01:56:46.6927831Z Build targets in project: 7
+2026-10-13T01:56:46.6928034Z 
+2026-10-13T01:56:46.6928142Z bridge remix-main
+2026-10-13T01:56:46.6928316Z 
+2026-10-13T01:56:46.6931290Z   User defined options
+2026-10-13T01:56:46.6931695Z     backend  : ninja
+2026-10-13T01:56:46.6931983Z     buildtype: release
+2026-10-13T01:56:46.6932166Z 
+2026-10-13T01:56:46.6932646Z Found ninja-1.11.1.git.kitware.jobserver-1 at C:\hostedtoolcache\windows\Python\3.11.9\x64\Scripts\ninja.EXE
+2026-10-13T01:56:51.9656073Z ninja: Entering directory `D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.deps/dxvk-remix/bridge/_ipcC32_x64'
+2026-10-13T01:56:51.9657285Z [1/29] Generating version.h with a custom command
+2026-10-13T01:56:51.9658205Z [2/29] Compiling C++ object src/tracy/libtracy.a.p/TracyClient.cpp.obj
+2026-10-13T01:56:51.9659242Z [3/29] Compiling C++ object src/util/libutil.a.p/exception_diagnostics.cpp.obj
+2026-10-13T01:56:51.9660129Z [4/29] Linking static target src/tracy/libtracy.a
+2026-10-13T01:56:51.9660966Z [5/29] Compiling C++ object src/util/libutil.a.p/color_diagnostics.cpp.obj
+2026-10-13T01:56:51.9661972Z [6/29] Compiling C++ object src/util/libutil.a.p/util_filesys.cpp.obj
+2026-10-13T01:56:56.4435100Z [7/29] Compiling C++ object src/util/libutil.a.p/util_bridgecommand.cpp.obj
+2026-10-13T01:56:56.4453638Z [8/29] Compiling C++ object src/util/libutil.a.p/util_gdi.cpp.obj
+2026-10-13T01:56:56.4517240Z [9/29] Compiling C++ object src/util/libutil.a.p/util_messagechannel.cpp.obj
+2026-10-13T01:56:56.4714562Z [10/29] Compiling C++ object src/util/libutil.a.p/util_process.cpp.obj
+2026-10-13T01:56:56.4746077Z [11/29] Compiling C++ object src/util/libutil.a.p/util_remixapi.cpp.obj
+2026-10-13T01:56:56.5705106Z [12/29] Compiling C++ object src/util/libutil.a.p/util_seh.cpp.obj
+2026-10-13T01:56:56.5940855Z [13/29] Compiling C++ object src/util/libutil.a.p/util_monitor.cpp.obj
+2026-10-13T01:56:57.7061638Z [14/29] Compiling C++ object src/util/libutil.a.p/util_semaphore.cpp.obj
+2026-10-13T01:56:57.7062716Z [15/29] Compiling C++ object src/util/libutil.a.p/util_sharedmemory.cpp.obj
+2026-10-13T01:56:57.7063636Z [16/29] Generating src/server/version.rc with a custom command
+2026-10-13T01:56:57.7064428Z [17/29] Compiling Windows resource src/server/NvRemixBridge.rc
+2026-10-13T01:56:57.7065219Z [18/29] Generating 'src\\server\\L4D2Bridge64.exe.p\\version.res'
+2026-10-13T01:56:57.7066036Z Microsoft (R) Windows (R) Resource Compiler Version 10.0.10011.16384
+2026-10-13T01:56:57.7066625Z 
+2026-10-13T01:56:57.7066695Z 
+2026-10-13T01:56:57.7067028Z Copyright (C) Microsoft Corporation.  All rights reserved.
+2026-10-13T01:56:57.7067551Z 
+2026-10-13T01:56:57.7067620Z 
+2026-10-13T01:56:57.7067690Z 
+2026-10-13T01:56:57.7067756Z 
+2026-10-13T01:57:04.6175721Z [19/29] Compiling C++ object src/util/libutil.a.p/util_sharedheap.cpp.obj
+2026-10-13T01:57:04.7631772Z [20/29] Compiling C++ object src/util/libutil.a.p/log_log.cpp.obj
+2026-10-13T01:57:04.7787651Z [21/29] Compiling C++ object src/util/libutil.a.p/config_global_options.cpp.obj
+2026-10-13T01:57:04.7942884Z [22/29] Compiling C++ object src/util/libutil.a.p/data_diagnostics.cpp.obj
+2026-10-13T01:57:04.8059204Z [23/29] Compiling C++ object src/util/libutil.a.p/config_config.cpp.obj
+2026-10-13T01:57:04.9666855Z [24/29] Linking static target src/util/libutil.a
+2026-10-13T01:57:04.9673912Z [25/29] Compiling C++ object src/server/L4D2Bridge64.exe.p/module_processing.cpp.obj
+2026-10-13T01:57:10.0683167Z [26/29] Compiling C++ object src/server/L4D2Bridge64.exe.p/remix_api.cpp.obj
+2026-10-13T01:57:10.0684057Z [27/29] Compiling C++ object src/server/L4D2Bridge64.exe.p/main.cpp.obj
+2026-10-13T01:57:10.0684742Z [28/29] Linking target src/server/L4D2Bridge64.exe
+2026-10-13T01:57:10.0685596Z [29/29] Generating src/server/copy_server_to_output with a custom command (wrapped by meson to set PATH)
+2026-10-13T01:57:10.0762891Z INFO: autodetecting backend as ninja
+2026-10-13T01:57:10.0763970Z INFO: calculating backend command to run: C:\hostedtoolcache\windows\Python\3.11.9\x64\Scripts\ninja.EXE -C D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.deps/dxvk-remix/bridge/_ipcC32_x64
+2026-10-13T01:57:10.4005466Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:57:10.4763495Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:57:10.4809506Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:57:11.9365036Z Visual Studio Command Prompt variables set.
+2026-10-13T01:57:14.6861027Z The Meson build system
+2026-10-13T01:57:14.6861514Z Version: 1.3.2
+2026-10-13T01:57:14.6862393Z Source dir: D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\dxvk-remix\bridge
+2026-10-13T01:57:14.6863151Z Build dir: D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\dxvk-remix\bridge\_ipcC32_x86
+2026-10-13T01:57:14.6863694Z Build type: native build
+2026-10-13T01:57:14.6863951Z Project name: bridge
+2026-10-13T01:57:14.6864202Z Project version: remix-main
+2026-10-13T01:57:14.6864795Z C compiler for the host machine: cl (msvc 19.29.30159 "Microsoft (R) C/C++ Optimizing Compiler Version 19.29.30159 for x86")
+2026-10-13T01:57:14.6865493Z C linker for the host machine: link link 14.29.30159.0
+2026-10-13T01:57:14.6866166Z C++ compiler for the host machine: cl (msvc 19.29.30159 "Microsoft (R) C/C++ Optimizing Compiler Version 19.29.30159 for x86")
+2026-10-13T01:57:14.6866843Z C++ linker for the host machine: link link 14.29.30159.0
+2026-10-13T01:57:14.6867219Z Host machine cpu family: x86
+2026-10-13T01:57:14.6867488Z Host machine cpu: x86
+2026-10-13T01:57:14.6867906Z Program python3 found: YES (C:\hostedtoolcache\windows\Python\3.11.9\x64\python3.EXE)
+2026-10-13T01:57:14.6868654Z Program rc found: YES (C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\\x86\rc.EXE)
+2026-10-13T01:57:14.6869308Z Compiler for C++ supports link arguments -Wl,--add-stdcall-alias: NO 
+2026-10-13T01:57:14.6869866Z Compiler for C++ supports link arguments -Wl,--enable-stdcall-fixup: NO 
+2026-10-13T01:57:14.6870342Z Compiler for C++ supports arguments -msse: NO 
+2026-10-13T01:57:14.6870732Z Compiler for C++ supports arguments -mfpmath=sse: NO 
+2026-10-13T01:57:14.6871093Z Library Version found: YES
+2026-10-13T01:57:14.6871348Z Library Comctl32 found: YES
+2026-10-13T01:57:14.6871604Z Message: ##############
+2026-10-13T01:57:14.6871840Z Message: # Versioning #
+2026-10-13T01:57:14.6872069Z Message: ##############
+2026-10-13T01:57:14.6872429Z WARNING: You should add the boolean check kwarg to the run_command call.
+2026-10-13T01:57:14.6872870Z          It currently defaults to false,
+2026-10-13T01:57:14.6873238Z          but it will default to true in future releases of meson.
+2026-10-13T01:57:14.6873711Z          See also: https://github.com/mesonbuild/meson/issues/9300
+2026-10-13T01:57:14.6874109Z Message: Current git hash: 9aa74f8d
+2026-10-13T01:57:14.6874407Z Message: No tag found at current commit.
+2026-10-13T01:57:14.6874718Z Message: This is NOT a release version
+2026-10-13T01:57:14.6875032Z Message: Full version: remix-main+9aa74f8d
+2026-10-13T01:57:14.6875416Z Message: L4D2 fork build: ldb-ipc-c32-dev+2da41c976cf19b26
+2026-10-13T01:57:14.6875809Z Run-time dependency threads found: YES
+2026-10-13T01:57:14.6876155Z Dependency threads found: YES unknown (cached)
+2026-10-13T01:57:14.6876482Z Library bcrypt found: YES
+2026-10-13T01:57:14.6876773Z Dependency threads found: YES unknown (cached)
+2026-10-13T01:57:14.6877320Z Windows resource compiler: Microsoft (R) Windows (R) Resource Compiler Version 10.0.10011.16384
+2026-10-13T01:57:14.6877804Z 
+2026-10-13T01:57:14.6877903Z Library shlwapi found: YES
+2026-10-13T01:57:14.6878189Z Message: Generated ..\_vs\bridge-remix.vcxproj
+2026-10-13T01:57:14.6878557Z Generated ..\_vs\bridge-remix.vcxproj.filters
+2026-10-13T01:57:14.6878885Z Generated bridge-remix.vcxproj.filters
+2026-10-13T01:57:14.6879142Z Generated ..\_vs\bridge-remix.sln
+2026-10-13T01:57:14.6879377Z Build targets in project: 11
+2026-10-13T01:57:14.6879523Z 
+2026-10-13T01:57:14.6879594Z bridge remix-main
+2026-10-13T01:57:14.6879709Z 
+2026-10-13T01:57:14.6879789Z   User defined options
+2026-10-13T01:57:14.6879978Z     backend  : ninja
+2026-10-13T01:57:14.6880389Z     buildtype: release
+2026-10-13T01:57:14.6880518Z 
+2026-10-13T01:57:14.6880837Z Found ninja-1.11.1.git.kitware.jobserver-1 at C:\hostedtoolcache\windows\Python\3.11.9\x64\Scripts\ninja.EXE
+2026-10-13T01:57:19.8057241Z ninja: Entering directory `D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.deps/dxvk-remix/bridge/_ipcC32_x86'
+2026-10-13T01:57:19.8059870Z [1/56] Generating version.h with a custom command
+2026-10-13T01:57:19.8063148Z [2/56] Compiling C++ object src/tracy/libtracy.a.p/TracyClient.cpp.obj
+2026-10-13T01:57:19.8063998Z [3/56] Compiling C++ object src/util/libutil.a.p/exception_diagnostics.cpp.obj
+2026-10-13T01:57:19.8065367Z [4/56] Linking static target src/tracy/libtracy.a
+2026-10-13T01:57:19.8066935Z [5/56] Compiling C++ object src/util/libutil.a.p/color_diagnostics.cpp.obj
+2026-10-13T01:57:19.8069852Z [6/56] Compiling C++ object src/util/libutil.a.p/util_filesys.cpp.obj
+2026-10-13T01:57:24.5639114Z [7/56] Compiling C++ object src/util/libutil.a.p/util_bridgecommand.cpp.obj
+2026-10-13T01:57:24.5674354Z [8/56] Compiling C++ object src/util/libutil.a.p/util_gdi.cpp.obj
+2026-10-13T01:57:24.5766742Z [9/56] Compiling C++ object src/util/libutil.a.p/util_remixapi.cpp.obj
+2026-10-13T01:57:24.7180457Z [10/56] Compiling C++ object src/util/libutil.a.p/util_process.cpp.obj
+2026-10-13T01:57:24.7679139Z [11/56] Compiling C++ object src/util/libutil.a.p/util_messagechannel.cpp.obj
+2026-10-13T01:57:24.8319419Z [12/56] Compiling C++ object src/util/libutil.a.p/util_seh.cpp.obj
+2026-10-13T01:57:24.8353613Z [13/56] Compiling C++ object src/util/libutil.a.p/util_monitor.cpp.obj
+2026-10-13T01:57:28.5362213Z [14/56] Compiling C++ object src/util/libutil.a.p/util_semaphore.cpp.obj
+2026-10-13T01:57:28.6578341Z [15/56] Compiling C++ object src/util/libutil.a.p/util_sharedmemory.cpp.obj
+2026-10-13T01:57:28.8380593Z [16/56] Generating src/client/version.rc with a custom command
+2026-10-13T01:57:28.9242391Z [17/56] Generating 'src\\client\\d3d9.dll.p\\version.res'
+2026-10-13T01:57:29.0405134Z Microsoft (R) Windows (R) Resource Compiler Version 10.0.10011.16384
+2026-10-13T01:57:29.1497182Z 
+2026-10-13T01:57:29.2432365Z 
+2026-10-13T01:57:29.5401608Z Copyright (C) Microsoft Corporation.  All rights reserved.
+2026-10-13T01:57:29.7120179Z 
+2026-10-13T01:57:29.8683603Z 
+2026-10-13T01:57:29.9364579Z 
+2026-10-13T01:57:29.9686965Z 
+2026-10-13T01:57:29.9860722Z [18/56] Compiling C++ object src/util/libutil.a.p/util_sharedheap.cpp.obj
+2026-10-13T01:57:35.7703261Z [19/56] Compiling C++ object src/util/libutil.a.p/log_log.cpp.obj
+2026-10-13T01:57:35.9014537Z [20/56] Compiling C++ object src/client/d3d9.dll.p/bridge_control.cpp.obj
+2026-10-13T01:57:35.9038964Z [21/56] Compiling C++ object src/util/libutil.a.p/config_config.cpp.obj
+2026-10-13T01:57:35.9141281Z [22/56] Compiling C++ object src/util/libutil.a.p/config_global_options.cpp.obj
+2026-10-13T01:57:35.9174047Z [23/56] Compiling C++ object src/util/libutil.a.p/data_diagnostics.cpp.obj
+2026-10-13T01:57:35.9213477Z [24/56] Linking static target src/util/libutil.a
+2026-10-13T01:57:35.9545031Z [25/56] Compiling C++ object src/client/d3d9.dll.p/d3d9_bootstrap.cpp.obj
+2026-10-13T01:57:45.4422181Z [26/56] Compiling C++ object src/client/d3d9.dll.p/d3d9_cubetexture.cpp.obj
+2026-10-13T01:57:45.4718594Z [27/56] Compiling C++ object src/client/d3d9.dll.p/d3d9_device_base.cpp.obj
+2026-10-13T01:57:45.5254509Z [28/56] Compiling C++ object src/client/d3d9.dll.p/d3d9_indexbuffer.cpp.obj
+2026-10-13T01:57:45.6758104Z [29/56] Compiling C++ object src/client/d3d9.dll.p/d3d9_query.cpp.obj
+2026-10-13T01:57:45.8069193Z [30/56] Compiling C++ object src/client/d3d9.dll.p/d3d9_pixelshader.cpp.obj
+2026-10-13T01:57:46.1807116Z [31/56] Compiling C++ object src/client/d3d9.dll.p/d3d9_resource.cpp.obj
+2026-10-13T01:57:46.1832185Z [32/56] Compiling C++ object src/client/d3d9.dll.p/d3d9_device.cpp.obj
+2026-10-13T01:57:54.5633597Z [33/56] Compiling C++ object src/client/d3d9.dll.p/d3d9_module.cpp.obj
+2026-10-13T01:57:54.7204100Z [34/56] Compiling C++ object src/client/d3d9.dll.p/d3d9_lss.cpp.obj
+2026-10-13T01:57:54.7236290Z [35/56] Compiling C++ object src/client/d3d9.dll.p/d3d9_stateblock.cpp.obj
+2026-10-13T01:57:54.7256378Z [36/56] Compiling C++ object src/client/d3d9.dll.p/d3d9_vertexbuffer.cpp.obj
+2026-10-13T01:57:54.8091768Z [37/56] Compiling C++ object src/client/d3d9.dll.p/d3d9_surface.cpp.obj
+2026-10-13T01:57:54.9291243Z [38/56] Compiling C++ object src/client/d3d9.dll.p/d3d9_texture.cpp.obj
+2026-10-13T01:57:55.1290108Z [39/56] Compiling C++ object src/client/d3d9.dll.p/d3d9_vertexdeclaration.cpp.obj
+2026-10-13T01:58:00.4074647Z [40/56] Compiling C++ object src/client/d3d9.dll.p/d3d9_swapchain.cpp.obj
+2026-10-13T01:58:00.4080025Z [41/56] Compiling C++ object src/client/d3d9.dll.p/d3d9_vertexshader.cpp.obj
+2026-10-13T01:58:00.4412101Z [42/56] Compiling C++ object src/client/d3d9.dll.p/di_hook.cpp.obj
+2026-10-13T01:58:00.4413054Z [43/56] Compiling C++ object src/client/d3d9.dll.p/d3d9_volume.cpp.obj
+2026-10-13T01:58:00.5010103Z [44/56] Compiling C++ object src/client/d3d9.dll.p/pch.cpp.obj
+2026-10-13T01:58:00.5015722Z [45/56] Compiling C++ object src/client/d3d9.dll.p/d3d9_volumetexture.cpp.obj
+2026-10-13T01:58:00.5168182Z [46/56] Compiling C++ object src/client/d3d9.dll.p/message_channels.cpp.obj
+2026-10-13T01:58:00.5179613Z [47/56] Generating src/server/version.rc with a custom command
+2026-10-13T01:58:02.0648092Z [48/56] Compiling C++ object src/client/d3d9.dll.p/pageblock_control.cpp.obj
+2026-10-13T01:58:02.0648665Z [49/56] Compiling C++ object src/client/d3d9.dll.p/remix_state.cpp.obj
+2026-10-13T01:58:02.0649129Z [50/56] Compiling C++ object src/client/d3d9.dll.p/remix_api.cpp.obj
+2026-10-13T01:58:02.0649614Z [51/56] Compiling C++ object src/launcher/NvRemixLauncher32.exe.p/launcher.cpp.obj
+2026-10-13T01:58:02.0650067Z [52/56] Linking target src/launcher/NvRemixLauncher32.exe
+2026-10-13T01:58:02.0650455Z [53/56] Compiling C++ object src/client/d3d9.dll.p/window.cpp.obj
+2026-10-13T01:58:02.3573316Z [54/56] Generating src/launcher/copy_launcher_to_output with a custom command (wrapped by meson to set PATH)
+2026-10-13T01:58:02.3574285Z [55/56] Linking target src/client/d3d9.dll
+2026-10-13T01:58:02.3574950Z    Creating library src\client\d3d9.lib and object src\client\d3d9.exp
+2026-10-13T01:58:02.3575457Z 
+2026-10-13T01:58:02.3575941Z [56/56] Generating src/client/copy_d3d9_to_output with a custom command (wrapped by meson to set PATH)
+2026-10-13T01:58:02.3649309Z INFO: autodetecting backend as ninja
+2026-10-13T01:58:02.3650593Z INFO: calculating backend command to run: C:\hostedtoolcache\windows\Python\3.11.9\x64\Scripts\ninja.EXE -C D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.deps/dxvk-remix/bridge/_ipcC32_x86
+2026-10-13T01:58:02.6743652Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:58:02.7394833Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:58:02.7434259Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:58:04.1670399Z Visual Studio Command Prompt variables set.
+2026-10-13T01:58:06.0339423Z The Meson build system
+2026-10-13T01:58:06.0339912Z Version: 1.3.2
+2026-10-13T01:58:06.0340375Z Source dir: D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\dxvk-remix\bridge
+2026-10-13T01:58:06.0341192Z Build dir: D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\dxvk-remix\bridge\_ipcC32_x86_server
+2026-10-13T01:58:06.0341789Z Build type: native build
+2026-10-13T01:58:06.0342063Z Project name: bridge
+2026-10-13T01:58:06.0342325Z Project version: remix-main
+2026-10-13T01:58:06.0342946Z C compiler for the host machine: cl (msvc 19.29.30159 "Microsoft (R) C/C++ Optimizing Compiler Version 19.29.30159 for x86")
+2026-10-13T01:58:06.0343643Z C linker for the host machine: link link 14.29.30159.0
+2026-10-13T01:58:06.0344312Z C++ compiler for the host machine: cl (msvc 19.29.30159 "Microsoft (R) C/C++ Optimizing Compiler Version 19.29.30159 for x86")
+2026-10-13T01:58:06.0346068Z C++ linker for the host machine: link link 14.29.30159.0
+2026-10-13T01:58:06.0346539Z Host machine cpu family: x86
+2026-10-13T01:58:06.0346828Z Host machine cpu: x86
+2026-10-13T01:58:06.0347263Z Program python3 found: YES (C:\hostedtoolcache\windows\Python\3.11.9\x64\python3.EXE)
+2026-10-13T01:58:06.0348153Z Program rc found: YES (C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\\x86\rc.EXE)
+2026-10-13T01:58:06.0348717Z Compiler for C++ supports arguments -msse3: NO 
+2026-10-13T01:58:06.0349079Z Library Version found: YES
+2026-10-13T01:58:06.0349360Z Library Comctl32 found: YES
+2026-10-13T01:58:06.0349682Z Message: ##############
+2026-10-13T01:58:06.0349929Z Message: # Versioning #
+2026-10-13T01:58:06.0350177Z Message: ##############
+2026-10-13T01:58:06.0350510Z WARNING: You should add the boolean check kwarg to the run_command call.
+2026-10-13T01:58:06.0350925Z          It currently defaults to false,
+2026-10-13T01:58:06.0351271Z          but it will default to true in future releases of meson.
+2026-10-13T01:58:06.0351726Z          See also: https://github.com/mesonbuild/meson/issues/9300
+2026-10-13T01:58:06.0352101Z Message: Current git hash: 9aa74f8d
+2026-10-13T01:58:06.0352381Z Message: No tag found at current commit.
+2026-10-13T01:58:06.0352675Z Message: This is NOT a release version
+2026-10-13T01:58:06.0352979Z Message: Full version: remix-main+9aa74f8d
+2026-10-13T01:58:06.0353339Z Message: L4D2 fork build: ldb-ipc-c32-dev+2da41c976cf19b26
+2026-10-13T01:58:06.0353712Z Run-time dependency threads found: YES
+2026-10-13T01:58:06.0354023Z Dependency threads found: YES unknown (cached)
+2026-10-13T01:58:06.0354528Z Windows resource compiler: Microsoft (R) Windows (R) Resource Compiler Version 10.0.10011.16384
+2026-10-13T01:58:06.0354936Z 
+2026-10-13T01:58:06.0355037Z Build targets in project: 6
+2026-10-13T01:58:06.0355203Z 
+2026-10-13T01:58:06.0355286Z bridge remix-main
+2026-10-13T01:58:06.0355418Z 
+2026-10-13T01:58:06.0355501Z   User defined options
+2026-10-13T01:58:06.0355725Z     backend                : ninja
+2026-10-13T01:58:06.0355989Z     buildtype              : release
+2026-10-13T01:58:06.0356281Z     experimental_x86_server: true
+2026-10-13T01:58:06.0356456Z 
+2026-10-13T01:58:06.0356817Z Found ninja-1.11.1.git.kitware.jobserver-1 at C:\hostedtoolcache\windows\Python\3.11.9\x64\Scripts\ninja.EXE
+2026-10-13T01:58:10.6543131Z ninja: Entering directory `D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.deps/dxvk-remix/bridge/_ipcC32_x86_server'
+2026-10-13T01:58:10.8193212Z [1/28] Generating version.h with a custom command
+2026-10-13T01:58:10.8634115Z [2/28] Compiling C++ object src/tracy/libtracy.a.p/TracyClient.cpp.obj
+2026-10-13T01:58:10.9300610Z [3/28] Compiling C++ object src/util/libutil.a.p/exception_diagnostics.cpp.obj
+2026-10-13T01:58:11.0966933Z [4/28] Linking static target src/tracy/libtracy.a
+2026-10-13T01:58:11.2770290Z [5/28] Compiling C++ object src/util/libutil.a.p/color_diagnostics.cpp.obj
+2026-10-13T01:58:15.6904922Z [6/28] Compiling C++ object src/util/libutil.a.p/util_filesys.cpp.obj
+2026-10-13T01:58:15.8843049Z [7/28] Compiling C++ object src/util/libutil.a.p/util_bridgecommand.cpp.obj
+2026-10-13T01:58:16.0090473Z [8/28] Compiling C++ object src/util/libutil.a.p/util_gdi.cpp.obj
+2026-10-13T01:58:16.0360454Z [9/28] Compiling C++ object src/util/libutil.a.p/util_process.cpp.obj
+2026-10-13T01:58:16.0380213Z [10/28] Compiling C++ object src/util/libutil.a.p/util_messagechannel.cpp.obj
+2026-10-13T01:58:16.1593081Z [11/28] Compiling C++ object src/util/libutil.a.p/util_remixapi.cpp.obj
+2026-10-13T01:58:16.1805191Z [12/28] Compiling C++ object src/util/libutil.a.p/util_seh.cpp.obj
+2026-10-13T01:58:16.2081662Z [13/28] Compiling C++ object src/util/libutil.a.p/util_semaphore.cpp.obj
+2026-10-13T01:58:16.7879903Z [14/28] Compiling C++ object src/util/libutil.a.p/util_sharedmemory.cpp.obj
+2026-10-13T01:58:16.8518244Z [15/28] Compiling C++ object src/util/libutil.a.p/util_monitor.cpp.obj
+2026-10-13T01:58:16.9135549Z [16/28] Compiling C++ object src/util/libutil.a.p/util_sharedheap.cpp.obj
+2026-10-13T01:58:17.0047624Z [17/28] Compiling Windows resource src/server/NvRemixBridge.rc
+2026-10-13T01:58:17.0080766Z [18/28] Generating src/server/version.rc with a custom command
+2026-10-13T01:58:17.0278120Z [19/28] Generating 'src\\server\\L4D2Bridge32.exe.p\\version.res'
+2026-10-13T01:58:17.0294013Z Microsoft (R) Windows (R) Resource Compiler Version 10.0.10011.16384
+2026-10-13T01:58:17.0745096Z 
+2026-10-13T01:58:23.7172056Z Copyright (C) Microsoft Corporation.  All rights reserved.
+2026-10-13T01:58:23.7174049Z 
+2026-10-13T01:58:23.7508712Z 
+2026-10-13T01:58:23.8315315Z 
+2026-10-13T01:58:23.8559177Z 
+2026-10-13T01:58:23.8940432Z [20/28] Compiling C++ object src/util/libutil.a.p/log_log.cpp.obj
+2026-10-13T01:58:23.9096604Z [21/28] Compiling C++ object src/util/libutil.a.p/config_config.cpp.obj
+2026-10-13T01:58:23.9409770Z [22/28] Compiling C++ object src/util/libutil.a.p/config_global_options.cpp.obj
+2026-10-13T01:58:24.2754692Z [23/28] Compiling C++ object src/server/L4D2Bridge32.exe.p/module_processing.cpp.obj
+2026-10-13T01:58:24.3005162Z [24/28] Compiling C++ object src/util/libutil.a.p/data_diagnostics.cpp.obj
+2026-10-13T01:58:24.3186549Z [25/28] Linking static target src/util/libutil.a
+2026-10-13T01:58:28.9809053Z [26/28] Compiling C++ object src/server/L4D2Bridge32.exe.p/remix_api.cpp.obj
+2026-10-13T01:58:28.9809658Z [27/28] Compiling C++ object src/server/L4D2Bridge32.exe.p/main.cpp.obj
+2026-10-13T01:58:28.9810072Z [28/28] Linking target src/server/L4D2Bridge32.exe
+2026-10-13T01:58:28.9890163Z INFO: autodetecting backend as ninja
+2026-10-13T01:58:28.9891479Z INFO: calculating backend command to run: C:\hostedtoolcache\windows\Python\3.11.9\x64\Scripts\ninja.EXE -C D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.deps/dxvk-remix/bridge/_ipcC32_x86_server
+2026-10-13T01:58:29.5828969Z l4d2-bridge-steam-only-dev-2da41c976cf19b26-r38334235685.zip b4c50828f607e8c2174d360e1608235da6f15f8c9390bed9ccc537dfefdca95c
+2026-10-13T01:58:29.6263966Z ##[group]Run actions/upload-artifact@v4
+2026-10-13T01:58:29.6264298Z with:
+2026-10-13T01:58:29.6264518Z   name: steam-only-experiment-38334235685
+2026-10-13T01:58:29.6265305Z   path: dist/*.zip
+dist/SHA256SUMS.txt
+work/ipc-c32-build.json
+work/ipc-c32-native/
+work/steam-only-source-verification.json
+.deps/dxvk-remix/bridge/_ipcC32_*/meson-logs/
+
+2026-10-13T01:58:29.6266059Z   include-hidden-files: true
+2026-10-13T01:58:29.6266293Z   if-no-files-found: error
+2026-10-13T01:58:29.6266508Z   retention-days: 30
+2026-10-13T01:58:29.6266710Z   compression-level: 6
+2026-10-13T01:58:29.6266911Z   overwrite: false
+2026-10-13T01:58:29.6267099Z env:
+2026-10-13T01:58:29.6267351Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:58:29.6267809Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.11.9\x64/lib/pkgconfig
+2026-10-13T01:58:29.6268254Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:58:29.6268677Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:58:29.6269074Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:58:29.6269383Z ##[endgroup]
+2026-10-13T01:58:29.8127958Z (node:3464) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-13T01:58:29.8128739Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-13T01:58:29.8563950Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-10-13T01:58:29.8570469Z The least common ancestor is D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge. This will be the root directory of the artifact
+2026-10-13T01:58:29.8571612Z With the provided path, there will be 59 files uploaded
+2026-10-13T01:58:29.8577517Z Artifact name is valid!
+2026-10-13T01:58:29.8580146Z Root directory input is valid!
+2026-10-13T01:58:30.2694204Z Beginning upload of artifact content to blob storage
+2026-10-13T01:58:30.5067900Z (node:3464) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-13T01:58:31.4518948Z Uploaded bytes 2897721
+2026-10-13T01:58:31.5247789Z Finished uploading artifact content to blob storage!
+2026-10-13T01:58:31.5249505Z SHA256 digest of uploaded artifact zip is 593ba0840b42041b7b8e6d3a0be6c55d8aaa56ce0917e649fc78f7ed8daaf437
+2026-10-13T01:58:31.5251650Z Finalizing artifact upload
+2026-10-13T01:58:31.8050113Z Artifact steam-only-experiment-38334235685.zip successfully finalized. Artifact ID 11784665124
+2026-10-13T01:58:31.8051474Z Artifact steam-only-experiment-38334235685 has been successfully uploaded! Final size is 2897721 bytes. Artifact ID is 11784665124
+2026-10-13T01:58:31.8059698Z Artifact download URL: https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38334235685/artifacts/11784665124
+2026-10-13T01:58:31.8338507Z Post job cleanup.
+2026-10-13T01:58:31.9698691Z (node:7904) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-13T01:58:31.9699612Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-13T01:58:31.9956157Z Post job cleanup.
+2026-10-13T01:58:32.2017967Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-13T01:58:32.2286241Z git version 2.56.0.windows.1
+2026-10-13T01:58:32.2346005Z Temporarily overriding HOME='D:\a\_temp\53ee36c1-1b37-4b80-9099-cc467d060a81' before making global git config changes
+2026-10-13T01:58:32.2347267Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-13T01:58:32.2357359Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\ipc-v2-pr6
+2026-10-13T01:58:32.2648635Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-13T01:58:32.2945648Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-13T01:58:32.7450338Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-13T01:58:32.7711746Z http.https://github.com/.extraheader
+2026-10-13T01:58:32.7747880Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2026-10-13T01:58:32.8029949Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-13T01:58:33.2447076Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-13T01:58:33.2728573Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-13T01:58:33.7552858Z Post job cleanup.
+2026-10-13T01:58:33.9472464Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-13T01:58:33.9736350Z git version 2.56.0.windows.1
+2026-10-13T01:58:33.9791257Z Temporarily overriding HOME='D:\a\_temp\ddd6484c-a813-443b-bbef-b9d195083dd5' before making global git config changes
+2026-10-13T01:58:33.9792236Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-13T01:58:33.9802932Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge
+2026-10-13T01:58:34.0092016Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-13T01:58:34.0379981Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-13T01:58:34.5092253Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-13T01:58:34.5342600Z http.https://github.com/.extraheader
+2026-10-13T01:58:34.5377805Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2026-10-13T01:58:34.5663094Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-13T01:58:35.0140444Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-13T01:58:35.0426965Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-13T01:58:35.5013670Z Cleaning up orphan processes
+2026-10-13T01:58:35.5137767Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

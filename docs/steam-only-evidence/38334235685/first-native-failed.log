@@ -1,0 +1,825 @@
+﻿2026-10-13T01:47:33.1283210Z Current runner version: '2.337.0'
+2026-10-13T01:47:33.1300093Z ##[group]Runner Image Provisioner
+2026-10-13T01:47:33.1300605Z Hosted Compute Agent
+2026-10-13T01:47:33.1300909Z Version: 20261002.596
+2026-10-13T01:47:33.1301225Z Commit: c3d12f3313a95f25162a1503be624f3b0617f8c0
+2026-10-13T01:47:33.1301638Z Build Date: 2026-10-02T22:28:27Z
+2026-10-13T01:47:33.1302078Z Worker ID: {7b461c38-ef29-4987-b47e-ef96978b22a5}
+2026-10-13T01:47:33.1302442Z Region: centralus
+2026-10-13T01:47:33.1302726Z Cloud: Azure
+2026-10-13T01:47:33.1302993Z ##[endgroup]
+2026-10-13T01:47:33.1303725Z ##[group]Operating System
+2026-10-13T01:47:33.1304123Z Microsoft Windows Server 2022
+2026-10-13T01:47:33.1304434Z 10.0.20348
+2026-10-13T01:47:33.1304706Z Datacenter
+2026-10-13T01:47:33.1304998Z ##[endgroup]
+2026-10-13T01:47:33.1305305Z ##[group]Runner Image
+2026-10-13T01:47:33.1305624Z Image: windows-2022
+2026-10-13T01:47:33.1305910Z Version: 20261004.326.1
+2026-10-13T01:47:33.1306740Z Included Software: https://github.com/actions/runner-images/blob/win22/20261004.326/images/windows/Windows2022-Readme.md
+2026-10-13T01:47:33.1307516Z Image Release: https://github.com/actions/runner-images/releases/tag/win22%2F20261004.326
+2026-10-13T01:47:33.1308031Z ##[endgroup]
+2026-10-13T01:47:33.1308594Z ##[group]GITHUB_TOKEN Permissions
+2026-10-13T01:47:33.1309756Z Contents: read
+2026-10-13T01:47:33.1310047Z Metadata: read
+2026-10-13T01:47:33.1310333Z ##[endgroup]
+2026-10-13T01:47:33.1311566Z Secret source: Actions
+2026-10-13T01:47:33.1312038Z Cache mode: write
+2026-10-13T01:47:33.1312526Z Prepare workflow directory
+2026-10-13T01:47:33.1556002Z Prepare all required actions
+2026-10-13T01:47:33.1586582Z Getting action download info
+2026-10-13T01:47:33.4062862Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-13T01:47:33.4774037Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-13T01:47:33.5832157Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-13T01:47:33.8472507Z Complete job name: windows
+2026-10-13T01:47:33.9742944Z ##[group]Run actions/checkout@v4
+2026-10-13T01:47:33.9743617Z with:
+2026-10-13T01:47:33.9743856Z   repository: yeyunyyds/L4D2_Dxvk_32to64_Bridge
+2026-10-13T01:47:33.9746066Z   token: ***
+2026-10-13T01:47:33.9746279Z   ssh-strict: true
+2026-10-13T01:47:33.9746495Z   ssh-user: git
+2026-10-13T01:47:33.9746721Z   persist-credentials: true
+2026-10-13T01:47:33.9746968Z   clean: true
+2026-10-13T01:47:33.9747187Z   sparse-checkout-cone-mode: true
+2026-10-13T01:47:33.9747445Z   fetch-depth: 1
+2026-10-13T01:47:33.9747652Z   fetch-tags: false
+2026-10-13T01:47:33.9747865Z   show-progress: true
+2026-10-13T01:47:33.9748083Z   lfs: false
+2026-10-13T01:47:33.9748284Z   submodules: false
+2026-10-13T01:47:33.9748505Z   set-safe-directory: true
+2026-10-13T01:47:33.9748762Z   allow-unsafe-pr-checkout: false
+2026-10-13T01:47:33.9749115Z ##[endgroup]
+2026-10-13T01:47:34.0715995Z Syncing repository: yeyunyyds/L4D2_Dxvk_32to64_Bridge
+2026-10-13T01:47:34.0717187Z ##[group]Getting Git version info
+2026-10-13T01:47:34.0717617Z Working directory is 'D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge'
+2026-10-13T01:47:34.1252808Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-13T01:47:34.5231347Z git version 2.56.0.windows.1
+2026-10-13T01:47:34.5259886Z ##[endgroup]
+2026-10-13T01:47:34.5272702Z Temporarily overriding HOME='D:\a\_temp\d571ac7b-7ad7-45cb-a39b-7bc65004a92f' before making global git config changes
+2026-10-13T01:47:34.5279910Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-13T01:47:34.5280631Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge
+2026-10-13T01:47:34.5773599Z Deleting the contents of 'D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge'
+2026-10-13T01:47:34.5776816Z ##[group]Initializing the repository
+2026-10-13T01:47:34.5783158Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge
+2026-10-13T01:47:34.6500222Z Initialized empty Git repository in D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.git/
+2026-10-13T01:47:34.6531273Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge
+2026-10-13T01:47:34.7195524Z ##[endgroup]
+2026-10-13T01:47:34.7196269Z ##[group]Disabling automatic garbage collection
+2026-10-13T01:47:34.7203662Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-10-13T01:47:34.7518523Z ##[endgroup]
+2026-10-13T01:47:34.7519422Z ##[group]Setting up auth
+2026-10-13T01:47:34.7527855Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-13T01:47:34.7819144Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-13T01:47:36.1316052Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-13T01:47:36.1526724Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-13T01:47:36.5193926Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-13T01:47:36.5412725Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-13T01:47:36.8944725Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-10-13T01:47:36.9162862Z ##[endgroup]
+2026-10-13T01:47:36.9163289Z ##[group]Fetching the repository
+2026-10-13T01:47:36.9173530Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +9530ca92eb7548fbe2ac41c4fbbed16e86fdfecf:refs/remotes/origin/codex/steam-only-experiment
+2026-10-13T01:47:38.0869928Z From https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge
+2026-10-13T01:47:38.0870637Z  * [new ref]         9530ca92eb7548fbe2ac41c4fbbed16e86fdfecf -> origin/codex/steam-only-experiment
+2026-10-13T01:47:38.0893345Z ##[endgroup]
+2026-10-13T01:47:38.0893637Z ##[group]Determining the checkout info
+2026-10-13T01:47:38.0895368Z ##[endgroup]
+2026-10-13T01:47:38.0903958Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-10-13T01:47:38.1143419Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-10-13T01:47:38.1410148Z ##[group]Checking out the ref
+2026-10-13T01:47:38.1411048Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B codex/steam-only-experiment refs/remotes/origin/codex/steam-only-experiment
+2026-10-13T01:47:38.2165120Z Switched to a new branch 'codex/steam-only-experiment'
+2026-10-13T01:47:38.2171879Z branch 'codex/steam-only-experiment' set up to track 'origin/codex/steam-only-experiment'.
+2026-10-13T01:47:38.2414651Z ##[endgroup]
+2026-10-13T01:47:38.2419608Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-10-13T01:47:38.2618754Z 9530ca92eb7548fbe2ac41c4fbbed16e86fdfecf
+2026-10-13T01:47:38.2903694Z ##[group]Run actions/checkout@v4
+2026-10-13T01:47:38.2903926Z with:
+2026-10-13T01:47:38.2904056Z   repository: yeyunyyds/L4D2_Dxvk_32to64_Bridge
+2026-10-13T01:47:38.2904233Z   ref: 8730d84b77c596efdabfad54b7458a8f0aeb01a4
+2026-10-13T01:47:38.2904386Z   path: .deps/ipc-v2-pr6
+2026-10-13T01:47:38.2905651Z   token: ***
+2026-10-13T01:47:38.2905757Z   ssh-strict: true
+2026-10-13T01:47:38.2905860Z   ssh-user: git
+2026-10-13T01:47:38.2906442Z   persist-credentials: true
+2026-10-13T01:47:38.2906568Z   clean: true
+2026-10-13T01:47:38.2906687Z   sparse-checkout-cone-mode: true
+2026-10-13T01:47:38.2906819Z   fetch-depth: 1
+2026-10-13T01:47:38.2906922Z   fetch-tags: false
+2026-10-13T01:47:38.2907027Z   show-progress: true
+2026-10-13T01:47:38.2907132Z   lfs: false
+2026-10-13T01:47:38.2907231Z   submodules: false
+2026-10-13T01:47:38.2907341Z   set-safe-directory: true
+2026-10-13T01:47:38.2907473Z   allow-unsafe-pr-checkout: false
+2026-10-13T01:47:38.2907603Z ##[endgroup]
+2026-10-13T01:47:38.3557113Z Syncing repository: yeyunyyds/L4D2_Dxvk_32to64_Bridge
+2026-10-13T01:47:38.3563369Z ##[group]Getting Git version info
+2026-10-13T01:47:38.3563661Z Working directory is 'D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\ipc-v2-pr6'
+2026-10-13T01:47:38.3920179Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-13T01:47:38.4117446Z git version 2.56.0.windows.1
+2026-10-13T01:47:38.4142013Z ##[endgroup]
+2026-10-13T01:47:38.4152346Z Temporarily overriding HOME='D:\a\_temp\595ab9a0-24fb-488f-acb3-462a23db40aa' before making global git config changes
+2026-10-13T01:47:38.4152734Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-13T01:47:38.4159603Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\ipc-v2-pr6
+2026-10-13T01:47:38.4366684Z ##[group]Initializing the repository
+2026-10-13T01:47:38.4372813Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\ipc-v2-pr6
+2026-10-13T01:47:38.4588827Z Initialized empty Git repository in D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.deps/ipc-v2-pr6/.git/
+2026-10-13T01:47:38.4613832Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge
+2026-10-13T01:47:38.4828536Z ##[endgroup]
+2026-10-13T01:47:38.4828830Z ##[group]Disabling automatic garbage collection
+2026-10-13T01:47:38.4835423Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-10-13T01:47:38.5034987Z ##[endgroup]
+2026-10-13T01:47:38.5035220Z ##[group]Setting up auth
+2026-10-13T01:47:38.5044552Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-13T01:47:38.5256900Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-13T01:47:38.8835784Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-13T01:47:38.9037265Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-13T01:47:39.2624879Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-13T01:47:39.2849956Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-13T01:47:39.6681418Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-10-13T01:47:39.6894095Z ##[endgroup]
+2026-10-13T01:47:39.6895694Z ##[group]Fetching the repository
+2026-10-13T01:47:39.6902467Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin 8730d84b77c596efdabfad54b7458a8f0aeb01a4
+2026-10-13T01:47:40.1515616Z From https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge
+2026-10-13T01:47:40.1516072Z  * branch            8730d84b77c596efdabfad54b7458a8f0aeb01a4 -> FETCH_HEAD
+2026-10-13T01:47:40.1535967Z ##[endgroup]
+2026-10-13T01:47:40.1537711Z ##[group]Determining the checkout info
+2026-10-13T01:47:40.1537926Z ##[endgroup]
+2026-10-13T01:47:40.1544141Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-10-13T01:47:40.1763372Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-10-13T01:47:40.1961656Z ##[group]Checking out the ref
+2026-10-13T01:47:40.1969094Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force 8730d84b77c596efdabfad54b7458a8f0aeb01a4
+2026-10-13T01:47:40.2407053Z Note: switching to '8730d84b77c596efdabfad54b7458a8f0aeb01a4'.
+2026-10-13T01:47:40.2407347Z 
+2026-10-13T01:47:40.2407462Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-13T01:47:40.2407718Z changes and commit them, and you can discard any commits you make in this
+2026-10-13T01:47:40.2407961Z state without impacting any branches by switching back to a branch.
+2026-10-13T01:47:40.2408115Z 
+2026-10-13T01:47:40.2408211Z If you want to create a new branch to retain commits you create, you may
+2026-10-13T01:47:40.2408453Z do so (now or later) by using -c with the switch command. Example:
+2026-10-13T01:47:40.2408605Z 
+2026-10-13T01:47:40.2408715Z   git switch -c <new-branch-name>
+2026-10-13T01:47:40.2408838Z 
+2026-10-13T01:47:40.2408894Z Or undo this operation with:
+2026-10-13T01:47:40.2408978Z 
+2026-10-13T01:47:40.2409030Z   git switch -
+2026-10-13T01:47:40.2409128Z 
+2026-10-13T01:47:40.2409270Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-13T01:47:40.2409431Z 
+2026-10-13T01:47:40.2409584Z HEAD is now at 8730d84 docs(ipc): report validated normal-path gains and remaining regression [skip ci]
+2026-10-13T01:47:40.2445252Z ##[endgroup]
+2026-10-13T01:47:40.2668746Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-10-13T01:47:40.2856430Z 8730d84b77c596efdabfad54b7458a8f0aeb01a4
+2026-10-13T01:47:40.3123972Z ##[group]Run actions/setup-python@v5
+2026-10-13T01:47:40.3124171Z with:
+2026-10-13T01:47:40.3124278Z   python-version: 3.11
+2026-10-13T01:47:40.3124398Z   check-latest: false
+2026-10-13T01:47:40.3125668Z   token: ***
+2026-10-13T01:47:40.3125775Z   update-environment: true
+2026-10-13T01:47:40.3125897Z   allow-prereleases: false
+2026-10-13T01:47:40.3126019Z   freethreaded: false
+2026-10-13T01:47:40.3126125Z ##[endgroup]
+2026-10-13T01:47:40.4116015Z ##[group]Installed versions
+2026-10-13T01:47:40.4222819Z (node:3416) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-13T01:47:40.4223200Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-13T01:47:40.4223970Z Successfully set up CPython (3.11.9)
+2026-10-13T01:47:40.4224338Z ##[endgroup]
+2026-10-13T01:47:40.4425301Z ##[group]Run python -m pip install meson==1.3.2 ninja==1.11.1.1
+2026-10-13T01:47:40.4425616Z [36;1mpython -m pip install meson==1.3.2 ninja==1.11.1.1[0m
+2026-10-13T01:47:40.4569886Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-13T01:47:40.4570105Z env:
+2026-10-13T01:47:40.4570265Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:47:40.4570520Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.11.9\x64/lib/pkgconfig
+2026-10-13T01:47:40.4570760Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:47:40.4570980Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:47:40.4571195Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:47:40.4571370Z ##[endgroup]
+2026-10-13T01:47:44.7429721Z Collecting meson==1.3.2
+2026-10-13T01:47:44.8872336Z   Downloading meson-1.3.2-py3-none-any.whl.metadata (1.8 kB)
+2026-10-13T01:47:44.9606622Z Collecting ninja==1.11.1.1
+2026-10-13T01:47:44.9794485Z   Downloading ninja-1.11.1.1-py2.py3-none-win_amd64.whl.metadata (5.4 kB)
+2026-10-13T01:47:45.0163008Z Downloading meson-1.3.2-py3-none-any.whl (977 kB)
+2026-10-13T01:47:45.1458473Z    ---------------------------------------- 977.7/977.7 kB 9.2 MB/s  0:00:00
+2026-10-13T01:47:45.1637217Z Downloading ninja-1.11.1.1-py2.py3-none-win_amd64.whl (312 kB)
+2026-10-13T01:47:45.3497450Z Installing collected packages: ninja, meson
+2026-10-13T01:47:46.2476838Z 
+2026-10-13T01:47:46.2484908Z Successfully installed meson-1.3.2 ninja-1.11.1.1
+2026-10-13T01:47:46.3857794Z ##[group]Run python scripts/prepare_bridge.py
+2026-10-13T01:47:46.3858068Z [36;1mpython scripts/prepare_bridge.py[0m
+2026-10-13T01:47:46.3858240Z [36;1mpython scripts/prepare_ipc_c32.py[0m
+2026-10-13T01:47:46.3858472Z [36;1mpython scripts/verify_steam_only_source.py --source .deps/dxvk-remix[0m
+2026-10-13T01:47:46.3884329Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-13T01:47:46.3884520Z env:
+2026-10-13T01:47:46.3884697Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:47:46.3884941Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.11.9\x64/lib/pkgconfig
+2026-10-13T01:47:46.3885198Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:47:46.3885417Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:47:46.3885633Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:47:46.3885810Z ##[endgroup]
+2026-10-13T01:47:46.5970638Z Initialized empty Git repository in D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.deps/dxvk-remix/.git/
+2026-10-13T01:47:48.2959202Z From https://github.com/NVIDIAGameWorks/dxvk-remix
+2026-10-13T01:47:48.2959544Z  * branch            9aa74f8dfad2188efbd0f717c64d9f8fa909787e -> FETCH_HEAD
+2026-10-13T01:47:48.6258688Z HEAD is now at 9aa74f8 Merge branch 'dev/rtxio_woa_update' into 'main'
+2026-10-13T01:47:49.2843266Z Submodule 'submodules/Detours' (https://github.com/microsoft/Detours.git) registered for path 'submodules/Detours'
+2026-10-13T01:47:49.3289477Z Cloning into 'D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.deps/dxvk-remix/submodules/Detours'...
+2026-10-13T01:47:50.4444439Z From https://github.com/microsoft/Detours
+2026-10-13T01:47:50.4444745Z  * branch            ea6c4ae7f3f1b1772b8a7cda4199230b932f5a50 -> FETCH_HEAD
+2026-10-13T01:47:50.5136870Z Submodule path 'submodules/Detours': checked out 'ea6c4ae7f3f1b1772b8a7cda4199230b932f5a50'
+2026-10-13T01:47:50.5189918Z Prepared D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\dxvk-remix; RTX renderer and NVIDIA GPU SDK submodules are not fetched
+2026-10-13T01:47:50.6079097Z D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/patches/ipc-c32.patch:1495: trailing whitespace.
+2026-10-13T01:47:50.6079764Z } catch (const BridgeReadFailure&) { return D3DERR_DEVICELOST; } 
+2026-10-13T01:47:50.6137680Z D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/patches/ipc-c32.patch:2900: new blank line at EOF.
+2026-10-13T01:47:50.6138159Z +
+2026-10-13T01:47:50.6211943Z warning: 2 lines add whitespace errors.
+2026-10-13T01:47:50.6275466Z ldb-ipc-c32-dev+2da41c976cf19b26
+2026-10-13T01:47:50.6872907Z PASS Steam-only production: 234 files checked, external ReShade absent, Steam paths present
+2026-10-13T01:47:50.7675391Z ##[group]Run ./scripts/test_steam_capture_state.ps1
+2026-10-13T01:47:50.7675658Z [36;1m./scripts/test_steam_capture_state.ps1[0m
+2026-10-13T01:47:50.7701639Z shell: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.EXE -command ". '{0}'"
+2026-10-13T01:47:50.7701876Z env:
+2026-10-13T01:47:50.7702029Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:47:50.7702279Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.11.9\x64/lib/pkgconfig
+2026-10-13T01:47:50.7702519Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:47:50.7702740Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:47:50.7702961Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:47:50.7703135Z ##[endgroup]
+2026-10-13T01:47:55.5059712Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:47:55.9434663Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:47:55.9478671Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:47:57.8737741Z Visual Studio Command Prompt variables set.
+2026-10-13T01:47:58.1108760Z capture-state-x86.cpp
+2026-10-13T01:48:09.2452765Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\steam-capture\capture-state-x86.exe
+2026-10-13T01:48:09.2868684Z PASS actual Steam-only capture state: two independent owners, both close orders, balanced transitions, real owner-thread notification, duplicate/stale/no-window refusal, 30000 concurrent open/close pairs
+2026-10-13T01:48:09.5286142Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:48:09.5781350Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:48:09.5809264Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:48:10.7750010Z Visual Studio Command Prompt variables set.
+2026-10-13T01:48:10.9775885Z capture-state-x64.cpp
+2026-10-13T01:48:16.0845579Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\steam-capture\capture-state-x64.exe
+2026-10-13T01:48:16.0963878Z PASS actual Steam-only capture state: two independent owners, both close orders, balanced transitions, real owner-thread notification, duplicate/stale/no-window refusal, 30000 concurrent open/close pairs
+2026-10-13T01:48:16.1494036Z ##[group]Run ./scripts/test_ipc_c32.ps1
+2026-10-13T01:48:16.1494282Z [36;1m./scripts/test_ipc_c32.ps1[0m
+2026-10-13T01:48:16.1518207Z shell: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.EXE -command ". '{0}'"
+2026-10-13T01:48:16.1518459Z env:
+2026-10-13T01:48:16.1518627Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:48:16.1518896Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.11.9\x64/lib/pkgconfig
+2026-10-13T01:48:16.1519154Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:48:16.1519373Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:48:16.1519594Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:48:16.1519769Z ##[endgroup]
+2026-10-13T01:48:16.5975135Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:48:16.6467964Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:48:16.6493656Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:48:17.6134520Z Visual Studio Command Prompt variables set.
+2026-10-13T01:48:17.6255240Z ipc_transport.cpp
+2026-10-13T01:48:18.3436285Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\c32_bridge_cases.cpp(174): warning C4996: 'getenv': This function or variable may be unsafe. Consider using _dupenv_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+2026-10-13T01:48:18.3455542Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\c32_bridge_cases.cpp(218): warning C4996: 'getenv': This function or variable may be unsafe. Consider using _dupenv_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+2026-10-13T01:48:18.3885831Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_atomiccircularqueue.h(271): warning C4018: '<': signed/unsigned mismatch
+2026-10-13T01:48:18.3929163Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_atomiccircularqueue.h(268): note: while compiling class template member function 'std::vector<Commands::D3D9Command,std::allocator<Commands::D3D9Command>> bridge_util::AtomicCircularQueue<Header,bridge_util::Accessor::Reader>::buildQueueData(int,int)'
+2026-10-13T01:48:18.3931810Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_atomiccircularqueue.h(291): note: see reference to function template instantiation 'std::vector<Commands::D3D9Command,std::allocator<Commands::D3D9Command>> bridge_util::AtomicCircularQueue<Header,bridge_util::Accessor::Reader>::buildQueueData(int,int)' being compiled
+2026-10-13T01:48:18.3933351Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_ipcchannel.h(94): note: see reference to class template instantiation 'bridge_util::AtomicCircularQueue<Header,bridge_util::Accessor::Reader>' being compiled
+2026-10-13T01:48:18.3934317Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_ipcchannel.h(93): note: while compiling class template member function 'IpcChannel<bridge_util::Accessor::Reader>::~IpcChannel(void)'
+2026-10-13T01:48:18.3935265Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\c32_bridge_cases.cpp(173): note: see reference to function template instantiation 'IpcChannel<bridge_util::Accessor::Reader>::~IpcChannel(void)' being compiled
+2026-10-13T01:48:18.3936247Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\c32_bridge_cases.cpp(173): note: see reference to class template instantiation 'IpcChannel<bridge_util::Accessor::Reader>' being compiled
+2026-10-13T01:48:18.4064811Z ipc_transport.cpp(532): warning C4661: 'void Bridge<BridgeId::Device>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:18.4068212Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Device>::init'
+2026-10-13T01:48:18.4069095Z ipc_transport.cpp(532): warning C4661: 'bridge_util::Result Bridge<BridgeId::Device>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:18.4070133Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Device>::ensureQueueEmpty'
+2026-10-13T01:48:18.4070823Z ipc_transport.cpp(532): warning C4661: 'void Bridge<BridgeId::Module>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:18.4071486Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Module>::init'
+2026-10-13T01:48:18.4072039Z ipc_transport.cpp(532): warning C4661: 'bridge_util::Result Bridge<BridgeId::Module>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:18.4072629Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Module>::ensureQueueEmpty'
+2026-10-13T01:48:18.4702325Z ipc_transport.cpp(1077): warning C4661: 'void Bridge<BridgeId::Device>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:18.4703134Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Device>::init'
+2026-10-13T01:48:18.4703931Z ipc_transport.cpp(1077): warning C4661: 'bridge_util::Result Bridge<BridgeId::Device>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:18.4704794Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Device>::ensureQueueEmpty'
+2026-10-13T01:48:18.4705786Z ipc_transport.cpp(1077): warning C4661: 'void Bridge<BridgeId::Module>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:18.4706742Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Module>::init'
+2026-10-13T01:48:18.4707218Z ipc_transport.cpp(1077): warning C4661: 'bridge_util::Result Bridge<BridgeId::Module>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:18.4708013Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Module>::ensureQueueEmpty'
+2026-10-13T01:48:18.5406559Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\data_ring_contract.h(143): warning C4661: 'void Bridge<BridgeId::Device>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:18.5407784Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Device>::init'
+2026-10-13T01:48:18.5408834Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\data_ring_contract.h(143): warning C4661: 'bridge_util::Result Bridge<BridgeId::Device>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:18.5409845Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Device>::ensureQueueEmpty'
+2026-10-13T01:48:18.5411011Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\data_ring_contract.h(143): warning C4661: 'void Bridge<BridgeId::Module>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:18.5411798Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Module>::init'
+2026-10-13T01:48:18.5413698Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\data_ring_contract.h(143): warning C4661: 'bridge_util::Result Bridge<BridgeId::Module>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:18.5414559Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Module>::ensureQueueEmpty'
+2026-10-13T01:48:18.5512488Z ipc_transport.cpp(477): warning C4661: 'void Bridge<BridgeId::Device>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:18.5513621Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Device>::init'
+2026-10-13T01:48:18.5514449Z ipc_transport.cpp(477): warning C4661: 'bridge_util::Result Bridge<BridgeId::Device>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:18.5515275Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Device>::ensureQueueEmpty'
+2026-10-13T01:48:18.5515900Z ipc_transport.cpp(477): warning C4661: 'void Bridge<BridgeId::Module>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:18.5516481Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Module>::init'
+2026-10-13T01:48:18.5516961Z ipc_transport.cpp(477): warning C4661: 'bridge_util::Result Bridge<BridgeId::Module>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:18.5517463Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Module>::ensureQueueEmpty'
+2026-10-13T01:48:18.5907391Z util_sharedmemory.cpp
+2026-10-13T01:48:19.0595234Z util_semaphore.cpp
+2026-10-13T01:48:19.5206256Z data_diagnostics.cpp
+2026-10-13T01:48:22.0959561Z exception_diagnostics.cpp
+2026-10-13T01:48:22.5006156Z Generating Code...
+2026-10-13T01:48:23.5872350Z c32.cpp
+2026-10-13T01:48:24.6233573Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:48:24.6714548Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:48:24.6739991Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:48:25.6198326Z Visual Studio Command Prompt variables set.
+2026-10-13T01:48:25.6309475Z ipc_transport.cpp
+2026-10-13T01:48:26.1946606Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_atomiccircularqueue.h(271): warning C4018: '<': signed/unsigned mismatch
+2026-10-13T01:48:26.1948939Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_atomiccircularqueue.h(268): note: while compiling class template member function 'std::vector<Commands::D3D9Command,std::allocator<Commands::D3D9Command>> bridge_util::AtomicCircularQueue<Header,bridge_util::Accessor::Writer>::buildQueueData(int,int)'
+2026-10-13T01:48:26.1950460Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_atomiccircularqueue.h(291): note: see reference to function template instantiation 'std::vector<Commands::D3D9Command,std::allocator<Commands::D3D9Command>> bridge_util::AtomicCircularQueue<Header,bridge_util::Accessor::Writer>::buildQueueData(int,int)' being compiled
+2026-10-13T01:48:26.1951672Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_ipcchannel.h(94): note: see reference to class template instantiation 'bridge_util::AtomicCircularQueue<Header,bridge_util::Accessor::Writer>' being compiled
+2026-10-13T01:48:26.1952615Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_ipcchannel.h(93): note: while compiling class template member function 'IpcChannel<bridge_util::Accessor::Writer>::~IpcChannel(void)'
+2026-10-13T01:48:26.1953721Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\c32_bridge_cases.cpp(214): note: see reference to function template instantiation 'IpcChannel<bridge_util::Accessor::Writer>::~IpcChannel(void)' being compiled
+2026-10-13T01:48:26.1954665Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\c32_bridge_cases.cpp(214): note: see reference to class template instantiation 'IpcChannel<bridge_util::Accessor::Writer>' being compiled
+2026-10-13T01:48:26.2032335Z ipc_transport.cpp(532): warning C4661: 'void Bridge<BridgeId::Device>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:26.2033407Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Device>::init'
+2026-10-13T01:48:26.2034190Z ipc_transport.cpp(532): warning C4661: 'bridge_util::Result Bridge<BridgeId::Device>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:26.2035102Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Device>::ensureQueueEmpty'
+2026-10-13T01:48:26.2036013Z ipc_transport.cpp(532): warning C4661: 'void Bridge<BridgeId::Module>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:26.2036980Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Module>::init'
+2026-10-13T01:48:26.2037622Z ipc_transport.cpp(532): warning C4661: 'bridge_util::Result Bridge<BridgeId::Module>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:26.2038225Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Module>::ensureQueueEmpty'
+2026-10-13T01:48:26.2518136Z ipc_transport.cpp(1075): warning C4661: 'void Bridge<BridgeId::Device>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:26.2519091Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Device>::init'
+2026-10-13T01:48:26.2519876Z ipc_transport.cpp(1075): warning C4661: 'bridge_util::Result Bridge<BridgeId::Device>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:26.2520766Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Device>::ensureQueueEmpty'
+2026-10-13T01:48:26.2521756Z ipc_transport.cpp(1075): warning C4661: 'void Bridge<BridgeId::Module>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:26.2524079Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Module>::init'
+2026-10-13T01:48:26.2524887Z ipc_transport.cpp(1075): warning C4661: 'bridge_util::Result Bridge<BridgeId::Module>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:26.2526022Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Module>::ensureQueueEmpty'
+2026-10-13T01:48:26.2650869Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\data_ring_contract.h(143): warning C4661: 'void Bridge<BridgeId::Device>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:26.2652151Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Device>::init'
+2026-10-13T01:48:26.2653140Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\data_ring_contract.h(143): warning C4661: 'bridge_util::Result Bridge<BridgeId::Device>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:26.2654440Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Device>::ensureQueueEmpty'
+2026-10-13T01:48:26.2655327Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\data_ring_contract.h(143): warning C4661: 'void Bridge<BridgeId::Module>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:26.2656165Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Module>::init'
+2026-10-13T01:48:26.2656837Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\data_ring_contract.h(143): warning C4661: 'bridge_util::Result Bridge<BridgeId::Module>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:26.2657556Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Module>::ensureQueueEmpty'
+2026-10-13T01:48:26.2928996Z util_sharedmemory.cpp
+2026-10-13T01:48:26.7672160Z util_semaphore.cpp
+2026-10-13T01:48:27.2302871Z data_diagnostics.cpp
+2026-10-13T01:48:29.6895896Z exception_diagnostics.cpp
+2026-10-13T01:48:30.0714346Z Generating Code...
+2026-10-13T01:48:30.8420642Z c32.cpp
+2026-10-13T01:48:31.8909659Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:48:31.9416176Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:48:31.9444095Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:48:32.8648272Z Visual Studio Command Prompt variables set.
+2026-10-13T01:48:32.8752798Z ipc_transport.cpp
+2026-10-13T01:48:33.2906714Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_semaphore.h(64): warning C4267: 'argument': conversion from 'size_t' to 'LONG', possible loss of data
+2026-10-13T01:48:33.3974513Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_atomiccircularqueue.h(299): warning C4267: 'return': conversion from 'size_t' to 'uint32_t', possible loss of data
+2026-10-13T01:48:33.3981888Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_atomiccircularqueue.h(298): note: while compiling class template member function 'uint32_t bridge_util::AtomicCircularQueue<Header,bridge_util::Accessor::Writer>::queueIdxDec(uint32_t) const'
+2026-10-13T01:48:33.3983917Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_atomiccircularqueue.h(290): note: see reference to function template instantiation 'uint32_t bridge_util::AtomicCircularQueue<Header,bridge_util::Accessor::Writer>::queueIdxDec(uint32_t) const' being compiled
+2026-10-13T01:48:33.3985208Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_ipcchannel.h(94): note: see reference to class template instantiation 'bridge_util::AtomicCircularQueue<Header,bridge_util::Accessor::Writer>' being compiled
+2026-10-13T01:48:33.3986009Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_ipcchannel.h(93): note: while compiling class template member function 'IpcChannel<bridge_util::Accessor::Writer>::~IpcChannel(void)'
+2026-10-13T01:48:33.3986788Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\c32_bridge_cases.cpp(214): note: see reference to function template instantiation 'IpcChannel<bridge_util::Accessor::Writer>::~IpcChannel(void)' being compiled
+2026-10-13T01:48:33.3987559Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\c32_bridge_cases.cpp(214): note: see reference to class template instantiation 'IpcChannel<bridge_util::Accessor::Writer>' being compiled
+2026-10-13T01:48:33.4112234Z ipc_transport.cpp(532): warning C4661: 'void Bridge<BridgeId::Device>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:33.4113155Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Device>::init'
+2026-10-13T01:48:33.4115678Z ipc_transport.cpp(532): warning C4661: 'bridge_util::Result Bridge<BridgeId::Device>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:33.4116476Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Device>::ensureQueueEmpty'
+2026-10-13T01:48:33.4117449Z ipc_transport.cpp(532): warning C4661: 'void Bridge<BridgeId::Module>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:33.4118431Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Module>::init'
+2026-10-13T01:48:33.4119206Z ipc_transport.cpp(532): warning C4661: 'bridge_util::Result Bridge<BridgeId::Module>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:33.4120009Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Module>::ensureQueueEmpty'
+2026-10-13T01:48:33.4587506Z ipc_transport.cpp(1075): warning C4661: 'void Bridge<BridgeId::Device>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:33.4588175Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Device>::init'
+2026-10-13T01:48:33.4588912Z ipc_transport.cpp(1075): warning C4661: 'bridge_util::Result Bridge<BridgeId::Device>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:33.4589799Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Device>::ensureQueueEmpty'
+2026-10-13T01:48:33.4590403Z ipc_transport.cpp(1075): warning C4661: 'void Bridge<BridgeId::Module>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:33.4590945Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Module>::init'
+2026-10-13T01:48:33.4591398Z ipc_transport.cpp(1075): warning C4661: 'bridge_util::Result Bridge<BridgeId::Module>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:33.4591885Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Module>::ensureQueueEmpty'
+2026-10-13T01:48:33.4710004Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\data_ring_contract.h(143): warning C4661: 'void Bridge<BridgeId::Device>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:33.4711266Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Device>::init'
+2026-10-13T01:48:33.4712361Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\data_ring_contract.h(143): warning C4661: 'bridge_util::Result Bridge<BridgeId::Device>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:33.4713415Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Device>::ensureQueueEmpty'
+2026-10-13T01:48:33.4714591Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\data_ring_contract.h(143): warning C4661: 'void Bridge<BridgeId::Module>::init(const std::string,const size_t,const size_t,const size_t,const size_t,const size_t,const size_t)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:33.4715736Z ipc_transport.cpp(70): note: see declaration of 'Bridge<BridgeId::Module>::init'
+2026-10-13T01:48:33.4716513Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\data_ring_contract.h(143): warning C4661: 'bridge_util::Result Bridge<BridgeId::Module>::ensureQueueEmpty(void)': no suitable definition provided for explicit template instantiation request
+2026-10-13T01:48:33.4717119Z ipc_transport.cpp(217): note: see declaration of 'Bridge<BridgeId::Module>::ensureQueueEmpty'
+2026-10-13T01:48:33.5011168Z util_sharedmemory.cpp
+2026-10-13T01:48:33.8542324Z util_sharedmemory.cpp(47): warning C4267: 'argument': conversion from 'size_t' to 'DWORD', possible loss of data
+2026-10-13T01:48:33.9016268Z util_semaphore.cpp
+2026-10-13T01:48:34.3680296Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\ipc-c32-native\util_semaphore.h(64): warning C4267: 'argument': conversion from 'size_t' to 'LONG', possible loss of data
+2026-10-13T01:48:34.4235810Z data_diagnostics.cpp
+2026-10-13T01:48:36.8370982Z exception_diagnostics.cpp
+2026-10-13T01:48:37.2070550Z Generating Code...
+2026-10-13T01:48:38.2654057Z c32.cpp
+2026-10-13T01:48:41.4515239Z C32_PASS batches/boundaries/lazy/abort/external/wrap/cancel/fault/protocol/malformed/full-pool
+2026-10-13T01:48:43.7276650Z C32_PASS batches/boundaries/lazy/abort/external/wrap/cancel/fault/protocol/malformed/full-pool
+2026-10-13T01:48:44.4025903Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x32 mode=stream
+2026-10-13T01:48:44.7620741Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x32 mode=mixed
+2026-10-13T01:48:45.1368675Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x32 mode=threaded
+2026-10-13T01:48:45.1512794Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x32 mode=upload-wrap
+2026-10-13T01:48:45.1603748Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x32 mode=surface-boundaries
+2026-10-13T01:48:45.1756268Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x32 mode=surface-small-generic
+2026-10-13T01:48:45.1916482Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x32 mode=surface-small-declared
+2026-10-13T01:48:45.5742310Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x64 mode=stream
+2026-10-13T01:48:45.9498672Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x64 mode=mixed
+2026-10-13T01:48:46.3253071Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x64 mode=threaded
+2026-10-13T01:48:46.3393072Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x64 mode=upload-wrap
+2026-10-13T01:48:46.3482791Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x64 mode=surface-boundaries
+2026-10-13T01:48:46.3636962Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x64 mode=surface-small-generic
+2026-10-13T01:48:46.3794383Z C32_CROSS_PROCESS_PASS iteration=0 batch=1 x86->x64 mode=surface-small-declared
+2026-10-13T01:48:46.7632705Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x32 mode=stream
+2026-10-13T01:48:47.1392854Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x32 mode=mixed
+2026-10-13T01:48:47.5154050Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x32 mode=threaded
+2026-10-13T01:48:47.5288175Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x32 mode=upload-wrap
+2026-10-13T01:48:47.5375369Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x32 mode=surface-boundaries
+2026-10-13T01:48:47.5525387Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x32 mode=surface-small-generic
+2026-10-13T01:48:47.5690889Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x32 mode=surface-small-declared
+2026-10-13T01:48:47.9537379Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x64 mode=stream
+2026-10-13T01:48:48.3288606Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x64 mode=mixed
+2026-10-13T01:48:48.7050656Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x64 mode=threaded
+2026-10-13T01:48:48.7189424Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x64 mode=upload-wrap
+2026-10-13T01:48:48.7281571Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x64 mode=surface-boundaries
+2026-10-13T01:48:48.7438077Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x64 mode=surface-small-generic
+2026-10-13T01:48:48.7602409Z C32_CROSS_PROCESS_PASS iteration=0 batch=2 x86->x64 mode=surface-small-declared
+2026-10-13T01:48:49.1429392Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x32 mode=stream
+2026-10-13T01:48:49.5187791Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x32 mode=mixed
+2026-10-13T01:48:49.8933801Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x32 mode=threaded
+2026-10-13T01:48:49.9087707Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x32 mode=upload-wrap
+2026-10-13T01:48:49.9184114Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x32 mode=surface-boundaries
+2026-10-13T01:48:49.9342970Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x32 mode=surface-small-generic
+2026-10-13T01:48:49.9509676Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x32 mode=surface-small-declared
+2026-10-13T01:48:50.3312114Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x64 mode=stream
+2026-10-13T01:48:50.7063124Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x64 mode=mixed
+2026-10-13T01:48:51.0810305Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x64 mode=threaded
+2026-10-13T01:48:51.0950628Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x64 mode=upload-wrap
+2026-10-13T01:48:51.1044592Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x64 mode=surface-boundaries
+2026-10-13T01:48:51.1206452Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x64 mode=surface-small-generic
+2026-10-13T01:48:51.1374276Z C32_CROSS_PROCESS_PASS iteration=0 batch=4 x86->x64 mode=surface-small-declared
+2026-10-13T01:48:51.5140291Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x32 mode=stream
+2026-10-13T01:48:51.8892444Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x32 mode=mixed
+2026-10-13T01:48:52.2488592Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x32 mode=threaded
+2026-10-13T01:48:52.2625701Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x32 mode=upload-wrap
+2026-10-13T01:48:52.2716054Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x32 mode=surface-boundaries
+2026-10-13T01:48:52.2872198Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x32 mode=surface-small-generic
+2026-10-13T01:48:52.3030437Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x32 mode=surface-small-declared
+2026-10-13T01:48:52.6867308Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x64 mode=stream
+2026-10-13T01:48:53.0630151Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x64 mode=mixed
+2026-10-13T01:48:53.4376461Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x64 mode=threaded
+2026-10-13T01:48:53.4517251Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x64 mode=upload-wrap
+2026-10-13T01:48:53.4609145Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x64 mode=surface-boundaries
+2026-10-13T01:48:53.4953512Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x64 mode=surface-small-generic
+2026-10-13T01:48:53.5224438Z C32_CROSS_PROCESS_PASS iteration=0 batch=8 x86->x64 mode=surface-small-declared
+2026-10-13T01:48:53.8916084Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x32 mode=stream
+2026-10-13T01:48:54.2668510Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x32 mode=mixed
+2026-10-13T01:48:54.6423802Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x32 mode=threaded
+2026-10-13T01:48:54.6562081Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x32 mode=upload-wrap
+2026-10-13T01:48:54.6655692Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x32 mode=surface-boundaries
+2026-10-13T01:48:54.6814115Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x32 mode=surface-small-generic
+2026-10-13T01:48:54.6982144Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x32 mode=surface-small-declared
+2026-10-13T01:48:55.0800103Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x64 mode=stream
+2026-10-13T01:48:55.4565717Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x64 mode=mixed
+2026-10-13T01:48:55.8160546Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x64 mode=threaded
+2026-10-13T01:48:55.8308984Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x64 mode=upload-wrap
+2026-10-13T01:48:55.8408445Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x64 mode=surface-boundaries
+2026-10-13T01:48:55.8579595Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x64 mode=surface-small-generic
+2026-10-13T01:48:55.8767134Z C32_CROSS_PROCESS_PASS iteration=0 batch=16 x86->x64 mode=surface-small-declared
+2026-10-13T01:48:56.2544894Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x32 mode=stream
+2026-10-13T01:48:56.6135734Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x32 mode=mixed
+2026-10-13T01:48:56.9881437Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x32 mode=threaded
+2026-10-13T01:48:57.0029458Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x32 mode=upload-wrap
+2026-10-13T01:48:57.0126336Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x32 mode=surface-boundaries
+2026-10-13T01:48:57.0286764Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x32 mode=surface-small-generic
+2026-10-13T01:48:57.0449335Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x32 mode=surface-small-declared
+2026-10-13T01:48:57.4269859Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x64 mode=stream
+2026-10-13T01:48:57.8035344Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x64 mode=mixed
+2026-10-13T01:48:58.1781266Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x64 mode=threaded
+2026-10-13T01:48:58.1941914Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x64 mode=upload-wrap
+2026-10-13T01:48:58.2047677Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x64 mode=surface-boundaries
+2026-10-13T01:48:58.2225078Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x64 mode=surface-small-generic
+2026-10-13T01:48:58.2414686Z C32_CROSS_PROCESS_PASS iteration=0 batch=32 x86->x64 mode=surface-small-declared
+2026-10-13T01:48:58.2602468Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x32 mode=surface-small-declared
+2026-10-13T01:48:58.2780382Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x32 mode=surface-small-generic
+2026-10-13T01:48:58.2893693Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x32 mode=surface-boundaries
+2026-10-13T01:48:58.3042085Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x32 mode=upload-wrap
+2026-10-13T01:48:58.6782369Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x32 mode=threaded
+2026-10-13T01:48:59.0539337Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x32 mode=mixed
+2026-10-13T01:48:59.4284099Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x32 mode=stream
+2026-10-13T01:48:59.4450348Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x64 mode=surface-small-declared
+2026-10-13T01:48:59.4615922Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x64 mode=surface-small-generic
+2026-10-13T01:48:59.4714124Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x64 mode=surface-boundaries
+2026-10-13T01:48:59.4853526Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x64 mode=upload-wrap
+2026-10-13T01:48:59.8510252Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x64 mode=threaded
+2026-10-13T01:49:00.2264748Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x64 mode=mixed
+2026-10-13T01:49:00.6020761Z C32_CROSS_PROCESS_PASS iteration=1 batch=32 x86->x64 mode=stream
+2026-10-13T01:49:00.6210936Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x32 mode=surface-small-declared
+2026-10-13T01:49:00.6393988Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x32 mode=surface-small-generic
+2026-10-13T01:49:00.6512630Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x32 mode=surface-boundaries
+2026-10-13T01:49:00.6665148Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x32 mode=upload-wrap
+2026-10-13T01:49:01.0390827Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x32 mode=threaded
+2026-10-13T01:49:01.4157661Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x32 mode=mixed
+2026-10-13T01:49:01.7909168Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x32 mode=stream
+2026-10-13T01:49:01.8074379Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x64 mode=surface-small-declared
+2026-10-13T01:49:01.8233074Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x64 mode=surface-small-generic
+2026-10-13T01:49:01.8328985Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x64 mode=surface-boundaries
+2026-10-13T01:49:01.8466562Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x64 mode=upload-wrap
+2026-10-13T01:49:02.2292139Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x64 mode=threaded
+2026-10-13T01:49:02.5896073Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x64 mode=mixed
+2026-10-13T01:49:02.9647518Z C32_CROSS_PROCESS_PASS iteration=1 batch=16 x86->x64 mode=stream
+2026-10-13T01:49:02.9817235Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x32 mode=surface-small-declared
+2026-10-13T01:49:02.9985049Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x32 mode=surface-small-generic
+2026-10-13T01:49:03.0082677Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x32 mode=surface-boundaries
+2026-10-13T01:49:03.0223240Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x32 mode=upload-wrap
+2026-10-13T01:49:03.4019947Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x32 mode=threaded
+2026-10-13T01:49:03.7776524Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x32 mode=mixed
+2026-10-13T01:49:04.1522307Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x32 mode=stream
+2026-10-13T01:49:04.1686469Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x64 mode=surface-small-declared
+2026-10-13T01:49:04.1852564Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x64 mode=surface-small-generic
+2026-10-13T01:49:04.1955146Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x64 mode=surface-boundaries
+2026-10-13T01:49:04.2092177Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x64 mode=upload-wrap
+2026-10-13T01:49:04.5900130Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x64 mode=threaded
+2026-10-13T01:49:04.9652519Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x64 mode=mixed
+2026-10-13T01:49:05.3413290Z C32_CROSS_PROCESS_PASS iteration=1 batch=8 x86->x64 mode=stream
+2026-10-13T01:49:05.3580485Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x32 mode=surface-small-declared
+2026-10-13T01:49:05.3734652Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x32 mode=surface-small-generic
+2026-10-13T01:49:05.3837711Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x32 mode=surface-boundaries
+2026-10-13T01:49:05.3972066Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x32 mode=upload-wrap
+2026-10-13T01:49:05.7647173Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x32 mode=threaded
+2026-10-13T01:49:06.1255982Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x32 mode=mixed
+2026-10-13T01:49:06.5006528Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x32 mode=stream
+2026-10-13T01:49:06.5186063Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x64 mode=surface-small-declared
+2026-10-13T01:49:06.5361070Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x64 mode=surface-small-generic
+2026-10-13T01:49:06.5470150Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x64 mode=surface-boundaries
+2026-10-13T01:49:06.5618652Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x64 mode=upload-wrap
+2026-10-13T01:49:06.9428703Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x64 mode=threaded
+2026-10-13T01:49:07.3191267Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x64 mode=mixed
+2026-10-13T01:49:07.6937530Z C32_CROSS_PROCESS_PASS iteration=1 batch=4 x86->x64 mode=stream
+2026-10-13T01:49:07.7105269Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x32 mode=surface-small-declared
+2026-10-13T01:49:07.7268760Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x32 mode=surface-small-generic
+2026-10-13T01:49:07.7370017Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x32 mode=surface-boundaries
+2026-10-13T01:49:07.7516930Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x32 mode=upload-wrap
+2026-10-13T01:49:08.1314333Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x32 mode=threaded
+2026-10-13T01:49:08.5079553Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x32 mode=mixed
+2026-10-13T01:49:08.8830794Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x32 mode=stream
+2026-10-13T01:49:08.9026825Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x64 mode=surface-small-declared
+2026-10-13T01:49:08.9218234Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x64 mode=surface-small-generic
+2026-10-13T01:49:08.9336016Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x64 mode=surface-boundaries
+2026-10-13T01:49:08.9507677Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x64 mode=upload-wrap
+2026-10-13T01:49:09.3360365Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x64 mode=threaded
+2026-10-13T01:49:09.7108761Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x64 mode=mixed
+2026-10-13T01:49:10.0859590Z C32_CROSS_PROCESS_PASS iteration=1 batch=2 x86->x64 mode=stream
+2026-10-13T01:49:10.1050299Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x32 mode=surface-small-declared
+2026-10-13T01:49:10.1222747Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x32 mode=surface-small-generic
+2026-10-13T01:49:10.1330582Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x32 mode=surface-boundaries
+2026-10-13T01:49:10.1480668Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x32 mode=upload-wrap
+2026-10-13T01:49:10.5235891Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x32 mode=threaded
+2026-10-13T01:49:10.8988507Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x32 mode=mixed
+2026-10-13T01:49:11.2736072Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x32 mode=stream
+2026-10-13T01:49:11.2906887Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x64 mode=surface-small-declared
+2026-10-13T01:49:11.3075668Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x64 mode=surface-small-generic
+2026-10-13T01:49:11.3182294Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x64 mode=surface-boundaries
+2026-10-13T01:49:11.3337853Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x64 mode=upload-wrap
+2026-10-13T01:49:11.7074773Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x64 mode=threaded
+2026-10-13T01:49:12.0919221Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x64 mode=mixed
+2026-10-13T01:49:12.4679689Z C32_CROSS_PROCESS_PASS iteration=1 batch=1 x86->x64 mode=stream
+2026-10-13T01:49:12.8287664Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x32 mode=stream
+2026-10-13T01:49:13.2036135Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x32 mode=mixed
+2026-10-13T01:49:13.5798346Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x32 mode=threaded
+2026-10-13T01:49:13.5948349Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x32 mode=upload-wrap
+2026-10-13T01:49:13.6042228Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x32 mode=surface-boundaries
+2026-10-13T01:49:13.6204040Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x32 mode=surface-small-generic
+2026-10-13T01:49:13.6370124Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x32 mode=surface-small-declared
+2026-10-13T01:49:14.0165600Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x64 mode=stream
+2026-10-13T01:49:14.3916320Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x64 mode=mixed
+2026-10-13T01:49:14.7664446Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x64 mode=threaded
+2026-10-13T01:49:14.7815094Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x64 mode=upload-wrap
+2026-10-13T01:49:14.7918198Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x64 mode=surface-boundaries
+2026-10-13T01:49:14.8087107Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x64 mode=surface-small-generic
+2026-10-13T01:49:14.8259274Z C32_CROSS_PROCESS_PASS iteration=2 batch=1 x86->x64 mode=surface-small-declared
+2026-10-13T01:49:15.2041972Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x32 mode=stream
+2026-10-13T01:49:15.5819748Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x32 mode=mixed
+2026-10-13T01:49:15.9564785Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x32 mode=threaded
+2026-10-13T01:49:15.9709259Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x32 mode=upload-wrap
+2026-10-13T01:49:15.9804072Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x32 mode=surface-boundaries
+2026-10-13T01:49:15.9959168Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x32 mode=surface-small-generic
+2026-10-13T01:49:16.0120447Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x32 mode=surface-small-declared
+2026-10-13T01:49:16.3946833Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x64 mode=stream
+2026-10-13T01:49:16.7700207Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x64 mode=mixed
+2026-10-13T01:49:17.2540127Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x64 mode=threaded
+2026-10-13T01:49:17.2696481Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x64 mode=upload-wrap
+2026-10-13T01:49:17.2802128Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x64 mode=surface-boundaries
+2026-10-13T01:49:17.2972374Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x64 mode=surface-small-generic
+2026-10-13T01:49:17.3148895Z C32_CROSS_PROCESS_PASS iteration=2 batch=2 x86->x64 mode=surface-small-declared
+2026-10-13T01:49:17.6917610Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x32 mode=stream
+2026-10-13T01:49:18.0831066Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x32 mode=mixed
+2026-10-13T01:49:18.4575785Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x32 mode=threaded
+2026-10-13T01:49:18.4730307Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x32 mode=upload-wrap
+2026-10-13T01:49:18.4833432Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x32 mode=surface-boundaries
+2026-10-13T01:49:18.5002166Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x32 mode=surface-small-generic
+2026-10-13T01:49:18.5173971Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x32 mode=surface-small-declared
+2026-10-13T01:49:18.8961290Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x64 mode=stream
+2026-10-13T01:49:19.2711571Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x64 mode=mixed
+2026-10-13T01:49:19.6459110Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x64 mode=threaded
+2026-10-13T01:49:19.6610270Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x64 mode=upload-wrap
+2026-10-13T01:49:19.6714751Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x64 mode=surface-boundaries
+2026-10-13T01:49:19.6887034Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x64 mode=surface-small-generic
+2026-10-13T01:49:19.7064215Z C32_CROSS_PROCESS_PASS iteration=2 batch=4 x86->x64 mode=surface-small-declared
+2026-10-13T01:49:20.0838045Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x32 mode=stream
+2026-10-13T01:49:20.4597003Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x32 mode=mixed
+2026-10-13T01:49:20.8362942Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x32 mode=threaded
+2026-10-13T01:49:20.8530041Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x32 mode=upload-wrap
+2026-10-13T01:49:20.8640762Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x32 mode=surface-boundaries
+2026-10-13T01:49:20.8806781Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x32 mode=surface-small-generic
+2026-10-13T01:49:20.8983632Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x32 mode=surface-small-declared
+2026-10-13T01:49:21.2776053Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x64 mode=stream
+2026-10-13T01:49:21.6528829Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x64 mode=mixed
+2026-10-13T01:49:22.0745331Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x64 mode=threaded
+2026-10-13T01:49:22.0913175Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x64 mode=upload-wrap
+2026-10-13T01:49:22.1024540Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x64 mode=surface-boundaries
+2026-10-13T01:49:22.1204928Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x64 mode=surface-small-generic
+2026-10-13T01:49:22.1392795Z C32_CROSS_PROCESS_PASS iteration=2 batch=8 x86->x64 mode=surface-small-declared
+2026-10-13T01:49:22.5137941Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x32 mode=stream
+2026-10-13T01:49:22.8895766Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x32 mode=mixed
+2026-10-13T01:49:23.2639612Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x32 mode=threaded
+2026-10-13T01:49:23.2806919Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x32 mode=upload-wrap
+2026-10-13T01:49:23.2915409Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x32 mode=surface-boundaries
+2026-10-13T01:49:23.3092730Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x32 mode=surface-small-generic
+2026-10-13T01:49:23.3277548Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x32 mode=surface-small-declared
+2026-10-13T01:49:23.7017069Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x64 mode=stream
+2026-10-13T01:49:24.0768974Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x64 mode=mixed
+2026-10-13T01:49:24.4515382Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x64 mode=threaded
+2026-10-13T01:49:24.4686882Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x64 mode=upload-wrap
+2026-10-13T01:49:24.4801211Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x64 mode=surface-boundaries
+2026-10-13T01:49:24.4982507Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x64 mode=surface-small-generic
+2026-10-13T01:49:24.5171687Z C32_CROSS_PROCESS_PASS iteration=2 batch=16 x86->x64 mode=surface-small-declared
+2026-10-13T01:49:24.8907317Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x32 mode=stream
+2026-10-13T01:49:25.2654144Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x32 mode=mixed
+2026-10-13T01:49:25.6423232Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x32 mode=threaded
+2026-10-13T01:49:25.6595241Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x32 mode=upload-wrap
+2026-10-13T01:49:25.6713518Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x32 mode=surface-boundaries
+2026-10-13T01:49:25.6886904Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x32 mode=surface-small-generic
+2026-10-13T01:49:25.7072652Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x32 mode=surface-small-declared
+2026-10-13T01:49:26.0817168Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x64 mode=stream
+2026-10-13T01:49:26.4565807Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x64 mode=mixed
+2026-10-13T01:49:26.8312905Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x64 mode=threaded
+2026-10-13T01:49:26.8468828Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x64 mode=upload-wrap
+2026-10-13T01:49:26.8581887Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x64 mode=surface-boundaries
+2026-10-13T01:49:26.8752050Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x64 mode=surface-small-generic
+2026-10-13T01:49:26.8931556Z C32_CROSS_PROCESS_PASS iteration=2 batch=32 x86->x64 mode=surface-small-declared
+2026-10-13T01:49:26.9214699Z ##[group]Run foreach ($suite in @('buffer_contract','volume_layout','device_reset','readback_recovery','input_hooks','overlay_presenter','steam_window_diagnostics','steam_web_diagnostics','steam_availability_diagnostics','steam_workshop_status','adapter_information','ati_texture_layout','command_queue')) {
+2026-10-13T01:49:26.9215880Z [36;1mforeach ($suite in @('buffer_contract','volume_layout','device_reset','readback_recovery','input_hooks','overlay_presenter','steam_window_diagnostics','steam_web_diagnostics','steam_availability_diagnostics','steam_workshop_status','adapter_information','ati_texture_layout','command_queue')) {[0m
+2026-10-13T01:49:26.9216703Z [36;1m  & powershell.exe -NoProfile -File "./scripts/test_$suite.ps1"[0m
+2026-10-13T01:49:26.9216995Z [36;1m  if ($LASTEXITCODE -ne 0) { throw "Native regression failed: $suite" }[0m
+2026-10-13T01:49:26.9217202Z [36;1m}[0m
+2026-10-13T01:49:26.9240143Z shell: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.EXE -command ". '{0}'"
+2026-10-13T01:49:26.9240366Z env:
+2026-10-13T01:49:26.9240519Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:49:26.9240773Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.11.9\x64/lib/pkgconfig
+2026-10-13T01:49:26.9241017Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:49:26.9241239Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:49:26.9241458Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:49:26.9241643Z ##[endgroup]
+2026-10-13T01:49:27.2272402Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:49:27.2744527Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:49:27.2769921Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:49:28.1578502Z Visual Studio Command Prompt variables set.
+2026-10-13T01:49:28.2035913Z actual_buffer_contract.cpp
+2026-10-13T01:49:28.7820793Z data_diagnostics.cpp
+2026-10-13T01:49:31.1240003Z Generating Code...
+2026-10-13T01:49:31.2492493Z VB: existing partial-write preservation and overlapping Lock verified; fresh staging counterexample reproduced
+2026-10-13T01:49:31.2492957Z VB managed: existing partial-write preservation and overlapping Lock verified; fresh staging counterexample reproduced
+2026-10-13T01:49:31.2493372Z IB16: existing partial-write preservation and overlapping Lock verified; fresh staging counterexample reproduced
+2026-10-13T01:49:31.2493803Z IB32: existing partial-write preservation and overlapping Lock verified; fresh staging counterexample reproduced
+2026-10-13T01:49:31.5745698Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:49:31.6217402Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:49:31.6242615Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:49:32.4828858Z Visual Studio Command Prompt variables set.
+2026-10-13T01:49:32.4942678Z volume_layout_test.cpp
+2026-10-13T01:49:32.8797602Z PASS: 59 Volume layout/transfer cases, game writes through API pitches, unchanged wire, padded backend and partial-box guards; padded source and invalid stride rejection.
+2026-10-13T01:49:33.1054692Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:49:33.1515955Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:49:33.1542272Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:49:34.0331102Z Visual Studio Command Prompt variables set.
+2026-10-13T01:49:34.0430642Z volume_layout_test.cpp
+2026-10-13T01:49:34.4263477Z PASS: 59 Volume layout/transfer cases, game writes through API pitches, unchanged wire, padded backend and partial-box guards; padded source and invalid stride rejection.
+2026-10-13T01:49:34.7537762Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:49:34.7997345Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:49:34.8021092Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:49:35.6643428Z Visual Studio Command Prompt variables set.
+2026-10-13T01:49:35.6759235Z device_reset.cpp
+2026-10-13T01:49:36.1663420Z PASS: failed reset, repeated failure, success retry, preserved cache, timeout without read/pop, late success rejected
+2026-10-13T01:49:36.1663913Z PASS: backbuffers 1->2->1, aliased RT0, depth, ordered teardown, repeated unlink, retained external reference
+2026-10-13T01:49:36.1664694Z PASS: first-candidate query leak negative control, 150000 query references balanced, RT/depth/explicit targets, COM identity aliases, null/mismatch/failure results
+2026-10-13T01:49:36.3928388Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:49:36.4394147Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:49:36.4419847Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:49:37.2983751Z Visual Studio Command Prompt variables set.
+2026-10-13T01:49:37.3085367Z device_reset.cpp
+2026-10-13T01:49:37.7703343Z PASS: failed reset, repeated failure, success retry, preserved cache, timeout without read/pop, late success rejected
+2026-10-13T01:49:37.7703818Z PASS: backbuffers 1->2->1, aliased RT0, depth, ordered teardown, repeated unlink, retained external reference
+2026-10-13T01:49:37.7704324Z PASS: first-candidate query leak negative control, 150000 query references balanced, RT/depth/explicit targets, COM identity aliases, null/mismatch/failure results
+2026-10-13T01:49:37.9985767Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:49:38.0441659Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:49:38.0467517Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:49:38.9040569Z Visual Studio Command Prompt variables set.
+2026-10-13T01:49:38.9119455Z readback_recovery.cpp
+2026-10-13T01:49:40.0616272Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:49:40.1045093Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:49:40.1050323Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:49:41.1066702Z Visual Studio Command Prompt variables set.
+2026-10-13T01:49:41.1163263Z readback_layout.cpp
+2026-10-13T01:49:41.2998218Z PASS: compressed block layout, logical rows without padding, mismatch offsets and deterministic selection
+2026-10-13T01:49:41.3093864Z readback_recovery.cpp
+2026-10-13T01:49:44.2345247Z PASS: 18 separate-process Q8W8V8U8/ATI1/ATI2 unload/reconstruction cases and explicit read/pitch/unlock failures; child has no original Client backing
+2026-10-13T01:49:44.2345845Z PASS: 25 independent child-process mock readbacks, reference-only corruption detection, failure stages and original backing retained
+2026-10-13T01:49:44.2346542Z PASS: real backing deletion, hash-only child-process recovery, complete mip restoration, permanent KEEP, cross-run Strong/Content DB hits, overwrite without promotion, hash/readback failures and session fallback (independent mock backend)
+2026-10-13T01:49:44.5610631Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-13T01:49:44.6077162Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-13T01:49:44.6103305Z Pinning MSVC toolset to version: 14.29
+2026-10-13T01:49:45.4884390Z Visual Studio Command Prompt variables set.
+2026-10-13T01:49:45.5327301Z actual_input_hooks.cpp
+2026-10-13T01:49:46.2574269Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\input-hooks-test-x86\input-hooks-test.exe
+2026-10-13T01:49:46.2637993Z FAIL: external ReShade allowed game recapture
+2026-10-13T01:49:46.3976858Z Input hook/log classification regression failed: steam-off
+2026-10-13T01:49:46.3977329Z At D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\scripts\test_input_hooks.ps1:30 char:32
+2026-10-13T01:49:46.3978784Z + ... DE -ne 0) { throw "Input hook/log classification regression failed: $ ...
+2026-10-13T01:49:46.3979030Z +                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2026-10-13T01:49:46.3979304Z     + CategoryInfo          : OperationStopped: (Input hook/log ...iled: steam-off:String) [], RuntimeException
+2026-10-13T01:49:46.3979633Z     + FullyQualifiedErrorId : Input hook/log classification regression failed: steam-off
+2026-10-13T01:49:46.3979993Z  
+2026-10-13T01:49:46.4641798Z Client input/logging regression failed for x86
+2026-10-13T01:49:46.4642317Z At D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\scripts\test_input_hooks.ps1:9 char:32
+2026-10-13T01:49:46.4642626Z + ... DE -ne 0) { throw "Client input/logging regression failed for $arch"  ...
+2026-10-13T01:49:46.4643026Z +                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2026-10-13T01:49:46.4643539Z     + CategoryInfo          : OperationStopped: (Client input/lo... failed for x86:String) [], RuntimeException
+2026-10-13T01:49:46.4643846Z     + FullyQualifiedErrorId : Client input/logging regression failed for x86
+2026-10-13T01:49:46.4644039Z  
+2026-10-13T01:49:46.5536447Z Native regression failed: input_hooks
+2026-10-13T01:49:46.5536819Z At D:\a\_temp\d07eeb06-6a1a-4f81-b862-8c98bc438a98.ps1:4 char:30
+2026-10-13T01:49:46.5537217Z + ... if ($LASTEXITCODE -ne 0) { throw "Native regression failed: $suite" }
+2026-10-13T01:49:46.5537545Z +                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2026-10-13T01:49:46.5538009Z     + CategoryInfo          : OperationStopped: (Native regression failed: input_hooks:String) [], RuntimeException
+2026-10-13T01:49:46.5538772Z     + FullyQualifiedErrorId : Native regression failed: input_hooks
+2026-10-13T01:49:46.5539013Z  
+2026-10-13T01:49:46.5659103Z ##[error]Process completed with exit code 1.
+2026-10-13T01:49:46.5774846Z ##[group]Run actions/upload-artifact@v4
+2026-10-13T01:49:46.5775060Z with:
+2026-10-13T01:49:46.5775176Z   name: steam-only-experiment-38333807466
+2026-10-13T01:49:46.5775623Z   path: dist/*.zip
+dist/SHA256SUMS.txt
+work/ipc-c32-build.json
+work/ipc-c32-native/
+work/steam-only-source-verification.json
+.deps/dxvk-remix/bridge/_ipcC32_*/meson-logs/
+
+2026-10-13T01:49:46.5776021Z   include-hidden-files: true
+2026-10-13T01:49:46.5776145Z   if-no-files-found: error
+2026-10-13T01:49:46.5776263Z   retention-days: 30
+2026-10-13T01:49:46.5776369Z   compression-level: 6
+2026-10-13T01:49:46.5776486Z   overwrite: false
+2026-10-13T01:49:46.5776584Z env:
+2026-10-13T01:49:46.5776720Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:49:46.5776956Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.11.9\x64/lib/pkgconfig
+2026-10-13T01:49:46.5777185Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:49:46.5777425Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:49:46.5777630Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-13T01:49:46.5777792Z ##[endgroup]
+2026-10-13T01:49:46.6915142Z (node:4636) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-13T01:49:46.6915535Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-13T01:49:46.7078870Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-10-13T01:49:46.7080975Z The least common ancestor is D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge. This will be the root directory of the artifact
+2026-10-13T01:49:46.7081353Z With the provided path, there will be 54 files uploaded
+2026-10-13T01:49:46.7084124Z Artifact name is valid!
+2026-10-13T01:49:46.7085409Z Root directory input is valid!
+2026-10-13T01:49:46.9779873Z Beginning upload of artifact content to blob storage
+2026-10-13T01:49:47.0956981Z (node:4636) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-13T01:49:47.5407440Z Uploaded bytes 1517895
+2026-10-13T01:49:47.5824193Z Finished uploading artifact content to blob storage!
+2026-10-13T01:49:47.5825083Z SHA256 digest of uploaded artifact zip is c527bb6cacb764d95c8a24610f54762f9d943adc5d9d19c1cc0d2ec52eedbc7d
+2026-10-13T01:49:47.5826527Z Finalizing artifact upload
+2026-10-13T01:49:47.7824968Z Artifact steam-only-experiment-38333807466.zip successfully finalized. Artifact ID 11783653419
+2026-10-13T01:49:47.7825984Z Artifact steam-only-experiment-38333807466 has been successfully uploaded! Final size is 1517895 bytes. Artifact ID is 11783653419
+2026-10-13T01:49:47.7832578Z Artifact download URL: https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38333807466/artifacts/11783653419
+2026-10-13T01:49:47.8082615Z Post job cleanup.
+2026-10-13T01:49:47.9117373Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-13T01:49:47.9313996Z git version 2.56.0.windows.1
+2026-10-13T01:49:47.9351584Z Temporarily overriding HOME='D:\a\_temp\f494c2eb-e679-4575-908f-216c17206768' before making global git config changes
+2026-10-13T01:49:47.9352211Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-13T01:49:47.9358730Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\ipc-v2-pr6
+2026-10-13T01:49:47.9570300Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-13T01:49:47.9775327Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-13T01:49:48.3339300Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-13T01:49:48.3521456Z http.https://github.com/.extraheader
+2026-10-13T01:49:48.3547705Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2026-10-13T01:49:48.3755319Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-13T01:49:48.7403286Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-13T01:49:48.7608775Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-13T01:49:49.1211773Z Post job cleanup.
+2026-10-13T01:49:49.2197715Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-13T01:49:49.2397824Z git version 2.56.0.windows.1
+2026-10-13T01:49:49.2435154Z Temporarily overriding HOME='D:\a\_temp\ec077249-9cfe-41d9-91b4-77f2aaafa6b2' before making global git config changes
+2026-10-13T01:49:49.2435627Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-13T01:49:49.2442302Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge
+2026-10-13T01:49:49.2653557Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-13T01:49:49.2859316Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-13T01:49:49.6392788Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-13T01:49:49.6568199Z http.https://github.com/.extraheader
+2026-10-13T01:49:49.6594625Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2026-10-13T01:49:49.6794677Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-13T01:49:50.0241612Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-13T01:49:50.0444001Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-13T01:49:50.4299970Z Cleaning up orphan processes
+2026-10-13T01:49:50.4321851Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

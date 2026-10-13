@@ -1,0 +1,22 @@
+{
+  "run_id": 38334235685,
+  "job_id": 115090616548,
+  "artifact_id": 11784665124,
+  "artifact_bytes": 2897721,
+  "artifact_sha256": "593ba0840b42041b7b8e6d3a0be6c55d8aaa56ce0917e649fc78f7ed8daaf437",
+  "source_commit": "e3e66652a9b031f5508e11f926a9adad4e8bc8dd",
+  "conclusion": "success",
+  "status": "AWAITING GAME VALIDATION",
+  "source_removal_verified": true,
+  "native_capture_architectures": [
+    "x86",
+    "x64"
+  ],
+  "capture_concurrent_pairs_per_architecture": 30000,
+  "ipc_cross_process_cases": 252,
+  "fault_cases": 30,
+  "retained_native_suites": 13,
+  "python_contracts": 39,
+  "release_bridge_binaries": 3,
+  "bundled_reshade_dlls": 0
+}

@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "production_files_scanned": 234,
+  "experimental_reshade_removed": true,
+  "steam_source_files": {
+    "client/window.cpp": "1d56351f9f3efab14fecdc4671b63aeb839a30e09083d037faad04e21b3cd195",
+    "client/remix_state.h": "e8b885d48d81504b2dfe7a96cc447fce41f257ad96522913f2146e248b28f066",
+    "client/remix_state.cpp": "a1610186bea07dbdf3cbf718148404b434ae566432b8b405682b3a6960d9d505",
+    "client/di_hook.cpp": "0a1b0be0a68bcfb8f0200b04f07efd0a78d4bceeba7d8fa1820b0611641e4172",
+    "server/steam_window_diagnostics.h": "7f1a58d835635e6bc36a88c2f39825de5528fceb1728bdae51a32ccaae813b80",
+    "server/overlay_presenter.h": "d9bc18703ceae987fd579621cc58111f3f3d7b412f14780873a38bfbe6d471f7",
+    "util/steam_web_diagnostics.h": "3d0c4ec19328075ffed969ca203b0f53032def0c60dae6252f09da3caf7549f9",
+    "util/steam_workshop_status.h": "725084c06ff8c012745f79402acfac8631057427bdc6ea9dcec9e3279db3c030"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "build_id": "ldb-ipc-c32-dev+2da41c976cf19b26",
+  "protocol_source_sha256": "2da41c976cf19b26a435ba1c7c9bcd31a25325f6dffeff723f80605fde0963a0",
+  "foundation": "PR6 production 14fc5db13d4a9e637fc6b001d06ab5ca3f1eed11",
+  "gameplay_validated": false,
+  "experiment_profile": "steam-only-presenter",
+  "reshade_external_input_removed": true,
+  "required_bridge_binaries": 3,
+  "compile_examples": {
+    "_ipcC32_x86": "\"cl\" \"-Isrc\\tracy\\libtracy.a.p\" \"-Isrc\\tracy\" \"-I..\\src\\tracy\" \"/MT\" \"/nologo\" \"/showIncludes\" \"/utf-8\" \"/Zc:__cplusplus\" \"/W2\" \"/WX\" \"/EHsc\" \"/std:c++17\" \"/O2\" \"/Gw\" \"-DNOMINMAX\" \"-DNDEBUG\" \"-DWITH_MULTITHREADED_DEVICE\" \"/DBUILD_NINJA=1\" \"/DBUILD_SOURCE_ROOT=\\\"D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.deps/dxvk-remix/bridge/\\\"\" \"/MP\" \"/DREMIX_BRIDGE_CLIENT\" \"/Fdsrc\\tracy\\libtracy.a.p\\TracyClient.cpp.pdb\" /Fosrc/tracy/libtracy.a.p/TracyClient.cpp.obj \"/c\" ../src/tracy/TracyClient.cpp",
+    "_ipcC32_x64": "\"cl\" \"-Isrc\\tracy\\libtracy.a.p\" \"-Isrc\\tracy\" \"-I..\\src\\tracy\" \"/MT\" \"/nologo\" \"/showIncludes\" \"/utf-8\" \"/Zc:__cplusplus\" \"/W2\" \"/WX\" \"/EHsc\" \"/std:c++17\" \"/O2\" \"/Gw\" \"-DNOMINMAX\" \"-DNDEBUG\" \"-DWITH_MULTITHREADED_DEVICE\" \"/DBUILD_NINJA=1\" \"/DBUILD_SOURCE_ROOT=\\\"D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.deps/dxvk-remix/bridge/\\\"\" \"/MP\" \"/DREMIX_BRIDGE_SERVER\" \"/Fdsrc\\tracy\\libtracy.a.p\\TracyClient.cpp.pdb\" /Fosrc/tracy/libtracy.a.p/TracyClient.cpp.obj \"/c\" ../src/tracy/TracyClient.cpp",
+    "_ipcC32_x86_server": "\"cl\" \"-Isrc\\tracy\\libtracy.a.p\" \"-Isrc\\tracy\" \"-I..\\src\\tracy\" \"/MT\" \"/nologo\" \"/showIncludes\" \"/utf-8\" \"/Zc:__cplusplus\" \"/W2\" \"/WX\" \"/EHsc\" \"/std:c++17\" \"/O2\" \"/Gw\" \"-DNOMINMAX\" \"-DNDEBUG\" \"-DWITH_MULTITHREADED_DEVICE\" \"/DBUILD_NINJA=1\" \"/DBUILD_SOURCE_ROOT=\\\"D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.deps/dxvk-remix/bridge/\\\"\" \"/MP\" \"/DREMIX_BRIDGE_X86_SERVER\" \"/DREMIX_BRIDGE_SERVER\" \"/Fdsrc\\tracy\\libtracy.a.p\\TracyClient.cpp.pdb\" /Fosrc/tracy/libtracy.a.p/TracyClient.cpp.obj \"/c\" ../src/tracy/TracyClient.cpp"
+  },
+  "source_commit": "e3e66652a9b031f5508e11f926a9adad4e8bc8dd",
+  "distribution": "experimental",
+  "build_type": "Release",
+  "compiler": "MSVC 14.29",
+  "kind": "matched-update",
+  "default_batch": 1,
+  "supported_batches": [
+    1,
+    2,
+    4,
+    8,
+    16,
+    32
+  ],
+  "lazy_check_ms": 1,
+  "files": {
+    "bin/dxvk_d3d9.dll": "7d2f6fca266006e47172f9bebe9179e60b0dd60cfe0cb80b823151abf0c1c84c",
+    "bin/.l4d2bridge/L4D2Bridge64.exe": "7f10c6f0fc93d2e5135ea8f67e8896ad360e7595b9273715808449f22d35133e",
+    "bin/.l4d2bridge/L4D2Bridge32.exe": "ce7e462f8432beb192eb652b3041cc38ee6fd7a33463811ed3af23de98afcd3b"
+  },
+  "status": "AWAITING GAME VALIDATION",
+  "native_run_id": "38334235685",
+  "steam_experiment": "verified-invitation-and-native-presenter-input",
+  "prior_user_accepted_control": "ldb-ipc-c32-dev+0901d263de181431",
+  "bundled_reshade_binaries": 0,
+  "reference_config_host": "x64",
+  "reference_presenter_enabled": true,
+  "default_diagnostics": false
+}
