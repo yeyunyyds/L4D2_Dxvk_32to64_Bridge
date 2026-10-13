@@ -65,3 +65,22 @@ Release, prerelease or release asset is created or updated. Native build outputs
 may be retained as ordinary CI artifacts. The previous immutable experimental
 ZIP remains unchanged. Real-game regression of the new integrated main build
 is still pending and no FPS or memory improvement is claimed.
+
+## Completed native validation
+
+[Windows run38341029534](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38341029534)
+passed all build and regression steps for source
+`e6db372f8a03fb8e13142d94c5e51bea3394b8cb`; the publication job was skipped.
+This includes x86 Client, x86/x64 Host, the x86 L4N DLL, full IPC and PR11 safety,
+Steam capture/window/request ABI, bilingual menu callbacks, resources and
+cross-process input tests. Artifact manifests and all listed binary SHA-256
+values were independently verified, including matching embedded Bridge IDs
+and the new compiled L4N labels. No custom ReShade DLL is packaged.
+
+Build ID: `l4d2-1.3.0+3d13bf31676468b8`. CI archive SHA-256:
+
+- Bridge: `7c34ed8b0d30d19a7fd47fc3618d2433ee253aa8f904b53b014195923271b7df`
+- L4N: `501553806d65b0b711081b5e337c42cf95f74529245eaef2d3a73ceb1a589681`
+
+The archives remain CI artifacts; this validation does not publish a Release.
+Real-game validation of the integrated main composition remains pending.
