@@ -1,7 +1,7 @@
 # Steam-only Presenter development package
 
-Status: EXPERIMENTAL / AWAITING GAME VALIDATION; this stripped binary needs
-its own gameplay test. Native build and package results are retained with the
+Status: EXPERIMENTAL / Presenter dependency confirmed by user on the stripped
+build; broader gameplay validation remains pending. Native build and package results are retained with the
 workflow and BUILD-INFO receipt. Branch `codex/steam-only-experiment`. main, VERSION, tags,
 releases and the retained combined experiment branch are not changed.
 
@@ -28,7 +28,31 @@ binary hashes, retained Steam functionality, absent experimental ReShade strings
 only three packaged binaries, default-off diagnostics and the required x64
 Presenter config. Native artifact SHA-256 and the immutable uploaded ZIP were
 independently verified; the upload is append-only on the existing download branch.
-The stripped build itself remains AWAITING GAME VALIDATION.
+The stripped build's broader gameplay regression remains pending; the subsequent
+user-reported single-setting comparison below establishes its Presenter dependency.
+
+## User-reported single-setting Presenter comparison
+
+The user confirms that with the supplied Steam-only experiment configuration,
+changing only `server.presenterWindow` from True to False makes the entire Steam
+input path stop working. The accepted True baseline and False failure are reported
+for this delivered Steam-only experiment; no new paired logs or actual config
+were supplied with that report. This is a user-reported functional comparison,
+not a newly observed renderer branch or an exhaustive acceptance checklist.
+See [dependency result](steam-only-evidence/38334235685/presenter-dependency-user-result.json).
+
+This agrees with the audited production path and earlier paired diagnostic logs:
+False returns before creating the Host-owned child, leaves the window adapter
+without a valid replacement HWND, and supplies no independent native Steam input
+window or message-loop/hook target. Steam input and adapter flags alone do not
+create that window. The SDK capture source remains independent of Presenter,
+but full Steam input in the current implementation does not.
+
+Keep `server.presenterWindow=True` together with the supplied Presenter input,
+native Steam input and adapter flags for the accepted setup. Removing the new
+ReShade experiment has not removed this Steam dependency. An input-only Host
+window or a different Steam transport is a separate, unimplemented design task;
+this result does not prove that Steam must universally use a rendering child.
 
 ## Scope
 

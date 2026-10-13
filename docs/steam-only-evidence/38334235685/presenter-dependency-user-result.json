@@ -1,0 +1,18 @@
+{
+  "status": "PRESENTER_DEPENDENCY_CONFIRMED_USER_REPORTED",
+  "validation_basis": "User-reported single-setting comparison on the delivered Steam-only experiment",
+  "build_from_delivery_context": "ldb-ipc-c32-dev+2da41c976cf19b26",
+  "user_report": "本次确认 默认你给的steam only experment conf，只要修改一条 presenterwindow = False 就会让整个steam input失效",
+  "baseline_config": "config/STEAM-ONLY-EXPERIMENT.conf",
+  "changed_key": "server.presenterWindow",
+  "baseline_value": true,
+  "comparison_value": false,
+  "other_settings_unchanged_user_reported": true,
+  "baseline_steam_input_works_user_reported": true,
+  "comparison_steam_input_works_user_reported": false,
+  "new_paired_logs_supplied": false,
+  "actual_effective_config_independently_observed_this_run": false,
+  "scope": "Current Steam-only Presenter implementation requires its Host-owned window for the reported setup. No claim of universal Steam requirement, newly traced branches, remote invitation delivery, performance or complete gameplay regression",
+  "binary_changes_for_result_record": false,
+  "main_modified_by_this_update": false
+}

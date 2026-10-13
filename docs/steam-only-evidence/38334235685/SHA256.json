@@ -9,6 +9,7 @@
   "ipc-raw.json": "a3c9fb39cd293fdc05a344e21d926e401427113bde30d1ff6470935697834062",
   "native-pass.log": "10b997ff00d7e50f3cfb1f7fa25a3c48a056826c6b54c7d7cef75daae07994f3",
   "native-run.json": "59118ca5859f4ab7b8995261fa889bd88c42e5acbb2e7ec11627a319136c50c8",
+  "presenter-dependency-user-result.json": "da24ff3faef4c7ce99068d7a1634d6f64abec8ea256c498b865bcd4b54a4d107",
   "production-removal-audit.json": "46a961edc5af3879d7df7d0ba49386a91263fd28b4ea60f2f0a943722184d8bf",
   "source-verification.json": "c50df303d8be4274043b8ee7943c6059678f323cb46b52586c0f7452e945e0cd",
   "verify-compiled-protocol.py": "3aede9470cdfac87a98bcf9f7fed6784c68bb2432a1db0ebb28fc6ee3f677baa",
