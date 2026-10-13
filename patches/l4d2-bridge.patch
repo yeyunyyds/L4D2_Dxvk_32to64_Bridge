@@ -11523,7 +11523,9 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
      ServerMessage { Commands::Bridge_Ack };
    }
    return 0;
--}+}
+-}
+\ No newline at end of file
++}
 diff --git a/bridge/src/server/meson.build b/bridge/src/server/meson.build
 index 908d93f..2347f44 100644
 --- a/bridge/src/server/meson.build
