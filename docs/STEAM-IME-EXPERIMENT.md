@@ -1,6 +1,6 @@
 # Steam IME thread bootstrap experiment
 
-Status: Windows native verification PASS; real Sogou/Microsoft IME untested.
+Status: Windows native verification PASS; paired game bootstrap True/False controls reported ineffective.
 Independent branch; VERSION remains 1.3.1 and published assets/main are untouched.
 Patch SHA changes the matched binary build ID, distinguishing the experiment.
 
@@ -56,3 +56,11 @@ Observe Chinese composition/commit, candidate visibility, reopening, English,
 backspace, and ordinary Steam closing/game input. Send paired bridge logs after
 a short failing sequence; neither the counters nor logs contain composed text.
 Main and formal v1.3.1 assets remain unchanged. This package is not a Release.
+
+## Superseding paired game feedback
+
+The user supplied two correctly matched74bec765 sessions and clarified that
+bootstrap True versus False is their intended difference. Both are ineffective
+for Chinese input. COM/initial-context bootstrap therefore is not an accepted
+fix. See [scoped polling investigation](STEAM-IME-POLLING-EXPERIMENT.md) for the
+concrete Client text-service suppression evidence and the next independent flag.
