@@ -1,6 +1,6 @@
-# 1.3.1 候选包 / Release candidate
+# 1.3.1 安装与回滚 / Installation and rollback
 
-本包用于发布前实机确认，尚未创建 Tag 或 Release。正式版仍为 1.3.0。
+[v1.3.1 已正式发布](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/releases/tag/v1.3.1)，复用原生验证通过的候选产物。
 
 ## 安装与回滚
 
@@ -29,4 +29,4 @@ View Workshop，以及房间邀请好友界面能操作并关闭。使用 ReShad
 
 前一 Steam-only 实验已有用户实机通过记录；该记录不自动代表此完整 main 组合或
 新版本候选已通过。Windows 原生回归和候选实机结果分别记录，不宣称 FPS 改善。
-在用户确认之前不发布 1.3.1 Release。
+用户已授权正式发布。此授权不改变测试记录，未新增实机验证或性能结论。

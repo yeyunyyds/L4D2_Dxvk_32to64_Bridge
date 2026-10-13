@@ -5,15 +5,15 @@
 
 # 更新记录 / Changelog
 
-当前正式版为 **v1.3.0**。简明记录见 [LDBREADME](LDBREADME.md)。
+当前正式版为 **v1.3.1**。简明记录见 [LDBREADME](LDBREADME.md)。
 
-## 1.3.1（候选构建，待确认 / Candidate, not released）
+## 1.3.1（正式发布 / Stable）
 
 - 整合已通过实验实机测试的 Steam-only 邀请界面、Overlay 捕获状态及输入交接修复；保留真实 Steam SDK 请求与 Host 窗口适配。
 - 默认启用 Presenter 子窗口。Steam Overlay 输入依赖此窗口；L4N 开关统一标为 ReShade / Steam Overlay，并提示关闭会使 Steam 输入失效。
 - 保留完整 IPC v2、默认 C8、六档批次、VA arena 和默认关闭的 mapped Shadow；包含上传失败、关闭尾包及回复预算正确性修复。
 - 不包含 ReShade 原游戏窗口实验路径或自定义 ReShade DLL。原有可选 ReShade Presenter 兼容路径保留。
-- 配套完整包、三件套升级包与独立 L4N 插件。此候选版本尚未发布，完整安装及验收见 [1.3.1 候选说明](docs/RELEASE-V1.3.1.md)。
+- 配套完整包、三件套升级包与独立 L4N 插件。正式版复用已验证候选产物，完整安装及验收见 [1.3.1 安装说明](docs/RELEASE-V1.3.1.md)。
 
 ## 1.3.0（正式发布 / Stable）
 
