@@ -1,0 +1,18 @@
+{
+  "cpp_sha256": "9addc7e81ec56cbd14a2688837282e08fe394a3792bbdb4f0441ea191cf8a046",
+  "hpp_sha256": "9313b3ef452cde6d134f14c7afde05bd6a94c09f926f488890c23c344c6d8a01",
+  "extracted_methods": [
+    "reshade::input::input(",
+    "reshade::input::~input(",
+    "reshade::input::is_key_down(",
+    "reshade::input::is_key_pressed(unsigned int keycode) const",
+    "reshade::input::is_key_released(",
+    "reshade::input::is_key_repeated(",
+    "reshade::input::next_frame(",
+    "reshade::input::max_mouse_position(",
+    "reshade::input::ldb_register(",
+    "reshade::input::ldb_begin_frame(",
+    "reshade::input::ldb_capture("
+  ],
+  "limitations": "Authored OS responses; not full runtime/GPU validation."
+}

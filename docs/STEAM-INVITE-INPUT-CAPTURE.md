@@ -1,7 +1,26 @@
 # Steam callback capture and invitation input experiment
 
-Status: IMPLEMENTED; native build and gameplay validation pending.
+Status: AWAITING GAME VALIDATION; independent native tests, full build and package checks PASS.
 Branch: `codex/steam-invite-availability`. No main, VERSION, tag or release change.
+
+## Verified matched experiment
+
+- [Download Steam capture/invitation/ReShade experiment](https://raw.githubusercontent.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/eeef417be4993e78a4409f120cdcfbb195e946e1/l4d2-bridge-steam-capture-invite-reshade-dev-0901d263de181431-r38327953766.zip).
+- Build `ldb-ipc-c32-dev+0901d263de181431`; ReShade `ldb-reshade-input-dev+0901d263de181431`.
+- Compiled and packaging source `817e7d1b9029acf7f537f3395394b57e713dc3df`.
+- ZIP: 5,071,792 bytes, SHA-256 `bdf6a8b22373ad781e6dd4e5d3cfaec870d0af74a8326d6f190742fcd8b56dc6`.
+- [Full Windows native gate/build](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38327953766): PASS.
+- [Permanent raw/native/package/upload evidence](steam-input-evidence/38327953766/).
+
+Both architecture runs passed actual three-owner capture/activation helpers,
+owner-thread/worker/stale/no-window notification cases and 30,000 concurrent
+open/close pairs. Existing 13 native suites, four input/status architecture pairs,
+252 production transport cases, 30 failure cases, 39 Python checks and compiled
+ReShade32/64 export/mapping/build probes passed. Offline verification confirms
+all five delivered binaries equal the native originals, actual named getter words,
+PE bitness, Release receipts, manifests, notices and all packaged hashes. The ZIP
+was appended to the existing download branch and fetched again for SHA validation.
+Synthetic tests do not establish real Steam consumption or closed-state Shift+Tab.
 
 ## Paired hardware evidence
 
@@ -58,7 +77,7 @@ does not prove the presence or absence of the whole Steam hook chain.
    explicit role field; the retained `host_pid` field names the observer process,
    even on Client records. Named-IAT coverage excludes dynamic resolution.
 
-Observers pin their own code and retain renderer/target lifetime, then restore
+Observers pin their own code, retain renderer references and save prior API targets, then restore
 only their own IAT replacements on stop. There is no per-command IPC change or
 new shared mapping. Normal key/mouse messages bypass notification lookup using
 the registered-message range; notification registration occurs only if an actual
