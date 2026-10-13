@@ -1,0 +1,97 @@
+{
+  "run": 38353311704,
+  "source_commit": "9e3ee1292f901b0bb9352e36bba93a4cd5cfbda4",
+  "status": "AWAITING GAME VALIDATION",
+  "published": false,
+  "packages": {
+    "l4d2-bridge-v1.3.1.zip": {
+      "sha256": "34be70e0dfa6461acd92c67c017346e0c42fce23df00a5491605e2b9f883bf7f",
+      "bytes": 7240623,
+      "receipt": {
+        "version": "1.3.1",
+        "build_id": "l4d2-1.3.1+3d13bf31676468b8",
+        "patch_sha256": "3d13bf31676468b81984b9d68360a19f74693d2d521b73dc44a717de4ea7cc26",
+        "kind": "full",
+        "gameplay_validated": false,
+        "source_commit": "9e3ee1292f901b0bb9352e36bba93a4cd5cfbda4",
+        "distribution": "release",
+        "optional_plugin": false,
+        "files": {
+          "bin/dxvk_d3d9.dll": "906931c482488aec3007adf5fc300dbc609a9c2f08a7c774ed2ab15225da58d5",
+          "bin/.l4d2bridge/L4D2Bridge64.exe": "ccc6428db2bbf6f124e749391d0ae0979369ec4eb0428ffff94fcd7d0481a123",
+          "bin/.l4d2bridge/L4D2Bridge32.exe": "ae4df93719d989f81993c9885b7d41233ded5a0380d558b3167bcc9094d3c218",
+          "bin/.l4d2bridge/d3d9vk_x64.dll": "57af7ff9b251268899616997b31082d1111baacbae03c1a4776687e821c1e150",
+          "bin/.l4d2bridge/d3d9vk_x86.dll": "0349923a6618f2383451c170a0f24d9c8f328392179aca71826a853655982405"
+        },
+        "build_environment": {
+          "build_id": "l4d2-1.3.1+3d13bf31676468b8",
+          "patch_sha256": "3d13bf31676468b81984b9d68360a19f74693d2d521b73dc44a717de4ea7cc26",
+          "source_commit": "9e3ee1292f901b0bb9352e36bba93a4cd5cfbda4",
+          "compiler": "MSVC 14.29",
+          "build_type": "Release",
+          "compile_examples": {
+            "x86": "\"cl\" \"-Isrc\\tracy\\libtracy.a.p\" \"-Isrc\\tracy\" \"-I..\\src\\tracy\" \"/MT\" \"/nologo\" \"/showIncludes\" \"/utf-8\" \"/Zc:__cplusplus\" \"/W2\" \"/WX\" \"/EHsc\" \"/std:c++17\" \"/O2\" \"/Gw\" \"-DNOMINMAX\" \"-DNDEBUG\" \"-DWITH_MULTITHREADED_DEVICE\" \"/DBUILD_NINJA=1\" \"/DBUILD_SOURCE_ROOT=\\\"D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.deps/dxvk-remix/bridge/\\\"\" \"/MP\" \"/DREMIX_BRIDGE_CLIENT\" \"/Fdsrc\\tracy\\libtracy.a.p\\TracyClient.cpp.pdb\" /Fosrc/tracy/libtracy.a.p/TracyClient.cpp.obj \"/c\" ../src/tracy/TracyClient.cpp",
+            "x64": "\"cl\" \"-Isrc\\tracy\\libtracy.a.p\" \"-Isrc\\tracy\" \"-I..\\src\\tracy\" \"/MT\" \"/nologo\" \"/showIncludes\" \"/utf-8\" \"/Zc:__cplusplus\" \"/W2\" \"/WX\" \"/EHsc\" \"/std:c++17\" \"/O2\" \"/Gw\" \"-DNOMINMAX\" \"-DNDEBUG\" \"-DWITH_MULTITHREADED_DEVICE\" \"/DBUILD_NINJA=1\" \"/DBUILD_SOURCE_ROOT=\\\"D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.deps/dxvk-remix/bridge/\\\"\" \"/MP\" \"/DREMIX_BRIDGE_SERVER\" \"/Fdsrc\\tracy\\libtracy.a.p\\TracyClient.cpp.pdb\" /Fosrc/tracy/libtracy.a.p/TracyClient.cpp.obj \"/c\" ../src/tracy/TracyClient.cpp",
+            "x86_server": "\"cl\" \"-Isrc\\tracy\\libtracy.a.p\" \"-Isrc\\tracy\" \"-I..\\src\\tracy\" \"/MT\" \"/nologo\" \"/showIncludes\" \"/utf-8\" \"/Zc:__cplusplus\" \"/W2\" \"/WX\" \"/EHsc\" \"/std:c++17\" \"/O2\" \"/Gw\" \"-DNOMINMAX\" \"-DNDEBUG\" \"-DWITH_MULTITHREADED_DEVICE\" \"/DBUILD_NINJA=1\" \"/DBUILD_SOURCE_ROOT=\\\"D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.deps/dxvk-remix/bridge/\\\"\" \"/MP\" \"/DREMIX_BRIDGE_X86_SERVER\" \"/DREMIX_BRIDGE_SERVER\" \"/Fdsrc\\tracy\\libtracy.a.p\\TracyClient.cpp.pdb\" /Fosrc/tracy/libtracy.a.p/TracyClient.cpp.obj \"/c\" ../src/tracy/TracyClient.cpp"
+          },
+          "ipc": "full-v2",
+          "protocol_version": "0x00020004",
+          "default_batch": 8,
+          "vbib_mapped_shadow_default": false,
+          "steam_source": "876cccd419d7bca214c90fb83e66ede23a63edb4"
+        }
+      }
+    },
+    "l4d2-bridge-patch-v1.3.1.zip": {
+      "sha256": "33865618283b90c8f10e2735fb5b94a29c55960f91ad7ff09f34796eb1ec74b4",
+      "bytes": 4037621,
+      "receipt": {
+        "version": "1.3.1",
+        "build_id": "l4d2-1.3.1+3d13bf31676468b8",
+        "patch_sha256": "3d13bf31676468b81984b9d68360a19f74693d2d521b73dc44a717de4ea7cc26",
+        "kind": "matched-update",
+        "gameplay_validated": false,
+        "source_commit": "9e3ee1292f901b0bb9352e36bba93a4cd5cfbda4",
+        "distribution": "release",
+        "optional_plugin": false,
+        "files": {
+          "bin/dxvk_d3d9.dll": "906931c482488aec3007adf5fc300dbc609a9c2f08a7c774ed2ab15225da58d5",
+          "bin/.l4d2bridge/L4D2Bridge64.exe": "ccc6428db2bbf6f124e749391d0ae0979369ec4eb0428ffff94fcd7d0481a123",
+          "bin/.l4d2bridge/L4D2Bridge32.exe": "ae4df93719d989f81993c9885b7d41233ded5a0380d558b3167bcc9094d3c218"
+        },
+        "build_environment": {
+          "build_id": "l4d2-1.3.1+3d13bf31676468b8",
+          "patch_sha256": "3d13bf31676468b81984b9d68360a19f74693d2d521b73dc44a717de4ea7cc26",
+          "source_commit": "9e3ee1292f901b0bb9352e36bba93a4cd5cfbda4",
+          "compiler": "MSVC 14.29",
+          "build_type": "Release",
+          "compile_examples": {
+            "x86": "\"cl\" \"-Isrc\\tracy\\libtracy.a.p\" \"-Isrc\\tracy\" \"-I..\\src\\tracy\" \"/MT\" \"/nologo\" \"/showIncludes\" \"/utf-8\" \"/Zc:__cplusplus\" \"/W2\" \"/WX\" \"/EHsc\" \"/std:c++17\" \"/O2\" \"/Gw\" \"-DNOMINMAX\" \"-DNDEBUG\" \"-DWITH_MULTITHREADED_DEVICE\" \"/DBUILD_NINJA=1\" \"/DBUILD_SOURCE_ROOT=\\\"D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.deps/dxvk-remix/bridge/\\\"\" \"/MP\" \"/DREMIX_BRIDGE_CLIENT\" \"/Fdsrc\\tracy\\libtracy.a.p\\TracyClient.cpp.pdb\" /Fosrc/tracy/libtracy.a.p/TracyClient.cpp.obj \"/c\" ../src/tracy/TracyClient.cpp",
+            "x64": "\"cl\" \"-Isrc\\tracy\\libtracy.a.p\" \"-Isrc\\tracy\" \"-I..\\src\\tracy\" \"/MT\" \"/nologo\" \"/showIncludes\" \"/utf-8\" \"/Zc:__cplusplus\" \"/W2\" \"/WX\" \"/EHsc\" \"/std:c++17\" \"/O2\" \"/Gw\" \"-DNOMINMAX\" \"-DNDEBUG\" \"-DWITH_MULTITHREADED_DEVICE\" \"/DBUILD_NINJA=1\" \"/DBUILD_SOURCE_ROOT=\\\"D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.deps/dxvk-remix/bridge/\\\"\" \"/MP\" \"/DREMIX_BRIDGE_SERVER\" \"/Fdsrc\\tracy\\libtracy.a.p\\TracyClient.cpp.pdb\" /Fosrc/tracy/libtracy.a.p/TracyClient.cpp.obj \"/c\" ../src/tracy/TracyClient.cpp",
+            "x86_server": "\"cl\" \"-Isrc\\tracy\\libtracy.a.p\" \"-Isrc\\tracy\" \"-I..\\src\\tracy\" \"/MT\" \"/nologo\" \"/showIncludes\" \"/utf-8\" \"/Zc:__cplusplus\" \"/W2\" \"/WX\" \"/EHsc\" \"/std:c++17\" \"/O2\" \"/Gw\" \"-DNOMINMAX\" \"-DNDEBUG\" \"-DWITH_MULTITHREADED_DEVICE\" \"/DBUILD_NINJA=1\" \"/DBUILD_SOURCE_ROOT=\\\"D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.deps/dxvk-remix/bridge/\\\"\" \"/MP\" \"/DREMIX_BRIDGE_X86_SERVER\" \"/DREMIX_BRIDGE_SERVER\" \"/Fdsrc\\tracy\\libtracy.a.p\\TracyClient.cpp.pdb\" /Fosrc/tracy/libtracy.a.p/TracyClient.cpp.obj \"/c\" ../src/tracy/TracyClient.cpp"
+          },
+          "ipc": "full-v2",
+          "protocol_version": "0x00020004",
+          "default_batch": 8,
+          "vbib_mapped_shadow_default": false,
+          "steam_source": "876cccd419d7bca214c90fb83e66ede23a63edb4"
+        }
+      }
+    },
+    "l4d2-bridge-l4n-v1.3.1.zip": {
+      "sha256": "e9acba53d2de52d6aee1bb92ab340ac23c21bfb1ff11c265cdad5423d504b0a8",
+      "bytes": 101655,
+      "receipt": {
+        "version": "1.3.1",
+        "source_commit": "9e3ee1292f901b0bb9352e36bba93a4cd5cfbda4",
+        "build_id": "l4d2-1.3.1+3d13bf31676468b8",
+        "kind": "optional-l4n-plugin",
+        "distribution": "release",
+        "optional_plugin": true,
+        "files": {
+          "bin/neko/plugins/L4D2BridgePlugin.dll": "3324406b3d285e4c6e833fe3579a85c46b7fe19bf6151ca0be2da04c83d5b9d4"
+        }
+      }
+    }
+  }
+}
