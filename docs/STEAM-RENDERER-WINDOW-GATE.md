@@ -2,6 +2,14 @@
 
 Status: **STATIC EVIDENCE / RUNTIME BRANCH NOT YET CONFIRMED**. Steam remains unfixed. This analysis reads the uploaded DLL without loading/executing it, modifying it or redistributing it. It introduces no bridge binary, runtime hook, default, backend, foreground or IPC change.
 
+Follow-up: [matched 0901 observer run](STEAM-INVITE-INPUT-CAPTURE.md#follow-up-0901-run-renderer-selection-mismatch-observed)
+now observes the exact active/foreground return sites: NULL active, then game HWND
+owned by Client PID18540 on Host PID24240, result unchanged, with no Presenter.
+Loaded PE timestamp/image size match this sample. This confirms the relevant
+runtime query inputs, including during the invitation attempt; the loaded file's
+full hash and actual conditional branch remain untraced. This supports the
+foreign-process rejection path, not a complete or unique input diagnosis.
+
 ## Exact sample
 
 User-supplied GameOverlayRenderer64.dll, 1,576,600 bytes, x64 PE32+. SHA-256: `59057f983ae6f02b7eb2495bf65e0430129dd81dff8d9628c764bd1a07e23fee`. Resource strings include version 10.96.30.42 / source-control ID 10963042 and an additional 1.0.0.1 block. Resource text is not signature verification. The user subsequently confirmed this is the DLL used by LDB64; actual call-site/branch execution still requires the runtime diagnostic. Addresses below are **RVAs for this sample only**; ASLR changes loaded VAs and future Steam versions can change all offsets.

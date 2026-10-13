@@ -1,6 +1,6 @@
 # Steam callback capture and invitation input experiment
 
-Status: AWAITING GAME VALIDATION; independent native tests, full build and package checks PASS.
+Status: BLOCKED — user gameplay test failed invitation interaction and closed-state Shift+Tab; independent native tests, full build and package checks PASS.
 Branch: `codex/steam-invite-availability`. No main, VERSION, tag or release change.
 
 ## Verified matched experiment
@@ -24,7 +24,69 @@ Synthetic tests do not establish real Steam consumption or closed-state Shift+Ta
 
 ## Paired hardware evidence
 
-The latest supplied Client/Host logs share one session and both report
+### Matched 0901 capture experiment: gameplay failed
+
+The next supplied logs both report `ldb-ipc-c32-dev+0901d263de181431`,
+complete the handshake and shut down cleanly. At 18:02:33.078 the verified
+GameUI helper issues `LobbyInvite`; at 18:02:33.107 callback331 reports active1.
+At 18:02:33.108 the actual new capture record reports source_capture1 and
+aggregate_capture1, and subsequent Client samples retain capture1. The user
+explicitly reports that invitation mouse/keyboard interaction still fails and
+Shift+Tab still cannot open the Overlay. Capture propagation is verified;
+real Steam input acceptance is FAILED. No close callback appears in these logs.
+See [sanitized hardware result](steam-input-evidence/38327953766/capture-paired-input-hardware-result.json).
+
+The Host window observer remains False and the Client observer was not enabled.
+Consequently no actual renderer window-query or hook-install evidence is available,
+and zero Host counters must not be interpreted as zero Steam calls. Existing input
+message counts do not prove those messages reached Steam's input transport.
+
+Source inspection confirms that `selectWindow()` requires a valid Host-owned
+Presenter child to substitute a game-owned HWND. With Presenter False the adapter
+returns the original HWND; enabling `server.steamWindowAdapter` alone does not
+create an input window. `server.steamNativeInput` controls the existing Presenter
+implementation and supplies no separate input relay when that object is absent.
+This limitation is a hypothesis for the remaining failure, not a runtime-proven
+sole cause. Enable both window observers on the same matched package before
+choosing a transport change. Previous user-reported Presenter-False success for
+other Overlay actions remains recorded and is not disproved by this later test.
+
+### Follow-up 0901 run: renderer selection mismatch observed
+
+Both window observers are now True. The matched 0901 Client and Host handshake
+and exit cleanly. Client PID18540 owns game HWND0x2A0B08/thread22748; Host PID24240
+owns no Presenter. On Host rendering thread24056 the actual renderer return sites
+0xA6AD4 and 0xA6AE2 repeatedly report NULL active followed by the game foreground
+HWND, owner PID18540, same_process0 and result unchanged. This persists after the
+18:19:23.579 invitation request and 18:19:23.607 callback/capture transition.
+Before that request the Client observes Shift+Tab keydown counts7 and5, without
+an intervening activation callback. Client capture after invitation is1.
+
+Host renderer timestamp0x6A98CE0D, image size0x1B7000 and the return sites match
+the uploaded statically analyzed DLL. That sample rejects a foreign-process
+foreground candidate before input window binding. Full loaded-file identity and
+the actual conditional branch are not traced here; the observed selection inputs
+are nevertheless direct runtime evidence supporting that specific failure path.
+Observer summaries are Client active0/foreground130/hooks0 and Host
+active26/foreground194/hooks0, dropped0. Hook counts cover only this named import
+after attachment; they do not exclude pre-existing or dynamically resolved hooks.
+See [sanitized window result](steam-input-evidence/38327953766/window-paired-input-hardware-result.json).
+
+The next comparison requires no new binary: restart with the same matched set,
+keep the window adapter and both observers enabled, and enable
+server.presenterWindow, server.presenterInput and server.steamNativeInput.
+For this comparison server.reshadeExternalInput must be False: the existing
+external original-window mode explicitly refuses Presenter True. Preserve all
+other settings, test closed-state Shift+Tab and invitation interaction, then
+compare mapped Host-owned selection and actual hook-install results. This is a
+temporary architecture control, not a claim that ReShade needs to revert or that
+Steam input will necessarily work. If it restores real input, investigate
+separating Steam's process-owned input binding from the ReShade presentation path;
+an independent input-only anchor is not implemented or validated by this audit.
+
+### Previous b0 capture omission
+
+The earlier supplied Client/Host logs share one session and both report
 `ldb-ipc-c32-dev+b0a628e02609a4b4`; they start and shut down cleanly.
 The effective config has Presenter/input/message-pump/custom-hooks all False,
 Steam input/chain/poll/mouse/proxy/adapter True, and no explicit external-ReShade

@@ -1,0 +1,23 @@
+{
+  "status": "BLOCKED_INPUT_GAMEPLAY",
+  "build": "ldb-ipc-c32-dev+0901d263de181431",
+  "log_sha256": {
+    "bridge32.log": "582210aa1599aa7edf913c6d97f372e6d4a39c58d9688afab25c3843413c2971",
+    "bridge64.log": "4b77a9b5604314050b6cfbf25f0b6562c3959db17e67b334b4b036a48db4da83"
+  },
+  "matched_build_and_handshake": true,
+  "clean_shutdown": true,
+  "presenter_window": false,
+  "client_window_observer_enabled": false,
+  "host_window_observer_enabled": false,
+  "lobby_invite_sdk_call_observed": true,
+  "real_callback331_active_observed": true,
+  "steam_source_capture_after_callback": true,
+  "aggregate_capture_after_callback": true,
+  "close_callback_observed": false,
+  "user_reported_invitation_interaction_passed": false,
+  "user_reported_shift_tab_passed": false,
+  "capture_state_scope": "Callback-to-capture propagation works; this does not prove native Steam input delivery",
+  "remaining_cause": "Unconfirmed; both renderer window observers must be enabled to investigate actual HWND ownership and hook installation",
+  "raw_user_logs_redistributed": false
+}
