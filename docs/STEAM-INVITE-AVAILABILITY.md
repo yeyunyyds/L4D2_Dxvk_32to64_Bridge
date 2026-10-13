@@ -1,10 +1,32 @@
 # Steam GameUI invitation availability experiment
 
-Status: AWAITING MATCHED-INSTALL GAME VALIDATION. Supplied failure logs establish
+Status: AWAITING INVITATION INPUT VALIDATION. Latest user report: the invitation
+panel opens, but cannot be controlled. Fresh paired interaction logs are pending.
+Supplied earlier failure logs establish
 experimental Client + formal 1.3.0 Host mixing and an explicit handshake rejection.
 Native tests, full build and package verification remain PASS; actual L4D2 startup
 with the full matched set and invitation delivery are still unverified.
 Branch: `codex/steam-invite-availability`. No main merge, VERSION or release change.
+
+## Invitation panel opens, input remains unverified
+
+Latest report: "可以呼出邀请界面。但是控制不了邀请界面". This is partial
+functional evidence that the availability/request path can open the panel; it
+does not establish mouse/keyboard operation or invitation receipt/joining.
+The supplied config enables all retained Steam options but has
+`client.hookMessagePump=True`, unlike the previously accepted False setup, and
+no explicit external-ReShade input option. It disables input/window/web
+diagnostics. Do not infer a missing Steam callback, capture failure or wrong
+request PID without a fresh paired run.
+
+Next controlled comparison: set only `client.hookMessagePump=False` as the
+functional change; enable `client.steamInputDiagnostics`,
+`server.steamWindowDiagnostics` and `client.steamWebDiagnostics` for the run.
+Keep the current Presenter/ReShade/Steam options otherwise unchanged. Compare
+ordinary Shift+Tab with the lobby invitation panel in the same session, then
+retain both logs. Existing diagnostics report callback331, aggregate capture,
+focus/capture HWNDs, message counts, suppression callers and Host hook results.
+Do not force UI capture solely on an SDK activation method returning void.
 
 ## Reported startup regression
 

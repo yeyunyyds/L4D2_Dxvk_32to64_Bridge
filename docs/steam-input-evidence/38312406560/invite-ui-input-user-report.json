@@ -1,0 +1,28 @@
+{
+  "status": "AWAITING_INVITATION_INPUT_VALIDATION",
+  "user_report": "可以呼出邀请界面。但是控制不了邀请界面",
+  "invitation_panel_opened_user_reported": true,
+  "invitation_input_passed": false,
+  "invitation_delivery_joining_verified": false,
+  "fresh_paired_interaction_logs_received": false,
+  "ordinary_shift_tab_same_session_result_received": false,
+  "supplied_config": {
+    "client.hookMessagePump": true,
+    "server.presenterWindow": false,
+    "server.presenterInput": true,
+    "client.steamOverlayInput": true,
+    "server.steamOverlayInput": true,
+    "server.steamNativeInput": true,
+    "client.steamHookChainPassThrough": true,
+    "client.steamMouseCaptureHandoff": true,
+    "client.steamPollChainPassThrough": true,
+    "server.steamWindowAdapter": true,
+    "client.steamWorkshopAvailabilityProxy": true,
+    "server.reshadeExternalInput_explicit_option_present": false,
+    "client.steamInputDiagnostics": false,
+    "server.steamWindowDiagnostics": false,
+    "client.steamWebDiagnostics": false
+  },
+  "root_cause_established": false,
+  "controlled_next_step": "Disable message-pump hook as the single functional change, enable existing diagnostics, compare ordinary Shift+Tab and invitation interaction in one run; preserve all other working settings"
+}
