@@ -1,6 +1,6 @@
 # Steam actual IMM call observer
 
-Status: implementation prepared; Windows native build blocked before step execution; game evidence pending.
+Status: Windows native ABI/original-call tests and full build PASS; game IME validation PENDING.
 The latest supplied 5ba86729 sessions confirm polling flag True, bootstrap False,
 and actual ime-pass-through for Sogou. User reports unchanged failure. Host has
 23 focused samples, changing Chinese/English HKLs, a context in all187 samples,
@@ -42,12 +42,24 @@ Overlay, click the text input field, switch Chinese/English, attempt brief input
 close Overlay and collect both bridge logs. No need to repeat bootstrap A/B.
 Main/Release and Exit Game behavior remain unchanged.
 
-## Current build gate
+## Build and delivery evidence
 
-Source746c003818a8185099170468dab57daa18603903 is prepared. GitHub Windows
-runners were assigned to run38470376378 and replacement run38471423460 but
-neither initially reported any executed step. The duplicate first run was
-cancelled; retain the replacement as the pending build gate. This is not a
-native-test success or source failure. No new diagnostic ZIP is delivered until
-the replacement build and original-call/ABI tests pass. Existing formal assets
-and the ineffective prior experimental packages are preserved unchanged.
+Source: `746c003818a8185099170468dab57daa18603903`.
+Build ID: `l4d2-1.3.1+af9077d98ae12293`.
+[Windows build and native tests](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38471423460)
+completed successfully. The x86 and x64 fixture each passed disabled and enabled
+modes, preserving actual original arguments, results, output buffers and LastError.
+The full existing native regression suite and three Bridge binaries also built
+successfully. These tests do not establish real Chinese composition support.
+
+The initially stalled duplicate run38470376378 was cancelled; replacement
+run38471423460 subsequently executed and passed. Release publication was skipped.
+
+[Matched three-binary diagnostic ZIP](https://raw.githubusercontent.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/7aab9ed4fa3adcbae658edc545333d1347b94bec/steam-ime-actual-calls-r38471423460/l4d2-bridge-steam-ime-actual-calls-af9077d98ae12293-r38471423460.zip)
+
+SHA-256: `2f8a5329828ca84001028737696163871ab52c783dd4b465d06af804e8cff2d9`.
+
+Archive digest, manifest, matched build IDs and PE architectures were verified,
+and the immutable uploaded bytes were downloaded again and compared. Only the
+experimental download branch and this development branch were updated. Main,
+formal release, protocol semantics and Exit Game behavior remain unchanged.
