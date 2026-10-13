@@ -71,8 +71,10 @@ class RuntimeSeparation(unittest.TestCase):
         config = (ROOT / 'config/bridge.conf').read_text(encoding="utf-8")
         for side in ['client', 'server']:
             for switch in ['memoryMonitoring', 'crashDiagnostics', 'apiWaitDiagnostics',
-                           'dataDiagnostics', 'colorDiagnostics', 'steamInputDiagnostics']:
+                           'dataDiagnostics', 'colorDiagnostics', 'steamInputDiagnostics', 'steamWindowDiagnostics']:
                 self.assertRegex(config, re.escape(side + '.' + switch) + r'\s*=\s*False')
+        self.assertRegex(config, r'server.presenterWindow\s*=\s*True')
+        self.assertRegex(config, r'client.steamWebDiagnostics\s*=\s*False')
         self.assertRegex(config, r'client.pageBlockRetentionPolicy\s*=\s*learned-aggressive')
         for file, side in [('client/d3d9_lss.cpp', 'client'), ('server/main.cpp', 'server')]:
             startup = (SOURCE / ('bridge/src/' + file)).read_text(encoding="utf-8")

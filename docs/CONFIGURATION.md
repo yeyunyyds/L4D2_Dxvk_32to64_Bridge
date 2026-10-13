@@ -14,7 +14,7 @@
 
 可选 x86 L4N SDK v2 插件可通过 [常用设置菜单](L4N-BRIDGE-CONTROLS.md) 减少手工编辑。Bridge 本体不依赖插件；插件只查询状态和发送控制请求，由游戏内 `dxvk_d3d9.dll` 复用实际 Config 路径安全保存。
 
-Memory Policy 的 keep / lg / drop 仅调用运行时 SetPolicy，点击 `save to configure` 才保存当前 runtime 策略到 `client.pageBlockRetentionPolicy`。运行与配置相同时首行标记 configure，否则显示 runtime。Host 只显示配置值，选择 x86/x64 后点击 Save 才写入；Host 与 ReShade Presenter 下次完整启动生效，不能运行时切换 Host，Presenter 菜单不负责安装 ReShade。Status 仅显示 PageBlock。当前验证的 ReShade 组合仍是 x64 Host + Vulkan ReShade 6.0.1，启用 Presenter 不自动修改 Host。菜单没有测试/诊断选项；旧 Bridge 下保存不可用，原 Stats/GC/会话策略仍可用。
+Memory Policy 的 keep / lg / drop 仅调用运行时 SetPolicy，点击 `save to configure` 才保存当前 runtime 策略到 `client.pageBlockRetentionPolicy`。运行与配置相同时首行标记 configure，否则显示 runtime。Host 只显示配置值，选择 x86/x64 后点击 Save 才写入；Host 与 ReShade / Steam Overlay 下次完整启动生效，不能运行时切换 Host。该菜单控制两者依赖的 Presenter 窗口和输入支持，关闭后当前 Steam Overlay 输入也会失效；它不负责安装 ReShade。Status 仅显示 PageBlock。当前验证的 ReShade 组合仍是 x64 Host + Vulkan ReShade 6.0.1，启用 Presenter 不自动修改 Host。菜单没有测试/诊断选项；旧 Bridge 下保存不可用，原 Stats/GC/会话策略仍可用。
 
 v1.2.0 正式版包含通用设置 API，L4N 插件单独提供 ZIP。旧 `v1.2.0-dev.1` 附件不包含该 API。普通手工修改配置仍按上文完整重启；插件策略选项即时生效，保存为独立动作。
 
@@ -64,7 +64,7 @@ v1.2.0 正式版包含通用设置 API，L4N 插件单独提供 ZIP。旧 `v1.2.
 
 ## 可选 ReShade 输入
 
-本版默认启用 Presenter、消息泵和自定义钩子适配，配套 Steam 输入修复。关闭 presenterWindow 时，presenterInput 本身不会创建窗口或线程。ReShade 仍需另行安装，启用 Presenter 不会安装 ReShade。
+当前 main 配置默认启用 Presenter 及其输入，配套 Steam 输入修复；额外消息泵和自定义钩子适配默认关闭，与 Steam-only 实机对照一致。关闭 presenterWindow 时，presenterInput 本身不会创建窗口或线程，当前 Steam 输入失去所需的 Host 窗口。ReShade 仍需另行安装，启用 Presenter 不会安装 ReShade。
 
 | 配置 | 当前随包值 | 作用 |
 |---|---|---|
