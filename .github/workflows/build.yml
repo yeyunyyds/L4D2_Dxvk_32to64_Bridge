@@ -80,7 +80,7 @@ jobs:
         run: |
           python scripts/prepare_v130_fixture.py
           if ($LASTEXITCODE -ne 0) { throw 'Frozen fixture preparation failed' }
-          foreach ($test in @('steam_ime_session','ipc_full','buffer_shadow_arena','steam_capture_state','steam_window_diagnostics','steam_web_diagnostics','steam_availability_diagnostics','steam_workshop_status')) {
+          foreach ($test in @('steam_ime_calls','steam_ime_session','ipc_full','buffer_shadow_arena','steam_capture_state','steam_window_diagnostics','steam_web_diagnostics','steam_availability_diagnostics','steam_workshop_status')) {
             & powershell.exe -NoProfile -File "./scripts/test_$test.ps1"
             if ($LASTEXITCODE -ne 0) { throw "$test failed" }
           }
@@ -213,6 +213,7 @@ jobs:
           name: l4d2-native-v${{ env.L4D2_PROJECT_VERSION }}-${{ github.run_id }}
           path: |
             work/steam-ime-native/
+            work/steam-ime-calls-native/
             work/ipc-full-native/
             work/ipc-c32-native/steam-capture/
             work/ipc-safety-baseline/
