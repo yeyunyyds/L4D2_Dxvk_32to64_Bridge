@@ -10,7 +10,10 @@ Branch: `codex/steam-invite-availability`. No main merge, VERSION or release cha
 
 ## Invitation panel opens, input remains unverified
 
-Latest report: "可以呼出邀请界面。但是控制不了邀请界面". This is partial
+Latest report: "可以呼出邀请界面。但是控制不了邀请界面". The user additionally
+confirms ordinary Shift+Tab does not open the Overlay and neither mouse nor
+keyboard can interact with or close the invitation panel in this session.
+Investigate the common Steam input path, not just the invitation command. This is partial
 functional evidence that the availability/request path can open the panel; it
 does not establish mouse/keyboard operation or invitation receipt/joining.
 The supplied config enables all retained Steam options but has

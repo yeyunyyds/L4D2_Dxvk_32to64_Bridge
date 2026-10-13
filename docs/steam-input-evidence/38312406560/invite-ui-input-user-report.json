@@ -5,7 +5,10 @@
   "invitation_input_passed": false,
   "invitation_delivery_joining_verified": false,
   "fresh_paired_interaction_logs_received": false,
-  "ordinary_shift_tab_same_session_result_received": false,
+  "ordinary_shift_tab_same_session_result_received": true,
+  "ordinary_shift_tab_opens_overlay": false,
+  "invitation_panel_mouse_keyboard_interaction": false,
+  "invitation_panel_can_be_closed_using_input": false,
   "supplied_config": {
     "client.hookMessagePump": true,
     "server.presenterWindow": false,
