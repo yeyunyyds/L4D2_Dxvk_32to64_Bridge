@@ -24,9 +24,11 @@ Other values are unmodified result bits. AssociateContext NULL return can mean
 no prior context; a stale LastError does not prove failure. Creation/association
 thread comparison and actual window PID are evidence, not inferred ownership.
 
-Identical observations are limited to once per second per API/thread; changed
+Identical observations are limited to once per five seconds per API/thread/callsite; changed
 states are retained. All output is bounded at4096 lines. A limit record signals
-incomplete coverage. Dynamic lookup/direct code and imports absent from the
+incomplete coverage. Contention can drop observations and a128-site limit record signals incomplete
+callsite coverage. Context handle reuse must not be inferred as permanent ownership.
+Dynamic lookup/direct code and imports absent from the
 renderer are not covered; attachment mask/import records report actual coverage.
 
 The fixture verifies x86/x64 API signatures, exactly one original call, arguments,
