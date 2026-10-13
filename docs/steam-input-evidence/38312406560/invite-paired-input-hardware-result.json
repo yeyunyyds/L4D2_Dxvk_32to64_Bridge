@@ -1,0 +1,23 @@
+{
+  "status": "INPUT_CAPTURE_OMISSION_CONFIRMED",
+  "build": "ldb-ipc-c32-dev+b0a628e02609a4b4",
+  "log_sha256": {
+    "bridge32.log": "b81398ff43804b872169ca0b44d0abf6dcd0b333eb542af068e1770380d24d62",
+    "bridge64.log": "0d4894fb6a238e8b4e9c12aa55b2d6fabb6839c02c908275667940ff997dbc0d"
+  },
+  "matched_session": true,
+  "client_message_pump": false,
+  "presenter_window": false,
+  "host_window_observer": false,
+  "invitation_guard_original": false,
+  "invitation_guard_returned": true,
+  "host_ready": true,
+  "lobby_invite_sdk_call_observed": true,
+  "real_callback331_active_observed": true,
+  "aggregate_capture_after_callback": false,
+  "shift_tab_keydowns_observed": true,
+  "activation_after_closed_shift_tab_observed": false,
+  "client_downstream_module": "L4D2Evolved.dll",
+  "root_scope": "Missing independent Steam capture update is established; actual Steam transport/closed-hotkey cause remains unproven",
+  "raw_user_logs_redistributed": false
+}

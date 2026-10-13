@@ -41,13 +41,19 @@ shutil.copy2(ROOT/'docs/RESHADE-EXTERNAL-INPUT-EXPERIMENT.md',out/'INSTALL-AND-T
 invite=(ROOT/'docs/STEAM-INVITE-AVAILABILITY.md').exists()
 if invite:
  shutil.copy2(ROOT/'docs/STEAM-INVITE-AVAILABILITY.md',out/'STEAM-INVITE-AND-TEST.md')
+ if (ROOT/'docs/STEAM-INVITE-INPUT-CAPTURE.md').exists():
+  shutil.copy2(ROOT/'docs/STEAM-INVITE-INPUT-CAPTURE.md',out/'STEAM-INPUT-CAPTURE-AND-TEST.md')
+  shutil.copy2(ROOT/'config/STEAM-INVITE-INPUT-EXPERIMENT.conf',out/'config/STEAM-INVITE-INPUT-EXPERIMENT.conf')
 receipt.update(experiment='reshade-original-window-external-input',reshade_source='1c952ec211a91b9ebbf9042e23a4a810feba44ff',reshade_build_id=f'ldb-reshade-input-dev+{digest[:16]}',native_run_id=__import__('os').environ.get('GITHUB_RUN_ID'),external_input_default=False,experimental_snippet_batch=8,presenter_required=False,gameplay_validated=False,status='AWAITING GAME VALIDATION',limitations=['One primary runtime/window','Whole-panel capture; fine-grained InputProcessing=0/1 not mirrored','No gameplay/GPU validation'])
 if invite:
  receipt.update(experiment='steam-invite-availability-with-reshade-original-window',steam_experiment='verified-gameui-overlay-helper-availability',prior_reshade_user_accepted_build='8fffd697a6a95120',invitation_gameplay_validated=False)
+ if (ROOT/'docs/STEAM-INVITE-INPUT-CAPTURE.md').exists():
+  receipt.update(experiment='steam-callback-capture-with-invite-and-reshade',steam_capture_source='actual-callback331-independent-bit',client_renderer_observer_default=False,steam_input_gameplay_validated=False)
 hashes={p.relative_to(out).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(out.rglob('*')) if p.is_file()}
 receipt['files']=hashes
 (out/'SHA256.json').write_text(json.dumps(hashes,indent=2)+'\n');(out/'BUILD-INFO.json').write_text(json.dumps(receipt,indent=2)+'\n')
 label='steam-invite-reshade' if invite else 'reshade-original-window'
+if (ROOT/'docs/STEAM-INVITE-INPUT-CAPTURE.md').exists():label='steam-capture-invite-reshade'
 archive=out.parent/f'l4d2-bridge-{label}-dev-{digest[:16]}-r{receipt["native_run_id"]}.zip'
 with zipfile.ZipFile(archive,'w',zipfile.ZIP_DEFLATED,compresslevel=9) as z:
  for p in sorted(out.rglob('*')):

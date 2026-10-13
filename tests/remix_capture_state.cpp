@@ -6,6 +6,8 @@
 #include <iostream>
 #include <thread>
 #include <cstdlib>
+#include <windows.h>
+#pragma comment(lib,"user32.lib")
 namespace bridge_util {struct MessageChannelBase {
  std::function<bool(uint32_t,uint32_t)> handler;
  template<class F>void registerHandler(const char*,F&& value){handler=std::forward<F>(value);}
@@ -17,9 +19,24 @@ void onRemixUIActivated(){++activate;}
 void onRemixUIDeactivated(){++deactivate;}
 void unsetCooperativeLevel(){++suppress;}
 void resetCooperativeLevel(){++restore;}
+void releaseSteamMouseCapture();
 }
 // PRODUCTION_CAPTURE_STATE
 static void check(bool value){if(!value){std::cerr<<"capture source ownership test failed\n";std::exit(2);}}
+namespace WndProc {
+HWND g_hwnd=nullptr;
+std::atomic<bool> g_steamActive{false},g_steamKnown{false};
+bool externalEnabled=false;
+static void refreshExternalInput(){if(externalEnabled && g_steamActive.load())RemixState::setExternal(false);}
+// PRODUCTION_STEAM_ACTIVATION
+}
+static unsigned steamReleases=0;static DWORD ownerThread=0;
+void DI::releaseSteamMouseCapture(){check(GetCurrentThreadId()==ownerThread);check(RemixState::steamActive()&&RemixState::isUIActive());++steamReleases;}
+static LRESULT CALLBACK windowProcedure(HWND hwnd,UINT message,WPARAM w,LPARAM l){
+ if(WndProc::handleSteamCaptureNotification(message))return 0;
+ return DefWindowProcW(hwnd,message,w,l);
+}
+static void pump(){MSG message{};while(PeekMessageW(&message,nullptr,0,0,PM_REMOVE)){TranslateMessage(&message);DispatchMessageW(&message);}}
 int main(){
  bridge_util::MessageChannelBase channel;RemixState::init(channel);
  check(!RemixState::isUIActive());check(RemixState::setExternal(true));check(RemixState::externalActive());
@@ -29,8 +46,40 @@ int main(){
  channel.handler(0,0);check(DI::restore==1);
  channel.handler(1,0);check(!RemixState::setExternal(true));channel.handler(0,0);check(RemixState::isUIActive()&&RemixState::externalActive());
  check(RemixState::setExternal(false)&&!RemixState::isUIActive());
+ // SDK Steam owns bit 4 even with no Presenter and no external ReShade mode.
+ check(RemixState::setSteam(true)&&RemixState::steamActive()&&RemixState::isUIActive());
+ check(!RemixState::setSteam(true));channel.handler(1,0);RemixState::setExternal(true);
+ channel.handler(0,0);RemixState::setExternal(false);check(RemixState::steamActive()&&RemixState::isUIActive());
+ check(RemixState::setSteam(false)&&!RemixState::isUIActive());
+ channel.handler(1,0);RemixState::setSteam(true);RemixState::setExternal(true);
+ check(!RemixState::setSteam(false));check(RemixState::isUIActive()&&!RemixState::steamActive());
+ channel.handler(0,0);check(RemixState::isUIActive()&&RemixState::externalActive());
+ check(RemixState::setExternal(false)&&!RemixState::isUIActive());
+ // Execute the actual callback helper against a real owner-thread window.
+ ownerThread=GetCurrentThreadId();
+ WndProc::g_hwnd=CreateWindowExW(0,L"STATIC",L"Steam callback owner fixture",WS_OVERLAPPED,0,0,20,20,nullptr,nullptr,GetModuleHandleW(nullptr),nullptr);check(WndProc::g_hwnd!=nullptr);
+ check(SetWindowLongPtrW(WndProc::g_hwnd,GWLP_WNDPROC,reinterpret_cast<LONG_PTR>(&windowProcedure))!=0);
+ check(!WndProc::handleSteamCaptureNotification(WM_MOUSEMOVE));
+ WndProc::applySteamActivation(true);check(RemixState::steamActive()&&steamReleases==1);check(WndProc::g_steamKnown.load());
+ WndProc::applySteamActivation(true);check(steamReleases==1);WndProc::applySteamActivation(false);check(!RemixState::isUIActive());
+ std::thread activateWorker([]{WndProc::applySteamActivation(true);});activateWorker.join();
+ check(RemixState::steamActive()&&steamReleases==1);pump();check(steamReleases==2);
+ std::thread duplicateWorker([]{WndProc::applySteamActivation(true);});duplicateWorker.join();pump();check(steamReleases==2);
+ WndProc::applySteamActivation(false);
+ // A delayed activation notification after real deactivation cannot recapture.
+ std::thread staleWorker([]{WndProc::applySteamActivation(true);});staleWorker.join();
+ WndProc::applySteamActivation(false);pump();check(steamReleases==2&&!RemixState::isUIActive());
+ // Handoff from actual external source to SDK Steam keeps aggregate suppression
+ // balanced; an authored ReShade refresh models its retained suspension policy.
+ WndProc::externalEnabled=true;RemixState::setExternal(true);const unsigned priorActivation=DI::activate;
+ WndProc::applySteamActivation(true);check(RemixState::steamActive()&&!RemixState::externalActive()&&DI::activate==priorActivation);
+ WndProc::applySteamActivation(false);check(!RemixState::isUIActive());WndProc::externalEnabled=false;
+ check(DestroyWindow(WndProc::g_hwnd)!=FALSE);WndProc::g_hwnd=nullptr;
+ const unsigned priorRelease=steamReleases;WndProc::applySteamActivation(true);check(RemixState::steamActive()&&steamReleases==priorRelease);
+ WndProc::applySteamActivation(false);
  std::thread legacy([&]{for(unsigned i=0;i<10000;++i){channel.handler(1,0);channel.handler(0,0);}});
  std::thread external([]{for(unsigned i=0;i<10000;++i){RemixState::setExternal(true);RemixState::setExternal(false);}});
- legacy.join();external.join();check(!RemixState::isUIActive()&&DI::activate==DI::deactivate&&DI::suppress==DI::restore&&DI::activate==DI::suppress);
- std::cout<<"PASS actual capture state: independent legacy/Steam and ReShade ownership, balanced aggregate transitions, duplicate completion, 20000 concurrent open/close pairs\n";
+ std::thread steam([]{for(unsigned i=0;i<10000;++i){RemixState::setSteam(true);RemixState::setSteam(false);}});
+ legacy.join();external.join();steam.join();check(!RemixState::isUIActive()&&DI::activate==DI::deactivate&&DI::suppress==DI::restore&&DI::activate==DI::suppress);
+ std::cout<<"PASS actual capture state and Steam callback helper: three independent owners, balanced transitions, callback331 helper without Presenter, real owner-thread notification, duplicate/stale/no-window refusal, ReShade handoff model, 30000 concurrent open/close pairs\n";
 }

@@ -9,4 +9,6 @@ client=a.source/'bridge/src/client'
 header=(client/'remix_state.h').read_text().replace('#pragma once','').replace('#include "util_messagechannel.h"','')
 implementation=(client/'remix_state.cpp').read_text();implementation=implementation[implementation.index('using namespace bridge_util;'):]
 fixture=Path(__file__).resolve().parents[1]/'tests/remix_capture_state.cpp'
-a.output.write_text(fixture.read_text().replace('// PRODUCTION_CAPTURE_STATE',header+'\n'+implementation))
+window=(client/'window.cpp').read_text()
+activation=window.split('// LDB_STEAM_ACTIVATION_BEGIN\n',1)[1].split('// LDB_STEAM_ACTIVATION_END',1)[0]
+a.output.write_text(fixture.read_text().replace('// PRODUCTION_CAPTURE_STATE',header+'\n'+implementation).replace('// PRODUCTION_STEAM_ACTIVATION',activation))

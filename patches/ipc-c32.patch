@@ -3122,7 +3122,7 @@ diff --git a/bridge/src/client/remix_state.h b/bridge/src/client/remix_state.h
  #include "util_messagechannel.h"
  
  enum RemixStateBits: uint64_t {
-@@ -30,12 +32,16 @@
+@@ -30,12 +32,20 @@
  // Reflects Remix state at x86 Bridge side.
  // Implemented with a short message delivery mechanism between Remix Runtime and Bridge.
  class RemixState {
@@ -3136,6 +3136,10 @@ diff --git a/bridge/src/client/remix_state.h b/bridge/src/client/remix_state.h
    static void init(bridge_util::MessageChannelBase& msgChannel);
 +  static bool externalActive() { return (m_state.load(std::memory_order_acquire) & 2) != 0; }
 +  static bool setExternal(bool active) { return update(2, active); }
++  // A real Steam callback owns a separate bit; neither a Presenter/legacy
++  // notification nor a ReShade close may retire this source.
++  static bool steamActive() { return (m_state.load(std::memory_order_acquire) & 4) != 0; }
++  static bool setSteam(bool active) { return update(4, active); }
    inline static bool isUIActive() {
 -    return m_state & RemixStateBits::UIActive;
 +    return m_state.load(std::memory_order_acquire) != 0;
@@ -3322,17 +3326,18 @@ diff --git a/bridge/src/client/retention_runtime.h b/bridge/src/client/retention
 diff --git a/bridge/src/client/window.cpp b/bridge/src/client/window.cpp
 --- a/bridge/src/client/window.cpp
 +++ b/bridge/src/client/window.cpp
-@@ -33,7 +33,9 @@
+@@ -33,7 +33,10 @@
  #include "util_monitor.h"
  #include "overlay_input_diagnostics.h"
  #include "steam_activity_diagnostics.h"
 +#include "steam_web_diagnostics.h"
++#include "../server/steam_window_diagnostics.h"
  #include "config/config.h"
 +#include "reshade_input_client.h"
  
  #include <unordered_map>
  #include <mutex>
-@@ -49,6 +51,10 @@
+@@ -49,11 +52,41 @@
  namespace WndProc {
  namespace {
  
@@ -3343,7 +3348,38 @@ diff --git a/bridge/src/client/window.cpp b/bridge/src/client/window.cpp
  HWND g_hwnd = nullptr;
  WNDPROC g_gameWndProc = nullptr;
  bool g_bActivateProcessed = false;
-@@ -221,6 +227,7 @@
+ // NV-DXVK start: opt-in cross-process Steam input observations and capture.
+ std::atomic<bool> g_steamActive { false }, g_steamKnown { false };
++// LDB_STEAM_ACTIVATION_BEGIN
++static std::atomic<UINT> g_steamCaptureNotification {0};
++static UINT steamCaptureNotification() {
++  static const UINT message=RegisterWindowMessageW(L"LDB_STEAM_CAPTURE_NOTIFY_V1");
++  g_steamCaptureNotification.store(message,std::memory_order_release);
++  return message;
++}
++static bool handleSteamCaptureNotification(UINT message) {
++  if(message<0xc000)return false;
++  const UINT expected=g_steamCaptureNotification.load(std::memory_order_acquire);
++  if(!expected || message!=expected)return false;
++  // Evaluate the current callback state, never the state of a delayed message.
++  if(g_steamKnown.load(std::memory_order_acquire) && g_steamActive.load(std::memory_order_acquire))DI::releaseSteamMouseCapture();
++  return true;
++}
++static void applySteamActivation(bool active) {
++  const bool previous=g_steamActive.exchange(active,std::memory_order_acq_rel);
++  g_steamKnown.store(true,std::memory_order_release);
++  RemixState::setSteam(active);
++  refreshExternalInput();
++  if(active && !previous && g_hwnd) {
++    if(GetWindowThreadProcessId(g_hwnd,nullptr)==GetCurrentThreadId())DI::releaseSteamMouseCapture();
++    else if(const UINT message=steamCaptureNotification())PostMessageW(g_hwnd,message,0,0);
++  }
++}
++// LDB_STEAM_ACTIVATION_END
+ l4d2_overlay::InputDiagnostics& inputDiagnostics() {
+   static l4d2_overlay::InputDiagnostics diagnostics(
+     Config::getOption<bool>("client.steamInputDiagnostics", false), "client",
+@@ -221,6 +254,7 @@
  
    // Process remix renderer-related messages
    if (gpRemixMessageChannel->onMessage(msg, wParam, lParam)) {
@@ -3351,7 +3387,14 @@ diff --git a/bridge/src/client/window.cpp b/bridge/src/client/window.cpp
      if (!uiWasActive && RemixState::isUIActive()) {
        // Remix UI has been activated - unstick modifier keys at application side
        auto unstick = [hWnd](uint32_t vk) {
-@@ -312,7 +319,12 @@
+@@ -306,13 +340,19 @@
+ }
+ 
+ LRESULT WINAPI RemixWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
++  if(handleSteamCaptureNotification(msg))return 0;
+   const bool isUnicode = IsWindowUnicode(hWnd);
+   LRESULT lresult = 0;
+ 
    if (msg == WM_ACTIVATEAPP || msg == WM_SIZE || msg == WM_DESTROY) {
      windowMsg(hWnd, msg, wParam, lParam);
    }
@@ -3365,7 +3408,7 @@ diff --git a/bridge/src/client/window.cpp b/bridge/src/client/window.cpp
    if (bSwallowMsg) {
      lresult = !isUnicode ? DefWindowProcA(hWnd, msg, wParam, lParam) :
                             DefWindowProcW(hWnd, msg, wParam, lParam);
-@@ -329,6 +341,23 @@
+@@ -329,6 +369,23 @@
  // External funcs //
  ////////////////////
  
@@ -3389,15 +3432,16 @@ diff --git a/bridge/src/client/window.cpp b/bridge/src/client/window.cpp
  bool init() {
    if(!attach()) {
      Logger::err(kStr_init_attachErr);
-@@ -339,6 +368,7 @@
+@@ -339,6 +396,8 @@
  }
  
  bool terminate() {
 +  l4d2_web::Diagnostics::stop();
++  l4d2_steam_window::Diagnostics::stop();
    if(!detach()) {
      Logger::err(kStr_terminate_detachErr);
      return false;
-@@ -382,6 +412,7 @@
+@@ -382,6 +441,7 @@
  
    // Fix up DirectInput forwarding if setting has succeeded
    DInputSetDefaultWindow(hwnd);
@@ -3405,7 +3449,7 @@ diff --git a/bridge/src/client/window.cpp b/bridge/src/client/window.cpp
  
    Logger::debugLazy([&]() { return format_string(kStr_set_settingWndProc, RemixWndProc, g_gameWndProc); });
  
-@@ -404,6 +435,8 @@
+@@ -404,6 +464,8 @@
      Logger::warn(format_string("WndProc::unset - expected RemixWndProc (%p) but found %p; "
        "another component likely subclassed the window during a mode change", RemixWndProc, prevWndProc));
    }
@@ -3414,10 +3458,18 @@ diff --git a/bridge/src/client/window.cpp b/bridge/src/client/window.cpp
  
    // Clean out the globals
    g_hwnd = nullptr;
-@@ -461,6 +494,16 @@
+@@ -461,6 +523,24 @@
  
  // NV-DXVK start: poll from Present, including when game input messages stop.
  void WndProc::sampleSteamInput() {
++  static const bool rendererDiagnostics=Config::getOption<bool>("client.steamWindowDiagnostics",false);
++  if(rendererDiagnostics) {
++    static ULONGLONG nextRenderer=0;
++    const ULONGLONG now=GetTickCount64();
++    if(now>=nextRenderer){nextRenderer=now+1000;
++      l4d2_steam_window::Diagnostics::poll(true,g_hwnd,nullptr,[](const char* line){Logger::info(line);},l4d2_steam_window::Diagnostics::rendererName(),false,"client");
++    }
++  }
 +  if(externalInputEnabled()) {
 +    ldb_reshade::Client::sample(WndProc::isSteamOverlayActive(),DI::actualKeyState,DI::actualCursorPos,DI::actualKeyboardState);
 +    refreshExternalInput();
@@ -3431,12 +3483,16 @@ diff --git a/bridge/src/client/window.cpp b/bridge/src/client/window.cpp
    static const bool steamInput = Config::getOption<bool>("client.steamOverlayInput", false);
    static const bool diagnosticsEnabled = Config::getOption<bool>("client.steamInputDiagnostics", false);
    static const bool requested = diagnosticsEnabled || steamInput;
-@@ -472,7 +515,7 @@
+@@ -472,7 +552,11 @@
      nextSteamAttempt = now + 1000;
      std::function<void(bool)> state;
      if (steamInput) {
 -      state = [](bool active) { g_steamActive.store(active); g_steamKnown.store(true); };
-+      state = [](bool active) { g_steamActive.store(active); g_steamKnown.store(true); refreshExternalInput(); };
++      state = [](bool active) {
++        applySteamActivation(active);
++        static const bool trace=Config::getOption<bool>("client.steamInputDiagnostics",false);
++        if(trace)Logger::info(format_string("L4D2_STEAM_INPUT event=steam-capture role=client active=%d source_capture=%d aggregate_capture=%d source=callback331 presenter_required=0",active,RemixState::steamActive(),RemixState::isUIActive()));
++      };
      }
      std::function<void(const char*)> log;
      if (diagnosticsEnabled) { log = [](const char* line) { Logger::info(line); }; }
@@ -3899,7 +3955,7 @@ diff --git a/bridge/src/server/steam_window_diagnostics.h b/bridge/src/server/st
 new file mode 100644
 --- /dev/null
 +++ b/bridge/src/server/steam_window_diagnostics.h
-@@ -0,0 +1,225 @@
+@@ -0,0 +1,230 @@
 +// SPDX-License-Identifier: MIT
 +// Copyright (c) 2026 yeyunyyds.
 +// All newly added implementation code in this fork was generated by OpenAI Codex from prompts and specifications provided by yeyunyyds.
@@ -3936,6 +3992,7 @@ new file mode 100644
 +  inline static std::atomic<unsigned long long> calls[3] {}, dropped { 0 };
 +  inline static HMODULE module = nullptr;
 +  inline static Log logger = nullptr;
++  inline static const char* role = "host";
 +  inline static unsigned lines = 0;
 +  inline static bool attempted = false, waitingReported = false;
 +  inline static thread_local bool observing = false;
@@ -4027,11 +4084,11 @@ new file mode 100644
 +      char line[1100] {};
 +      const HWND gameWindow = game.load(), presenterWindow = presenter.load();
 +      if (api == 2) {
-+        std::snprintf(line, sizeof(line), "L4D2_STEAM_WINDOW event=hook-install api=SetWindowsHookExW caller_rva=0x%zx thread=%lu host_pid=%lu hook_id=%d target_thread=%lu hook_module=%p procedure=%p result=%p last_error=%lu game=%p game_pid=%lu game_thread=%lu presenter=%p presenter_pid=%lu presenter_thread=%lu tick=%llu",
-+          static_cast<size_t>(rva), thread, GetCurrentProcessId(), kind, target, hookModule, reinterpret_cast<void*>(procedure), result, error.error, gameWindow, owner(gameWindow), gameWindow ? GetWindowThreadProcessId(gameWindow, nullptr) : 0, presenterWindow, owner(presenterWindow), presenterWindow ? GetWindowThreadProcessId(presenterWindow, nullptr) : 0, now);
++        std::snprintf(line, sizeof(line), "L4D2_STEAM_WINDOW event=hook-install api=SetWindowsHookExW caller_rva=0x%zx thread=%lu host_pid=%lu hook_id=%d target_thread=%lu hook_module=%p procedure=%p result=%p last_error=%lu game=%p game_pid=%lu game_thread=%lu presenter=%p presenter_pid=%lu presenter_thread=%lu tick=%llu role=%s",
++          static_cast<size_t>(rva), thread, GetCurrentProcessId(), kind, target, hookModule, reinterpret_cast<void*>(procedure), result, error.error, gameWindow, owner(gameWindow), gameWindow ? GetWindowThreadProcessId(gameWindow, nullptr) : 0, presenterWindow, owner(presenterWindow), presenterWindow ? GetWindowThreadProcessId(presenterWindow, nullptr) : 0, now,role);
 +      } else {
-+        std::snprintf(line, sizeof(line), "L4D2_STEAM_WINDOW event=window-query api=%s caller_rva=0x%zx thread=%lu host_pid=%lu hwnd=%p owner_pid=%lu owner_thread=%lu same_process=%u game=%p game_pid=%lu game_thread=%lu presenter=%p presenter_pid=%lu presenter_thread=%lu last_error=%lu tick=%llu real_hwnd=%p real_pid=%lu result=%s",
-+          entries[api].name, static_cast<size_t>(rva), thread, GetCurrentProcessId(), window, pid, window ? GetWindowThreadProcessId(window, nullptr) : 0, window && pid == GetCurrentProcessId(), gameWindow, owner(gameWindow), gameWindow ? GetWindowThreadProcessId(gameWindow, nullptr) : 0, presenterWindow, owner(presenterWindow), presenterWindow ? GetWindowThreadProcessId(presenterWindow, nullptr) : 0, error.error, now, realWindow, owner(realWindow), realWindow == window ? "unchanged" : "mapped");
++        std::snprintf(line, sizeof(line), "L4D2_STEAM_WINDOW event=window-query api=%s caller_rva=0x%zx thread=%lu host_pid=%lu hwnd=%p owner_pid=%lu owner_thread=%lu same_process=%u game=%p game_pid=%lu game_thread=%lu presenter=%p presenter_pid=%lu presenter_thread=%lu last_error=%lu tick=%llu real_hwnd=%p real_pid=%lu result=%s role=%s",
++          entries[api].name, static_cast<size_t>(rva), thread, GetCurrentProcessId(), window, pid, window ? GetWindowThreadProcessId(window, nullptr) : 0, window && pid == GetCurrentProcessId(), gameWindow, owner(gameWindow), gameWindow ? GetWindowThreadProcessId(gameWindow, nullptr) : 0, presenterWindow, owner(presenterWindow), presenterWindow ? GetWindowThreadProcessId(presenterWindow, nullptr) : 0, error.error, now, realWindow, owner(realWindow), realWindow == window ? "unchanged" : "mapped",role);
 +      }
 +      ++lines; emit(line);
 +      if (lines == 4096) emit("L4D2_STEAM_WINDOW event=trace-limit lines=4096");
@@ -4077,16 +4134,16 @@ new file mode 100644
 +      || !IsChild(gameWindow, child) || !(GetWindowLongPtrW(child, GWL_STYLE) & WS_CHILD)) return real;
 +    return child;
 +  }
-+  // Called on the existing Host command thread, initially and once per second
++  // Called on the existing Host/Client Present thread, initially and once per second
 +  // for delayed injection. No worker thread/timer, no diagnostic while off.
 +  static void poll(bool requested, HWND gameWindow, HWND presenterWindow, Log log,
-+    const wchar_t* moduleName = rendererName(), bool adapt = false) {
++    const wchar_t* moduleName = rendererName(), bool adapt = false,const char* processRole="host") {
 +    if (!requested && !adapt) return;
 +    ErrorGuard error;
 +    game.store(gameWindow); presenter.store(presenterWindow);
 +    adapting.store(adapt, std::memory_order_release);
 +    if (attempted) return;
-+    logger = log;
++    logger = log;role=processRole;
 +    HMODULE loaded = nullptr;
 +    if (!GetModuleHandleExW(0, moduleName, &loaded)) {
 +      if (!waitingReported) {
@@ -4097,17 +4154,21 @@ new file mode 100644
 +    }
 +    // Hold this diagnostic reference until process exit; saved originals and
 +    // callbacks remain valid across concurrent calls and stop/cleanup.
++    HMODULE self=nullptr;
++    if(!GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_PIN | GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS,reinterpret_cast<LPCWSTR>(&active),&self)){
++      FreeLibrary(loaded);emit("L4D2_STEAM_WINDOW event=unsupported reason=observer-code-not-pinned");return;
++    }
 +    module = loaded; attempted = true;
 +    char path[MAX_PATH] {}, line[900] {};
 +    GetModuleFileNameA(module, path, MAX_PATH);
-+    std::snprintf(line, sizeof(line), "L4D2_STEAM_WINDOW event=module path=%s base=%p host_pid=%lu bits=%zu reference=process-lifetime", path, module, GetCurrentProcessId(), sizeof(void*) * 8);
++    std::snprintf(line, sizeof(line), "L4D2_STEAM_WINDOW event=module path=%s base=%p host_pid=%lu bits=%zu reference=process-lifetime role=%s", path, module, GetCurrentProcessId(), sizeof(void*) * 8,role);
 +    emit(line);
 +    entries[0].wrapper = reinterpret_cast<void*>(&active);
 +    entries[1].wrapper = reinterpret_cast<void*>(&foreground);
 +    entries[2].wrapper = reinterpret_cast<void*>(&hook);
 +    enabled.store(requested, std::memory_order_release);
 +    const unsigned mask = attach(module);
-+    std::snprintf(line, sizeof(line), "L4D2_STEAM_WINDOW event=attached mask=%u mode=%s coverage=named-iat dynamic-resolution=not-covered", mask, adapt ? "window-adapter" : "observe-only");
++    std::snprintf(line, sizeof(line), "L4D2_STEAM_WINDOW event=attached mask=%u mode=%s coverage=named-iat dynamic-resolution=not-covered role=%s", mask, adapt ? "window-adapter" : "observe-only",role);
 +    emit(line);
 +  }
 +  static void stop() {
@@ -4119,8 +4180,8 @@ new file mode 100644
 +      if (entry.slot) exchange(entry.slot, entry.original, entry.wrapper);
 +    }
 +    char line[400] {};
-+    std::snprintf(line, sizeof(line), "L4D2_STEAM_WINDOW event=summary active_calls=%llu foreground_calls=%llu hook_calls=%llu dropped=%llu",
-+      calls[0].load(), calls[1].load(), calls[2].load(), dropped.load());
++    std::snprintf(line, sizeof(line), "L4D2_STEAM_WINDOW event=summary active_calls=%llu foreground_calls=%llu hook_calls=%llu dropped=%llu role=%s",
++      calls[0].load(), calls[1].load(), calls[2].load(), dropped.load(),role);
 +    emit(line);
 +  }
 +};

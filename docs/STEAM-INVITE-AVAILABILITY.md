@@ -8,6 +8,11 @@ Native tests, full build and package verification remain PASS; actual L4D2 start
 with the full matched set and invitation delivery are still unverified.
 Branch: `codex/steam-invite-availability`. No main merge, VERSION or release change.
 
+The latest paired diagnostic run confirms callback active1 but capture0, even
+with message-pump hooks disabled. The independent Steam capture correction and
+two-process renderer observations are tracked in
+[the callback capture experiment](STEAM-INVITE-INPUT-CAPTURE.md).
+
 ## Invitation panel opens, input remains unverified
 
 Latest report: "可以呼出邀请界面。但是控制不了邀请界面". The user additionally
