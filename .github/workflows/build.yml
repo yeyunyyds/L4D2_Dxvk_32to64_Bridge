@@ -213,6 +213,7 @@ jobs:
           name: l4d2-native-v${{ env.L4D2_PROJECT_VERSION }}-${{ github.run_id }}
           path: |
             work/ipc-full-native/
+            work/ipc-c32-native/steam-capture/
             work/ipc-safety-baseline/
             work/upload-safety-*/
             work/ipc-safety-replies.json
