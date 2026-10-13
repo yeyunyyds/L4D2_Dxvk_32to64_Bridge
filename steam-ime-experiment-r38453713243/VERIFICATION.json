@@ -1,0 +1,10 @@
+{
+  "build_run": 38453713243,
+  "source_commit": "edca3a3e07524e1cb0e2541fc825b1b50bc3f3ef",
+  "build_id": "l4d2-1.3.1+74bec765ec9bfa94",
+  "sha256": "7920a706abb8b6b02ecdc5fd04cdef225c169d3ca0670f387115f4e9f09d2712",
+  "bytes": 4050175,
+  "native_validation": "PASS",
+  "game_ime_validation": "PENDING",
+  "release_modified": false
+}
