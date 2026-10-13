@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: ['codex/steam-only-experiment']
-    paths: ['.github/workflows/steam-only-experiment.yml', 'patches/ipc-c32.patch', 'experiments/ipc-c32/**', 'scripts/prepare_ipc_c32.py', 'scripts/package_ipc_c32.py', 'scripts/verify_steam_only_source.py', 'scripts/test_steam_capture_state.ps1', 'tests/remix_capture_state.cpp', 'config/STEAM-ONLY-EXPERIMENT.conf', 'config/bridge.conf']
+    paths: ['.github/workflows/steam-only-experiment.yml', 'patches/ipc-c32.patch', 'experiments/ipc-c32/**', 'scripts/prepare_ipc_c32.py', 'scripts/package_ipc_c32.py', 'scripts/verify_steam_only_source.py', 'scripts/test_steam_capture_state.ps1', 'tests/remix_capture_state.cpp', 'tests/input_hooks_test.cpp', 'config/STEAM-ONLY-EXPERIMENT.conf', 'config/bridge.conf']
 permissions:
   contents: read
 jobs:

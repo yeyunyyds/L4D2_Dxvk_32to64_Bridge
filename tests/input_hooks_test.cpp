@@ -90,8 +90,7 @@ namespace WndProc {
   HWND getHwnd();
 }
 struct RemixState {
-  inline static bool active=false, external=false;
-  static bool externalActive() { return external; }
+  inline static bool active=false;
   static bool isUIActive() { return active; }
 };
 struct Config {
@@ -302,11 +301,12 @@ int main(int argc,char** argv) {
     HookedSetCapture(window(1));
     check(captureCalls==1 && lastError==444,"unknown root denied original capture");
     failedAncestor=false;
-    RemixState::external=true;WndProc::g_steamActive=false;
+    // The removed external capture source must not alter capture while Steam is inactive.
+    WndProc::g_steamActive=false;
     captureWindow=window(5);captureCalls=0;lastError=88;
-    HookedSetCapture(window(1));check(captureCalls==0&&lastError==88,"external ReShade allowed game recapture");
-    HookedSetCapture(window(3));check(captureCalls==1,"external ReShade blocked unrelated capture");
-    RemixState::external=false;WndProc::g_steamActive=true;
+    HookedSetCapture(window(1));check(captureCalls==1&&lastError==444&&captureWindow==window(1),"inactive Steam did not preserve original game capture");
+    HookedSetCapture(window(3));check(captureCalls==2&&captureWindow==window(3),"inactive Steam blocked unrelated capture");
+    WndProc::g_steamActive=true;
     if(master && mouse) {
       captureWindow=window(1);releaseCalls=0;lastError=88;failedRelease=true;
       DI::releaseSteamMouseCapture();
