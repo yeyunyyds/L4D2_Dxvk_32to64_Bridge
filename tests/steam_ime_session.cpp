@@ -19,6 +19,14 @@ int main(){
   check(log.empty() && GetKeyboardLayout(0)==layout,"disabled is inert");
   ULONG_PTR token=0;const HRESULT before=CoGetContextToken(&token);
   {
+    // Test our COM pair before IMM context access can initialize Windows TSF.
+    l4d2_overlay::ImeSession session(true,false,{});
+    check(SUCCEEDED(CoGetContextToken(&token)),"non-window bootstrap initializes STA");
+  }
+  const HRESULT paired=CoGetContextToken(&token);
+  if(paired!=before)std::fprintf(stderr,"COM before=0x%08lx after=0x%08lx\n",static_cast<unsigned long>(before),static_cast<unsigned long>(paired));
+  check(paired==before,"own COM pair balances without IME activation");
+  {
     l4d2_overlay::ImeSession session(true,true,[&](const char* s){log+=s;log+='\n';});
     check(SUCCEEDED(CoGetContextToken(&token)),"bootstrap owns STA initialization");
     session.bind(window,window);session.opening();
@@ -29,7 +37,9 @@ int main(){
     check(log.find("start=1 composition=1 result=1 end=1 chars=1 language=1")!=std::string::npos,"text-free independent composition/result counters");
     check(log.find("layout=")!=std::string::npos && log.find("context_present=")!=std::string::npos,"owned layout/context evidence");
   }
-  check(CoGetContextToken(&token)==before,"COM initialization balanced");
+  // ImmGetContext may activate Windows TSF, which holds its own thread COM
+  // reference. Its apartment remaining alive is not a Bridge reference leak.
+  std::printf("IME system COM after context access=0x%08lx\n",static_cast<unsigned long>(CoGetContextToken(&token)));
   check(GetKeyboardLayout(0)==layout,"same-layout sync stable");
   std::string foreign;
   std::thread other([&]{l4d2_overlay::ImeSession session(false,true,[&](const char* s){foreign+=s;});session.bind(window,window);session.sample("foreign",true);});other.join();

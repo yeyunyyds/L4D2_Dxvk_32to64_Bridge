@@ -27,3 +27,8 @@ LastError, no character contents, counter semantics and callback failure safety.
 Existing x86/x64 cross-process Presenter/Steam regressions and production builds
 are also required. These tests do not establish real IME support, candidate window
 visibility or correctness with Sogou. No performance improvement is claimed.
+
+Native fixture caveat: querying an actual IMM context can activate Windows TSF,
+which may retain its own COM apartment reference. The fixture verifies the Bridge
+COM pair separately before context activation; it does not require system-owned
+IME/TSF references to disappear while their thread/window remain alive.
