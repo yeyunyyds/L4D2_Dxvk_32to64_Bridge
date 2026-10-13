@@ -26,8 +26,6 @@ static void check(bool value){if(!value){std::cerr<<"capture source ownership te
 namespace WndProc {
 HWND g_hwnd=nullptr;
 std::atomic<bool> g_steamActive{false},g_steamKnown{false};
-bool externalEnabled=false;
-static void refreshExternalInput(){if(externalEnabled && g_steamActive.load())RemixState::setExternal(false);}
 // PRODUCTION_STEAM_ACTIVATION
 }
 static unsigned steamReleases=0;static DWORD ownerThread=0;
@@ -39,22 +37,18 @@ static LRESULT CALLBACK windowProcedure(HWND hwnd,UINT message,WPARAM w,LPARAM l
 static void pump(){MSG message{};while(PeekMessageW(&message,nullptr,0,0,PM_REMOVE)){TranslateMessage(&message);DispatchMessageW(&message);}}
 int main(){
  bridge_util::MessageChannelBase channel;RemixState::init(channel);
- check(!RemixState::isUIActive());check(RemixState::setExternal(true));check(RemixState::externalActive());
+ check(!RemixState::isUIActive());channel.handler(1,0);check(DI::activate==1&&DI::suppress==1);
  channel.handler(1,0);check(DI::activate==1&&DI::suppress==1);
- check(!RemixState::setExternal(false));check(RemixState::isUIActive()&&!RemixState::externalActive());check(DI::deactivate==0);
  channel.handler(0,0);check(!RemixState::isUIActive()&&DI::deactivate==1&&DI::restore==1);
  channel.handler(0,0);check(DI::restore==1);
- channel.handler(1,0);check(!RemixState::setExternal(true));channel.handler(0,0);check(RemixState::isUIActive()&&RemixState::externalActive());
- check(RemixState::setExternal(false)&&!RemixState::isUIActive());
- // SDK Steam owns bit 4 even with no Presenter and no external ReShade mode.
+ // SDK Steam owns bit4 independently of legacy Presenter notifications.
  check(RemixState::setSteam(true)&&RemixState::steamActive()&&RemixState::isUIActive());
- check(!RemixState::setSteam(true));channel.handler(1,0);RemixState::setExternal(true);
- channel.handler(0,0);RemixState::setExternal(false);check(RemixState::steamActive()&&RemixState::isUIActive());
+ check(!RemixState::setSteam(true));channel.handler(1,0);
+ channel.handler(0,0);check(RemixState::steamActive()&&RemixState::isUIActive());
  check(RemixState::setSteam(false)&&!RemixState::isUIActive());
- channel.handler(1,0);RemixState::setSteam(true);RemixState::setExternal(true);
+ channel.handler(1,0);RemixState::setSteam(true);
  check(!RemixState::setSteam(false));check(RemixState::isUIActive()&&!RemixState::steamActive());
- channel.handler(0,0);check(RemixState::isUIActive()&&RemixState::externalActive());
- check(RemixState::setExternal(false)&&!RemixState::isUIActive());
+ channel.handler(0,0);check(!RemixState::isUIActive());
  // Execute the actual callback helper against a real owner-thread window.
  ownerThread=GetCurrentThreadId();
  WndProc::g_hwnd=CreateWindowExW(0,L"STATIC",L"Steam callback owner fixture",WS_OVERLAPPED,0,0,20,20,nullptr,nullptr,GetModuleHandleW(nullptr),nullptr);check(WndProc::g_hwnd!=nullptr);
@@ -69,17 +63,17 @@ int main(){
  // A delayed activation notification after real deactivation cannot recapture.
  std::thread staleWorker([]{WndProc::applySteamActivation(true);});staleWorker.join();
  WndProc::applySteamActivation(false);pump();check(steamReleases==2&&!RemixState::isUIActive());
- // Handoff from actual external source to SDK Steam keeps aggregate suppression
- // balanced; an authored ReShade refresh models its retained suspension policy.
- WndProc::externalEnabled=true;RemixState::setExternal(true);const unsigned priorActivation=DI::activate;
- WndProc::applySteamActivation(true);check(RemixState::steamActive()&&!RemixState::externalActive()&&DI::activate==priorActivation);
- WndProc::applySteamActivation(false);check(!RemixState::isUIActive());WndProc::externalEnabled=false;
+ // The SDK close and the Presenter close may arrive in either order.
+ channel.handler(1,0);const unsigned priorActivation=DI::activate;
+ WndProc::applySteamActivation(true);check(RemixState::steamActive()&&DI::activate==priorActivation);
+ WndProc::applySteamActivation(false);check(RemixState::isUIActive());channel.handler(0,0);check(!RemixState::isUIActive());
+ WndProc::applySteamActivation(true);channel.handler(1,0);channel.handler(0,0);check(RemixState::steamActive());
+ WndProc::applySteamActivation(false);check(!RemixState::isUIActive());
  check(DestroyWindow(WndProc::g_hwnd)!=FALSE);WndProc::g_hwnd=nullptr;
  const unsigned priorRelease=steamReleases;WndProc::applySteamActivation(true);check(RemixState::steamActive()&&steamReleases==priorRelease);
  WndProc::applySteamActivation(false);
- std::thread legacy([&]{for(unsigned i=0;i<10000;++i){channel.handler(1,0);channel.handler(0,0);}});
- std::thread external([]{for(unsigned i=0;i<10000;++i){RemixState::setExternal(true);RemixState::setExternal(false);}});
- std::thread steam([]{for(unsigned i=0;i<10000;++i){RemixState::setSteam(true);RemixState::setSteam(false);}});
- legacy.join();external.join();steam.join();check(!RemixState::isUIActive()&&DI::activate==DI::deactivate&&DI::suppress==DI::restore&&DI::activate==DI::suppress);
- std::cout<<"PASS actual capture state and Steam callback helper: three independent owners, balanced transitions, callback331 helper without Presenter, real owner-thread notification, duplicate/stale/no-window refusal, ReShade handoff model, 30000 concurrent open/close pairs\n";
+ std::thread legacy([&]{for(unsigned i=0;i<15000;++i){channel.handler(1,0);channel.handler(0,0);}});
+ std::thread steam([]{for(unsigned i=0;i<15000;++i){RemixState::setSteam(true);RemixState::setSteam(false);}});
+ legacy.join();steam.join();check(!RemixState::isUIActive()&&DI::activate==DI::deactivate&&DI::suppress==DI::restore&&DI::activate==DI::suppress);
+ std::cout<<"PASS actual Steam-only capture state: two independent owners, both close orders, balanced transitions, real owner-thread notification, duplicate/stale/no-window refusal, 30000 concurrent open/close pairs\n";
 }

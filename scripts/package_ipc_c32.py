@@ -5,6 +5,7 @@
 from pathlib import Path
 import hashlib
 import json
+import os
 import shutil
 import struct
 import subprocess
@@ -19,6 +20,8 @@ files={
  'bin/.l4d2bridge/L4D2Bridge64.exe':(source/'_ipcC32_x64/src/server/L4D2Bridge64.exe',0x8664),
  'bin/.l4d2bridge/L4D2Bridge32.exe':(source/'_ipcC32_x86_server/src/server/L4D2Bridge32.exe',0x14c),
 }
+if receipt.get('experiment_profile') != 'steam-only-presenter' or not receipt.get('reshade_external_input_removed'):
+    raise RuntimeError('Steam-only package requires a matching prepared source profile')
 # Inspect actual compile receipts, not just the requested Meson build flavour.
 compile_receipts={}
 for directory in ('_ipcC32_x86','_ipcC32_x64','_ipcC32_x86_server'):
@@ -43,33 +46,17 @@ for name,(path,arch) in files.items():
 receipt.update(source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                distribution='experimental',build_type='Release',compiler='MSVC 14.29',
                kind='matched-update',default_batch=1,supported_batches=[1,2,4,8,16,32],lazy_check_ms=1,
-               files=hashes,gameplay_validated=False,status='AWAITING GAME VALIDATION')
+               files=hashes,gameplay_validated=False,status='AWAITING GAME VALIDATION',
+               native_run_id=os.environ.get('GITHUB_RUN_ID','local'),
+               steam_experiment='verified-invitation-and-native-presenter-input',
+               prior_user_accepted_control='ldb-ipc-c32-dev+0901d263de181431',
+               bundled_reshade_binaries=0, reference_config_host='x64',
+               reference_presenter_enabled=True, default_diagnostics=False)
 (out/'config').mkdir()
 shutil.copy2(ROOT/'config/bridge.conf',out/'config/bridge.conf')
-if (ROOT/'config/STEAM-HOOK-CHAIN-EXPERIMENT.conf').exists():
-    shutil.copy2(ROOT/'config/STEAM-HOOK-CHAIN-EXPERIMENT.conf',out/'config/STEAM-HOOK-CHAIN-EXPERIMENT.conf')
-    shutil.copy2(ROOT/'docs/STEAM-INPUT-INVESTIGATION.md',out/'STEAM-INPUT-INVESTIGATION.md')
-if (ROOT/'config/STEAM-MOUSE-CAPTURE-EXPERIMENT.conf').exists():
-    shutil.copy2(ROOT/'config/STEAM-MOUSE-CAPTURE-EXPERIMENT.conf',out/'config/STEAM-MOUSE-CAPTURE-EXPERIMENT.conf')
-    shutil.copy2(ROOT/'docs/STEAM-MOUSE-CAPTURE-EXPERIMENT.md',out/'STEAM-MOUSE-CAPTURE-EXPERIMENT.md')
-    receipt['steam_experiment']='mouse-capture-handoff'
-if (ROOT/'config/STEAM-POLL-CHAIN-EXPERIMENT.conf').exists():
-    shutil.copy2(ROOT/'config/STEAM-POLL-CHAIN-EXPERIMENT.conf',out/'config/STEAM-POLL-CHAIN-EXPERIMENT.conf')
-    shutil.copy2(ROOT/'docs/STEAM-POLL-CHAIN-EXPERIMENT.md',out/'STEAM-POLL-CHAIN-EXPERIMENT.md')
-    receipt['steam_experiment']='poll-chain-neutralize'
-if (ROOT/'config/STEAM-WINDOW-DIAGNOSTICS.conf').exists():
-    shutil.copy2(ROOT/'config/STEAM-WINDOW-DIAGNOSTICS.conf',out/'config/STEAM-WINDOW-DIAGNOSTICS.conf')
-    shutil.copy2(ROOT/'docs/STEAM-WINDOW-DIAGNOSTICS.md',out/'STEAM-WINDOW-DIAGNOSTICS.md')
-    shutil.copy2(ROOT/'docs/STEAM-RENDERER-WINDOW-GATE.md',out/'STEAM-RENDERER-WINDOW-GATE.md')
-    receipt['steam_experiment']='window-query-diagnostics'
-if (ROOT/'config/STEAM-WINDOW-ADAPTER.conf').exists():
-    shutil.copy2(ROOT/'config/STEAM-WINDOW-ADAPTER.conf',out/'config/STEAM-WINDOW-ADAPTER.conf')
-    shutil.copy2(ROOT/'docs/STEAM-WINDOW-ADAPTER.md',out/'STEAM-WINDOW-ADAPTER.md')
-    receipt['steam_experiment']='renderer-window-adapter'
-if (ROOT/'config/STEAM-WORKSHOP-DIAGNOSTICS.conf').exists():
-    shutil.copy2(ROOT/'config/STEAM-WORKSHOP-DIAGNOSTICS.conf',out/'config/STEAM-WORKSHOP-DIAGNOSTICS.conf')
-    shutil.copy2(ROOT/'docs/STEAM-WORKSHOP-DIAGNOSTICS.md',out/'STEAM-WORKSHOP-DIAGNOSTICS.md')
-    receipt['steam_experiment']='workshop-scoped-availability-proxy'
+shutil.copy2(ROOT/'config/STEAM-ONLY-EXPERIMENT.conf',out/'config/STEAM-ONLY-EXPERIMENT.conf')
+shutil.copy2(ROOT/'docs/STEAM-ONLY-DEVELOPMENT.md',out/'STEAM-ONLY-INSTALL-AND-TEST.md')
+shutil.copy2(ROOT/'work/steam-only-source-verification.json',out/'SOURCE-VERIFICATION.json')
 (out/'BUILD-INFO.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8')
 (out/'SHA256.json').write_text(json.dumps(hashes,indent=2)+'\n',encoding='utf-8')
 shutil.copy2(ROOT/'docs/IPC-C32-DEVELOPMENT.md',out/'INSTALL-AND-TEST.md')
@@ -78,10 +65,21 @@ for filename in ('LICENSE','THIRD_PARTY.md'):
 (out/'licenses').mkdir()
 for filename in ('LICENSE-MIT','ThirdPartyLicenses.txt'):
     shutil.copy2(source/filename,out/'licenses'/filename)
-zip_path=out.parent/f'l4d2-bridge-ipc-c32-dev-{build.split("+")[1]}.zip'
+zip_path=out.parent/f'l4d2-bridge-steam-only-dev-{build.split("+")[1]}-r{receipt["native_run_id"]}.zip'
 with zipfile.ZipFile(zip_path,'w',zipfile.ZIP_DEFLATED,compresslevel=9) as archive:
     for path in sorted(out.rglob('*')):
         if path.is_file():archive.write(path,path.relative_to(out))
+with zipfile.ZipFile(zip_path) as archive:
+    binary_names = {name for name in archive.namelist() if name.lower().endswith(('.exe','.dll'))}
+    if binary_names != set(files): raise RuntimeError('Unexpected binary in Steam-only archive')
+    if any('reshade' in name.lower() for name in archive.namelist()):
+        raise RuntimeError('Experimental ReShade file remains in Steam-only archive')
+    forbidden=(b'VK_LAYER_LDB_reshade', b'ReShadeLDBConfigureInputV1', b'LDBReShadeInputV1', b'server.reshadeExternalInput')
+    for filename in files:
+        raw=archive.read(filename)
+        for marker in forbidden:
+            if marker in raw or marker.decode().encode('utf-16le') in raw:
+                raise RuntimeError(f'Removed ReShade marker in compiled binary: {filename}: {marker!r}')
 digest=hashlib.sha256(zip_path.read_bytes()).hexdigest()
 (zip_path.parent/'SHA256SUMS.txt').write_text(f'{digest}  {zip_path.name}\n',encoding='utf-8')
 print(zip_path.name,digest)

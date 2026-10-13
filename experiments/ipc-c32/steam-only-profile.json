@@ -1,0 +1,17 @@
+{
+  "profile": "steam-only-presenter",
+  "production_origin": "817e7d1b9029acf7f537f3395394b57e713dc3df",
+  "removed": [
+    "experimental original-window ReShade input mapping and Client encoder",
+    "Host experimental ReShade input binding and layer environment setup",
+    "external ReShade capture ownership and cursor/raw-input helpers",
+    "experimental ReShade wire/context/vendor patch build identity dependencies"
+  ],
+  "retained": [
+    "IPC C1/C2/C4/C8/C16/C32 and existing D3D9/resource behavior",
+    "Steam renderer window adapter and native Presenter input",
+    "Steam verified Workshop and LobbyInvite availability/request fixes",
+    "Steam callback331 capture with independent Presenter ownership",
+    "original optional Presenter/ReShade compatibility"
+  ]
+}

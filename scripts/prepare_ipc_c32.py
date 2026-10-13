@@ -14,7 +14,7 @@ def identity():
     paths = [ROOT / 'patches/l4d2-bridge.patch', ROOT / 'patches/ipc-c32.patch']
     paths += sorted((ROOT / 'experiments/ipc-c32').glob('*.h'))
     paths += [ROOT / 'experiments/ipc-v2/platform.h', ROOT / 'experiments/ipc-v2/transport.h']
-    paths += [ROOT / 'experiments/reshade-input/wire.h', ROOT / 'experiments/reshade-input/context.hpp', ROOT / 'patches/reshade-input.patch']
+    paths += [ROOT / 'experiments/ipc-c32/steam-only-profile.json']
     digest = hashlib.sha256()
     for path in paths:
         # Git Windows checkout line endings do not change the protocol identity.
@@ -28,7 +28,6 @@ def prepare(source):
     subprocess.run(['git', 'apply', str(patch)], cwd=source, check=True)
     util = source / 'bridge/src/util'
     (util / 'ipc_v2').mkdir(exist_ok=True)
-    shutil.copy2(ROOT / 'experiments/reshade-input/wire.h', util / 'ldb_external_wire.h')
     for name in ('platform.h', 'transport.h'):
         shutil.copy2(ROOT / 'experiments/ipc-v2' / name, util / 'ipc_v2' / name)
     shutil.copy2(ROOT / 'experiments/ipc-c32/message_queue.h', util / 'ipc_c32_message_queue.h')
@@ -37,7 +36,10 @@ def prepare(source):
     (util / 'ipc_v2/ipc_v2_build.h').write_text(definitions, encoding='utf-8')
     receipt = {'build_id': f'ldb-ipc-c32-dev+{digest[:16]}', 'protocol_source_sha256': digest,
                'foundation': 'PR6 production 14fc5db13d4a9e637fc6b001d06ab5ca3f1eed11',
-               'gameplay_validated': False}
+               'gameplay_validated': False,
+               'experiment_profile': 'steam-only-presenter',
+               'reshade_external_input_removed': True,
+               'required_bridge_binaries': 3}
     (ROOT / 'work').mkdir(exist_ok=True)
     (ROOT / 'work/ipc-c32-build.json').write_text(json.dumps(receipt, indent=2)+'\n', encoding='utf-8')
     print(receipt['build_id'])
