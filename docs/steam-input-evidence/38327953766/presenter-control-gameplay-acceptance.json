@@ -1,0 +1,63 @@
+{
+  "status": "PASSED_USER_REPORTED_PRESENTER_CONTROL",
+  "validation_basis": "Explicit user gameplay report corroborated by paired runtime logs",
+  "user_confirmation": "全部正常",
+  "build": "ldb-ipc-c32-dev+0901d263de181431",
+  "compiled_source": "817e7d1b9029acf7f537f3395394b57e713dc3df",
+  "branch": "codex/steam-invite-availability",
+  "log_sha256": {
+    "bridge32.log": "ed1bd9c128532dcc56ee1021162391cab94b821236b6388c94a2afb831b30bfa",
+    "bridge64.log": "80a52887be4440ff285e65073735af5ffdaf6bba6d1942aed4f791b5e83c52d6"
+  },
+  "matched_build_and_handshake": true,
+  "clean_shutdown": true,
+  "uptime_seconds": 172,
+  "effective_config": {
+    "server.presenterWindow": true,
+    "server.presenterInput": true,
+    "server.steamNativeInput": true,
+    "server.steamWindowAdapter": true,
+    "server.reshadeExternalInput": false,
+    "client.steamWindowDiagnostics": true,
+    "server.steamWindowDiagnostics": true,
+    "client.hookMessagePump": false,
+    "client.overrideCustomWinHooks": false
+  },
+  "client_pid": 20188,
+  "host_pid": 9732,
+  "game_window": "0x6d07ac",
+  "game_thread": 5524,
+  "presenter_window": "0xa09aa",
+  "presenter_thread": 252,
+  "selector_return_rva": "0xa6ae2",
+  "selector_result": "mapped",
+  "selector_mapped_owner_is_host": true,
+  "emitted_selector_mapped_records": 45,
+  "emitted_all_host_mapped_records": 130,
+  "successful_named_iat_hook_installs": 8,
+  "hook_types": ["WH_GETMESSAGE", "WH_CALLWNDPROC"],
+  "hook_target_is_presenter_thread": true,
+  "callback331_open_close_pairs": 4,
+  "lobby_invite_sdk_calls": 2,
+  "native_focus_acquisitions": 4,
+  "native_focus_releases": 4,
+  "next_client_sample_after_each_close_capture_zero": true,
+  "next_client_sample_after_each_close_focus_back_on_game": true,
+  "reported_accepted_scenarios": [
+    "Shift+Tab opens and closes Steam Overlay",
+    "Invitation panel mouse/keyboard interaction and close",
+    "Requested invitation send operation",
+    "Gameplay mouse/keyboard controls after close"
+  ],
+  "not_newly_validated": [
+    "Remote friend invitation receipt and joining",
+    "Steam plus external original-window ReShade input",
+    "Presenter-disabled Steam input",
+    "Full map/Reset/performance regression",
+    "x86 Host and other Steam renderer versions"
+  ],
+  "fps_improvement_claimed": false,
+  "binary_changes_for_acceptance_record": false,
+  "main_modified_by_this_update": false,
+  "raw_user_logs_redistributed": false
+}

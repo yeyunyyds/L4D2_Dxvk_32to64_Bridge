@@ -1,6 +1,6 @@
 # Steam callback capture and invitation input experiment
 
-Status: BLOCKED — user gameplay test failed invitation interaction and closed-state Shift+Tab; independent native tests, full build and package checks PASS.
+Status: PASSED_USER_REPORTED for the matched Presenter-enabled control: Shift+Tab, invitation interaction/close and restored gameplay controls. Presenter-disabled input remains failed; Steam with external original-window ReShade input is not jointly validated. Independent native tests, full build and package checks PASS.
 Branch: `codex/steam-invite-availability`. No main, VERSION, tag or release change.
 
 ## Verified matched experiment
@@ -23,6 +23,44 @@ was appended to the existing download branch and fetched again for SHA validatio
 Synthetic tests do not establish real Steam consumption or closed-state Shift+Tab.
 
 ## Paired hardware evidence
+
+### Presenter-enabled 0901 control: user reports all requested actions normal
+
+The user supplied a new matched pair and reported "全部正常" after the requested
+Shift+Tab, invitation operation/send/close and restored gameplay controls checks.
+Both binaries remain `ldb-ipc-c32-dev+0901d263de181431`; the effective config has
+Presenter window/input, native Steam input, window adapter and both observers
+True, external ReShade input False, message-pump/custom-hook flags False.
+No new binary was required for this comparison. Handshake and clean shutdown
+are observed, with an uptime of172 seconds.
+
+Client PID20188 owns game HWND0x6D07AC/thread5524. Host PID9732 owns Presenter
+HWND0xA09AA/thread252. The actual renderer selector's foreground return site
+0xA6AE2 records result mapped, real_pid20188, owner_pid9732, same_process1:
+45 emitted selector samples, including before the first activation. In total
+130 emitted Host window-query records are mapped. These are bounded diagnostic
+records, not total runtime-call counts. Host summary reports active210,
+foreground1655, hooks8 and dropped0; Client reports active0, foreground751,
+hooks0 and dropped0.
+
+The eight hook installations return nonzero HHOOKs: four pairs of WH_GETMESSAGE
+and WH_CALLWNDPROC, all targeting the actual Presenter thread252. A retained
+nonzero LastError alongside a successful HHOOK is not a failed installation.
+Callback331 records four active1/active0 pairs. The verified lobby helper sends
+two LobbyInvite requests. Host logs four successful native-focus acquisitions
+and releases. After every close the next Client sample shows aggregate capture0
+and focus back on the game window. Capture may still be1 at the immediate SDK
+close log while the Presenter source retires asynchronously; the following
+samples establish actual release rather than a permanently retained capture.
+
+See [sanitized acceptance result](steam-input-evidence/38327953766/presenter-control-gameplay-acceptance.json).
+This gives paired runtime evidence plus explicit user acceptance for this exact
+Presenter mode. It supports the process-owned-window and input-binding dependency;
+it does not isolate every constituent flag or prove this is the only failure cause.
+It does not validate Steam with external original-window ReShade input, remote
+friend receipt/joining, all map/Reset paths, x86 Host, other Steam versions or FPS.
+Keep this setup as the functional control for any later separation of Steam input
+binding from ReShade presentation. No such separation is delivered by this record.
 
 ### Matched 0901 capture experiment: gameplay failed
 

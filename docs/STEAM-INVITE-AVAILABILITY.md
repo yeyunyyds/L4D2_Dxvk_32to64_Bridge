@@ -1,21 +1,23 @@
 # Steam GameUI invitation availability experiment
 
-Status: AWAITING INVITATION INPUT VALIDATION. Latest user report: the invitation
-panel opens, but cannot be controlled. Fresh paired interaction logs are pending.
-Supplied earlier failure logs establish
-experimental Client + formal 1.3.0 Host mixing and an explicit handshake rejection.
-Native tests, full build and package verification remain PASS; actual L4D2 startup
-with the full matched set and invitation delivery are still unverified.
+Status: PASSED_USER_REPORTED for the matched 0901 Presenter-enabled control.
+Latest user report: "全部正常" for the requested Shift+Tab, invitation panel
+interaction/close and restored gameplay controls. Paired logs verify Host-owned
+window mapping, successful input hooks, four activation/deactivation pairs and
+focus/capture restoration. External original-window ReShade input is False in
+this accepted configuration; its coexistence with Steam remains unvalidated.
+Native tests, full build and package verification remain PASS. Remote invitation
+receipt/joining and broader game regression are not established by these logs.
 Branch: `codex/steam-invite-availability`. No main merge, VERSION or release change.
 
-The latest paired diagnostic run confirms callback active1 but capture0, even
-with message-pump hooks disabled. The independent Steam capture correction and
-two-process renderer observations are tracked in
+Earlier matched runs established missing capture propagation and then failed
+input with correct capture but foreign-process renderer window selection.
+The correction, failed runs and successful Presenter control are tracked in
 [the callback capture experiment](STEAM-INVITE-INPUT-CAPTURE.md).
 
-## Invitation panel opens, input remains unverified
+## Earlier invitation panel failure (historical)
 
-Latest report: "可以呼出邀请界面。但是控制不了邀请界面". The user additionally
+Earlier report: "可以呼出邀请界面。但是控制不了邀请界面". The user additionally
 confirms ordinary Shift+Tab does not open the Overlay and neither mouse nor
 keyboard can interact with or close the invitation panel in this session.
 Investigate the common Steam input path, not just the invitation command. This is partial
