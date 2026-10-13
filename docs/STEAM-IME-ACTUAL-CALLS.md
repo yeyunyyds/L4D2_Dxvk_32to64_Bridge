@@ -1,6 +1,6 @@
 # Steam actual IMM call observer
 
-Status: implementation prepared; native verification and game evidence pending.
+Status: implementation prepared; Windows native build blocked before step execution; game evidence pending.
 The latest supplied 5ba86729 sessions confirm polling flag True, bootstrap False,
 and actual ime-pass-through for Sogou. User reports unchanged failure. Host has
 23 focused samples, changing Chinese/English HKLs, a context in all187 samples,
@@ -41,3 +41,13 @@ behavior switches are False; only call/context diagnostics are enabled. Open
 Overlay, click the text input field, switch Chinese/English, attempt brief input,
 close Overlay and collect both bridge logs. No need to repeat bootstrap A/B.
 Main/Release and Exit Game behavior remain unchanged.
+
+## Current build gate
+
+Source746c003818a8185099170468dab57daa18603903 is prepared. GitHub Windows
+runners were assigned to run38470376378 and replacement run38471423460 but
+neither initially reported any executed step. The duplicate first run was
+cancelled; retain the replacement as the pending build gate. This is not a
+native-test success or source failure. No new diagnostic ZIP is delivered until
+the replacement build and original-call/ABI tests pass. Existing formal assets
+and the ineffective prior experimental packages are preserved unchanged.

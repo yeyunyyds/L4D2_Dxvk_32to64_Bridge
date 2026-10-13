@@ -1,6 +1,6 @@
 # Steam IME polling exemption experiment
 
-Status: Windows build/native tests PASS; real game IME validation pending.
+Status: Windows build/native tests PASS; supplied matched game test reports ineffective.
 Main, formal VERSION/Release and the cursor/exit behavior are unchanged.
 
 ## Paired feedback on bootstrap experiment
@@ -72,3 +72,15 @@ Artifact source, architecture, binary checksums and embedded matching identities
 were verified before ZIP-branch upload; public download hash matches.
 Main and formal Release remain unchanged. Exit Game remains an open separate
 issue; its dialog is not suppressed by this IME experiment.
+
+## Matched game feedback: ineffective
+
+The latest paired logs identify5ba86729c6fbce0d, polling True and bootstrap False.
+Client logs confirm actual ime-pass-through, including SogouPy.ime during
+activation. Host has187 context samples, including23 focused ones, changing
+Chinese/English layouts, but open0 and conversion query failure throughout.
+No composition/result is observed; this does not prove that Steam's own hooks
+received none. User reports unchanged failure. Thus the Client exemption is not
+an accepted IME fix, and testing the same flag again is not required.
+The next [original Steam IMM call observer](STEAM-IME-ACTUAL-CALLS.md) investigates
+actual context selection and thread/window ownership without further forcing.
