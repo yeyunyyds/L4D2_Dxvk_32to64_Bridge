@@ -68,3 +68,38 @@ being dropped, and preserves native Steam processing and Unicode commit exactly
 once. These are investigation criteria, not a tested implementation.
 
 No IPC, backend, resource, default config, released ZIP or v1.3.1 asset changes.
+
+## Subsequent paired feedback: invisible cursor, working clicks
+
+The user clarifies that the pointer disappears but Overlay remains clickable.
+This supersedes the original apparent center-lock description. Both supplied
+logs identify build `l4d2-1.3.1+3d13bf31676468b8`, with the current Steam capture,
+native input, mouse handoff and polling-chain switches enabled.
+
+Across two observed open/close cycles, Host native focus is acquired and released.
+All 19 active samples per process identify Host Presenter focus/capture. Host
+clip observations are 65535x65535 and Client observations 3328x1600; neither
+shows a one-pixel center restriction. They are process-specific sampled API
+observations, not proof of a single unhooked global clip value or transient behavior.
+Client reports SetCursorPos from inputsystem.dll neutralized. Combined with the
+user's successful clicks, these favor a visibility failure over a movement lock.
+
+Current source adjusts ShowCursor on the Host worker at capture transitions
+(up to 16 increments, balanced on close), and sets an arrow on WM_SETCURSOR while
+active. Neither proves continued visibility: display counts, current cursor
+selection and Steam's rendered cursor can differ, and hook handlers may consume
+messages before the Presenter WndProc. The logs identify OpenGL32.dll as the
+Host downstream WndProc module; this alone does not establish which component
+hid the pointer. Host WndProc counters are not all underlying OS/Steam events.
+
+Next evidence: default-off, bounded GetCursorInfo flags/handle observations at
+open/close and periodic active samples, counts of WM_SETCURSOR delivery, and
+caller-attributed ShowCursor/SetCursor effects only if the first observations are
+insufficient. Do not change ShowCursor just to query its counter. Compare direct
+gameplay opening with Esc/chat opening and distinguish Windows cursor visibility
+from Steam's software cursor. Avoid a global visibility forcing loop, preserve
+focus loss/Alt+Tab behavior and balanced closure. IME remains a separate open issue;
+these logs contain no composition/context measurements.
+
+No production behavior change, new binary or v1.3.1 asset replacement accompanies
+this evidence update. Raw runtime logs are not committed.
