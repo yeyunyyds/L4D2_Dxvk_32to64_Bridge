@@ -18,7 +18,7 @@ def generate(source, output):
     for name in ('isSteamOverlayActive', 'allowSteamInputHookChain', 'allowSteamInputPollingChain'):
         start, end = method(window, f'bool {name}()')
         pieces.append(window[start:end].replace(f'bool {name}()', f'bool WndProc::{name}()'))
-    for marker in ['static bool steamMouseHandoffActive()', 'static bool steamGameCaptureWindow(',
+    for marker in ['static bool allowSteamImePolling(', 'static bool steamMouseHandoffActive()', 'static bool steamGameCaptureWindow(',
                    'void DI::releaseSteamMouseCapture()', 'static HWND WINAPI HookedSetCapture(']:
         start, end = method(di, marker)
         pieces.append(di[start:end])

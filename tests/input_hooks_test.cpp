@@ -94,15 +94,18 @@ struct RemixState {
   static bool isUIActive() { return active; }
 };
 struct Config {
-  inline static bool steamInput=true, passChain=false, mouseHandoff=false, pollChain=false;
+  inline static bool steamInput=true, passChain=false, mouseHandoff=false, pollChain=false, imePolling=false;
   template<class T> static T getOption(const char* key,T fallback) {
     if(std::strcmp(key,"client.steamOverlayInput")==0) return static_cast<T>(steamInput);
     if(std::strcmp(key,"client.steamHookChainPassThrough")==0) return static_cast<T>(passChain);
     if(std::strcmp(key,"client.steamMouseCaptureHandoff")==0) return static_cast<T>(mouseHandoff);
     if(std::strcmp(key,"client.steamPollChainPassThrough")==0) return static_cast<T>(pollChain);
+    if(std::strcmp(key,"client.steamImePollingPassThrough")==0) return static_cast<T>(imePolling);
     return fallback;
   }
 };
+static bool inputMethodCaller=false;
+namespace l4d2_ime { static bool isInputMethodCaller(const void*) { return inputMethodCaller; } }
 static unsigned nextCalls=0,polled=0;
 static int nextCode=0;
 static WPARAM nextW=0;
@@ -221,7 +224,7 @@ int main(int argc,char** argv) {
     const bool option=mode=="steam-on" || mode=="steam-all-on" || mode=="steam-master-off";
     const bool mouse=mode=="steam-mouse-only" || mode=="steam-on" || mode=="steam-master-off";
     const bool poll=mode=="steam-poll-only" || mode=="steam-all-on" || mode=="steam-master-off";
-    Config::steamInput=master;Config::passChain=option;Config::mouseHandoff=mouse;Config::pollChain=poll;
+    Config::steamInput=master;Config::passChain=option;Config::mouseHandoff=mouse;Config::pollChain=poll;Config::imePolling=(mode=="steam-ime");
     const std::array<HOOKPROC,3> hooks{{HookedCallWndProc,HookedGetMsgProc,HookedKeyboardProc}};
     const std::array<int,3> ids{{WH_CALLWNDPROC,WH_GETMESSAGE,WH_KEYBOARD}};
     for(int id:ids) gWinHooks[id]=reinterpret_cast<HHOOK>(static_cast<uintptr_t>(id));
@@ -273,6 +276,36 @@ int main(int argc,char** argv) {
         check(HookedGetCursorPos(&point)==1 && cursorPolls==1 && point.x==30 && point.y==40 && lastError==88,"failed original cursor query changed game echo/error");
         failedPoll=false;
       }
+    }
+    if(mode=="steam-ime") {
+      inputMethodCaller=true;
+      for(bool ui:{false,true})for(bool known:{false,true})for(bool steam:{false,true}) {
+        RemixState::active=ui;WndProc::g_steamKnown=known;WndProc::g_steamActive=steam;
+        const bool allowed=ui && known && steam && master;
+        polled=0;lastError=88;
+        check(HookedGetAsyncKeyState(65)==(!ui || allowed?42:0),"IME async state not delegated/neutralized correctly");
+        check(HookedGetKeyState(65)==(!ui || allowed?43:0),"IME queue state not delegated/neutralized correctly");
+        std::array<BYTE,256> keys{};
+        check(HookedGetKeyboardState(keys.data())==1,"IME keyboard result changed");
+        check(keys[0]==(!ui || allowed?0x80:0),"IME text service got neutralized keys");
+        check(polled==(!ui || allowed?3u:0u),"IME originals must execute exactly once");
+        check(lastError==(!ui || allowed?555u:88u),"IME return changed original LastError");
+        POINT point{};cursorPolls=0;g_uiActiveCursorPos={10,20};g_gameObservesCursor=false;
+        check(HookedGetCursorPos(&point)==1 && cursorPolls==(!ui || allowed?1u:0u),"IME cursor original count");
+        check(point.x==(!ui || allowed?96:10),"IME cursor must be actual position");
+        if(allowed) {
+          check(!g_gameObservesCursor && hookAction=="ime-pass-through","IME read polluted game cursor cache");
+          failedPoll=true;polled=0;lastError=88;
+          check(HookedGetKeyboardState(keys.data())==0 && polled==1 && lastError==555,"IME query failure hidden");
+          cursorPolls=0;check(HookedGetCursorPos(&point)==0 && cursorPolls==1,"IME cursor failure hidden");
+          failedPoll=false;
+          polled=0;cursorPolls=0;
+          check(HookedGetKeyboardState(nullptr)==0 && polled==0,"invalid IME keyboard output delegated");
+          check(HookedGetCursorPos(nullptr)==0 && cursorPolls==0,"invalid IME cursor output delegated");
+          cursorSets=0;HookedSetCursorPos(40,50);check(cursorSets==0,"IME exemption must not unlock game setters");
+        }
+      }
+      inputMethodCaller=false;
     }
     for(bool ui:{false,true}) for(bool known:{false,true}) for(bool steam:{false,true}) for(bool foreground:{false,true}) {
       RemixState::active=ui;WndProc::g_steamKnown.store(known);WndProc::g_steamActive.store(steam);

@@ -25,7 +25,12 @@ try {
   & cl.exe /nologo /std:c++17 /EHsc /O2 /W4 /WX $generated /Fe:input-hooks-test.exe
   if ($LASTEXITCODE -ne 0) { throw 'Input hook regression compilation failed' }
   Assert-NativeArchitecture -Path (Join-Path $output 'input-hooks-test.exe') -Architecture $Platform
-  foreach ($mode in @('steam-off','steam-on','steam-master-off','steam-mouse-only','steam-poll-only','steam-all-on')) {
+  & cl.exe /nologo /std:c++17 /EHsc /O2 /W4 /WX "/I$source/bridge/src/util" "$repoRoot/tests/ime_polling_policy.cpp" /Fe:ime-policy-test.exe
+  if ($LASTEXITCODE -ne 0) { throw 'IME classifier compilation failed' }
+  Assert-NativeArchitecture -Path (Join-Path $output 'ime-policy-test.exe') -Architecture $Platform
+  & .\ime-policy-test.exe
+  if ($LASTEXITCODE -ne 0) { throw 'IME caller classification failed' }
+  foreach ($mode in @('steam-off','steam-on','steam-master-off','steam-mouse-only','steam-poll-only','steam-all-on','steam-ime')) {
     & .\input-hooks-test.exe $mode
     if ($LASTEXITCODE -ne 0) { throw "Input hook/log classification regression failed: $mode" }
   }
