@@ -61,7 +61,10 @@ struct GlobalOptions {
   static bool getLogApiCalls() { return apiLog; }
   static bool getLogAllCalls() { return false; }
 };
-namespace DI { enum ForwardPolicy { Never, Always }; }
+namespace DI {
+ enum ForwardPolicy { Never, Always };
+ inline void releaseSteamMouseCapture() { assert(!"Unexpected capture handoff in disabled observation fixture"); }
+}
 struct ClientOptions {
   static bool getUseVanillaDxvk() { return !requestedInput.remix; }
   static bool getHookMessagePump() { return requestedInput.messagePump; }
@@ -124,7 +127,11 @@ inline auto OrigGetWindowLongW = &GetWindowLongW;
 inline auto OrigGetWindowLongA = &GetWindowLongA;
 struct MessageChannel { bool canSend() { return false; } };
 inline MessageChannel* gpRemixMessageChannel = nullptr;
-struct RemixState { static bool isUIActive() { return false; } };
+struct RemixState {
+ static bool isUIActive() { return false; }
+ static bool steamActive() { assert(!"Unexpected Steam capture query in disabled observation fixture"); return false; }
+ static bool setSteam(bool) { assert(!"Unexpected Steam activation in disabled observation fixture"); return false; }
+};
 inline l4d2_overlay::InputDiagnostics& inputDiagnostics() {
   static l4d2_overlay::InputDiagnostics instance(false, "client", [](const char*) { ++messages; });
   return instance;

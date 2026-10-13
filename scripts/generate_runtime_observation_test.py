@@ -45,6 +45,10 @@ def generate(source, output):
                    'static HWND configureOverlayPresenter(', 'static HWND overlayPresentWindow(']:
         start, end = method(host, marker)
         generated.append(host[start:end] + '\n')
+    # Compile the actual helpers now referenced by the sampler. Disabled-gate
+    # fixtures reject any capture effects; dedicated native tests exercise activation.
+    activation = window.split('// LDB_STEAM_ACTIVATION_BEGIN\n', 1)[1].split('// LDB_STEAM_ACTIVATION_END', 1)[0]
+    generated.append('namespace WndProc {\n' + activation + '\n}\n')
     start, end = method(window, 'void WndProc::sampleSteamInput()')
     generated.append(window[start:end] + '\n')
     start, end = method(control, 'extern "C" HRESULT WINAPI L4D2BridgePageBlockControl(')

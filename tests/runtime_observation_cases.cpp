@@ -298,7 +298,10 @@ int main(int argc, char** argv) {
     l4d2_color::upload(1, 1, "disabled", 1, 21, 32, 32, 1, 128, 0, digest, S_OK, S_OK, true);
     l4d2_color::backendSnapshot(reinterpret_cast<IDirect3DDevice9*>(1), 1, gpD3DResources,
       gpD3DPixelShaders, gpD3DVertexShaders, "disabled");
-    DInputHookAttach(); DInputHookDetach(); WndProc::sampleSteamInput();
+    DInputHookAttach(); DInputHookDetach();
+    assert(!WndProc::handleSteamCaptureNotification(WM_MOUSEMOVE));
+    assert(!WndProc::handleSteamCaptureNotification(0xc001));
+    WndProc::sampleSteamInput();
     D3DPRESENT_PARAMETERS pp {}; pp.Windowed = TRUE;
     configureOverlayPresenter(pp); assert(overlayPresentWindow(nullptr) == nullptr);
     FunctionEntryExitLogger api("Long_D3D9_API_Name_That_Would_Require_A_String_Allocation", nullptr);
