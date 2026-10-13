@@ -15,7 +15,7 @@ L4N 为单独可选插件包，将其中 bin/neko/plugins 合入游戏目录；�
 
 已有配置不会自动更新。Steam 修复需合入 config/STEAM-OVERLAY-FIX.conf 并完整重启；
 server.presenterWindow=True 是 Steam 输入依赖，server.presenterInput=True，
-server.presenterNativeSteamInput=True；其它窗口适配键见该 snippet。
+server.steamNativeInput=True；其它窗口适配键见该 snippet。
 保持 client.hookMessagePump=False、client.overrideCustomWinHooks=False。
 新安装默认 x64 Host、C8；六档 C1/C2/C4/C8/C16/C32 保留。
 Mapped Shadow 默认关闭，原有 arena、资源管理和 IPC 正确性修复保留。
