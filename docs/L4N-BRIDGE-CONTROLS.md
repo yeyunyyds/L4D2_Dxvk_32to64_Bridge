@@ -27,7 +27,7 @@ L4D2 Bridge
 │  ├─ lg
 │  ├─ drop [experimental]
 │  └─ save to configure
-├─ ReShade Presenter
+├─ ReShade / Steam Overlay
 │  ├─ Enable
 │  └─ Disable
 └─ Host
@@ -43,7 +43,7 @@ L4D2 Bridge
 | GC | 执行原 learned/aggressive/force GC | 否 | 否 |
 | Memory Policy: keep / lg / drop | 调用原 runtime SetPolicy | 否 | 否 |
 | Memory Policy: save to configure | 确认当前 runtime 值 | 是 | 否 |
-| ReShade Presenter | 不重建当前 Presenter | 是 | 是 |
+| ReShade / Steam Overlay | 不重建当前 Presenter | 是 | 是 |
 | Host: x86 / x64 | 仅暂存选择 | 否 | 否 |
 | Host: Save | 不更换当前 Host | 是 | 是 |
 
@@ -66,7 +66,7 @@ keep、lg、drop 三项仅调用旧 PageBlock `SetPolicy`，当前会话立即�
 
 运行中选择 drop 不会自动清空 backing，也不会放宽现有 capability/safety/recovery 检查。GC 算法、等待与回收语义均未改变。旧 `L4D2BridgePageBlockControl::SetPolicy` 仍是 session only；只有新通用控制会额外保存。
 
-## Host 和 ReShade Presenter
+## Host 和 ReShade / Steam Overlay
 
 Host 每次进入重新读取配置，首行显示 `Configured Host`。点击 x86/x64 仅暂存选择，选择结果页底部有 Save；点击 Save 才由 Client 持久化，并重新读取、显示新的配置值。离开而未保存的选择在再次进入 Host 时丢弃。保存规则保持现有实现：x86 写 `forceX64Server=True`、`client.testX86Server=True`；x64 写 `forceX64Server=True`、`client.testX86Server=False`。两者都不能使用 `forceX64Server=False` 模拟切换。不杀进程、不 reconnect、不 Reset、不搬迁资源；退出整个游戏后重新启动才应用。
 
@@ -86,7 +86,7 @@ client.DirectInput.forward.mousePolicy = 0
 client.DirectInput.forward.keyboardPolicy = 0
 ```
 
-Disable 只保存 `server.presenterWindow=False`、`client.hookMessagePump=False`、`client.overrideCustomWinHooks=False`，其余配置保留。Enable/Disable 都只修改 Bridge Presenter/输入支持，不安装、卸载或重载 ReShade 本体，也不改 Host 选择。当前已验证的 ReShade 组合仍是 **x64 Host + Vulkan ReShade 6.0.1**；x86 配置允许启用，只显示非阻塞提示。
+Disable 只保存 `server.presenterWindow=False`、`client.hookMessagePump=False`、`client.overrideCustomWinHooks=False`，其余配置保留。当前 ReShade Presenter 与 Steam Overlay 输入依赖 Host 的 Presenter 窗口：关闭此开关也会让 Steam Overlay 输入失效。菜单名称为 **ReShade / Steam Overlay**，中英文说明均标明共同依赖，关闭结果页会显示 Steam 输入失效提示。Enable/Disable 都只修改 Bridge Presenter/输入支持，不安装、卸载或重载 ReShade 本体，也不改 Host 选择；完整重启游戏和 Host 后生效。当前已验证的 ReShade 组合仍是 **x64 Host + Vulkan ReShade 6.0.1**；x86 配置允许启用，只显示非阻塞提示。
 
 Client 的通用状态仍保存启动时的 Presenter 配置、真实 Host 架构与重启判定，供控制 ABI 使用；精简后的插件不在 Status 显示这些字段。Host 和 Presenter 的保存结果继续明确提示完整重启。关闭 Presenter 不会回滚用户其他设置。
 
