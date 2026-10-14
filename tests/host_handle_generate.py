@@ -21,5 +21,5 @@ out.append('static void macroDispatch() { GET_RES(resource,gpD3DDevices); if (!r
 for name in ['IDirect3DQuery9_Issue','IDirect3DQuery9_Destroy']:
  b=s.index('      case '+name+':');e=s.index('      case ',b+12)
  body=s[b:e].replace('case '+name+':','case 1:',1).replace('IDirect3DQuery9*','Query*')
- out.append('static void '+name+'() { switch(1) {\n'+body+'} }')
+ out.append('static void dispatchQuery'+name.rsplit('_',1)[1]+'() { switch(1) {\n'+body+'} }')
 a.output.mkdir(parents=True,exist_ok=True);(a.output/'actual_host_handles.h').write_text('\n'.join(out),encoding='utf-8')

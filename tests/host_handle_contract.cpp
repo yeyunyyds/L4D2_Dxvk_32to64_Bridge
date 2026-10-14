@@ -29,10 +29,10 @@ int main(){
   gpD3DDevices[1]=&second;macroDispatch();check(first.calls==1&&second.calls==1,"recreated device reached old object");
   gpD3DDevices[1]=nullptr;macroDispatch();check(DeviceBridge::faults==3&&gpD3DDevices.size()==1,"null device entry accepted");
   Query query;gpD3DQuery[1]=&query;
-  IDirect3DQuery9_Issue();check(reply==S_OK&&query.issues==1,"valid Query Issue changed");
-  IDirect3DQuery9_Destroy();check(query.releases==1&&gpD3DQuery.empty(),"Query destroy changed");
-  IDirect3DQuery9_Destroy();check(query.releases==1&&gpD3DQuery.empty(),"repeated Query destroy changed map");
-  IDirect3DQuery9_Issue();check(reply==D3DERR_INVALIDCALL&&query.issues==1&&gpD3DQuery.empty(),"stale Query Issue reached backend");
+  dispatchQueryIssue();check(reply==S_OK&&query.issues==1,"valid Query Issue changed");
+  dispatchQueryDestroy();check(query.releases==1&&gpD3DQuery.empty(),"Query destroy changed");
+  dispatchQueryDestroy();check(query.releases==1&&gpD3DQuery.empty(),"repeated Query destroy changed map");
+  dispatchQueryIssue();check(reply==D3DERR_INVALIDCALL&&query.issues==1&&gpD3DQuery.empty(),"stale Query Issue reached backend");
   std::puts("HOST_HANDLES_PASS missing/stale/null/recreated device, Query Issue/destroy/repeat/UID");return 0;
  }catch(const std::exception& e){std::printf("FAIL: %s\n",e.what());return 1;}
 }
