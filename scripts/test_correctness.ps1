@@ -93,17 +93,21 @@ if($Stage -notin @('query','shader','texture')) {
  }finally{Pop-Location}
 }
 if($Stage -in @('host','all')) {
- foreach($variant in @('fixed','frozen')) {
-  $inputSource=if($variant -eq 'fixed'){$source}else{$baseline}
+ foreach($variant in @('fixed','frozen','strict-destroy')) {
+  $inputSource=if($variant -eq 'frozen'){$baseline}else{$source}
   $gen=Join-Path $out "host-handles-$variant"
-  python "$root/tests/host_handle_generate.py" --source $inputSource --output $gen
+  [string[]]$control=@()
+  if($variant -eq 'strict-destroy'){$control=@('--control','strict-destroy')}
+  python "$root/tests/host_handle_generate.py" --source $inputSource --output $gen @control
   if($LASTEXITCODE -ne 0){throw 'Host handle extraction failed'}
   Push-Location $gen
   try {
    $exe=Join-Path $gen 'handles.exe'
    & cl.exe /nologo /std:c++17 /EHsc /O2 /DNDEBUG /W3 /DNOMINMAX "/I$gen" "$root/tests/host_handle_contract.cpp" "/Fe:$exe"
    if($LASTEXITCODE -ne 0){throw 'Host handle compilation failed'}
-   if($variant -eq 'fixed'){Run-Case $exe @()}else{Run-Case $exe @() 'missing host handle continued dispatch'}
+   if($variant -eq 'fixed'){Run-Case $exe @()}
+   elseif($variant -eq 'strict-destroy'){Run-Case $exe @() 'device cleanup faulted channel'}
+   else{Run-Case $exe @() 'missing host handle continued dispatch'}
   }finally{Pop-Location}
  }
  Run-Case (Join-Path $out 'shared-uploads/shared-upload.exe') @('handles')
