@@ -92,3 +92,19 @@ if($Stage -notin @('query','shader','texture')) {
   Run-Case $exe @('all')
  }finally{Pop-Location}
 }
+if($Stage -in @('host','all')) {
+ foreach($variant in @('fixed','frozen')) {
+  $inputSource=if($variant -eq 'fixed'){$source}else{$baseline}
+  $gen=Join-Path $out "host-handles-$variant"
+  python "$root/tests/host_handle_generate.py" --source $inputSource --output $gen
+  if($LASTEXITCODE -ne 0){throw 'Host handle extraction failed'}
+  Push-Location $gen
+  try {
+   $exe=Join-Path $gen 'handles.exe'
+   & cl.exe /nologo /std:c++17 /EHsc /O2 /DNDEBUG /W3 /DNOMINMAX "/I$gen" "$root/tests/host_handle_contract.cpp" "/Fe:$exe"
+   if($LASTEXITCODE -ne 0){throw 'Host handle compilation failed'}
+   if($variant -eq 'fixed'){Run-Case $exe @()}else{Run-Case $exe @() 'missing host handle continued dispatch'}
+  }finally{Pop-Location}
+ }
+ Run-Case (Join-Path $out 'shared-uploads/shared-upload.exe') @('handles')
+}
