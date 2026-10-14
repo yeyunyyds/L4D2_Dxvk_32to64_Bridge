@@ -229,3 +229,24 @@ intervention. Only do this after the initial typing test. All entered text stays
 in memory. Native tests cover24 runs/pairs, hidden state, ownership, destruction,
 context restoration, synthetic Unicode and bounded close; real IME remains a
 manual gate before production adoption.
+
+
+## Verified hidden EDIT matrix delivery
+
+Source `0a6dc9a2a93fe679b39327407ec65d498bc49626`, probe `ime-window-probe+0a6dc9a2a93f`.
+[Windows run38514052045](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38514052045)
+passed native compilation and24 synthetic runs/pairs; production build and
+release publication jobs were skipped. Native archive contains24 process logs;
+cases10/11 both architectures record hidden-focus acquired=1 and restored=1,
+cases11/12 record helper destruction, and9/10 retain a hidden helper until
+the subsequent synthetic EDIT test. No real IME composition is claimed.
+Earlier run38513913726 passed the three-combination version; the delivered
+source completes the fourth create/destroy-without-focus control.
+
+[Hidden EDIT matrix ZIP](https://raw.githubusercontent.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/7c47ef819df00b6af454c00d63be4a9550cc7b88/steam-ime-hidden-edit-probe-r38514052045/l4d2-ime-hidden-edit-probe-r38514052045.zip)
+
+SHA256 `8e4125561c021f9c57dc50b358022185585cfad85fd5f78200fd9c106705591e`. Probe and native CI archive digests, PE architecture,
+embedded source IDs, manifest checksums and packaged byte identity were checked.
+The immutable public ZIP was downloaded again and verified. Test9--12 initial
+input before F4. Real user validation is pending before production integration.
+Main, VERSION, production patch and formal releases remain unchanged.
