@@ -1,0 +1,44 @@
+# LDB correctness-only audit and sequential validation
+
+Base: main `64798c77e96b05d70720bcd5bedab32aa9a0b7e9` (includes the Steam Renderer allowlist and confirmed IME integration). Development branch: `codex/ldb-correctness-only`.
+
+The candidates and several test adapters were informed by [NPCodex Nightlybuild](https://github.com/NPCodex/L4D2_Dxvk_32to64_Bridge-Nightlybuild/tree/f722abffb02dd6419c34ac54a50e85432d03a39a). Each change was checked against the actual patched LDB source, not accepted on the basis of a changelog. Production changes remain in `patches/l4d2-bridge.patch` against pinned NVIDIA commit `9aa74f8dfad2188efbd0f717c64d9f8fa909787e`.
+
+## Findings and minimal repairs
+
+| Order | Confirmed in frozen main | Repair | Native evidence |
+|---|---|---|---|
+| Query | Client and Host treat `S_FALSE` as result-bearing; PIXELTIMINGS uses the wrong SDK structure; insufficient request validation | Copy/serialize data only for `S_OK`; correct stage-timing size; validate flags, exact nonzero length and destination; bound Host allocation to legal SDK result sizes; non-inserting lookup | [Query gate](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38544104454): x86/x64 pass, frozen main fails, pending/size negative controls fail |
+| Shader | Unsigned `startRegister + count` can wrap before validation; signed clamp uses the same unchecked sum | Subtraction-based range check, bounded hardware count, compile-time wire byte limit | [Shader gate](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38544334751): 390 range cases per architecture, six public constant pairs, recording/live state, frozen and guard-reverted failures |
+| UpdateTexture | Null input is dereferenced; Release omits the type assertion and can dispatch mismatched wrappers | Runtime null/type checks before existing 2D/Cube/Volume dispatch | [Texture gate](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38544650695): both architectures pass; frozen Release accepts mismatched types and its isolated null-input process exits with `0xC0000005` |
+| SharedHeap | Unknown ID lookup inserts an entry; no logical size on Host; duplicate/overlapping/out-of-segment allocations accepted; DISCARD failures lose old backing; null views undergo pointer arithmetic | Track/transmit logical byte length; reject invalid ID/ranges; preserve old VB/IB/Surface backing on failed allocation/view; validate source spans before backend locks; initialize buffer policy from the incoming descriptor; reject offset before arithmetic and bound optimized-lock reservation | [SharedHeap gate](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38545259380): real Windows mappings, Client32→Host32/64 bytes, 2048 release/recreate cycles, failures/recovery and shared upload edges; frozen unknown-ID and DISCARD negative controls fail |
+| Host | `GET_RES` and upload/Query lookups insert absent IDs; upload casts do not verify resource kind; ATI can examine malformed RECT before its normal-path checks | Non-inserting lookup; terminal channel fault for absent required object; VB/IB/Surface/VolumeTexture kind checks, Volume lookup, Query Issue error and safe repeated destroy; early Surface RECT validation | [Host gate](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38546203975): x86/x64 missing/stale/null/recreate, Query lifetime, five upload routes, reserved-pin cleanup and all preceding suites pass |
+
+The first Host fixture run failed to compile because its wrapper name collided with the Windows SDK `IDirect3DQuery9_Issue` macro. The wrapper was renamed; this was a test adapter repair, with no production change. The failed run remains available as [38545895692](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38545895692).
+
+## Boundaries and compatibility
+
+Only seven production files change: Client device, Query, lockable buffer and Surface; SharedHeap header/implementation; Host main dispatcher. Steam, IME, Presenter, ReShade, IPC publication/wait algorithms, shadow allocator, retention database and runtime configuration are preserved byte-for-byte relative to the base.
+
+The shared allocation packet gains one `uint32_t` logical-byte field after its first chunk. Client, Host64 and comparison Host32 must be replaced together. Existing startup matching compares the full patch-derived build identity before command dispatch; an older Host is rejected rather than interpreting this field as another packet. VERSION remains 1.3.1; this work creates no Tag or Release.
+
+SharedHeap remains disabled by default. Its size/range maps are used only by the opt-in path. Other added runtime work is bounded parameter checks and map `find`/resource-kind validation. No new threads, kernel waits or per-command diagnostics are added. No performance or FPS improvement is claimed without measurement.
+
+The Surface shared source bound uses `(rows - 1) * pitch + rowBytes`, not `rows * pitch`, so a partial right/bottom rectangle does not falsely demand padding beyond the allocation. Existing row-wise copies and zero-byte VB/IB Lock/Unlock behavior remain unchanged.
+
+Query keeps per-call allocation after validation; the Nightly persistent scratch-buffer optimization is not included. Pool scan hints, deadline clock changes, bulk-copy fast paths, database tuning and unrelated creation-lifecycle rewrites are also excluded.
+
+## Reproduction and limits
+
+On Windows with Python 3.11 and MSVC 14.29:
+
+```powershell
+python scripts/prepare_bridge.py
+powershell -NoProfile -File scripts/test_correctness.ps1 -Stage all
+```
+
+The checkout must include frozen main `64798c7` (CI uses fetch-depth 0). The runner reconstructs the original source from the same pinned upstream, compiles real extracted Client methods/Host dispatches and unchanged SharedHeap/SharedMemory, and retains stdout and source manifests under `work/correctness-*`. Each subprocess has a timeout; negative controls must produce their specific failure, not merely exit unsuccessfully.
+
+Stage inputs are `query`, `shader`, `texture`, `sharedheap`, `host` and `all`. Each stage includes previous stages; implementation advanced only after the preceding native stage passed. The full build workflow runs this gate plus the established IPC, upload safety, buffer/shadow, Steam/IME, lifecycle and diagnostic regressions, then verifies actual Release compile receipts for all three binaries.
+
+These tests use backend/transport adapters where a game or GPU is unnecessary. They do not replace L4D2 map-switch, Steam UI, GPU resource upload or gameplay testing. Final disposition is **AWAITING GAME VALIDATION** after native/build gates pass. Main has not been updated by this development branch.

@@ -119,6 +119,8 @@ jobs:
     runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/checkout@v4
         with:
           repository: yeyunyyds/L4D2_Dxvk_32to64_Bridge
@@ -156,6 +158,9 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'DXVK extraction failed' }
       - name: Prepare pinned Bridge sources
         run: python scripts/prepare_bridge.py
+      - name: All correctness fixes against frozen main and negative controls
+        shell: powershell
+        run: ./scripts/test_correctness.ps1 -Stage all
       - name: Presenter IME COM and TSF lifecycle
         shell: powershell
         run: ./scripts/test_steam_ime_native.ps1
@@ -302,6 +307,7 @@ jobs:
             work/upload-safety-*/
             work/ipc-safety-replies.json
             work/release-build.json
+            work/correctness-*/
             .deps/observation-test-*/
             .deps/steam-*/
             .deps/pageblock-gc-test/
