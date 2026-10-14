@@ -171,3 +171,24 @@ Native gates additionally assert direct input HWND equals root, no warm-up
 controls exist before testing, caret state changes/restores, fresh association
 restores and both Unicode targets work. These synthetic gates cannot establish
 real composition correctness; real user testing remains necessary.
+
+
+## Verified direct-window delivery
+
+Probe source: `c2f393240c7dc28402108f96d5534da0bf438505`. Build: `ime-window-probe+c2f393240c7d`.
+[Windows native run38510273048](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38510273048) passed.
+Sixteen runs/pairs cover all eight cases with x86/x64 child processes; synthetic
+Unicode, direct target identity, no initial warm-up controls, context restore,
+caret toggles and bounded close passed. Full Bridge build and release publication
+jobs are skipped. The original full run38509827802 passed the integrated native
+regressions and probe packaging, then was cancelled during unrelated frozen
+upload regressions because the production patch is unchanged. It is not
+represented as a completed passing full build.
+
+[Standalone direct Presenter ZIP](https://raw.githubusercontent.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/c72430652b51368fcae5c986e8f54a4c6fcb55ce/steam-ime-direct-probe-r38510273048/l4d2-ime-direct-presenter-probe-r38510273048.zip)
+
+SHA256: `b1abe6a21bff6ff0ab7d97ef55829ddc9387fda28a0f90adc1fe7cb1248ded79`. Both PE architectures, embedded source IDs,
+manifest SHA256s, original CI archive digest and combined member bytes were
+verified; public immutable ZIP was downloaded again and its SHA256 checked.
+Real IME composition for cases7/8 is pending. This ZIP contains only independent
+tools, not replacement Bridge binaries. Main, VERSION and releases are untouched.
