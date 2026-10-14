@@ -235,3 +235,61 @@ that Client input suppression in general has been eliminated as a possibility.
 If D is ineffective, focus independent validation on cross-process child-window
 IMM/TSF focus interoperation and early Steam keyboard-hook consumption, rather
 than another speculative COM initialization or forced conversion-mode change.
+
+## Supplied D and user-visible language indicator comparison
+
+D matches build8682d963820507a3 and intended flags: activation True, TSF pump
+True, polling exemption False. Both Activate and pump QI return S_OK and
+pump_ready=1; no runtime pump-error is logged. This is an ineffective enabled
+path, not a skipped experiment. Eighteen focused state samples retain a manager,
+active_flags0x80000000, no document focus and NULL default IMM window;14 are
+Chinese HKL and4 English. Named conversion calls still fail on the fresh Steam
+context and on close. Queue stages observe3 keys/1 ASCII, Bridge WndProc1 key/1
+ASCII; no observed composition/result/Unicode, no limit records. Both peers
+terminate normally and own Deactivate returns S_OK.
+
+The user adds an important visible distinction:
+
+| Configuration | Reported taskbar Chinese/English mode indicator | Chinese composition/typing |
+| --- | --- | --- |
+| A | Not shown; input method selection still switches | Ineffective |
+| B | Shown | Ineffective |
+| C | Shown | Ineffective |
+| D | Not shown; input method selection still switches | Ineffective |
+
+This is a user observation, not an inferred screenshot or a flag decoded from
+HIMC. B/C activation produces a real visible difference, but does not establish
+composition readiness in the Steam field. Module snapshots contain SogouPy.ime
+and SogouTSF.ime in B, C AND D; only the limited A snapshots omit them. Therefore
+D's missing mode indicator must not be explained as failure to load Sogou or
+failure to activate TSF. D's pump is enabled and may affect the UI/focus/message
+interaction, but this single session does not prove it solely caused that UI
+difference. Do not promote the pump to a default or keep it in a repair candidate
+without a demonstrated gameplay benefit.
+
+### Next validation boundary after four ineffective configurations
+
+No further A/B/C/D repetitions or another generic initialization toggle are
+warranted. Use B as the narrow initialization baseline for research: explicit
+activation, ordinary Windows pump, no polling exemption. This is not an accepted
+fix. A remains the rollback for all experimental behavior.
+
+Independently reproduce the window/input environment with Unicode windows:
+Host-owned top-level, same-process child, x86-parent/x64-child, and a child
+initially disabled then enabled as in the Presenter. Compare custom DefWindowProc
+and native EDIT control behavior, plus creation/focus/default IMM window/context
+state. Do not assume native EDIT behavior proves Steam's custom field works.
+Separate effects of window ownership, creation style, implicit attached queues
+and text-store support before changing the production Presenter hierarchy.
+A hidden Host-owned top-level initialization anchor is only a hypothesis to
+include in this independent comparison, not an established production repair.
+
+Also inspect early Steam hook consumption: very few key events reach the queue
+observers despite reported ordinary English typing. This does not prove Steam
+is defective, but the present observation points cannot see its entire path.
+Record hook installation/targets and original callback outcomes without changing
+consumption, callback module/thread identity or forwarding semantics. Do not
+force every hook to pass keys or bypass gameplay suppression as a guessed fix.
+The absence of observed composition remains ambiguous until these earlier
+boundaries are measured. Do not classify the issue as Minecraft-style lost
+committed characters, or as solely missing TSF initialization, from current data.
