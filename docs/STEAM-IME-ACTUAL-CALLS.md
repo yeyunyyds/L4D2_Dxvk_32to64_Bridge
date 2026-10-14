@@ -1,6 +1,6 @@
 # Steam actual IMM call observer
 
-Status: Windows native ABI/original-call tests and full build PASS; game IME validation PENDING.
+Status: Windows native ABI/original-call tests and full build PASS; game IME failure reproduced; diagnostic coverage confirmed.
 The latest supplied 5ba86729 sessions confirm polling flag True, bootstrap False,
 and actual ime-pass-through for Sogou. User reports unchanged failure. Host has
 23 focused samples, changing Chinese/English HKLs, a context in all187 samples,
@@ -63,3 +63,64 @@ Archive digest, manifest, matched build IDs and PE architectures were verified,
 and the immutable uploaded bytes were downloaded again and compared. Only the
 experimental download branch and this development branch were updated. Main,
 formal release, protocol semantics and Exit Game behavior remain unchanged.
+
+## Supplied diagnostic game session: failure reproduced
+
+Both peers report build `l4d2-1.3.1+af9077d98ae12293`. Actual-call and
+context diagnostics are enabled; bootstrap and Client IME polling exemption
+are disabled as instructed. All twelve named import observers attached,
+including the original three window APIs and nine optional IME/layout APIs.
+The user reports unchanged English-only input. This package was diagnostic,
+not a behavioral fix; its native PASS never asserted composition support.
+
+The opening sequence is decisive about thread ownership:
+
+| Observed call | Caller/window thread | Result |
+| --- | --- | --- |
+| ImmGetContext(Presenter) | same Presenter thread | prior context returned |
+| ImmCreateContext | same Presenter thread | new non-null context |
+| ImmGetConversionStatus(new context) | same Presenter thread | FALSE |
+| ImmAssociateContext(Presenter, new context) | same Presenter thread | prior context returned |
+| ImmAssociateContext(Presenter, prior context), on close | same Presenter thread | Steam context returned |
+
+The Presenter belongs to Host, and its creator, query and association calls
+all run on its owning thread. This observed opening sequence does not exhibit
+the suspected foreign-thread/cross-process HIMC association. The context is
+already queried unsuccessfully before association and before focus handoff;
+that timing matters when testing focus-related explanations.
+
+Twenty-nine focused periodic samples all report a context, open=0 and
+conversion_ok=0; 26 carry the Chinese HKL and 3 the English HKL. None record
+composition/result in our message counter. Steam can consume messages before
+that observer, so this is not proof that Windows generated none. Six actual
+calls were recorded (GetContext1, CreateContext1, ConversionStatus2,
+AssociateContext2), with no observer limit record. Dynamic resolution and
+contention remain coverage limits. The stale LastError87 on closing association
+is not proof of failure: the call returned the previous Steam context.
+
+The supplied session exits through the Client Terminate command, Host command
+loop cleanup and both successful shutdown records. It does not reproduce or
+resolve the separately tracked Steam Exit Game failure.
+
+### Revised next experiment boundary
+
+Audit found the Presenter uses an ordinary GetMessage/TranslateMessage/Dispatch
+loop, while the prior bootstrap only initializes COM and preserves/restores a
+system IMM context. It does not explicitly activate a TSF thread manager.
+COM initialization alone is not evidence of working TSF activation or document
+focus. TSF activation, legacy IMM interoperability, and the cross-process child
+window's attached input queues therefore warrant independent investigation.
+They are candidates, not a confirmed cause; conversion query FALSE alone does
+not establish missing TSF, an invalid context, or an unsupported IME.
+
+Before changing production behavior, independently compare ordinary top-level
+and cross-process child windows with the same layout/IME, record existing TSF
+activation/focus and IMM query results, then isolate explicit TSF activation
+from message-pump/focus changes. Do not force Chinese/open status or fabricate
+successful IMM results. Preserve Steam-owned contexts and matched binaries.
+The previous behavior experiments remain unaccepted; do not enable them by
+default or reuse them as established repairs.
+
+Primary API references:
+- [IMM conversion query result semantics](https://learn.microsoft.com/en-us/windows/win32/api/imm/nf-imm-immgetconversionstatus)
+- [TSF thread manager and document focus](https://learn.microsoft.com/en-us/windows/win32/tsf/thread-manager)
