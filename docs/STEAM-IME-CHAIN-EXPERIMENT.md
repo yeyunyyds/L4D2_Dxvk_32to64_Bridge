@@ -293,3 +293,6 @@ force every hook to pass keys or bypass gameplay suppression as a guessed fix.
 The absence of observed composition remains ambiguous until these earlier
 boundaries are measured. Do not classify the issue as Minecraft-style lost
 committed characters, or as solely missing TSF initialization, from current data.
+
+[Next independent window probe and early-hook diagnostic](STEAM-IME-WINDOW-PROBE.md)
+is native-verified; actual IME behavior is pending. A/B/C/D remain ineffective.

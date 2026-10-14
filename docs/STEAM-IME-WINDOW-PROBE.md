@@ -1,6 +1,6 @@
 # Independent IME window probe and early-hook diagnostic
 
-Status: source prepared; native compilation/tests and actual IME validation pending.
+Status: x86/x64 native tests and full Bridge build PASS; actual IME composition PENDING.
 A/B/C/D all failed Chinese typing. B/C show the Chinese/English taskbar mode
 indicator; A/D do not. B/C/D load Sogou and activate TSF; D also obtains the pump.
 Activation alone and that pump do not restore Steam composition. There are no
@@ -94,3 +94,34 @@ and bounded close/exit. No real IME, Steam DLL or
 uploaded third-party binary is executed or redistributed by these tests.
 Full Bridge regressions and matched three-binary build remain mandatory before
 shipping the optional early-hook update. Diagnostic limits remain explicit.
+
+## Verified experimental delivery
+
+Source: `ad3893e6661a3ad05ae0bad113fa9674ba4318a6`.
+Bridge build: `l4d2-1.3.1+b839021167aac481`.
+Probe build: `ime-window-probe+ad3893e6661a`.
+[Successful Windows native build](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38505071449).
+
+Twelve independent probe process pairs/runs passed: owned top-level and same-
+process child on both architectures; four cross-process cases with x86 parent
+and each of x86/x64 child. Synthetic Unicode, fresh context association/restore/
+destruction, ownership and bounded exit were checked. The extended chain modes,
+original-call fixtures, existing Bridge regressions and all three Bridge binaries
+also passed. These tests do not exercise real Sogou composition or Steam text.
+
+Earlier run38504396718 caught the probe Unicode cursor parameter and command-line
+macro quoting; run38504628041 compiled both architectures but exposed a null
+exit-code read in the PowerShell test driver. The final run uses an explicit
+Unicode resource, forced-include identity header and retained native Process
+handle. Failed/partial builds were never delivered as passing artifacts.
+
+[Combined independent-probe and matched Bridge update ZIP](https://raw.githubusercontent.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/aa9f9f03a4de3c01f19e093d27299614d69ff5cc/steam-ime-window-probe-r38505071449/l4d2-bridge-ime-window-probe-b839021167aac481-r38505071449.zip)
+
+SHA-256: `5d5604b50314bed27c6628d62a994bc7ccd801a9ba3f97aed183d2dc7b679ded`.
+
+Both CI archive digests, checksum manifests, PE architectures and source IDs
+were verified before combination. Every combined file was compared byte-for-byte
+with its validated original archive, and the immutable public ZIP was downloaded
+again and checked. The ZIP contains IME-Probe/, bridge-update/ and START-HERE.md.
+The archive design documents were written before the build; this section records
+the completed validation. Main, VERSION, Tags and formal Release remain unchanged.
