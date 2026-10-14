@@ -125,3 +125,49 @@ with its validated original archive, and the immutable public ZIP was downloaded
 again and checked. The ZIP contains IME-Probe/, bridge-update/ and START-HERE.md.
 The archive design documents were written before the build; this section records
 the completed validation. Main, VERSION, Tags and formal Release remain unchanged.
+
+
+## Direct Presenter follow-up (cases 7 and 8)
+
+User logs for case1 PID2276 and case4 PID14792 (probe ad3893e6661a)
+show real composition/result/Unicode delivery to Custom before Native EDIT was
+created, both with original and fresh HIMC. Case4 therefore demonstrates that
+cross-process parenting and initial WS_DISABLED alone do not prevent IME.
+The Custom control and caret remain different from production Presenter.
+
+Matched Bridge b839021167aac481, session
+8e9a80f7-4d9f-4987-a7ab-e195fef4a053 had diagnostics disabled. Subsequent
+21:01:55--21:02:45 logs (Client15080, Host13728) enable diagnostics. The existing
+Bridge LL hook observed98 callbacks, native-next86, nonzero-next0, block0.
+Thread stage counters show no composition/result/Unicode, despite native focus,
+TSF activation and Chinese layout. Default IMM window and focused TSF document
+remain absent. Fresh Steam context conversion query fails. Downstream zero
+returns do not exclude earlier hooks, thread-hook consumption, or TSF filtering.
+Renderer hash rejection is a separate verified-web-adapter gate, not proven IME
+causality. No game repair claim follows from these records.
+
+Cases7/8 bind both observers to the Presenter-like root itself: no Custom,
+STATIC, BUTTON, EDIT, caret (case7), hidden top-level or Host shell exists at
+initial typing. The registered Unicode class has no class cursor/background;
+window uses WS_CHILD|WS_VISIBLE|WS_DISABLED with WS_EX_NOACTIVATE and
+WS_EX_NOPARENTNOTIFY, then is enabled/focused on its owning thread. Case8 adds
+only a caret at initial focus. Both explicitly activate TSF with the ordinary
+message pump. The launcher is still an owned x86 probe window, not the real game;
+Steam, DXVK, game-parent IME policy and private Steam controls are not reproduced.
+Painting and Unicode echo remain for visibility; this is not exact production
+behavior and cannot eliminate those integration differences by itself.
+
+Close the game; extract and run Start-Probe.cmd. Select **7**, click the panel
+and type Chinese pinyin before pressing any function key. Repeat in a new
+process with **8**. Record candidate appearance and committed text for each.
+Within each process: **F2** toggles fresh/original HIMC; **F3** toggles the caret;
+**F4** creates Native EDIT and focuses it. Test each step, then click the panel
+to retry direct input. Do initial tests first: later EDIT initialization may
+change the thread's IME environment. F2/F3 auto-repeat is ignored. Logs contain
+phase markers and counters, never entered text. Return case7/case8 logs and
+results. No Bridge installation or configuration change is needed.
+
+Native gates additionally assert direct input HWND equals root, no warm-up
+controls exist before testing, caret state changes/restores, fresh association
+restores and both Unicode targets work. These synthetic gates cannot establish
+real composition correctness; real user testing remains necessary.

@@ -20,10 +20,11 @@ static HIMC fresh=nullptr,previousContext=nullptr;
 static std::wstring typed; // Display only. Never persisted in logs.
 static bool selftest=false,launcher=false,closing=false;
 static int caseId=0,result=0,pending=-1;
+static bool direct=false,caretEnabled=false;
 static DWORD parentPid=0;static HWND externalParent=nullptr;
 static PROCESS_INFORMATION child{};static ULONGLONG closeDeadline=0;
 static std::wstring childPath;
-static const wchar_t* const labels[]={L"1 Host x64 top-level",L"2 Host same-process child",L"3 x86 parent / x64 child, enabled",L"4 Presenter style: initially disabled",L"5 Presenter style + hidden Host anchor",L"6 Presenter style without explicit TSF"};
+static const wchar_t* const labels[]={L"1 Host x64 top-level",L"2 Host same-process child",L"3 x86 parent / x64 child, enabled",L"4 Presenter style: initially disabled",L"5 Presenter style + hidden Host anchor",L"6 Presenter style without explicit TSF",L"7 Direct Presenter: no caret / no controls",L"8 Direct Presenter: caret / no controls"};
 static void log(const char* text){if(output){std::fprintf(output,"%s\n",text);std::fflush(output);}}
 static void require(bool ok,const char* why){if(!ok){char line[300]{};std::snprintf(line,sizeof(line),"PROBE_FAIL reason=%s error=%lu",why,GetLastError());log(line);std::fprintf(stderr,"%s\n",line);std::exit(2);}}
 static std::wstring directory(){wchar_t path[MAX_PATH]{};require(GetModuleFileNameW(nullptr,path,MAX_PATH)>0,"module path");std::wstring s(path);return s.substr(0,s.find_last_of(L"\\/"));}
@@ -32,18 +33,18 @@ static LRESULT CALLBACK fieldProc(HWND w,UINT msg,WPARAM wp,LPARAM lp){
  if(chain)chain->message(3,w,msg,wp,lp);if(ime)ime->message(msg,lp);
  switch(msg){
  case WM_LBUTTONDOWN:SetFocus(w);return 0;
- case WM_SETFOCUS:CreateCaret(w,nullptr,2,18);SetCaretPos(10,35);ShowCaret(w);return DefWindowProcW(w,msg,wp,lp);
- case WM_KILLFOCUS:HideCaret(w);DestroyCaret();return DefWindowProcW(w,msg,wp,lp);
+ case WM_SETFOCUS:if(!direct || caretEnabled){CreateCaret(w,nullptr,2,18);SetCaretPos(10,35);ShowCaret(w);}return DefWindowProcW(w,msg,wp,lp);
+ case WM_KILLFOCUS:if(!direct || caretEnabled){HideCaret(w);DestroyCaret();}return DefWindowProcW(w,msg,wp,lp);
  case WM_CHAR:
   if(wp==VK_BACK){if(!typed.empty())typed.pop_back();}
   else if(wp>=0x20 && wp<0xFFFF && typed.size()<128)typed.push_back(static_cast<wchar_t>(wp));
   InvalidateRect(w,nullptr,TRUE);return 0;
- case WM_PAINT:{PAINTSTRUCT paint{};HDC dc=BeginPaint(w,&paint);RECT rect{};GetClientRect(w,&rect);FillRect(dc,&rect,GetSysColorBrush(COLOR_WINDOW));rect.left+=10;rect.top+=8;DrawTextW(dc,L"Custom Unicode / DefWindowProc",-1,&rect,DT_TOP|DT_LEFT|DT_SINGLELINE);rect.top+=26;DrawTextW(dc,typed.c_str(),static_cast<int>(typed.size()),&rect,DT_TOP|DT_LEFT|DT_WORDBREAK);EndPaint(w,&paint);return 0;}
+ case WM_PAINT:{PAINTSTRUCT paint{};HDC dc=BeginPaint(w,&paint);RECT rect{};GetClientRect(w,&rect);FillRect(dc,&rect,GetSysColorBrush(COLOR_WINDOW));rect.left+=10;rect.top+=8;DrawTextW(dc,direct?L"Direct Presenter: F2 fresh HIMC, F3 caret, F4 Native EDIT":L"Custom Unicode / DefWindowProc",-1,&rect,DT_TOP|DT_LEFT|DT_SINGLELINE);rect.top+=26;DrawTextW(dc,typed.c_str(),static_cast<int>(typed.size()),&rect,DT_TOP|DT_LEFT|DT_WORDBREAK);EndPaint(w,&paint);return 0;}
  default:return DefWindowProcW(w,msg,wp,lp);
  }
 }
 static BOOL CALLBACK findChild(HWND w,LPARAM value){DWORD pid=0;GetWindowThreadProcessId(w,&pid);wchar_t name[100]{};GetClassNameW(w,name,100);
- if(pid==child.dwProcessId && std::wcscmp(name,L"LdbImeProbePanel")==0){*reinterpret_cast<HWND*>(value)=w;return FALSE;}return TRUE;}
+ if(pid==child.dwProcessId && (std::wcscmp(name,L"LdbImeProbePanel")==0 || std::wcscmp(name,L"LdbImeProbePresenter")==0)){*reinterpret_cast<HWND*>(value)=w;return FALSE;}return TRUE;}
 static HWND childWindow(){HWND found=nullptr;EnumWindows(findChild,reinterpret_cast<LPARAM>(&found));if(!found)EnumChildWindows(root,findChild,reinterpret_cast<LPARAM>(&found));return found;}
 static void stopChild(){if(!child.hProcess)return;closing=true;closeDeadline=GetTickCount64()+5000;if(HWND w=childWindow())PostMessageW(w,WM_CLOSE,0,0);}
 static void launchChild(int which){
@@ -66,13 +67,13 @@ static void restoreFresh(){
  log("PROBE event=fresh-restored");
 }
 static void toggleFresh(){
- if(fresh){restoreFresh();SetWindowTextW(GetDlgItem(root,202),L"Use fresh HIMC");SetFocus(custom);return;}
+ if(fresh){restoreFresh();if(!direct)SetWindowTextW(GetDlgItem(root,202),L"Use fresh HIMC");SetFocus(custom);return;}
  fresh=ImmCreateContext();require(fresh!=nullptr,"create owned fresh context");
  DWORD conversion=0,sentence=0;const BOOL ok=ImmGetConversionStatus(fresh,&conversion,&sentence);
  previousContext=ImmAssociateContext(custom,fresh);
  require(currentContext()==fresh,"fresh context associated with only owned field");
  char line[300]{};std::snprintf(line,sizeof(line),"PROBE event=fresh-associated context=%p prior=%p preassociate_conversion_ok=%d conversion=0x%lx sentence=0x%lx",reinterpret_cast<void*>(fresh),reinterpret_cast<void*>(previousContext),ok!=FALSE,conversion,sentence);log(line);
- SetWindowTextW(GetDlgItem(root,202),L"Restore original HIMC");SetFocus(custom);
+ if(!direct)SetWindowTextW(GetDlgItem(root,202),L"Restore original HIMC");SetFocus(custom);
  if(chain)chain->sample("fresh-focus",true);if(ime)ime->sample("fresh-focus",true);
 }
 static void addEdit(){
@@ -84,9 +85,24 @@ static void addEdit(){
  EnableWindow(GetDlgItem(root,201),FALSE);
 }
 static LRESULT CALLBACK panelProc(HWND w,UINT msg,WPARAM wp,LPARAM lp){
+ if(direct && !launcher && w==root){
+  if(msg==WM_KEYDOWN && wp==VK_F2){if(!(lp & (1LL<<30)))toggleFresh();return 0;}
+  if(msg==WM_KEYDOWN && wp==VK_F3){
+   if(!(lp & (1LL<<30))){caretEnabled=!caretEnabled;
+    if(caretEnabled){CreateCaret(w,nullptr,2,18);SetCaretPos(10,35);ShowCaret(w);}else{HideCaret(w);DestroyCaret();}
+    log(caretEnabled?"PROBE event=caret enabled=1":"PROBE event=caret enabled=0");
+    if(chain)chain->sample("caret-toggle",true);
+   }return 0;
+  }
+  if(msg==WM_KEYDOWN && wp==VK_F4){if(!(lp & (1LL<<30))){addEdit();SetFocus(edit);if(chain)chain->sample("edit-focus",true);}return 0;}
+  if(msg==WM_MOUSEACTIVATE)return MA_NOACTIVATE;
+  if(msg==WM_ERASEBKGND)return 1;
+  if(msg!=WM_TIMER && msg!=WM_CLOSE && msg!=WM_DESTROY && msg!=WM_COMMAND)return fieldProc(w,msg,wp,lp);
+ }
+
  if(msg==WM_COMMAND && !launcher && LOWORD(wp)==202){toggleFresh();return 0;}
  if(msg==WM_COMMAND && !launcher && LOWORD(wp)==201){addEdit();SetFocus(edit);if(chain)chain->sample("edit-focus",true);return 0;}
- if(msg==WM_COMMAND && launcher && LOWORD(wp)>=101 && LOWORD(wp)<=106){pending=static_cast<int>(LOWORD(wp))-101;if(child.hProcess)stopChild();else{launchChild(pending);pending=-1;}return 0;}
+ if(msg==WM_COMMAND && launcher && LOWORD(wp)>=101 && LOWORD(wp)<=108){pending=static_cast<int>(LOWORD(wp))-101;if(child.hProcess)stopChild();else{launchChild(pending);pending=-1;}return 0;}
  if(msg==WM_TIMER){
   if(launcher && child.hProcess){DWORD code=STILL_ACTIVE;require(GetExitCodeProcess(child.hProcess,&code)!=FALSE,"owned child status");
    if(selftest && !closing && code==STILL_ACTIVE && GetTickCount64()>closeDeadline){result=3;stopChild();}
@@ -101,7 +117,7 @@ static LRESULT CALLBACK panelProc(HWND w,UINT msg,WPARAM wp,LPARAM lp){
  if(msg==WM_DESTROY && w==root){if(!launcher)restoreFresh();PostQuitMessage(0);return 0;}
  return DefWindowProcW(w,msg,wp,lp);
 }
-static void registerClasses(){WNDCLASSW wc{};wc.hInstance=GetModuleHandleW(nullptr);wc.hCursor=LoadCursorW(nullptr,MAKEINTRESOURCEW(32512));wc.hbrBackground=GetSysColorBrush(COLOR_BTNFACE);wc.lpfnWndProc=panelProc;wc.lpszClassName=L"LdbImeProbePanel";require(RegisterClassW(&wc)!=0,"panel class");wc.lpszClassName=L"LdbImeProbeLauncher";require(RegisterClassW(&wc)!=0,"launcher class");wc.lpfnWndProc=fieldProc;wc.lpszClassName=L"LdbImeProbeField";require(RegisterClassW(&wc)!=0,"field class");}
+static void registerClasses(){WNDCLASSW wc{};wc.hInstance=GetModuleHandleW(nullptr);wc.hCursor=LoadCursorW(nullptr,MAKEINTRESOURCEW(32512));wc.hbrBackground=GetSysColorBrush(COLOR_BTNFACE);wc.lpfnWndProc=panelProc;wc.lpszClassName=L"LdbImeProbePanel";require(RegisterClassW(&wc)!=0,"panel class");wc.lpszClassName=L"LdbImeProbeLauncher";require(RegisterClassW(&wc)!=0,"launcher class");wc.lpfnWndProc=fieldProc;wc.lpszClassName=L"LdbImeProbeField";require(RegisterClassW(&wc)!=0,"field class");wc.lpfnWndProc=panelProc;wc.lpszClassName=L"LdbImeProbePresenter";wc.hCursor=nullptr;wc.hbrBackground=nullptr;require(RegisterClassW(&wc)!=0,"presenter class");}
 int wmain(int argc,wchar_t** argv){
  for(int i=1;i<argc;++i){std::wstring a=argv[i];if(a==L"--selftest")selftest=true;
   else if(a==L"--case" && i+1<argc)caseId=_wtoi(argv[++i]);
@@ -109,16 +125,17 @@ int wmain(int argc,wchar_t** argv){
   else if(a==L"--parentpid" && i+1<argc)parentPid=static_cast<DWORD>(_wcstoui64(argv[++i],nullptr,10));
   else if(a==L"--selftest-parent" && i+2<argc){selftest=true;launcher=true;childPath=argv[++i];caseId=_wtoi(argv[++i]);}
   else require(false,"unsupported argument");}
- require(caseId>=0 && caseId<6,"case range");
+ require(caseId>=0 && caseId<8,"case range");
  if(argc==1){launcher=true;childPath=directory()+L"\\ImeWindowProbe64.exe";}
  registerClasses();const HINSTANCE module=GetModuleHandleW(nullptr);
  if(launcher){
   root=CreateWindowW(L"LdbImeProbeLauncher",L"LDB IME window comparison (no Steam)",WS_OVERLAPPEDWINDOW|(selftest?0:WS_VISIBLE),100,100,820,680,nullptr,nullptr,module,nullptr);require(root!=nullptr,"launcher window");
   if(selftest)launchChild(caseId);else{
-   CreateWindowW(L"STATIC",L"Close the game. Test one case at a time. Click Custom and Native EDIT; type Chinese pinyin, not paste.\nOnly metadata is logged in logs/. Typed text stays in the fields and is never saved.",WS_CHILD|WS_VISIBLE,12,10,770,50,root,nullptr,module,nullptr);
-   for(int i=0;i<6;++i)CreateWindowW(L"BUTTON",labels[i],WS_CHILD|WS_VISIBLE|BS_PUSHBUTTON,12+(i%2)*380,68+(i/2)*36,365,32,root,reinterpret_cast<HMENU>(static_cast<uintptr_t>(101+i)),module,nullptr);
+   CreateWindowW(L"STATIC",L"Close the game. Test one case at a time. Cases 7/8: click the direct panel; F2 context, F3 caret, F4 EDIT. Type Chinese pinyin, not paste.\nOnly metadata is logged in logs/. Typed text stays in the fields and is never saved.",WS_CHILD|WS_VISIBLE,12,10,770,50,root,nullptr,module,nullptr);
+   for(int i=0;i<8;++i)CreateWindowW(L"BUTTON",labels[i],WS_CHILD|WS_VISIBLE|BS_PUSHBUTTON,12+(i%2)*380,68+(i/2)*36,365,32,root,reinterpret_cast<HMENU>(static_cast<uintptr_t>(101+i)),module,nullptr);
   }
  }else{
+  direct=caseId>=6;caretEnabled=caseId==7;
   openLog();log("PROBE event=build id=" LDB_PROBE_BUILD_ID);log("PROBE event=scope low_level_hook=not-installed Steam=not-loaded text=not-recorded");const bool cross=caseId>=2;DWORD pid=0;
   if(cross){require(externalParent && IsWindow(externalParent) && GetWindowThreadProcessId(externalParent,&pid)!=0 && pid==parentPid && pid!=GetCurrentProcessId(),"validated cross-process parent");wchar_t name[100]{};GetClassNameW(externalParent,name,100);require(std::wcscmp(name,L"LdbImeProbeLauncher")==0,"only probe launcher parent, never game");}
   l4d2_overlay::ImeChain observation(true,caseId!=5,false,log);chain=&observation;
@@ -127,16 +144,21 @@ int wmain(int argc,wchar_t** argv){
   if(caseId==1){shell=CreateWindowW(L"LdbImeProbePanel",L"Host-owned parent",WS_OVERLAPPEDWINDOW|(selftest?0:WS_VISIBLE),180,180,780,300,nullptr,nullptr,module,nullptr);require(shell!=nullptr,"same-process parent");}
   const HWND parent=cross?externalParent:shell;const bool disabled=caseId>=3;
   const DWORD style=parent?(WS_CHILD|WS_VISIBLE|(disabled?WS_DISABLED:0)):(WS_OVERLAPPEDWINDOW|(selftest?0:WS_VISIBLE));
-  root=CreateWindowExW(parent?(WS_EX_NOPARENTNOTIFY|WS_EX_NOACTIVATE):0,L"LdbImeProbePanel",labels[caseId],style,parent?12:200,parent?200:200,750,250,parent,nullptr,module,nullptr);require(root!=nullptr,"probe panel");
+  root=CreateWindowExW(parent?(WS_EX_NOPARENTNOTIFY|WS_EX_NOACTIVATE):0,direct?L"LdbImeProbePresenter":L"LdbImeProbePanel",labels[caseId],style,parent?12:200,parent?200:200,750,250,parent,nullptr,module,nullptr);require(root!=nullptr,"probe panel");
+  if(direct){custom=root;}else{
   custom=CreateWindowW(L"LdbImeProbeField",L"",WS_CHILD|WS_VISIBLE|WS_BORDER,12,35,350,140,root,nullptr,module,nullptr);
   CreateWindowW(L"STATIC",L"Test Custom first; then add Native EDIT",WS_CHILD|WS_VISIBLE,385,10,330,20,root,nullptr,module,nullptr);
   CreateWindowW(L"BUTTON",L"Add Native EDIT",WS_CHILD|WS_VISIBLE|BS_PUSHBUTTON,385,180,180,30,root,reinterpret_cast<HMENU>(uintptr_t(201)),module,nullptr);CreateWindowW(L"BUTTON",L"Use fresh HIMC",WS_CHILD|WS_VISIBLE|BS_PUSHBUTTON,12,180,210,30,root,reinterpret_cast<HMENU>(uintptr_t(202)),module,nullptr);require(custom!=nullptr,"custom Unicode field");
+  }
   observation.bind(custom);session.bind(custom,parent?parent:root);
   char line[420]{};std::snprintf(line,sizeof(line),"PROBE event=windows case=%d bits=%zu pid=%lu thread=%lu root=%p root_parent=%p parent_pid=%lu custom=%p edit=%p anchor=%p initially_disabled=%d tsf_requested=%d",caseId+1,sizeof(void*)*8,GetCurrentProcessId(),GetCurrentThreadId(),root,GetParent(root),pid,custom,edit,anchor,disabled,caseId!=5);log(line);
+  log(direct?(caretEnabled?"PROBE event=direct controls=0 caret=1":"PROBE event=direct controls=0 caret=0"):"PROBE event=direct controls=1 caret=1");
   observation.sample("created-style",true);if(disabled)EnableWindow(root,TRUE);
   session.opening();SetFocus(custom);observation.sample("custom-focus",true);session.sample("custom-focus",true);
   if(selftest){
+   if(direct){require(custom==root && GetDlgItem(root,201)==nullptr && GetDlgItem(root,202)==nullptr && edit==nullptr,"direct window has no warmup controls");}
    HIMC original=currentContext();toggleFresh();require(currentContext()==fresh,"fresh identity");toggleFresh();require(currentContext()==original,"original association restored");
+   if(direct){const bool initial=caretEnabled;SendMessageW(root,WM_KEYDOWN,VK_F3,0);require(caretEnabled!=initial,"caret enabled switch");SendMessageW(root,WM_KEYDOWN,VK_F3,0);require(caretEnabled==initial,"caret switch restored");}
    addEdit();
    require(GetWindowThreadProcessId(custom,&pid)!=0 && pid==GetCurrentProcessId(),"owned custom input");
    require(IsWindowEnabled(root)!=FALSE && IsWindowUnicode(custom)!=FALSE && IsWindowUnicode(edit)!=FALSE,"enabled Unicode controls");
