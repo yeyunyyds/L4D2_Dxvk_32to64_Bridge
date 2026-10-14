@@ -142,3 +142,42 @@ download bytes were verified. The archive is unchanged CI output; its design
 document was written before the build, while this section records the later
 verification. Main, Tags and formal Release were not changed. Native PASS is not
 a gameplay repair claim. Keep per-case paired logs and user-visible outcomes.
+
+## Supplied B session: ineffective despite successful activation
+
+Both logs identify `l4d2-1.3.1+8682d963820507a3` and the intended B flags:
+TSF Activate True, TSF pump False, Client IME polling pass-through False,
+old bootstrap False; all chain/actual-call observers enabled. The user reports
+unchanged failure. Do not describe B as an accepted repair.
+
+Presenter-thread COM, manager acquisition and TSF Activate all return S_OK;
+active_flags remain0x80000000. The Host loads SogouTSF.ime, SogouPy.ime,
+IMM32, MSCTF and textinputframework. Actual window focus/capture is the Host
+Presenter. Thus missing TSF activation, missing loaded Sogou modules and failure
+to obtain Win32 focus do not explain this B result by themselves.
+
+Steam still creates/associates its HIMC on the Presenter thread, but the fresh
+context conversion query returns FALSE before association. All observed TSF
+samples have no document focus and a NULL default IMM window. These are useful
+signals for window/legacy-IMM interoperation tests, not proof of a single cause:
+legacy applications may legitimately have no TSF document focus.
+
+During the capture interval, each GETMESSAGE/queue-return/dispatch-return stage
+records only3 key messages and1 ASCII character; Bridge's WndProc records1 of
+each. No stage records composition/start/result/end or Unicode characters.
+Sent-message hook stages record6 language events and focus acquisition; an IME
+SETCONTEXT event appears when capture is released. There is no observer limit
+record. Counts do not establish the total actual input delivered to Steam:
+Steam may consume keyboard events before these queue hooks or use another path.
+No composition-string retrieval was recorded through the named Steam imports.
+Do not interpret absent records as proof that OS composition never occurred.
+
+Client records SogouPy.ime GetKeyState as poll-chain-neutralize on opening.
+The immediate next supplied-package comparison is C: change only
+client.steamImePollingPassThrough=True relative to B and fully restart. Prior
+polling-only failure does not resolve this combined condition. D then isolates
+TSF message-pump behavior; A remains the non-activation baseline. No new binary
+or default enablement is warranted while these comparisons remain outstanding.
+
+Own TSF Deactivate returns S_OK and both peers cleanly terminate in this session;
+it does not reproduce the independently tracked Steam Exit Game error.
