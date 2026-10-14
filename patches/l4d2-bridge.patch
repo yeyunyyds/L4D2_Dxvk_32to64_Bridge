@@ -842,7 +842,7 @@ index 9de506f..7a4901a 100644
 \ No newline at end of file
 +}
 diff --git a/bridge/src/client/d3d9_device.cpp b/bridge/src/client/d3d9_device.cpp
-index 1abdf20..4582655 100644
+index 1abdf20..cb12ac2 100644
 --- a/bridge/src/client/d3d9_device.cpp
 +++ b/bridge/src/client/d3d9_device.cpp
 @@ -1,3 +1,7 @@
@@ -3070,6 +3070,25 @@ index 1abdf20..4582655 100644
      if constexpr (ConstantT == ConstantType::Float) {
        const size_t size = adjCount * sizeof(Vec4f);
        std::memcpy(set.fConsts[startRegister].data, pConstantData, size);
+@@ -3624,13 +4024,13 @@ std::tuple<HRESULT, size_t> BaseDirect3DDevice9Ex_LSS::commonGetSetConstants(con
+                                                                             const uint32_t count) {
+   const     uint32_t regCountHardware = ShaderConstants::getHardwareRegCount<ShaderT, ConstantT>();
+   constexpr uint32_t regCountSoftware = ShaderConstants::getSoftwareRegCount<ShaderT, ConstantT>();
+-  if (startRegister + count > regCountSoftware) {
++  if (startRegister > regCountSoftware || count > regCountSoftware - startRegister) {
+     return { D3DERR_INVALIDCALL, count };
+   }
+-  const auto adjCount = UINT(
+-    std::max<INT>(
+-      std::clamp<INT>(count + startRegister, 0, regCountHardware) - INT(startRegister),
+-      0));
++  constexpr uint32_t bytesPerRegister = ConstantT == ConstantType::Bool ? sizeof(BOOL) : 4u * sizeof(T);
++  static_assert(regCountSoftware <= UINT32_MAX / bytesPerRegister, "constant payload must fit wire size");
++  const uint32_t adjCount = startRegister < regCountHardware
++    ? std::min(count, regCountHardware - startRegister) : 0;
+   if (adjCount == 0) {
+     return { D3D_OK, adjCount };
+   }
 @@ -3642,6 +4042,10 @@ std::tuple<HRESULT, size_t> BaseDirect3DDevice9Ex_LSS::commonGetSetConstants(con
  
  template<bool EnableSync>

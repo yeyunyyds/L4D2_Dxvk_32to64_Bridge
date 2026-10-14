@@ -60,3 +60,9 @@ Client-Case $source pixel-size query 'query SDK result size mismatch'
 Host-Query $source none
 Host-Query $baseline none 'pending query leaked an uninitialized or stale payload'
 Host-Query $source pending 'pending query leaked an uninitialized or stale payload'
+
+if($Stage -ne 'query') {
+ Client-Case $source none shader
+ Client-Case $baseline none shader 'wrapped constant range was accepted'
+ Client-Case $source range shader 'wrapped constant range was accepted'
+}
