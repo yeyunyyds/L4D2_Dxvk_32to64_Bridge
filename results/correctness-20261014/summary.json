@@ -1,7 +1,7 @@
 {
   "base": "64798c77e96b05d70720bcd5bedab32aa9a0b7e9",
   "upstream": "9aa74f8dfad2188efbd0f717c64d9f8fa909787e",
-  "patch_sha256": "e6f216c329ced1446d719d00b3592cd0d78bb4862a1ee3127e14eefbd511043d",
+  "patch_sha256": "3d545d8aa5ca71641f3305f66c1859936dc5628a0519f0e68c348b6e03c8e6f4",
   "branch": "codex/ldb-correctness-only",
   "compiler": "MSVC 14.29 /O2 NDEBUG",
   "native_stages": [
@@ -44,7 +44,7 @@
   "production_files": {
     "bridge/src/server/main.cpp": {
       "before": "da5fe47b2981db34bbd46db3e94b1b2f49e5d897103ba69e639c5d0209880729",
-      "after": "6a9b372b47be13b2b6d16c524383bbc82a7118d3ab5837167870c568f9a08ee1"
+      "after": "71bad0c5283c10e05c3ee2d604a517b562fb50e214c3d6ae50e70f0d350e897c"
     },
     "bridge/src/client/d3d9_surface.cpp": {
       "before": "64cae1508912e6e6170265ca79e74b9588eeb83e228c73bd4f471a85560647bf",
@@ -81,5 +81,17 @@
   },
   "integrated_build": "pending",
   "gameplay_validation": "pending",
-  "merge_recommendation": "AWAITING GAME VALIDATION"
+  "merge_recommendation": "AWAITING GAME VALIDATION",
+  "preliminary_integrated_build": {
+    "run_id": 38546726880,
+    "commit": "abd2ec4e18e6b213b4a29d26135910f85a0bb5ef",
+    "conclusion": "success",
+    "published": false,
+    "note": "Not distributed: final review added an explicit idempotent Device Destroy exception and regression"
+  },
+  "final_host_cleanup_gate": {
+    "run_id": 38548680765,
+    "commit": "696779b711156e5ead737184983460ca2d4fa75d",
+    "conclusion": "pending"
+  }
 }
