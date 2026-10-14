@@ -3953,7 +3953,7 @@ index 9f82b16..b8d03d9 100644
 \ No newline at end of file
 +};
 diff --git a/bridge/src/client/d3d9_query.cpp b/bridge/src/client/d3d9_query.cpp
-index 5f70099..fa7a941 100644
+index 5f70099..dfcca0a 100644
 --- a/bridge/src/client/d3d9_query.cpp
 +++ b/bridge/src/client/d3d9_query.cpp
 @@ -42,12 +42,12 @@ HRESULT Direct3DQuery9_LSS::QueryInterface(REFIID riid, LPVOID* ppvObj) {
@@ -3971,7 +3971,15 @@ index 5f70099..fa7a941 100644
    return D3DBase::Release();
  }
  
-@@ -89,7 +89,7 @@ DWORD Direct3DQuery9_LSS::GetDataSize() {
+@@ -82,14 +82,14 @@ DWORD Direct3DQuery9_LSS::GetDataSize() {
+   case D3DQUERYTYPE_PIPELINETIMINGS:      return sizeof(D3DDEVINFO_D3D9PIPELINETIMINGS);
+   case D3DQUERYTYPE_INTERFACETIMINGS:     return sizeof(D3DDEVINFO_D3D9INTERFACETIMINGS);
+   case D3DQUERYTYPE_VERTEXTIMINGS:        return sizeof(D3DDEVINFO_D3D9STAGETIMINGS);
+-  case D3DQUERYTYPE_PIXELTIMINGS:         return sizeof(D3DDEVINFO_D3D9PIPELINETIMINGS);
++  case D3DQUERYTYPE_PIXELTIMINGS:         return sizeof(D3DDEVINFO_D3D9STAGETIMINGS);
+   case D3DQUERYTYPE_BANDWIDTHTIMINGS:     return sizeof(D3DDEVINFO_D3D9BANDWIDTHTIMINGS);
+   case D3DQUERYTYPE_CACHEUTILIZATION:     return sizeof(D3DDEVINFO_D3D9CACHEUTILIZATION);
+   default:                                return 0;
    }
  }
  
@@ -3980,7 +3988,7 @@ index 5f70099..fa7a941 100644
    LogFunctionCall();
    
    UID currentUID = 0;
-@@ -101,10 +101,10 @@ HRESULT Direct3DQuery9_LSS::Issue(DWORD dwIssueFlags) {
+@@ -101,12 +101,17 @@ HRESULT Direct3DQuery9_LSS::Issue(DWORD dwIssueFlags) {
    }
    WAIT_FOR_OPTIONAL_SERVER_RESPONSE("Direct3DQuery9_LSS::Issue()", D3DERR_INVALIDCALL, currentUID);
  
@@ -3993,10 +4001,20 @@ index 5f70099..fa7a941 100644
 +HRESULT Direct3DQuery9_LSS::GetData(void* pData, DWORD dwSize, DWORD dwGetDataFlags) try {
    LogFunctionCall();
  
++  if ((dwGetDataFlags & ~D3DGETDATA_FLUSH) != 0
++    || (dwSize != 0 && (pData == nullptr || dwSize != GetDataSize()))) {
++    return D3DERR_INVALIDCALL;
++  }
++
    UID currentUID = 0;
-@@ -119,11 +119,12 @@ HRESULT Direct3DQuery9_LSS::GetData(void* pData, DWORD dwSize, DWORD dwGetDataFl
+   {
+     ClientMessage c(Commands::IDirect3DQuery9_GetData, getId());
+@@ -117,13 +122,14 @@ HRESULT Direct3DQuery9_LSS::GetData(void* pData, DWORD dwSize, DWORD dwGetDataFl
+ 
+   WAIT_FOR_SERVER_RESPONSE("Direct3DQuery9_LSS::GetData()", D3DERR_INVALIDCALL, currentUID);
    HRESULT hresult = DeviceBridge::get_data();
-   if (SUCCEEDED(hresult) && dwSize > 0 && pData != NULL) {
+-  if (SUCCEEDED(hresult) && dwSize > 0 && pData != NULL) {
++  if (hresult == S_OK && dwSize > 0) {
      void* pDataReturned = NULL;
 -    DeviceBridge::get_data(&pDataReturned);
 +    const auto returnedSize = DeviceBridge::get_data(&pDataReturned);
@@ -9491,6 +9509,7 @@ index 0000000..72eb1ad
 +};
 +}
 diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
+index 86434ec..34221c1 100644
 --- a/bridge/src/server/main.cpp
 +++ b/bridge/src/server/main.cpp
 @@ -1,3 +1,7 @@
@@ -9523,7 +9542,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
  
  #include "util_bridge_assert.h"
  #include "util_circularbuffer.h"
-@@ -109,6 +123,93 @@
+@@ -109,6 +123,93 @@ using namespace remixapi::util;
  // https://docs.microsoft.com/en-us/windows/win32/winprog64/interprocess-communication?redirectedfrom=MSDN
  #define TRUNCATE_HANDLE(type, input) (type)(size_t)(input)
  
@@ -9617,7 +9636,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
  bool bDxvkModuleLoaded = false;
  std::chrono::steady_clock::time_point gTimeStart;
  
-@@ -152,9 +253,38 @@
+@@ -152,9 +253,38 @@ std::unordered_map<uint32_t, IDirect3DPixelShader9*> gpD3DPixelShaders;
  std::unordered_map<uint32_t, IDirect3DSwapChain9*> gpD3DSwapChains;
  std::unordered_map<uint32_t, IDirect3DQuery9*> gpD3DQuery;
  std::unordered_map<uint32_t, void*> gMapRemixApi;
@@ -9657,7 +9676,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
  HANDLE hWait;
  
  namespace {
-@@ -179,13 +309,26 @@
+@@ -179,8 +309,8 @@ static inline void safeDestroy(IUnknown* obj, uint32_t x86handle) {
    if (obj) {
      const LONG cnt = static_cast<LONG>(obj->Release());
      if (cnt > 0) {
@@ -9668,10 +9687,10 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
      }
    }
  #endif
- 
+@@ -188,6 +318,19 @@ static inline void safeDestroy(IUnknown* obj, uint32_t x86handle) {
    while (obj && static_cast<LONG>(obj->Release()) > 0);
-+}
-+
+ }
+ 
 +static HRESULT finishSurfaceQuery(const char* api, uint32_t handle, HRESULT result, IUnknown* object) {
 +  const auto entry = gpD3DResources.find(handle);
 +  IUnknown* expected = entry == gpD3DResources.end() ? nullptr : entry->second;
@@ -9683,10 +9702,12 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
 +    bridge_exception::logDiagnostic(message);
 +  }
 +  return checkedResult;
- }
- 
++}
++
  D3DPRESENT_PARAMETERS getPresParamFromRaw(const uint32_t* rawPresentationParameters) {
-@@ -223,7 +366,7 @@
+   D3DPRESENT_PARAMETERS presParam;
+   // Set up presentation parameters. We can't just directly cast the structure because the hDeviceWindow
+@@ -223,7 +366,7 @@ HRESULT ReturnSurfaceDataToClient(IDirect3DSurface9* pReturnSurfaceData, HRESULT
    }
    // Using surface desc to get width, height of the surface
    D3DSURFACE_DESC pDesc;
@@ -9695,7 +9716,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
    if (!SUCCEEDED(hresult)) {
      c.send_data(hresult);
      return hresult;
-@@ -235,28 +378,51 @@
+@@ -235,28 +378,51 @@ HRESULT ReturnSurfaceDataToClient(IDirect3DSurface9* pReturnSurfaceData, HRESULT
  
    // Obtaining raw buffer from the surface and we send this data to client
    D3DLOCKED_RECT lockedRect;
@@ -9754,7 +9775,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
    return hresult;
  }
  
-@@ -296,10 +462,17 @@
+@@ -296,10 +462,17 @@ void ProcessDeviceCommandQueue() {
      ZoneScopedN("Process Command");
  #ifdef LOG_SERVER_COMMAND_TIME
      // Take a snapshot of the current tick count for profiling purposes
@@ -9773,7 +9794,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
  
  #ifdef _DEBUG
      // If data batching is enabled and the data offset on the comamnd is different from
-@@ -318,6 +491,7 @@
+@@ -318,6 +491,7 @@ void ProcessDeviceCommandQueue() {
          ZoneName(commandStr.c_str(), commandStr.size());
        }
        PULL_U(currentUID);
@@ -9781,7 +9802,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
  #if defined(_DEBUG) || defined(DEBUGOPT)
        if (GlobalOptions::getLogServerCommands()) {
          Logger::info("Device Processing: " + toString(rpcHeader.command) + " UID: " + std::to_string(currentUID));
-@@ -338,9 +512,10 @@
+@@ -338,9 +512,10 @@ void ProcessDeviceCommandQueue() {
          uint32_t* rawPresentationParameters = nullptr;
          DeviceBridge::get_data((void**) &rawPresentationParameters);
          D3DPRESENT_PARAMETERS PresentationParameters = getPresParamFromRaw(rawPresentationParameters);
@@ -9793,7 +9814,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          if (!SUCCEEDED(hresult)) {
            std::stringstream ss;
            ss << format_string("CreateDeviceEx() call failed with error code 0x%x", hresult) << std::endl;
-@@ -355,7 +530,7 @@
+@@ -355,7 +530,7 @@ void ProcessDeviceCommandQueue() {
          }
  
          // Send response back to the client
@@ -9802,7 +9823,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          {
            ServerMessage c(Commands::Bridge_Response, currentUID);
            c.send_data(hresult);
-@@ -373,9 +548,16 @@
+@@ -373,9 +548,16 @@ void ProcessDeviceCommandQueue() {
          uint32_t* rawPresentationParameters = nullptr;
          DeviceBridge::get_data((void**) &rawPresentationParameters);
          D3DPRESENT_PARAMETERS PresentationParameters = getPresParamFromRaw(rawPresentationParameters);
@@ -9820,7 +9841,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          if (!SUCCEEDED(hresult)) {
            std::stringstream ss;
            ss << format_string("CreateDevice() call failed with error code 0x%x", hresult) << std::endl;
-@@ -383,6 +565,12 @@
+@@ -383,6 +565,12 @@ void ProcessDeviceCommandQueue() {
          } else {
            Logger::info("Server side D3D9 Device created successfully!");
            gpD3DDevices[pHandle] = (IDirect3DDevice9Ex*) pD3DDevice;
@@ -9833,7 +9854,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
            if(GlobalOptions::getExposeRemixApi()) {
              remixapi::g_device = (IDirect3DDevice9Ex*) pD3DDevice;
              remixapi::g_remix.dxvk_RegisterD3D9Device(remixapi::g_device);
-@@ -390,7 +578,7 @@
+@@ -390,7 +578,7 @@ void ProcessDeviceCommandQueue() {
          }
  
          // Send response back to the client
@@ -9842,7 +9863,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          {
            ServerMessage c(Commands::Bridge_Response, currentUID);
            c.send_data(hresult);
-@@ -426,9 +614,10 @@
+@@ -426,9 +614,10 @@ void ProcessDeviceCommandQueue() {
          PULL(DWORD, Usage);
          PULL_HND(pHandle);
          LPDIRECT3DSURFACE9 pSurface;
@@ -9854,7 +9875,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          }
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
-@@ -444,9 +633,10 @@
+@@ -444,9 +633,10 @@ void ProcessDeviceCommandQueue() {
          PULL(DWORD, Usage);
          PULL_HND(pHandle);
          LPDIRECT3DSURFACE9 pSurface;
@@ -9866,7 +9887,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          }
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
-@@ -464,9 +654,10 @@
+@@ -464,9 +654,10 @@ void ProcessDeviceCommandQueue() {
          PULL(DWORD, Usage);
          PULL_HND(pHandle);
          LPDIRECT3DSURFACE9 pSurface;
@@ -9878,7 +9899,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          }
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
-@@ -483,6 +674,7 @@
+@@ -483,6 +674,7 @@ void ProcessDeviceCommandQueue() {
          IDirect3DSwapChain9* pSwapChain = nullptr;
          const auto hresult = pD3DDevice->GetSwapChain(0, &pSwapChain);
          if (SUCCEEDED(hresult)) {
@@ -9886,7 +9907,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
            gpD3DSwapChains[pClientSwapchain] = pSwapChain;
          }
          break;
-@@ -495,7 +687,9 @@
+@@ -495,7 +687,9 @@ void ProcessDeviceCommandQueue() {
          IDirect3DSurface9* pBackbuffer = nullptr;
          const auto hresult = pD3DDevice->GetBackBuffer(0, index, D3DBACKBUFFER_TYPE_MONO, &pBackbuffer);
          if (SUCCEEDED(hresult)) {
@@ -9896,7 +9917,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          }
          assert(SUCCEEDED(hresult));
          break;
-@@ -507,7 +701,9 @@
+@@ -507,7 +701,9 @@ void ProcessDeviceCommandQueue() {
          IDirect3DSurface9* pDepthStencil = nullptr;
          const auto hresult = pD3DDevice->GetDepthStencilSurface(&pDepthStencil);
          if (SUCCEEDED(hresult)) {
@@ -9906,7 +9927,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          }
          assert(SUCCEEDED(hresult));
          break;
-@@ -527,7 +723,8 @@
+@@ -527,7 +723,8 @@ void ProcessDeviceCommandQueue() {
        {
          GET_RES(pD3DDevice, gpD3DDevices);
          const auto hresult = pD3DDevice->TestCooperativeLevel();
@@ -9916,7 +9937,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          break;
        }
        case IDirect3DDevice9Ex_GetAvailableTextureMem:
-@@ -561,8 +758,14 @@
+@@ -561,8 +758,14 @@ void ProcessDeviceCommandQueue() {
        {
  
          GET_RES(pD3DDevice, gpD3DDevices);
@@ -9932,7 +9953,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          BRIDGE_ASSERT_LOG(SUCCEEDED(hresult), "Issue retrieving D3D9 device specific information");
          {
            ServerMessage c(Commands::Bridge_Response, currentUID);
-@@ -632,9 +835,11 @@
+@@ -632,9 +835,11 @@ void ProcessDeviceCommandQueue() {
          uint32_t* rawPresentationParameters = nullptr;
          DeviceBridge::get_data((void**) &rawPresentationParameters);
          D3DPRESENT_PARAMETERS PresentationParameters = getPresParamFromRaw(rawPresentationParameters);
@@ -9944,7 +9965,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
            gpD3DSwapChains[pHandle] = pSwapChain;
          }
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
-@@ -646,8 +851,13 @@
+@@ -646,8 +851,13 @@ void ProcessDeviceCommandQueue() {
          PULL_U(iSwapChain);
          IDirect3DSwapChain9* pSwapChain = nullptr;
          const auto hresult = pD3DDevice->GetSwapChain(iSwapChain, &pSwapChain);
@@ -9960,7 +9981,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          break;
        }
        case IDirect3DDevice9Ex_GetNumberOfSwapChains:
-@@ -664,19 +874,31 @@
+@@ -664,19 +874,31 @@ void ProcessDeviceCommandQueue() {
          uint32_t* rawPresentationParameters = nullptr;
          DeviceBridge::get_data((void**) &rawPresentationParameters);
          D3DPRESENT_PARAMETERS PresentationParameters = getPresParamFromRaw(rawPresentationParameters);
@@ -10004,7 +10025,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          break;
        }
        case IDirect3DDevice9Ex_ResetEx:
-@@ -689,26 +911,38 @@
+@@ -689,26 +911,38 @@ void ProcessDeviceCommandQueue() {
          PULL_DATA(sizeof(D3DDISPLAYMODEEX), pFullscreenDisplayMode);
  
          D3DPRESENT_PARAMETERS PresentationParameters = getPresParamFromRaw(rawPresentationParameters);
@@ -10056,21 +10077,20 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
  #endif
  
          GET_RES(pD3DDevice, gpD3DDevices);
-@@ -717,9 +951,10 @@
+@@ -717,9 +951,10 @@ void ProcessDeviceCommandQueue() {
          PULL(uint32_t, hDestWindowOverride);
          PULL_OBJ(RGNDATA, pDirtyRegion);
  
 -        HWND hwnd = TRUNCATE_HANDLE(HWND, hDestWindowOverride);
--
--        const auto hresult = pD3DDevice->Present(pSourceRect, pDestRect, hwnd, pDirtyRegion);
 +        HWND hwnd = overlayPresentWindow(TRUNCATE_HANDLE(HWND, hDestWindowOverride));
-+
+ 
+-        const auto hresult = pD3DDevice->Present(pSourceRect, pDestRect, hwnd, pDirtyRegion);
 +        l4d2_color::backendSnapshot(pD3DDevice, pD3DDeviceHandle, gpD3DResources, gpD3DPixelShaders, gpD3DVertexShaders, "Present");
 +        const auto hresult = l4d2_api_wait::backend([&]() { return pD3DDevice->Present(pSourceRect, pDestRect, hwnd, pDirtyRegion); });
          if (!SUCCEEDED(hresult)) {
            std::stringstream ss;
            ss << "Present() failed! Check all logs for reported errors.";
-@@ -730,7 +965,7 @@
+@@ -730,7 +965,7 @@ void ProcessDeviceCommandQueue() {
          if (GlobalOptions::getPresentSemaphoreEnabled()) {
            gpPresent->release();
  #ifdef ENABLE_PRESENT_SEMAPHORE_TRACE
@@ -10079,7 +10099,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
  #endif
          }
          break;
-@@ -746,6 +981,7 @@
+@@ -746,6 +981,7 @@ void ProcessDeviceCommandQueue() {
          assert(SUCCEEDED(hresult));
          if (SUCCEEDED(hresult)) {
            gpD3DResources[pSurfaceHandle] = pBackbuffer;
@@ -10087,7 +10107,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          }
          break;
        }
-@@ -767,6 +1003,7 @@
+@@ -767,6 +1003,7 @@ void ProcessDeviceCommandQueue() {
          PULL_D(Flags);
          PULL_OBJ(D3DGAMMARAMP, pRamp);
          pD3DDevice->SetGammaRamp(iSwapChain, Flags, pRamp);
@@ -10095,7 +10115,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          break;
        }
        case IDirect3DDevice9Ex_GetGammaRamp:
-@@ -780,20 +1017,30 @@
+@@ -780,20 +1017,30 @@ void ProcessDeviceCommandQueue() {
        case IDirect3DDevice9Ex_CreateTexture:
        {
          GET_RES(pD3DDevice, gpD3DDevices);
@@ -10119,8 +10139,6 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          if (SUCCEEDED(hresult)) {
 +          if (l4d2_color::enabled.load(std::memory_order_relaxed) && gColorTextures.size() < 65536) { gColorTextures[pHandle] = request; }
            gpD3DResources[pHandle] = pTexture;
--        }
--        assert(SUCCEEDED(hresult));
 +          gResourceInventory.track(pHandle, reinterpret_cast<uintptr_t>(pTexture), l4d2_host_memory::ResourceKind::Texture);
 +        } else {
 +          // NV-DXVK start: Record backend creation errors before returning them to the client.
@@ -10130,14 +10148,15 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
 +            static_cast<unsigned>(sizeof(void*) * 8)));
 +          sampleHostMemory(true, "create-texture-failed");
 +          // NV-DXVK end
-+        }
+         }
+-        assert(SUCCEEDED(hresult));
 +        // NV-DXVK start: D3D9 creation failures are API results, including invalid-call probes.
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
 +        // NV-DXVK end
          break;
        }
        case IDirect3DDevice9Ex_CreateVolumeTexture:
-@@ -807,10 +1054,15 @@
+@@ -807,10 +1054,15 @@ void ProcessDeviceCommandQueue() {
          PULL(D3DFORMAT, Format);
          PULL(D3DPOOL, Pool);
          PULL_HND(pHandle);
@@ -10154,7 +10173,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          }
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
-@@ -826,9 +1078,10 @@
+@@ -826,9 +1078,10 @@ void ProcessDeviceCommandQueue() {
          PULL(D3DPOOL, Pool);
          PULL_HND(pHandle);
          LPDIRECT3DCUBETEXTURE9 pCubeTexture;
@@ -10166,7 +10185,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          }
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
-@@ -843,9 +1096,10 @@
+@@ -843,9 +1096,10 @@ void ProcessDeviceCommandQueue() {
          PULL(D3DPOOL, Pool);
          PULL_HND(pHandle);
          LPDIRECT3DVERTEXBUFFER9 pVertexBuffer;
@@ -10178,7 +10197,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          }
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
-@@ -860,9 +1114,10 @@
+@@ -860,9 +1114,10 @@ void ProcessDeviceCommandQueue() {
          PULL(D3DPOOL, Pool);
          PULL_HND(pHandle);
          LPDIRECT3DINDEXBUFFER9 pIndexBuffer;
@@ -10190,7 +10209,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          }
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
-@@ -879,9 +1134,10 @@
+@@ -879,9 +1134,10 @@ void ProcessDeviceCommandQueue() {
          PULL(BOOL, Lockable);
          PULL_HND(pHandle);
          LPDIRECT3DSURFACE9 pSurface;
@@ -10202,7 +10221,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          }
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
-@@ -898,9 +1154,10 @@
+@@ -898,9 +1154,10 @@ void ProcessDeviceCommandQueue() {
          PULL(BOOL, Discard);
          PULL_HND(pHandle);
          LPDIRECT3DSURFACE9 pSurface;
@@ -10214,7 +10233,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          }
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
-@@ -919,7 +1176,8 @@
+@@ -919,7 +1176,8 @@ void ProcessDeviceCommandQueue() {
          const auto& pDestinationSurface = (IDirect3DSurface9*) gpD3DResources[pDestHandle];
          assert(pDestinationSurface != nullptr);
          if (pSourceSurface != nullptr && pDestinationSurface != nullptr) {
@@ -10224,7 +10243,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
            assert(SUCCEEDED(hresult));
          }
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
-@@ -936,7 +1194,8 @@
+@@ -936,7 +1194,8 @@ void ProcessDeviceCommandQueue() {
          const auto& pDestinationTexture = (IDirect3DBaseTexture9*) gpD3DResources[pDestinationTextureHandle];
          assert(pDestinationTexture != nullptr);
          if (pSourceTexture != nullptr && pDestinationTexture != nullptr) {
@@ -10234,7 +10253,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
            assert(SUCCEEDED(hresult));
          }
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
-@@ -949,7 +1208,7 @@
+@@ -949,7 +1208,7 @@ void ProcessDeviceCommandQueue() {
          PULL_HND(pDestSurfaceHandle);
          const auto& pRenderTarget = (IDirect3DSurface9*) gpD3DResources[pRenderTargetHandle];
          const auto& pDestSurface = (IDirect3DSurface9*) gpD3DResources[pDestSurfaceHandle];
@@ -10243,7 +10262,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          hresult = ReturnSurfaceDataToClient(pDestSurface, hresult, currentUID);
          assert(SUCCEEDED(hresult));
          break;
-@@ -1002,9 +1261,10 @@
+@@ -1002,9 +1261,10 @@ void ProcessDeviceCommandQueue() {
          PULL(D3DPOOL, Pool);
          PULL_HND(pHandle);
          LPDIRECT3DSURFACE9 pSurface;
@@ -10255,7 +10274,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          }
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
-@@ -1023,6 +1283,7 @@
+@@ -1023,6 +1283,7 @@ void ProcessDeviceCommandQueue() {
          assert((pHandle != 0 && pRenderTarget != 0) || pHandle == 0);
          if ((pHandle != 0 && pRenderTarget != 0) || pHandle == 0) {
            hresult = pD3DDevice->SetRenderTarget(IN RenderTargetIndex, IN pRenderTarget);
@@ -10263,7 +10282,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
            assert(SUCCEEDED(hresult));
          }
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
-@@ -1034,12 +1295,9 @@
+@@ -1034,12 +1295,9 @@ void ProcessDeviceCommandQueue() {
          PULL_D(RenderTargetIndex);
          PULL_HND(pSurfaceHandle);
          IDirect3DSurface9* pRenderTarget = nullptr;
@@ -10271,15 +10290,14 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
 -        if (SUCCEEDED(hresult)) {
 -          gpD3DResources[pSurfaceHandle] = pRenderTarget;
 -        }
--        SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
--        assert(SUCCEEDED(hresult));
 +        const auto backendResult = pD3DDevice->GetRenderTarget(RenderTargetIndex, &pRenderTarget);
 +        const auto hresult = finishSurfaceQuery("GetRenderTarget", pSurfaceHandle, backendResult, pRenderTarget);
-+        SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
+         SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
+-        assert(SUCCEEDED(hresult));
          break;
        }
        case IDirect3DDevice9Ex_SetDepthStencilSurface:
-@@ -1054,6 +1312,7 @@
+@@ -1054,6 +1312,7 @@ void ProcessDeviceCommandQueue() {
          assert((pHandle != 0 && pDepthStencil != 0) || pHandle == 0);
          if ((pHandle != 0 && pDepthStencil != 0) || pHandle == 0) {
            hresult = pD3DDevice->SetDepthStencilSurface(IN pDepthStencil);
@@ -10287,7 +10305,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
            assert(SUCCEEDED(hresult));
          }
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
-@@ -1064,11 +1323,8 @@
+@@ -1064,11 +1323,8 @@ void ProcessDeviceCommandQueue() {
          GET_RES(pD3DDevice, gpD3DDevices);
          PULL_HND(pSurfaceHandle);
          IDirect3DSurface9* pZStencilSurface = nullptr;
@@ -10301,7 +10319,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
          break;
        }
-@@ -1084,6 +1340,7 @@
+@@ -1084,6 +1340,7 @@ void ProcessDeviceCommandQueue() {
        {
          GET_RES(pD3DDevice, gpD3DDevices);
          const auto hresult = pD3DDevice->EndScene();
@@ -10309,7 +10327,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
          break;
-@@ -1186,6 +1443,7 @@
+@@ -1186,6 +1443,7 @@ void ProcessDeviceCommandQueue() {
          PULL(D3DRENDERSTATETYPE, State);
          PULL_D(Value);
          const auto hresult = pD3DDevice->SetRenderState(IN State, IN Value);
@@ -10317,7 +10335,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
          break;
-@@ -1244,6 +1502,30 @@
+@@ -1244,6 +1502,30 @@ void ProcessDeviceCommandQueue() {
            assert(pTexture != nullptr);
          }
          const auto hresult = pD3DDevice->SetTexture(IN Stage, IN pTexture);
@@ -10348,7 +10366,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
          break;
-@@ -1270,6 +1552,7 @@
+@@ -1270,6 +1552,7 @@ void ProcessDeviceCommandQueue() {
          PULL(D3DSAMPLERSTATETYPE, Type);
          PULL_D(Value);
          const auto hresult = pD3DDevice->SetSamplerState(IN Sampler, IN Type, IN Value);
@@ -10356,7 +10374,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
          break;
-@@ -1323,6 +1606,7 @@
+@@ -1323,6 +1606,7 @@ void ProcessDeviceCommandQueue() {
        case IDirect3DDevice9Ex_DrawPrimitive:
        {
          GET_RES(pD3DDevice, gpD3DDevices);
@@ -10364,7 +10382,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          PULL(D3DPRIMITIVETYPE, PrimitiveType);
          PULL_U(StartVertex);
          PULL_U(PrimitiveCount);
-@@ -1334,6 +1618,7 @@
+@@ -1334,6 +1618,7 @@ void ProcessDeviceCommandQueue() {
        case IDirect3DDevice9Ex_DrawIndexedPrimitive:
        {
          GET_RES(pD3DDevice, gpD3DDevices);
@@ -10372,7 +10390,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          PULL(D3DPRIMITIVETYPE, Type);
          PULL_I(BaseVertexIndex);
          PULL_U(MinVertexIndex);
-@@ -1348,6 +1633,7 @@
+@@ -1348,6 +1633,7 @@ void ProcessDeviceCommandQueue() {
        case IDirect3DDevice9Ex_DrawPrimitiveUP:
        {
          GET_RES(pD3DDevice, gpD3DDevices);
@@ -10380,7 +10398,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          PULL(D3DPRIMITIVETYPE, PrimitiveType);
          PULL_U(PrimitiveCount);
          void* pVertexStreamZeroData = nullptr;
-@@ -1361,6 +1647,7 @@
+@@ -1361,6 +1647,7 @@ void ProcessDeviceCommandQueue() {
        case IDirect3DDevice9Ex_DrawIndexedPrimitiveUP:
        {
          GET_RES(pD3DDevice, gpD3DDevices);
@@ -10388,7 +10406,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          PULL(D3DPRIMITIVETYPE, PrimitiveType);
          PULL_U(MinVertexIndex);
          PULL_U(NumVertices);
-@@ -1450,6 +1737,10 @@
+@@ -1450,6 +1737,10 @@ void ProcessDeviceCommandQueue() {
          if (SUCCEEDED(hresult)) {
            gpD3DVertexShaders[pHandle] = pShader;
          }
@@ -10399,7 +10417,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
          break;
-@@ -1463,6 +1754,7 @@
+@@ -1463,6 +1754,7 @@ void ProcessDeviceCommandQueue() {
            pShader = gpD3DVertexShaders[pHandle];
          }
          const auto hresult = pD3DDevice->SetVertexShader(IN pShader);
@@ -10407,7 +10425,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
          break;
-@@ -1514,10 +1806,11 @@
+@@ -1514,10 +1806,11 @@ void ProcessDeviceCommandQueue() {
        case IDirect3DDevice9Ex_SetStreamSource:
        {
          GET_RES(pD3DDevice, gpD3DDevices);
@@ -10423,7 +10441,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          IDirect3DVertexBuffer9* pStreamData = nullptr;
          if (pHandle != NULL) {
            pStreamData = (IDirect3DVertexBuffer9*) gpD3DResources[pHandle];
-@@ -1544,7 +1837,8 @@
+@@ -1544,7 +1837,8 @@ void ProcessDeviceCommandQueue() {
        case IDirect3DDevice9Ex_SetIndices:
        {
          GET_RES(pD3DDevice, gpD3DDevices);
@@ -10433,7 +10451,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          IDirect3DIndexBuffer9* pIndexData = NULL;
          if (pHandle != NULL) {
            pIndexData = (IDirect3DIndexBuffer9*) gpD3DResources[pHandle];
-@@ -1568,6 +1862,10 @@
+@@ -1568,6 +1862,10 @@ void ProcessDeviceCommandQueue() {
          if (SUCCEEDED(hresult)) {
            gpD3DPixelShaders[pHandle] = pShader;
          }
@@ -10444,7 +10462,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
          break;
-@@ -1581,6 +1879,7 @@
+@@ -1581,6 +1879,7 @@ void ProcessDeviceCommandQueue() {
            pShader = gpD3DPixelShaders[pHandle];
          }
          const auto hresult = pD3DDevice->SetPixelShader(IN pShader);
@@ -10452,7 +10470,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
          break;
-@@ -1595,6 +1894,7 @@
+@@ -1595,6 +1894,7 @@ void ProcessDeviceCommandQueue() {
          float* pConstantData = nullptr;
          PULL_DATA(Count * sizeof(float) * 4, pConstantData);
          const auto hresult = pD3DDevice->SetPixelShaderConstantF(IN StartRegister, IN pConstantData, IN Count);
@@ -10460,7 +10478,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
          break;
-@@ -1734,6 +2034,7 @@
+@@ -1734,6 +2034,7 @@ void ProcessDeviceCommandQueue() {
          const auto& pSB = gpD3DStateBlocks[pHandle];
          assert(pSB != nullptr);
          const auto hresult = pSB->Apply();
@@ -10468,7 +10486,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          assert(SUCCEEDED(hresult));
          break;
        }
-@@ -1749,7 +2050,17 @@
+@@ -1749,7 +2050,17 @@ void ProcessDeviceCommandQueue() {
        {
          GET_HND(pHandle);
          const auto& pSwapChain = gpD3DSwapChains[pHandle];
@@ -10487,7 +10505,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          gpD3DSwapChains.erase(pHandle);
          break;
        }
-@@ -1757,7 +2068,7 @@
+@@ -1757,7 +2068,7 @@ void ProcessDeviceCommandQueue() {
        {
          FrameMark;
  #ifdef ENABLE_PRESENT_SEMAPHORE_TRACE
@@ -10496,20 +10514,19 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
  #endif
  
          GET_RES(pSwapChain, gpD3DSwapChains);
-@@ -1767,9 +2078,9 @@
+@@ -1767,9 +2078,9 @@ void ProcessDeviceCommandQueue() {
          PULL_OBJ(RGNDATA, pDirtyRegion);
          PULL(uint32_t, dwFlags);
  
 -        HWND hwnd = TRUNCATE_HANDLE(HWND, hDestWindowOverride);
--
--        const auto hresult = pSwapChain->Present(pSourceRect, pDestRect, hwnd, pDirtyRegion, dwFlags);
 +        HWND hwnd = overlayPresentWindow(TRUNCATE_HANDLE(HWND, hDestWindowOverride));
-+
+ 
+-        const auto hresult = pSwapChain->Present(pSourceRect, pDestRect, hwnd, pDirtyRegion, dwFlags);
 +        const auto hresult = l4d2_api_wait::backend([&]() { return pSwapChain->Present(pSourceRect, pDestRect, hwnd, pDirtyRegion, dwFlags); });
  
          if (!SUCCEEDED(hresult)) {
            std::stringstream ss;
-@@ -1780,7 +2091,7 @@
+@@ -1780,7 +2091,7 @@ void ProcessDeviceCommandQueue() {
          if (GlobalOptions::getPresentSemaphoreEnabled()) {
            gpPresent->release();
  #ifdef ENABLE_PRESENT_SEMAPHORE_TRACE
@@ -10518,7 +10535,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
  #endif
          }
          break;
-@@ -1793,6 +2104,7 @@
+@@ -1793,6 +2104,7 @@ void ProcessDeviceCommandQueue() {
          auto hresult = pSwapChain->GetFrontBufferData(pDestSurface);
          if (SUCCEEDED(hresult)) {
            gpD3DResources[pDestSurfaceHandle] = pDestSurface;
@@ -10526,7 +10543,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          }
          hresult = ReturnSurfaceDataToClient(pDestSurface, hresult, currentUID);
          assert(SUCCEEDED(hresult));
-@@ -1807,7 +2119,9 @@
+@@ -1807,7 +2119,9 @@ void ProcessDeviceCommandQueue() {
          IDirect3DSurface9* pBackbuffer = nullptr;
          const auto hresult = pSwapChain->GetBackBuffer(iBackBuffer, Type, &pBackbuffer);
          if (SUCCEEDED(hresult)) {
@@ -10536,7 +10553,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          }
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
-@@ -2019,6 +2333,9 @@
+@@ -2019,6 +2333,9 @@ void ProcessDeviceCommandQueue() {
          const auto& pTexture = (IDirect3DTexture9*) gpD3DResources[pHandle];
          safeDestroy(pTexture, pHandle);
          gpD3DResources.erase(pHandle);
@@ -10546,7 +10563,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          break;
        }
        case IDirect3DTexture9_GetDevice:
-@@ -2063,7 +2380,7 @@
+@@ -2063,7 +2380,7 @@ void ProcessDeviceCommandQueue() {
          PULL_U(Level);
          const auto& pTexture = (IDirect3DTexture9*) gpD3DResources[pHandle];
          D3DSURFACE_DESC pDesc;
@@ -10555,7 +10572,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          assert(SUCCEEDED(hresult));
          break;
        }
-@@ -2074,9 +2391,14 @@
+@@ -2074,9 +2391,14 @@ void ProcessDeviceCommandQueue() {
          PULL_HND(pSurfaceHandle);
          const auto& pTexture = (IDirect3DTexture9*) gpD3DResources[pTextureHandle];
          LPDIRECT3DSURFACE9 pSurfaceLevel;
@@ -10571,7 +10588,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          }
          assert(SUCCEEDED(hresult));
          break;
-@@ -2120,6 +2442,9 @@
+@@ -2120,6 +2442,9 @@ void ProcessDeviceCommandQueue() {
          const auto& pVolumeTexture = (IDirect3DVolumeTexture9*) gpD3DResources[pHandle];
          safeDestroy(pVolumeTexture, pHandle);
          gpD3DResources.erase(pHandle);
@@ -10581,7 +10598,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          break;
        }
        case IDirect3DVolumeTexture9_GetDevice:
-@@ -2164,7 +2489,7 @@
+@@ -2164,7 +2489,7 @@ void ProcessDeviceCommandQueue() {
          PULL_U(Level);
          const auto& pVolumeTexture = (IDirect3DVolumeTexture9*) gpD3DResources[pHandle];
          D3DVOLUME_DESC pDesc;
@@ -10590,7 +10607,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          assert(SUCCEEDED(hresult));
          break;
        }
-@@ -2175,9 +2500,13 @@
+@@ -2175,9 +2500,13 @@ void ProcessDeviceCommandQueue() {
          PULL_HND(pVolumeLevelHandle);
          const auto& pVolumeTexture = (IDirect3DVolumeTexture9*) gpD3DResources[pVolumeTextureHandle];
          LPDIRECT3DVOLUME9 pVolumeLevel;
@@ -10605,7 +10622,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          }
          assert(SUCCEEDED(hresult));
          break;
-@@ -2194,39 +2523,76 @@
+@@ -2194,39 +2523,76 @@ void ProcessDeviceCommandQueue() {
          PULL_OBJ(D3DBOX, pBox);
          PULL_D(Flags);
          const auto& pVolumeTexture = (IDirect3DVolumeTexture9*) gpD3DResources[pHandle];
@@ -10660,6 +10677,8 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
 -            void* row = nullptr;
 -            const auto read_size = DeviceBridge::get_data(&row);
 -            assert(row_size == read_size);
+-#endif
+-            memcpy((void*) ptr, (void*) row, row_size);
 +          copied = l4d2_upload::target(pLockedVolume.pBits, pLockedVolume.RowPitch, pLockedVolume.SlicePitch, rowSize, height, depth);
 +          for (uint32_t z = 0; z < depth; ++z) {
 +            for (uint32_t y = 0; y < height; ++y) {
@@ -10674,14 +10693,11 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
 +                if (l4d2_color::enabled.load(std::memory_order_relaxed)) { colorDigest.add(row, readSize); }
 +              }
 +            }
-+          }
- #endif
--            memcpy((void*) ptr, (void*) row, row_size);
--          }
+           }
 -        }
 -#ifdef SEND_ALL_LOCK_DATA_AT_ONCE
 -        assert(pulledSize == depth * slice_size);
--#endif
+ #endif
 -        hresult = pVolumeTexture->UnlockBox(Level);
 -        assert(SUCCEEDED(hresult));
 +        } catch (...) {
@@ -10705,7 +10721,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          break;
        }
        case IDirect3DVolumeTexture9_AddDirtyBox:
-@@ -2259,6 +2625,9 @@
+@@ -2259,6 +2625,9 @@ void ProcessDeviceCommandQueue() {
          const auto& pCubeTexture = (IDirect3DCubeTexture9*) gpD3DResources[pHandle];
          safeDestroy(pCubeTexture, pHandle);
          gpD3DResources.erase(pHandle);
@@ -10715,7 +10731,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          break;
        }
        case IDirect3DCubeTexture9_GetDevice:
-@@ -2303,7 +2672,7 @@
+@@ -2303,7 +2672,7 @@ void ProcessDeviceCommandQueue() {
          GET_HND(pHandle);
          const auto& pCubeTexture = (IDirect3DCubeTexture9*) gpD3DResources[pHandle];
          D3DSURFACE_DESC pDesc;
@@ -10724,7 +10740,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          assert(SUCCEEDED(hresult));
          break;
        }
-@@ -2315,9 +2684,10 @@
+@@ -2315,9 +2684,10 @@ void ProcessDeviceCommandQueue() {
          PULL_HND(pCubeMapSurfaceHandle);
          const auto& pCubeTexture = (IDirect3DCubeTexture9*) gpD3DResources[pCubeTextureHandle];
          LPDIRECT3DSURFACE9 pCubeMapSurface;
@@ -10736,7 +10752,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          }
          assert(SUCCEEDED(hresult));
          break;
-@@ -2359,9 +2729,13 @@
+@@ -2359,9 +2729,13 @@ void ProcessDeviceCommandQueue() {
        case IDirect3DVertexBuffer9_Destroy:
        {
          GET_HND(pHandle);
@@ -10750,7 +10766,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          break;
        }
        case IDirect3DVertexBuffer9_GetDevice:
-@@ -2384,6 +2758,7 @@
+@@ -2384,6 +2758,7 @@ void ProcessDeviceCommandQueue() {
        {
          // This is a no-op right now because we're doing all the logic on Unlock
          GET_HND(pHandle);
@@ -10758,7 +10774,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          void* data = nullptr;
          DeviceBridge::get_data(&data);
          break;
-@@ -2391,31 +2766,49 @@
+@@ -2391,31 +2766,49 @@ void ProcessDeviceCommandQueue() {
        case IDirect3DVertexBuffer9_Unlock:
        {
          GET_HND(pHandle);
@@ -10780,20 +10796,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          const auto& pVertexBuffer = (IDirect3DVertexBuffer9*) gpD3DResources[pHandle];
  
 -        // Now lock the buffer so we can copy the data into it
-+        // Resolve any borrowed source before taking a backend lock.
-+        const bool reserved = Commands::IsDataReserved(rpcHeader.flags);
-+        if (reserved) {
-+          data = DeviceBridge::reservedData(pHandle, reference, SizeToLock);
-+        } else if (Commands::IsDataInSharedHeap(rpcHeader.flags)) {
-+          auto* base = SharedHeap::getBuf(reference);
-+          data = base ? base + OffsetToLock : nullptr;
-+        }
-+        if (!pVertexBuffer || (SizeToLock && !l4d2_upload::pointerSpan(data, SizeToLock))) {
-+          if (reserved) { DeviceBridge::unpinRead(pHandle); }
-+          DeviceBridge::reportFault("host-buffer-source", static_cast<uint32_t>(rpcHeader.command), currentUID);
-+          return;
-+        }
-         void* pbData = nullptr;
+-        void* pbData = nullptr;
 -        auto hresult = pVertexBuffer->Lock(IN OffsetToLock, IN SizeToLock, IN & pbData, IN Flags);
 -        assert(S_OK == hresult);
 -
@@ -10802,16 +10805,25 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
 -        if (Commands::IsDataReserved(rpcHeader.flags)) {
 -          PULL_D(DataOffset);
 -          data = DeviceBridge::Bridge::getReaderChannel().get_data_ptr() + DataOffset;
--        } else if (Commands::IsDataInSharedHeap(rpcHeader.flags)) {
++        // Resolve any borrowed source before taking a backend lock.
++        const bool reserved = Commands::IsDataReserved(rpcHeader.flags);
++        if (reserved) {
++          data = DeviceBridge::reservedData(pHandle, reference, SizeToLock);
+         } else if (Commands::IsDataInSharedHeap(rpcHeader.flags)) {
 -          PULL_U(allocId);
 -          data = SharedHeap::getBuf(allocId) + OffsetToLock;
 -        } else {
 -          const auto size = DeviceBridge::get_data(&data);
 -          assert(SizeToLock == size);
--        }
--        memcpy(pbData, data, SizeToLock);
--        hresult = pVertexBuffer->Unlock();
--        assert(SUCCEEDED(hresult));
++          auto* base = SharedHeap::getBuf(reference);
++          data = base ? base + OffsetToLock : nullptr;
++        }
++        if (!pVertexBuffer || (SizeToLock && !l4d2_upload::pointerSpan(data, SizeToLock))) {
++          if (reserved) { DeviceBridge::unpinRead(pHandle); }
++          DeviceBridge::reportFault("host-buffer-source", static_cast<uint32_t>(rpcHeader.command), currentUID);
++          return;
++        }
++        void* pbData = nullptr;
 +        const auto lockResult = l4d2_api_wait::backend([&]() { return pVertexBuffer->Lock(OffsetToLock, SizeToLock, &pbData, Flags); });
 +        l4d2_data::backend(static_cast<uint16_t>(rpcHeader.command), false, SizeToLock, lockResult);
 +        if (FAILED(lockResult)) {
@@ -10826,11 +10838,14 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
 +        if (!copied || FAILED(unlockResult)) {
 +          DeviceBridge::reportFault("host-buffer-upload", static_cast<uint32_t>(rpcHeader.command), currentUID);
 +          return;
-+        }
+         }
+-        memcpy(pbData, data, SizeToLock);
+-        hresult = pVertexBuffer->Unlock();
+-        assert(SUCCEEDED(hresult));
  
          break;
        }
-@@ -2425,7 +2818,7 @@
+@@ -2425,7 +2818,7 @@ void ProcessDeviceCommandQueue() {
          PULL_OBJ(D3DVERTEXBUFFER_DESC, orig_desc);
          const auto& pVertexBuffer = (IDirect3DVertexBuffer9*) gpD3DResources[pHandle];
          D3DVERTEXBUFFER_DESC pDesc;
@@ -10839,7 +10854,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          assert(SUCCEEDED(hresult));
          break;
        }
-@@ -2445,9 +2838,13 @@
+@@ -2445,9 +2838,13 @@ void ProcessDeviceCommandQueue() {
        case IDirect3DIndexBuffer9_Destroy:
        {
          GET_HND(pHandle);
@@ -10853,7 +10868,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          break;
        }
        case IDirect3DIndexBuffer9_GetDevice:
-@@ -2470,6 +2867,7 @@
+@@ -2470,6 +2867,7 @@ void ProcessDeviceCommandQueue() {
        {
          // This is a no-op right now because we're doing all the logic on Unlock
          GET_HND(pHandle);
@@ -10861,7 +10876,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          void* data = nullptr;
          DeviceBridge::get_data(&data);
          break;
-@@ -2477,31 +2875,50 @@
+@@ -2477,31 +2875,50 @@ void ProcessDeviceCommandQueue() {
        case IDirect3DIndexBuffer9_Unlock:
        {
          GET_HND(pHandle);
@@ -10883,20 +10898,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          const auto& pIndexBuffer = (IDirect3DIndexBuffer9*) gpD3DResources[pHandle];
  
 -        // Now lock the buffer so we can copy the data into it
-+        // Resolve any borrowed source before taking a backend lock.
-+        const bool reserved = Commands::IsDataReserved(rpcHeader.flags);
-+        if (reserved) {
-+          data = DeviceBridge::reservedData(pHandle, reference, SizeToLock);
-+        } else if (Commands::IsDataInSharedHeap(rpcHeader.flags)) {
-+          auto* base = SharedHeap::getBuf(reference);
-+          data = base ? base + OffsetToLock : nullptr;
-+        }
-+        if (!pIndexBuffer || (SizeToLock && !l4d2_upload::pointerSpan(data, SizeToLock))) {
-+          if (reserved) { DeviceBridge::unpinRead(pHandle); }
-+          DeviceBridge::reportFault("host-buffer-source", static_cast<uint32_t>(rpcHeader.command), currentUID);
-+          return;
-+        }
-         void* pbData = nullptr;
+-        void* pbData = nullptr;
 -        auto hresult = pIndexBuffer->Lock(IN OffsetToLock, IN SizeToLock, IN & pbData, IN Flags);
 -        assert(S_OK == hresult);
 -
@@ -10905,16 +10907,28 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
 -        if (Commands::IsDataReserved(rpcHeader.flags)) {
 -          PULL_D(DataOffset);
 -          data = DeviceBridge::Bridge::getReaderChannel().get_data_ptr() + DataOffset;
--        } else if (Commands::IsDataInSharedHeap(rpcHeader.flags)) {
++        // Resolve any borrowed source before taking a backend lock.
++        const bool reserved = Commands::IsDataReserved(rpcHeader.flags);
++        if (reserved) {
++          data = DeviceBridge::reservedData(pHandle, reference, SizeToLock);
+         } else if (Commands::IsDataInSharedHeap(rpcHeader.flags)) {
 -          PULL_U(allocId);
 -          data = SharedHeap::getBuf(allocId) + OffsetToLock;
 -        } else {
 -          const auto size = DeviceBridge::get_data(&data);
 -          assert(SizeToLock == size);
--        }
++          auto* base = SharedHeap::getBuf(reference);
++          data = base ? base + OffsetToLock : nullptr;
+         }
 -        memcpy(pbData, data, SizeToLock);
 -        hresult = pIndexBuffer->Unlock();
 -        assert(SUCCEEDED(hresult));
++        if (!pIndexBuffer || (SizeToLock && !l4d2_upload::pointerSpan(data, SizeToLock))) {
++          if (reserved) { DeviceBridge::unpinRead(pHandle); }
++          DeviceBridge::reportFault("host-buffer-source", static_cast<uint32_t>(rpcHeader.command), currentUID);
++          return;
++        }
++        void* pbData = nullptr;
 +        const auto lockResult = l4d2_api_wait::backend([&]() { return pIndexBuffer->Lock(OffsetToLock, SizeToLock, &pbData, Flags); });
 +        l4d2_data::backend(static_cast<uint16_t>(rpcHeader.command), false, SizeToLock, lockResult);
 +        if (FAILED(lockResult)) {
@@ -10934,7 +10948,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          break;
        }
        case IDirect3DIndexBuffer9_GetDesc:
-@@ -2510,7 +2927,7 @@
+@@ -2510,7 +2927,7 @@ void ProcessDeviceCommandQueue() {
          PULL_OBJ(D3DINDEXBUFFER_DESC, orig_desc);
          const auto& pIndexBuffer = (IDirect3DIndexBuffer9*) gpD3DResources[pHandle];
          D3DINDEXBUFFER_DESC pDesc;
@@ -10943,7 +10957,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          assert(SUCCEEDED(hresult));
          break;
        }
-@@ -2531,8 +2948,11 @@
+@@ -2531,8 +2948,11 @@ void ProcessDeviceCommandQueue() {
        {
          GET_HND(pHandle);
          const auto& pSurface = (IDirect3DSurface9*) gpD3DResources[pHandle];
@@ -10956,18 +10970,15 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          break;
        }
        case IDirect3DSurface9_GetDevice:
-@@ -2559,10 +2979,55 @@
+@@ -2559,10 +2979,55 @@ void ProcessDeviceCommandQueue() {
          PULL_OBJ(D3DSURFACE_DESC, orig_desc);
          const auto& pSurface = (IDirect3DSurface9*) gpD3DResources[pHandle];
          D3DSURFACE_DESC pDesc;
 -        const auto hresult = pSurface->GetDesc(OUT & pDesc);
--        assert(SUCCEEDED(hresult));
--        break;
--      }
 +        const auto hresult = l4d2_api_wait::backend([&]() { return pSurface->GetDesc(OUT & pDesc); });
-+        assert(SUCCEEDED(hresult));
-+        break;
-+      }
+         assert(SUCCEEDED(hresult));
+         break;
+       }
 +      // NV-DXVK start: Forced readback writes only an independent experiment section.
 +      case Bridge_TestReadbackRecovery:
 +      {
@@ -11016,7 +11027,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
        case IDirect3DSurface9_LockRect:
        {
          // Currently we only recieve calls for LockRect in cases where backbuffer data is to be copied for screenshots
-@@ -2578,37 +3043,126 @@
+@@ -2578,37 +3043,126 @@ void ProcessDeviceCommandQueue() {
          PULL_OBJ(RECT, pRect);
          PULL_D(Flags);
          const auto pSurface = (IDirect3DSurface9*) gpD3DResources[pHandle];
@@ -11125,12 +11136,6 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
 -          size_t pulledSize = DeviceBridge::get_data(&pData);
 -          const size_t numRows = bridge_util::calcStride(height, format);
 -          assert(pulledSize == numRows * IncomingPitch);
--        }
--        FOR_EACH_RECT_ROW(lockedRect, height, format,
--          memcpy(ptr, (PBYTE) pData + y * IncomingPitch, rowSize);
--        )
--        hresult = pSurface->UnlockRect();
--        assert(SUCCEEDED(hresult));
 +          const auto pulledSize = DeviceBridge::get_data(&pData);
 +          if (pulledSize != payloadBytes) {
 +            DeviceBridge::reportFault("host-surface-payload", static_cast<uint32_t>(rpcHeader.command), currentUID);
@@ -11163,11 +11168,16 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
 +        if (!copied || FAILED(unlockResult)) {
 +          DeviceBridge::reportFault("host-surface-upload", static_cast<uint32_t>(rpcHeader.command), currentUID);
 +          return;
-+        }
+         }
+-        FOR_EACH_RECT_ROW(lockedRect, height, format,
+-          memcpy(ptr, (PBYTE) pData + y * IncomingPitch, rowSize);
+-        )
+-        hresult = pSurface->UnlockRect();
+-        assert(SUCCEEDED(hresult));
  
          break;
        }
-@@ -2635,6 +3189,8 @@
+@@ -2635,6 +3189,8 @@ void ProcessDeviceCommandQueue() {
          const auto& pVolume = gpD3DVolumes[pHandle];
          safeDestroy(pVolume, pHandle);
          gpD3DVolumes.erase(pHandle);
@@ -11176,7 +11186,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          break;
        }
        case IDirect3DVolume9_GetDevice:
-@@ -2653,7 +3209,7 @@
+@@ -2653,7 +3209,7 @@ void ProcessDeviceCommandQueue() {
          PULL_OBJ(D3DVOLUME_DESC, orig_desc);
          const auto& pVolume = gpD3DVolumes[pHandle];
          D3DVOLUME_DESC pDesc;
@@ -11185,7 +11195,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          assert(SUCCEEDED(hresult));
          break;
        }
-@@ -2668,39 +3224,76 @@
+@@ -2668,39 +3224,76 @@ void ProcessDeviceCommandQueue() {
          PULL_OBJ(D3DBOX, pBox);
          PULL_D(Flags);
          const auto& pVolume = gpD3DVolumes[pHandle];
@@ -11240,6 +11250,8 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
 -            void* row = nullptr;
 -            const auto read_size = DeviceBridge::get_data(&row);
 -            assert(row_size == read_size);
+-#endif
+-            memcpy((void*) ptr, (void*) row, row_size);
 +          copied = l4d2_upload::target(pLockedVolume.pBits, pLockedVolume.RowPitch, pLockedVolume.SlicePitch, rowSize, height, depth);
 +          for (uint32_t z = 0; z < depth; ++z) {
 +            for (uint32_t y = 0; y < height; ++y) {
@@ -11254,14 +11266,11 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
 +                if (l4d2_color::enabled.load(std::memory_order_relaxed)) { colorDigest.add(row, readSize); }
 +              }
 +            }
-+          }
- #endif
--            memcpy((void*) ptr, (void*) row, row_size);
--          }
+           }
 -        }
 -#ifdef SEND_ALL_LOCK_DATA_AT_ONCE
 -        assert(pulledSize == depth * slice_size);
--#endif
+ #endif
 -        hresult = pVolume->UnlockBox();
 -        assert(SUCCEEDED(hresult));
 +        } catch (...) {
@@ -11285,7 +11294,55 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          break;
        }
  
-@@ -2769,7 +3362,7 @@
+@@ -2739,25 +3332,37 @@ void ProcessDeviceCommandQueue() {
+         GET_HND(pHandle);
+         PULL(DWORD, dwSize);
+         PULL(DWORD, dwGetDataFlags);
+-        const auto& pQuery = gpD3DQuery[pHandle];
+-        void* pData = NULL;
+-        if (dwSize > 0) {
+-          pData = new char[dwSize];
++        const auto entry = gpD3DQuery.find(pHandle);
++        const auto pQuery = entry == gpD3DQuery.end() ? nullptr : entry->second;
++        // Bound requests by the D3D9 SDK result types before allocating or calling the backend.
++        union QueryResult {
++          BOOL boolean; DWORD occlusion; UINT64 timestamp;
++          D3DDEVINFO_VCACHE vcache;
++          D3DDEVINFO_RESOURCEMANAGER resources;
++          D3DDEVINFO_D3DVERTEXSTATS vertices;
++          D3DDEVINFO_D3D9PIPELINETIMINGS pipeline;
++          D3DDEVINFO_D3D9INTERFACETIMINGS interfaceTiming;
++          D3DDEVINFO_D3D9STAGETIMINGS stage;
++          D3DDEVINFO_D3D9BANDWIDTHTIMINGS bandwidth;
++          D3DDEVINFO_D3D9CACHEUTILIZATION cache;
++        };
++        void* pData = nullptr;
++        HRESULT hresult = D3DERR_INVALIDCALL;
++        if (pQuery && !(dwGetDataFlags & ~D3DGETDATA_FLUSH) && dwSize <= sizeof(QueryResult)
++          && (dwSize == 0 || dwSize == pQuery->GetDataSize())) {
++          if (dwSize > 0) { pData = new char[dwSize]; }
++          hresult = pQuery->GetData(pData, dwSize, dwGetDataFlags);
+         }
+-        const auto hresult = pQuery->GetData(pData, dwSize, dwGetDataFlags);
+ 
+         ServerMessage c(Commands::Bridge_Response, currentUID);
+         c.send_data(hresult);
+-        if (SUCCEEDED(hresult) && dwSize > 0) {
++        if (hresult == S_OK && dwSize > 0) {
+           if (auto* blobPacketPtr = c.begin_data_blob(dwSize)) {
+             memcpy(blobPacketPtr, pData, dwSize);
+             c.end_data_blob();
+           }
+         }
+-      
+-        if (dwSize > 0) {
+-          delete[]pData;
+-        }
++        delete[] static_cast<char*>(pData);
+         break;
+       }
+ 
+@@ -2769,7 +3374,7 @@ void ProcessDeviceCommandQueue() {
          PULL_U(i);
          const int length = DeviceBridge::getReaderChannel().data->peek();
          void* text = nullptr;
@@ -11294,7 +11351,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          std::stringstream ss;
          ss << "DebugMessage. i = " << i << ", length = " << length << " = " << size << ", text = '" << (char*) text << "'";
          Logger::info(ss.str().c_str());
-@@ -2805,13 +3398,17 @@
+@@ -2805,13 +3410,17 @@ void ProcessDeviceCommandQueue() {
        case Bridge_UnlinkResource:
        {
          GET_HND(pHandle);
@@ -11312,7 +11369,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          break;
        }
        /*
-@@ -3156,11 +3753,11 @@
+@@ -3156,11 +3765,11 @@ void ProcessDeviceCommandQueue() {
        case RemixApi_SetConfigVariable:
        {
          void* var_ptr = nullptr;
@@ -11326,7 +11383,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
          std::string value_str((const char*) value_ptr, value_size);
  
          remixapi::g_remix.SetConfigVariable(var_str.c_str(), value_str.c_str());
-@@ -3191,41 +3788,29 @@
+@@ -3191,41 +3800,29 @@ void ProcessDeviceCommandQueue() {
        Logger::warn("Data not in sync");
      }
      assert(CHECK_DATA_OFFSET);
@@ -11378,7 +11435,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
    }
  }
  
-@@ -3268,14 +3853,26 @@
+@@ -3268,14 +3865,26 @@ bool InitializeD3D() {
    // If vanilla dxvk is enabled attempt to load that first.
    if (ServerOptions::getUseVanillaDxvk()) {
      Logger::info("Loading standard Non-RTX DXVK d3d9 dll.");
@@ -11408,7 +11465,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
      // Since vanilla dxvk is diabled attempt loading regular d3d9.dll which
      // could be either the system d3d9 one or our own Remix dxvk flavor of it.
      ghModule = LoadLibraryExA("d3d9.dll", nullptr,
-@@ -3285,6 +3882,10 @@
+@@ -3285,6 +3894,10 @@ bool InitializeD3D() {
    // create the D3D instance used for the lifetime of this process.
    if (ghModule != nullptr) {
      auto Direct3DCreate9 = (D3DC9) GetProcAddress(ghModule, "Direct3DCreate9");
@@ -11419,7 +11476,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
      if (nullptr == (gpD3D = Direct3DCreate9(D3D_SDK_VERSION))) {
        Logger::err(format_string("D3D9 interface object creation failed: %ld\n", GetLastError()));
        return false;
-@@ -3311,6 +3912,10 @@
+@@ -3311,6 +3924,10 @@ bool InitializeD3D() {
    }
  
    CheckD3D9Type(ghModule);
@@ -11430,7 +11487,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
    if (bDxvkModuleLoaded) {
      auto queryFeatureVersion = (version::QueryFunc)GetProcAddress(ghModule, version::QueryFuncName);
      if(queryFeatureVersion == NULL) {
-@@ -3343,18 +3948,29 @@
+@@ -3343,18 +3960,29 @@ bool InitializeD3D() {
  }
  
  void CALLBACK OnClientExited(void* context, BOOLEAN isTimeout) {
@@ -11469,7 +11526,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
  
    // Give the server some time to shut down, but then force quit so it doesn't hang forever
    uint32_t numRetries = 0;
-@@ -3371,7 +3987,7 @@
+@@ -3371,7 +3999,7 @@ void CALLBACK OnClientExited(void* context, BOOLEAN isTimeout) {
  }
  
  bool RegisterExitCallback(const uint32_t hProcess) {
@@ -11478,7 +11535,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
    if (!result) {
      DWORD error = GetLastError();
      Logger::err(format_string("RegisterExitCallback() failed with error code %d", error));
-@@ -3482,22 +4098,51 @@
+@@ -3482,22 +4110,51 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
  
    Config::init(Config::App::Server);
    GlobalOptions::init();
@@ -11533,20 +11590,20 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
      Logger::info("Launched server with GUID " + gUniqueIdentifier.toString());
    } else {
      Logger::err("Server was invoked with invalid GUID! Unable to establish bridge, exiting...");
-@@ -3510,6 +4155,12 @@
-     return 1;
+@@ -3511,6 +4168,12 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
    }
    LocalFree(argList);
-+
+ 
 +  if(Config::getOption<bool>("client.steamWorkshopAvailabilityProxy", false)) {
 +    const auto name=gUniqueIdentifier.toString("L4D2BridgeWorkshopV1");
 +    Logger::info(l4d2_workshop::publisher.publisher(name.c_str())
 +      ? "L4D2_STEAM_WORKSHOP event=host-channel ready=1" : "L4D2_STEAM_WORKSHOP event=host-channel ready=0");
 +  }
- 
++
    initModuleBridge();
    initDeviceBridge();
-@@ -3541,6 +4192,7 @@
+ 
+@@ -3541,6 +4204,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
    // Pulling default data sent from client to have the data queue in sync
    {
      PULL_U(uid);
@@ -11554,16 +11611,16 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
    }
    Logger::info("Registering exit callback in case client exits unexpectedly.");
    RegisterExitCallback(synResponse.pHandle);
-@@ -3553,6 +4205,8 @@
-     return 1;
+@@ -3554,6 +4218,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
    }
    const SentryShutdownOnExit sentryShutdownOnExit;
-+
-+  sampleHostMemory(true, "backend-loaded");
  
++  sampleHostMemory(true, "backend-loaded");
++
    // (3) Send ACK to Client. Connection has been established
    Logger::info("Sync request received, sending ACK response...");
-@@ -3576,6 +4230,7 @@
+   ServerMessage { Commands::Bridge_Ack, (uintptr_t) gpClientMessageChannel->getWorkerThreadId() };
+@@ -3576,6 +4242,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
    // Pulling default data sent from client to have the data queue in sync
    {
      PULL_U(uid);
@@ -11571,7 +11628,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
    }
    // (5) Ready to listen for incoming commands
    Logger::info("Handshake completed! Now waiting for incoming commands...");
-@@ -3589,12 +4244,16 @@
+@@ -3589,12 +4256,16 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
    bSignalDone.store(true);
    moduleCmdProcessingThread.join();
  
@@ -11589,7 +11646,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
    if (ghModule) {
      // Skip unloading the d3d9.dll for now, since it seems to be doing more harm than good
      // especially with other dependencies loaded by dxvk and threads that may deadlock due
-@@ -3610,6 +4269,10 @@
+@@ -3610,6 +4281,10 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
      hWait = NULL;
    }
  
@@ -11600,7 +11657,7 @@ diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
    Logger::info("Shutdown cleanup successful, exiting now!");
  
    const auto timeEnd = std::chrono::high_resolution_clock::now();
-@@ -3624,4 +4287,4 @@
+@@ -3624,4 +4299,4 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
      ServerMessage { Commands::Bridge_Ack };
    }
    return 0;
