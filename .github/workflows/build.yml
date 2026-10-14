@@ -18,8 +18,8 @@ on:
       correctness_stage:
         description: Sequential correctness gate (no packaging or publication)
         type: choice
-        default: off
-        options: [off, query, shader, texture, sharedheap, host, all]
+        default: 'off'
+        options: ['off', query, shader, texture, sharedheap, host, all]
       ime_bridge_only:
         description: Run IME main integration gates and compile matched Bridge binaries
         type: boolean
