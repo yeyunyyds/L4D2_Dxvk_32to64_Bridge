@@ -60,4 +60,37 @@ receipt/source/PE architecture/LAA checks, binary identities and checksum
 manifests were verified before repacking; every member was checked against
 the CI archive and the public immutable ZIP was downloaded and reverified.
 Merge config/STEAM-IME-NATIVE-WARMUP.conf rather than overwrite existing config.
-Game Steam IME validation is pending; main and formal releases remain unchanged.
+Game Steam IME validation was pending at delivery; see the subsequent real-game
+result below. Main and formal releases remain unchanged.
+
+
+## Real-game result: PASS for tested x64 Steam IME session
+
+On2026-10-14 the user tested matched build
+`l4d2-1.3.1+31cae0cdcb96c4ec` and confirmed Chinese input works with no issue.
+Client/Host logs match that identity, warmup=True, session
+`ec8f5d9b-4064-4f8f-8846-fa365503bca5`, Host PID9860, Presenter thread17292. The test session lasts66 seconds and contains one observed
+Steam capture interval.
+
+Exactly one native-warmup receipt records created=1, focused=1, restored=1,
+destroyed=1, create_error=0. Afterward, focused TSF document and default IMM
+window are present. Sent-message observers see6 composition-result events;
+Steam's named-IAT ImmGetCompositionStringW(GCS_RESULTSTR) observer independently
+records6 nonempty results (byte lengths6,4,2,4,6,2). Both sent hook stages see
+the same events; these are6 results, not12. No entered text is retained.
+The original Presenter WndProc has no composition records because these
+observations occur in the hook chain; successful Steam API reads and the user's
+visible result are the positive evidence. Both peers perform normal Terminate
+handshake and clean exit.
+
+Mark Steam Overlay Chinese IME **PASS for this tested x64 session**, not universal
+IME/Host/gameplay coverage. Repeated reopen, layout changes, x86 Host, other
+input methods, invite and web actions are not independently established by
+this single capture interval. The renderer-file-hash-mismatch gate is still
+logged and is a separate web/invite-adapter issue; it does not invalidate the
+observed successful IME result. Main/Release remain unchanged.
+
+For ordinary use keep server.steamImeNativeWarmup=True and
+server.steamImeTsfActivate=True, with legacy bootstrap and special TSF pump
+False. Diagnostic flags may be disabled after validation; do not measure
+steady-state performance with the verbose experimental observers enabled.
