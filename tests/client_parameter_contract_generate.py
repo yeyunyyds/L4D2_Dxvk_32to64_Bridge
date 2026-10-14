@@ -25,7 +25,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--source", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--control", choices=("none", "range", "query", "pixel-size"), default="none")
+    parser.add_argument("--control", choices=("none", "range", "query", "pixel-size", "texture-type"), default="none")
     args = parser.parse_args()
     source = args.source / "bridge/src"
     device = (source / "client/d3d9_device.cpp").read_text(encoding="utf-8")
@@ -71,7 +71,11 @@ def main():
         assert method.count("if (hresult == S_OK && dwSize > 0)") == 1
         method = method.replace("if (hresult == S_OK && dwSize > 0)", "if (SUCCEEDED(hresult) && dwSize > 0)")
     methods.append(method)
-    methods.append("template<bool EnableSync>\n" + block(device, "HRESULT Direct3DDevice9Ex_LSS<EnableSync>::UpdateTexture("))
+    texture = block(device, "HRESULT Direct3DDevice9Ex_LSS<EnableSync>::UpdateTexture(")
+    if args.control == "texture-type":
+        assert texture.count("if (sourceType != pDestinationTexture->GetType())") == 1
+        texture = texture.replace("if (sourceType != pDestinationTexture->GetType())", "if (false)")
+    methods.append("template<bool EnableSync>\n" + texture)
     notices = device[:device.index('#include "pch.h"')]
     (args.output / "client_methods.h").write_text(notices + "\n\n".join(methods), encoding="utf-8")
 

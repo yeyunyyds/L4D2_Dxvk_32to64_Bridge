@@ -263,10 +263,10 @@ void queryContracts() {
 void textureContracts() {
   auto d = std::make_unique<Direct3DDevice9Ex_LSS<false>>();
   Texture texture(D3DRTYPE_TEXTURE), cube(D3DRTYPE_CUBETEXTURE), volume(D3DRTYPE_VOLUMETEXTURE);
-  check(d->UpdateTexture(nullptr, &texture) == D3DERR_INVALIDCALL, "null texture source accepted");
-  check(d->UpdateTexture(&texture, nullptr) == D3DERR_INVALIDCALL, "null texture destination accepted");
   check(d->UpdateTexture(&texture, &cube) == D3DERR_INVALIDCALL && d->textureCalls == 0,
     "mismatched texture reached wrapper cast");
+  check(d->UpdateTexture(nullptr, &texture) == D3DERR_INVALIDCALL, "null texture source accepted");
+  check(d->UpdateTexture(&texture, nullptr) == D3DERR_INVALIDCALL, "null texture destination accepted");
   for (Texture* t : {&texture, &cube, &volume}) {
     t->typeCalls = 0;
     check(d->UpdateTexture(t, t) == S_OK && t->typeCalls == 2, "valid texture type dispatch changed");
@@ -277,6 +277,11 @@ void textureContracts() {
 int main(int argc, char** argv) {
   const std::string stage = argc > 1 ? argv[1] : "all";
   try {
+    if (stage == "texture-null") {
+      auto d = std::make_unique<Direct3DDevice9Ex_LSS<false>>();
+      Texture texture(D3DRTYPE_TEXTURE);
+      check(d->UpdateTexture(nullptr, &texture) == D3DERR_INVALIDCALL, "null texture source accepted");
+    }
     if (stage == "shader" || stage == "all") {
     constants<ShaderType::Vertex, ConstantType::Float, float>();
     constants<ShaderType::Vertex, ConstantType::Int, int>();

@@ -23,7 +23,8 @@ $out=Join-Path $root "work/correctness-$Stage-$Platform"
 New-Item -ItemType Directory -Force $out | Out-Null
 function Run-Case($exe,$caseArgs,$expected='') {
  [string[]]$options=@()
- if($expected){$options+=@('--expect',$expected)}
+ if($expected -eq 'ACCESS_VIOLATION'){$options+='--expect-access-violation'}
+ elseif($expected){$options+=@('--expect',$expected)}
  python "$PSScriptRoot/run_correctness_case.py" @options $exe @caseArgs
  if($LASTEXITCODE -ne 0){throw "Native case failed: $exe $caseArgs"}
 }
@@ -65,4 +66,11 @@ if($Stage -ne 'query') {
  Client-Case $source none shader
  Client-Case $baseline none shader 'wrapped constant range was accepted'
  Client-Case $source range shader 'wrapped constant range was accepted'
+}
+
+if($Stage -notin @('query','shader')) {
+ Client-Case $source none texture
+ Client-Case $baseline none texture 'mismatched texture reached wrapper cast'
+ Client-Case $source texture-type texture 'mismatched texture reached wrapper cast'
+ Client-Case $baseline none texture-null 'ACCESS_VIOLATION'
 }
