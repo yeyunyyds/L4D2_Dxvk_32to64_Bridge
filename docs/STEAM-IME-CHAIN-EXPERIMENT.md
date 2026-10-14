@@ -205,3 +205,33 @@ A and B evidence is now sufficient to prioritize C (same B binary/config except
 Client IME polling exemption True), followed by D if needed. Do not repeat A/B
 or make another speculative initialization build before those supplied-package
 comparisons are available.
+
+## Supplied C: ineffective with confirmed IME polling pass-through
+
+Both peers match build8682d963820507a3. TSF activation and Client IME polling
+exemption are True; old bootstrap and TSF pump are False, as intended. The Client
+actually records SogouPy.ime GetKeyState action=ime-pass-through on opening.
+This confirms that particular query is forwarded; it does not establish full
+coverage of all text services or every polling/input API. The user still reports
+failure. Standalone activation and this activation-plus-polling combination
+are both unaccepted.
+
+COM, manager acquisition and Activate return S_OK;22 focused state samples
+retain active_flags0x80000000, no TSF document focus and a NULL default IMM window.
+Twenty samples have Chinese HKL and2 English. Steam's same-thread fresh context
+conversion query still fails before association, and again on close. Named
+composition-string retrieval imports record no calls. There are no observer
+limits. Counts during capture mirror B:3 keys/1 ASCII at queue stages,1 key/1
+ASCII at Bridge WndProc,4 sent language messages and focus acquisition; no stage
+observes composition, result or Unicode text. Hook/direct delivery remains a
+coverage limit, particularly because very few ordinary key events reach the
+observed queue while the user reports typing.
+
+Both peers exit normally and own Deactivate returns S_OK. Prioritize the existing
+D configuration next: TSF activation True, TSF pump True, polling exemption False.
+This is a controlled B-to-D comparison; do not leave C's polling flag True and
+silently label a combined extra condition as D. Do not repeat A/B/C or announce
+that Client input suppression in general has been eliminated as a possibility.
+If D is ineffective, focus independent validation on cross-process child-window
+IMM/TSF focus interoperation and early Steam keyboard-hook consumption, rather
+than another speculative COM initialization or forced conversion-mode change.
