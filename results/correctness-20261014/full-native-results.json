@@ -1,0 +1,3602 @@
+[
+  {
+    "iteration": 0,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6698562 commands=12000 wall_ns=184259100 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6673186 commands=12000 wall_ns=187372800 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6575269 commands=12000 wall_ns=183754100 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6674536 commands=12000 wall_ns=187374100 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9853189 commands=12000 wall_ns=178080100 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15672662 commands=12000 wall_ns=188562400 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=18649585 commands=12000 wall_ns=178148600 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=28205959 commands=12000 wall_ns=188561000 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=407056 commands=12000 wall_ns=241070900 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=544464 commands=12000 wall_ns=187376500 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=18246982 commands=12000 wall_ns=241018200 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=19044297 commands=12000 wall_ns=187418100 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7689578 commands=12000 wall_ns=2961800\nC32_SURFACE_TIMING declared=0 cycles=7475936 commands=12000 wall_ns=2879700\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7639372 commands=12000 wall_ns=3006200\nC32_SURFACE_TIMING declared=0 cycles=7472789 commands=12000 wall_ns=2878400\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7800754 commands=12000 wall_ns=3004700\nC32_SURFACE_TIMING declared=1 cycles=7971574 commands=12000 wall_ns=3070600\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7770308 commands=12000 wall_ns=3046800\nC32_SURFACE_TIMING declared=1 cycles=7969754 commands=12000 wall_ns=3069900\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6411210 commands=12000 wall_ns=176087700 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6500078 commands=12000 wall_ns=187505200 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6196034 commands=12000 wall_ns=176125000 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6282093 commands=12000 wall_ns=187508200 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9888468 commands=12000 wall_ns=170267600 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=10894176 commands=12000 wall_ns=180913800 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15012488 commands=12000 wall_ns=171456400 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15650407 commands=12000 wall_ns=180918200 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=390962 commands=12000 wall_ns=178136800 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=484094 commands=12000 wall_ns=187432300 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16335592 commands=12000 wall_ns=179192900 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14456623 commands=12000 wall_ns=187468100 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7715240 commands=12000 wall_ns=2971700\nC32_SURFACE_TIMING declared=0 cycles=7494188 commands=12000 wall_ns=2886600\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7657000 commands=12000 wall_ns=4236900\nC32_SURFACE_TIMING declared=0 cycles=7477262 commands=12000 wall_ns=2887100\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7707310 commands=12000 wall_ns=2968600\nC32_SURFACE_TIMING declared=1 cycles=7521722 commands=12000 wall_ns=2897300\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7668674 commands=12000 wall_ns=4364200\nC32_SURFACE_TIMING declared=1 cycles=7521072 commands=12000 wall_ns=2897000\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6003452 commands=12000 wall_ns=177382700 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5840041 commands=12000 wall_ns=202837400 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5761830 commands=12000 wall_ns=177423800 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5676190 commands=12000 wall_ns=202837500 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9322653 commands=12000 wall_ns=177859400 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9492274 commands=12000 wall_ns=187489900 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16678991 commands=12000 wall_ns=177919100 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=17022919 commands=12000 wall_ns=187493000 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=326014 commands=12000 wall_ns=177319300 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=337350 commands=12000 wall_ns=173104800 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=18154630 commands=12000 wall_ns=177377300 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=17968938 commands=12000 wall_ns=173092300 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7561970 commands=12000 wall_ns=4439300\nC32_SURFACE_TIMING declared=0 cycles=7287904 commands=12000 wall_ns=2807200\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7385924 commands=12000 wall_ns=2844900\nC32_SURFACE_TIMING declared=0 cycles=7288528 commands=12000 wall_ns=2807500\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7361978 commands=12000 wall_ns=2835800\nC32_SURFACE_TIMING declared=1 cycles=7269314 commands=12000 wall_ns=2800100\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7330960 commands=12000 wall_ns=3057100\nC32_SURFACE_TIMING declared=1 cycles=7265310 commands=12000 wall_ns=2798500\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6771387 commands=12000 wall_ns=177234100 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6651190 commands=12000 wall_ns=281764300 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6212074 commands=12000 wall_ns=178412500 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6150455 commands=12000 wall_ns=281766400 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9905826 commands=12000 wall_ns=179421000 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9925984 commands=12000 wall_ns=187448400 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15016777 commands=12000 wall_ns=180698500 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14972450 commands=12000 wall_ns=187451500 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=436072 commands=12000 wall_ns=177470000 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=497796 commands=12000 wall_ns=187444100 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16961022 commands=12000 wall_ns=178761100 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=13786733 commands=12000 wall_ns=187367100 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7691034 commands=12000 wall_ns=2962300\nC32_SURFACE_TIMING declared=0 cycles=7639397 commands=12000 wall_ns=2942600\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7649200 commands=12000 wall_ns=4496200\nC32_SURFACE_TIMING declared=0 cycles=7569874 commands=12000 wall_ns=2942800\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7599280 commands=12000 wall_ns=2927100\nC32_SURFACE_TIMING declared=1 cycles=7471073 commands=12000 wall_ns=2877800\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7561866 commands=12000 wall_ns=4222100\nC32_SURFACE_TIMING declared=1 cycles=7472764 commands=12000 wall_ns=2878500\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6291480 commands=12000 wall_ns=176668600 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6705061 commands=12000 wall_ns=187478600 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5919366 commands=12000 wall_ns=176714500 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6453408 commands=12000 wall_ns=187478400 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9392198 commands=12000 wall_ns=177217000 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9315717 commands=12000 wall_ns=188135000 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16268943 commands=12000 wall_ns=177286800 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16826886 commands=12000 wall_ns=188134400 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=495794 commands=12000 wall_ns=177085800 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=667940 commands=12000 wall_ns=187302400 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=18202547 commands=12000 wall_ns=177084300 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=18325944 commands=12000 wall_ns=187332900 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7742852 commands=12000 wall_ns=2982300\nC32_SURFACE_TIMING declared=0 cycles=7457736 commands=12000 wall_ns=2872700\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7719738 commands=12000 wall_ns=3029200\nC32_SURFACE_TIMING declared=0 cycles=7456852 commands=12000 wall_ns=2872300\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7645742 commands=12000 wall_ns=2944900\nC32_SURFACE_TIMING declared=1 cycles=7484698 commands=12000 wall_ns=2883000\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7618208 commands=12000 wall_ns=2990400\nC32_SURFACE_TIMING declared=1 cycles=7482176 commands=12000 wall_ns=2882100\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=7328046 commands=12000 wall_ns=162396400 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6132542 commands=12000 wall_ns=188015100 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6685950 commands=12000 wall_ns=163750400 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5797582 commands=12000 wall_ns=188019700 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9869691 commands=12000 wall_ns=177787000 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9951912 commands=12000 wall_ns=187534500 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15254140 commands=12000 wall_ns=179168400 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14383160 commands=12000 wall_ns=187537700 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=517114 commands=12000 wall_ns=177161300 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=601197 commands=12000 wall_ns=172102100 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16365856 commands=12000 wall_ns=178526500 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14365623 commands=12000 wall_ns=172023800 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7872462 commands=12000 wall_ns=3032300\nC32_SURFACE_TIMING declared=0 cycles=7569613 commands=12000 wall_ns=2915700\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7832032 commands=12000 wall_ns=4449700\nC32_SURFACE_TIMING declared=0 cycles=7569458 commands=12000 wall_ns=2915700\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7712874 commands=12000 wall_ns=2970700\nC32_SURFACE_TIMING declared=1 cycles=7537790 commands=12000 wall_ns=2903500\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7672808 commands=12000 wall_ns=4368000\nC32_SURFACE_TIMING declared=1 cycles=7537244 commands=12000 wall_ns=2903200\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6671496 commands=12000 wall_ns=175862300 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9660794 commands=12000 wall_ns=188039300 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6112911 commands=12000 wall_ns=175906300 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=7808942 commands=12000 wall_ns=188040600 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=10730578 commands=12000 wall_ns=177853500 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=10048260 commands=12000 wall_ns=187610800 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=17688496 commands=12000 wall_ns=177918000 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16578371 commands=12000 wall_ns=187612300 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=353262 commands=12000 wall_ns=177609600 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=491842 commands=12000 wall_ns=203294100 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=18973058 commands=12000 wall_ns=177648400 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=18593510 commands=12000 wall_ns=203238900 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7408284 commands=12000 wall_ns=2853500\nC32_SURFACE_TIMING declared=0 cycles=7362264 commands=12000 wall_ns=2835900\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7377864 commands=12000 wall_ns=2905900\nC32_SURFACE_TIMING declared=0 cycles=7360912 commands=12000 wall_ns=2835900\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7540260 commands=12000 wall_ns=2904200\nC32_SURFACE_TIMING declared=1 cycles=7411664 commands=12000 wall_ns=2854900\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7504692 commands=12000 wall_ns=2947400\nC32_SURFACE_TIMING declared=1 cycles=7411092 commands=12000 wall_ns=2854600\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6444671 commands=12000 wall_ns=176937800 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6686159 commands=12000 wall_ns=187434900 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5791344 commands=12000 wall_ns=178156200 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5867753 commands=12000 wall_ns=187438600 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14005592 commands=12000 wall_ns=175381200 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=10013164 commands=12000 wall_ns=188566700 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=22245096 commands=12000 wall_ns=177329700 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14578349 commands=12000 wall_ns=188569600 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=426140 commands=12000 wall_ns=177124500 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=498212 commands=12000 wall_ns=187338800 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16979274 commands=12000 wall_ns=178495500 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14770444 commands=12000 wall_ns=187340300 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7607184 commands=12000 wall_ns=2930100\nC32_SURFACE_TIMING declared=0 cycles=7637500 commands=12000 wall_ns=2941900\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7564283 commands=12000 wall_ns=4391300\nC32_SURFACE_TIMING declared=0 cycles=7638540 commands=12000 wall_ns=2942300\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7544550 commands=12000 wall_ns=2906000\nC32_SURFACE_TIMING declared=1 cycles=7331168 commands=12000 wall_ns=2823900\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7507786 commands=12000 wall_ns=4361600\nC32_SURFACE_TIMING declared=1 cycles=7330622 commands=12000 wall_ns=2823700\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=7281482 commands=12000 wall_ns=182106600 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=7318554 commands=12000 wall_ns=187367900 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5972793 commands=12000 wall_ns=182157700 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6687455 commands=12000 wall_ns=187368600 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9331182 commands=12000 wall_ns=177270100 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=10123354 commands=12000 wall_ns=203257300 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15833102 commands=12000 wall_ns=177328700 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16774669 commands=12000 wall_ns=203256400 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=449150 commands=12000 wall_ns=176983400 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=495794 commands=12000 wall_ns=172278500 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16993886 commands=12000 wall_ns=176980700 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=18514132 commands=12000 wall_ns=172276100 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7586774 commands=12000 wall_ns=2922300\nC32_SURFACE_TIMING declared=0 cycles=7547748 commands=12000 wall_ns=2907300\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7566572 commands=12000 wall_ns=2974600\nC32_SURFACE_TIMING declared=0 cycles=7490730 commands=12000 wall_ns=2907100\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=8513466 commands=12000 wall_ns=3279200\nC32_SURFACE_TIMING declared=1 cycles=9654450 commands=12000 wall_ns=3720000\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=8444358 commands=12000 wall_ns=3321000\nC32_SURFACE_TIMING declared=1 cycles=9650992 commands=12000 wall_ns=3718400\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=7046518 commands=12000 wall_ns=176877400 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6589231 commands=12000 wall_ns=172758200 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5278435 commands=12000 wall_ns=178151200 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5399151 commands=12000 wall_ns=172762500 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9525815 commands=12000 wall_ns=177135400 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9511415 commands=12000 wall_ns=187934800 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14558632 commands=12000 wall_ns=178593700 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14796258 commands=12000 wall_ns=187935400 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=352066 commands=12000 wall_ns=178169000 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=305967 commands=12000 wall_ns=172313400 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15106546 commands=12000 wall_ns=179496500 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=13277784 commands=12000 wall_ns=172322600 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7582276 commands=12000 wall_ns=2920500\nC32_SURFACE_TIMING declared=0 cycles=7532278 commands=12000 wall_ns=2901400\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7545408 commands=12000 wall_ns=4354200\nC32_SURFACE_TIMING declared=0 cycles=7532044 commands=12000 wall_ns=2901200\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=8426106 commands=12000 wall_ns=3254000\nC32_SURFACE_TIMING declared=1 cycles=10071464 commands=12000 wall_ns=3879500\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=8379149 commands=12000 wall_ns=4606300\nC32_SURFACE_TIMING declared=1 cycles=10012418 commands=12000 wall_ns=3878700\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=7843880 commands=12000 wall_ns=177131100 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=7810751 commands=12000 wall_ns=187697400 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5352008 commands=12000 wall_ns=177176800 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5237196 commands=12000 wall_ns=187696100 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9007507 commands=12000 wall_ns=177523100 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9073597 commands=12000 wall_ns=187520800 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15440527 commands=12000 wall_ns=177583900 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15269160 commands=12000 wall_ns=187518400 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=391690 commands=12000 wall_ns=176766600 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=414336 commands=12000 wall_ns=187379200 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=18096182 commands=12000 wall_ns=176839400 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=17571034 commands=12000 wall_ns=187372400 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7312604 commands=12000 wall_ns=2816600\nC32_SURFACE_TIMING declared=0 cycles=7270640 commands=12000 wall_ns=2800600\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7275163 commands=12000 wall_ns=3150400\nC32_SURFACE_TIMING declared=0 cycles=7267753 commands=12000 wall_ns=2799500\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7444996 commands=12000 wall_ns=2867600\nC32_SURFACE_TIMING declared=1 cycles=7199478 commands=12000 wall_ns=2773200\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7411768 commands=12000 wall_ns=3193300\nC32_SURFACE_TIMING declared=1 cycles=7196670 commands=12000 wall_ns=2772000\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=8096734 commands=12000 wall_ns=177337100 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=7115419 commands=12000 wall_ns=187457900 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=4757050 commands=12000 wall_ns=178429800 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=4177776 commands=12000 wall_ns=187461200 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9733509 commands=12000 wall_ns=178125200 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=10052943 commands=12000 wall_ns=187477800 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15014001 commands=12000 wall_ns=179380600 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14820429 commands=12000 wall_ns=187481200 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=326222 commands=12000 wall_ns=177026500 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=388986 commands=12000 wall_ns=187409200 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16046862 commands=12000 wall_ns=178386600 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=13483262 commands=12000 wall_ns=187378900 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7554612 commands=12000 wall_ns=2909800\nC32_SURFACE_TIMING declared=0 cycles=7391280 commands=12000 wall_ns=2847100\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7517354 commands=12000 wall_ns=4506300\nC32_SURFACE_TIMING declared=0 cycles=7391566 commands=12000 wall_ns=2847200\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7514728 commands=12000 wall_ns=2894500\nC32_SURFACE_TIMING declared=1 cycles=7386340 commands=12000 wall_ns=2845100\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7478821 commands=12000 wall_ns=4335500\nC32_SURFACE_TIMING declared=1 cycles=7385638 commands=12000 wall_ns=2844900\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 0,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7516366 commands=12000 wall_ns=2895100\nC32_SURFACE_TIMING declared=1 cycles=7369804 commands=12000 wall_ns=2838800\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7490158 commands=12000 wall_ns=2939100\nC32_SURFACE_TIMING declared=1 cycles=7369804 commands=12000 wall_ns=2838800\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7455162 commands=12000 wall_ns=2871500\nC32_SURFACE_TIMING declared=0 cycles=7288476 commands=12000 wall_ns=2807500\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7426354 commands=12000 wall_ns=2915400\nC32_SURFACE_TIMING declared=0 cycles=7287904 commands=12000 wall_ns=2807200\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=366834 commands=12000 wall_ns=181422100 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=464048 commands=12000 wall_ns=187473700 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=18271889 commands=12000 wall_ns=181505300 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=17388254 commands=12000 wall_ns=187457300 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9138578 commands=12000 wall_ns=177900700 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9393372 commands=12000 wall_ns=187512400 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15488378 commands=12000 wall_ns=177967300 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16569405 commands=12000 wall_ns=187513200 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=7759876 commands=12000 wall_ns=160540700 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=8023770 commands=12000 wall_ns=188111700 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5876385 commands=12000 wall_ns=160592400 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5666900 commands=12000 wall_ns=188107700 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7658092 commands=12000 wall_ns=2949700\nC32_SURFACE_TIMING declared=1 cycles=7466472 commands=12000 wall_ns=2876000\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7619664 commands=12000 wall_ns=4340300\nC32_SURFACE_TIMING declared=1 cycles=7445464 commands=12000 wall_ns=2875800\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7615088 commands=12000 wall_ns=2933100\nC32_SURFACE_TIMING declared=0 cycles=7251816 commands=12000 wall_ns=2793300\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7579208 commands=12000 wall_ns=4540700\nC32_SURFACE_TIMING declared=0 cycles=7244016 commands=12000 wall_ns=2790300\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=318760 commands=12000 wall_ns=182756200 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=428168 commands=12000 wall_ns=172203100 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16079440 commands=12000 wall_ns=184320800 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=13807066 commands=12000 wall_ns=172224500 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=10219086 commands=12000 wall_ns=177302100 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9640634 commands=12000 wall_ns=187557800 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15766884 commands=12000 wall_ns=179067000 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14433388 commands=12000 wall_ns=187560300 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=7862449 commands=12000 wall_ns=176241200 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=8088701 commands=12000 wall_ns=187475000 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=4586212 commands=12000 wall_ns=177659000 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=4780428 commands=12000 wall_ns=187479100 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7330050 commands=12000 wall_ns=2823300\nC32_SURFACE_TIMING declared=1 cycles=7218614 commands=12000 wall_ns=2780500\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7302724 commands=12000 wall_ns=2867400\nC32_SURFACE_TIMING declared=1 cycles=7216976 commands=12000 wall_ns=2779900\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7264920 commands=12000 wall_ns=2798200\nC32_SURFACE_TIMING declared=0 cycles=7610304 commands=12000 wall_ns=2931400\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7228078 commands=12000 wall_ns=3061200\nC32_SURFACE_TIMING declared=0 cycles=7608614 commands=12000 wall_ns=2930800\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=329186 commands=12000 wall_ns=182375300 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=339898 commands=12000 wall_ns=187557900 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=17476550 commands=12000 wall_ns=182638400 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16282161 commands=12000 wall_ns=187548800 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9694065 commands=12000 wall_ns=177271300 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15981882 commands=12000 wall_ns=172284200 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16374479 commands=12000 wall_ns=177330300 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=22077985 commands=12000 wall_ns=172285200 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6541262 commands=12000 wall_ns=178303000 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6808073 commands=12000 wall_ns=187504200 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5787364 commands=12000 wall_ns=178346300 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5991489 commands=12000 wall_ns=187504900 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7614542 commands=12000 wall_ns=2932900\nC32_SURFACE_TIMING declared=1 cycles=7482748 commands=12000 wall_ns=2894700\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7577674 commands=12000 wall_ns=4268100\nC32_SURFACE_TIMING declared=1 cycles=7441044 commands=12000 wall_ns=2895400\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7479680 commands=12000 wall_ns=2881000\nC32_SURFACE_TIMING declared=0 cycles=7426978 commands=12000 wall_ns=2860800\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7443566 commands=12000 wall_ns=4400100\nC32_SURFACE_TIMING declared=0 cycles=7426874 commands=12000 wall_ns=2860700\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=341172 commands=12000 wall_ns=184220800 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=354743 commands=12000 wall_ns=187880100 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16320564 commands=12000 wall_ns=185687200 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=13762918 commands=12000 wall_ns=187880000 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9169719 commands=12000 wall_ns=177478600 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9793801 commands=12000 wall_ns=187609000 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14349122 commands=12000 wall_ns=178795700 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14963459 commands=12000 wall_ns=187615500 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6634133 commands=12000 wall_ns=176351700 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6905964 commands=12000 wall_ns=172926900 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5001896 commands=12000 wall_ns=177760100 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5220895 commands=12000 wall_ns=172929000 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7299812 commands=12000 wall_ns=2811700\nC32_SURFACE_TIMING declared=1 cycles=7169188 commands=12000 wall_ns=2774500\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7264348 commands=12000 wall_ns=2856100\nC32_SURFACE_TIMING declared=1 cycles=7127432 commands=12000 wall_ns=2774900\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7393152 commands=12000 wall_ns=2847600\nC32_SURFACE_TIMING declared=0 cycles=7356544 commands=12000 wall_ns=2833700\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7353190 commands=12000 wall_ns=3008100\nC32_SURFACE_TIMING declared=0 cycles=7354464 commands=12000 wall_ns=2832900\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=417612 commands=12000 wall_ns=180899700 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=361582 commands=12000 wall_ns=187584300 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=17685642 commands=12000 wall_ns=180993700 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=17628000 commands=12000 wall_ns=187599000 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9054650 commands=12000 wall_ns=176431700 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9699917 commands=12000 wall_ns=188119500 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16155685 commands=12000 wall_ns=176494400 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16670154 commands=12000 wall_ns=188117800 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=7944842 commands=12000 wall_ns=189023000 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6638215 commands=12000 wall_ns=187429600 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=8122814 commands=12000 wall_ns=189066300 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6111169 commands=12000 wall_ns=187429000 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7634718 commands=12000 wall_ns=2940700\nC32_SURFACE_TIMING declared=1 cycles=7881093 commands=12000 wall_ns=3063300\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7598422 commands=12000 wall_ns=4313300\nC32_SURFACE_TIMING declared=1 cycles=7833696 commands=12000 wall_ns=3063200\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7516756 commands=12000 wall_ns=2895300\nC32_SURFACE_TIMING declared=0 cycles=8018296 commands=12000 wall_ns=3108400\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7477573 commands=12000 wall_ns=4383100\nC32_SURFACE_TIMING declared=0 cycles=7961746 commands=12000 wall_ns=3108700\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=371046 commands=12000 wall_ns=181529200 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=465556 commands=12000 wall_ns=187474600 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16850886 commands=12000 wall_ns=183004700 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=13731952 commands=12000 wall_ns=187476200 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9326109 commands=12000 wall_ns=178818800 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9488863 commands=12000 wall_ns=187489100 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14406454 commands=12000 wall_ns=180277700 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14534873 commands=12000 wall_ns=187495800 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6169357 commands=12000 wall_ns=176395500 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5753356 commands=12000 wall_ns=187974200 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5547019 commands=12000 wall_ns=177704600 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5262266 commands=12000 wall_ns=187977600 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7527962 commands=12000 wall_ns=2899600\nC32_SURFACE_TIMING declared=1 cycles=7348458 commands=12000 wall_ns=2839900\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7506668 commands=12000 wall_ns=2950400\nC32_SURFACE_TIMING declared=1 cycles=7302152 commands=12000 wall_ns=2839600\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7398404 commands=12000 wall_ns=2849700\nC32_SURFACE_TIMING declared=0 cycles=7403760 commands=12000 wall_ns=2851900\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7371052 commands=12000 wall_ns=3239900\nC32_SURFACE_TIMING declared=0 cycles=7402563 commands=12000 wall_ns=2851400\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=356538 commands=12000 wall_ns=184398200 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=466570 commands=12000 wall_ns=187507100 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=17134962 commands=12000 wall_ns=184661400 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=17074745 commands=12000 wall_ns=187422400 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9259917 commands=12000 wall_ns=176672100 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9819804 commands=12000 wall_ns=187528800 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15916049 commands=12000 wall_ns=176733400 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16578684 commands=12000 wall_ns=187527600 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5716229 commands=12000 wall_ns=176995700 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6264465 commands=12000 wall_ns=187492300 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5544264 commands=12000 wall_ns=177041300 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5844071 commands=12000 wall_ns=187492700 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7735546 commands=12000 wall_ns=2979500\nC32_SURFACE_TIMING declared=1 cycles=7549256 commands=12000 wall_ns=2907800\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7693556 commands=12000 wall_ns=4495400\nC32_SURFACE_TIMING declared=1 cycles=7549724 commands=12000 wall_ns=2908100\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7726056 commands=12000 wall_ns=2975900\nC32_SURFACE_TIMING declared=0 cycles=7682532 commands=12000 wall_ns=2959300\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7688278 commands=12000 wall_ns=4637200\nC32_SURFACE_TIMING declared=0 cycles=7684013 commands=12000 wall_ns=2960300\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=396994 commands=12000 wall_ns=161718700 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=561964 commands=12000 wall_ns=187408400 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15979392 commands=12000 wall_ns=163328000 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=13510275 commands=12000 wall_ns=187353900 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9637258 commands=12000 wall_ns=176536800 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9511989 commands=12000 wall_ns=187524000 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14980257 commands=12000 wall_ns=177929800 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14381890 commands=12000 wall_ns=187528700 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6312098 commands=12000 wall_ns=176265900 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6044348 commands=12000 wall_ns=187975600 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5942741 commands=12000 wall_ns=177441800 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5630819 commands=12000 wall_ns=187980300 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7408908 commands=12000 wall_ns=2853700\nC32_SURFACE_TIMING declared=1 cycles=7407166 commands=12000 wall_ns=2853100\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7381972 commands=12000 wall_ns=2898000\nC32_SURFACE_TIMING declared=1 cycles=7344506 commands=12000 wall_ns=2853600\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7483372 commands=12000 wall_ns=2882500\nC32_SURFACE_TIMING declared=0 cycles=7921316 commands=12000 wall_ns=3051300\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7468786 commands=12000 wall_ns=3015800\nC32_SURFACE_TIMING declared=0 cycles=7853586 commands=12000 wall_ns=3051800\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=412542 commands=12000 wall_ns=177651900 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=601380 commands=12000 wall_ns=188333300 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=17758858 commands=12000 wall_ns=177672000 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16989076 commands=12000 wall_ns=188294400 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9573578 commands=12000 wall_ns=176582600 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9408222 commands=12000 wall_ns=187618700 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16380743 commands=12000 wall_ns=176642300 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16072694 commands=12000 wall_ns=187618100 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6311499 commands=12000 wall_ns=176551300 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6053085 commands=12000 wall_ns=187560200 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6001994 commands=12000 wall_ns=176595900 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5830004 commands=12000 wall_ns=187561900 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7607860 commands=12000 wall_ns=2930400\nC32_SURFACE_TIMING declared=1 cycles=7418034 commands=12000 wall_ns=2857400\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7567950 commands=12000 wall_ns=4000800\nC32_SURFACE_TIMING declared=1 cycles=7418372 commands=12000 wall_ns=2857600\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7695584 commands=12000 wall_ns=2964100\nC32_SURFACE_TIMING declared=0 cycles=7547774 commands=12000 wall_ns=2907300\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7655856 commands=12000 wall_ns=4433200\nC32_SURFACE_TIMING declared=0 cycles=7532252 commands=12000 wall_ns=2907800\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=382485 commands=12000 wall_ns=228298800 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=501280 commands=12000 wall_ns=176830000 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16511923 commands=12000 wall_ns=229807400 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=13886989 commands=12000 wall_ns=176842700 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9618533 commands=12000 wall_ns=176580300 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=10081357 commands=12000 wall_ns=187416000 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15116988 commands=12000 wall_ns=177847300 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15038207 commands=12000 wall_ns=187418400 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6020482 commands=12000 wall_ns=175732800 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6573371 commands=12000 wall_ns=187433800 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5692413 commands=12000 wall_ns=177121100 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6096948 commands=12000 wall_ns=187438200 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7329556 commands=12000 wall_ns=2823200\nC32_SURFACE_TIMING declared=1 cycles=7348978 commands=12000 wall_ns=2830800\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7302984 commands=12000 wall_ns=2866400\nC32_SURFACE_TIMING declared=1 cycles=7321755 commands=12000 wall_ns=2830500\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7595770 commands=12000 wall_ns=2925700\nC32_SURFACE_TIMING declared=0 cycles=7358962 commands=12000 wall_ns=2836200\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7567586 commands=12000 wall_ns=2993900\nC32_SURFACE_TIMING declared=0 cycles=7361276 commands=12000 wall_ns=2836200\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=373022 commands=12000 wall_ns=177569300 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=450190 commands=12000 wall_ns=187581900 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=17239300 commands=12000 wall_ns=177597600 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=18418790 commands=12000 wall_ns=187536100 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9672844 commands=12000 wall_ns=176178800 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9891765 commands=12000 wall_ns=187466400 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16332442 commands=12000 wall_ns=176243200 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16085617 commands=12000 wall_ns=187467200 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6553976 commands=12000 wall_ns=176152900 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6215248 commands=12000 wall_ns=188007000 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6279778 commands=12000 wall_ns=176195500 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5930678 commands=12000 wall_ns=188007400 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7239466 commands=12000 wall_ns=2788500\nC32_SURFACE_TIMING declared=1 cycles=8784438 commands=12000 wall_ns=3403000\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7198074 commands=12000 wall_ns=4203400\nC32_SURFACE_TIMING declared=1 cycles=8714082 commands=12000 wall_ns=3404200\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7570602 commands=12000 wall_ns=2916000\nC32_SURFACE_TIMING declared=0 cycles=7396193 commands=12000 wall_ns=2848900\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7529418 commands=12000 wall_ns=4377400\nC32_SURFACE_TIMING declared=0 cycles=7389148 commands=12000 wall_ns=2846200\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=432692 commands=12000 wall_ns=177745000 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=637598 commands=12000 wall_ns=188480000 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16017612 commands=12000 wall_ns=179012200 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14268357 commands=12000 wall_ns=188479700 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9880558 commands=12000 wall_ns=176236900 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=10172051 commands=12000 wall_ns=187475100 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14902718 commands=12000 wall_ns=177659200 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15135030 commands=12000 wall_ns=187480600 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 1,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6276112 commands=12000 wall_ns=176107900 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6131164 commands=12000 wall_ns=188636400 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6031973 commands=12000 wall_ns=177449300 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5923189 commands=12000 wall_ns=188638200 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6610500 commands=12000 wall_ns=176898800 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6174922 commands=12000 wall_ns=187453000 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6346858 commands=12000 wall_ns=176941200 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6047756 commands=12000 wall_ns=187451800 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9524230 commands=12000 wall_ns=178209400 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=10033988 commands=12000 wall_ns=187536900 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15913138 commands=12000 wall_ns=178294200 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16417199 commands=12000 wall_ns=187525000 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=340912 commands=12000 wall_ns=177672200 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=304798 commands=12000 wall_ns=187592700 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=18294588 commands=12000 wall_ns=177683100 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=18056583 commands=12000 wall_ns=187606100 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7581704 commands=12000 wall_ns=2920200\nC32_SURFACE_TIMING declared=0 cycles=7567456 commands=12000 wall_ns=2925000\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7539714 commands=12000 wall_ns=3200600\nC32_SURFACE_TIMING declared=0 cycles=7526662 commands=12000 wall_ns=2924300\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7552792 commands=12000 wall_ns=2909100\nC32_SURFACE_TIMING declared=1 cycles=7581600 commands=12000 wall_ns=2920400\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7510386 commands=12000 wall_ns=3230400\nC32_SURFACE_TIMING declared=1 cycles=7579520 commands=12000 wall_ns=2919600\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "1",
+    "host_arch": "32",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5738277 commands=12000 wall_ns=176178400 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5895760 commands=12000 wall_ns=187481200 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5443853 commands=12000 wall_ns=177336200 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5618652 commands=12000 wall_ns=187483900 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=10087134 commands=12000 wall_ns=176238800 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=10511872 commands=12000 wall_ns=187490900 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15228189 commands=12000 wall_ns=177576300 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15163713 commands=12000 wall_ns=187491200 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=309062 commands=12000 wall_ns=176642500 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=324896 commands=12000 wall_ns=187532800 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15734992 commands=12000 wall_ns=177916900 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14169766 commands=12000 wall_ns=187552300 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7606950 commands=12000 wall_ns=2930000\nC32_SURFACE_TIMING declared=0 cycles=7575047 commands=12000 wall_ns=2917800\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7567924 commands=12000 wall_ns=4405800\nC32_SURFACE_TIMING declared=0 cycles=7556172 commands=12000 wall_ns=2918300\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7475442 commands=12000 wall_ns=2879400\nC32_SURFACE_TIMING declared=1 cycles=7293572 commands=12000 wall_ns=2809400\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7436988 commands=12000 wall_ns=4298900\nC32_SURFACE_TIMING declared=1 cycles=7295236 commands=12000 wall_ns=2810100\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "1",
+    "host_arch": "64",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5975398 commands=12000 wall_ns=175497600 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5623020 commands=12000 wall_ns=187471400 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5655390 commands=12000 wall_ns=175542600 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5293808 commands=12000 wall_ns=187471200 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=12938163 commands=12000 wall_ns=176612700 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=8976363 commands=12000 wall_ns=187922500 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=23123927 commands=12000 wall_ns=176674800 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16026961 commands=12000 wall_ns=187922600 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=322426 commands=12000 wall_ns=177806800 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=279629 commands=12000 wall_ns=187605300 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16960658 commands=12000 wall_ns=177825700 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=17976816 commands=12000 wall_ns=187606700 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7436806 commands=12000 wall_ns=2864500\nC32_SURFACE_TIMING declared=0 cycles=7456644 commands=12000 wall_ns=2872200\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7402616 commands=12000 wall_ns=3186700\nC32_SURFACE_TIMING declared=0 cycles=7453030 commands=12000 wall_ns=2870800\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7336030 commands=12000 wall_ns=2825600\nC32_SURFACE_TIMING declared=1 cycles=7343492 commands=12000 wall_ns=2828600\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7297758 commands=12000 wall_ns=3089400\nC32_SURFACE_TIMING declared=1 cycles=7342322 commands=12000 wall_ns=2828200\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "2",
+    "host_arch": "32",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6887114 commands=12000 wall_ns=175909600 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6494331 commands=12000 wall_ns=187462100 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6806434 commands=12000 wall_ns=177056300 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5755619 commands=12000 wall_ns=187464700 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=11093546 commands=12000 wall_ns=145687400 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9960096 commands=12000 wall_ns=187473900 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=17375350 commands=12000 wall_ns=147151600 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14907223 commands=12000 wall_ns=187474800 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=345488 commands=12000 wall_ns=160879100 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=324506 commands=12000 wall_ns=187375000 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=17010213 commands=12000 wall_ns=162312200 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14512498 commands=12000 wall_ns=187349800 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7876544 commands=12000 wall_ns=3033900\nC32_SURFACE_TIMING declared=0 cycles=7856836 commands=12000 wall_ns=3026400\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7832578 commands=12000 wall_ns=4582200\nC32_SURFACE_TIMING declared=0 cycles=7828106 commands=12000 wall_ns=3025700\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7961642 commands=12000 wall_ns=3066600\nC32_SURFACE_TIMING declared=1 cycles=7858786 commands=12000 wall_ns=3029500\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7923266 commands=12000 wall_ns=4611000\nC32_SURFACE_TIMING declared=1 cycles=7858630 commands=12000 wall_ns=3029600\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "2",
+    "host_arch": "64",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6445504 commands=12000 wall_ns=160246900 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5919992 commands=12000 wall_ns=187502200 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6193225 commands=12000 wall_ns=160289000 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5592364 commands=12000 wall_ns=187502800 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9135090 commands=12000 wall_ns=177357300 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9199055 commands=12000 wall_ns=187517600 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15613874 commands=12000 wall_ns=177418300 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15625396 commands=12000 wall_ns=187516200 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=327236 commands=12000 wall_ns=176270900 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=311298 commands=12000 wall_ns=187639300 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=17312567 commands=12000 wall_ns=176361000 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=17214054 commands=12000 wall_ns=187617200 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7414966 commands=12000 wall_ns=2856100\nC32_SURFACE_TIMING declared=0 cycles=7473466 commands=12000 wall_ns=2878700\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7375706 commands=12000 wall_ns=3130200\nC32_SURFACE_TIMING declared=0 cycles=7471360 commands=12000 wall_ns=2877900\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7582198 commands=12000 wall_ns=2920400\nC32_SURFACE_TIMING declared=1 cycles=7609472 commands=12000 wall_ns=2931100\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7541170 commands=12000 wall_ns=3196500\nC32_SURFACE_TIMING declared=1 cycles=7607990 commands=12000 wall_ns=2930500\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "4",
+    "host_arch": "32",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5656352 commands=12000 wall_ns=175561900 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6009821 commands=12000 wall_ns=188655800 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5322849 commands=12000 wall_ns=176660000 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5690932 commands=12000 wall_ns=188658900 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9351279 commands=12000 wall_ns=176846800 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9452811 commands=12000 wall_ns=187630500 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14621683 commands=12000 wall_ns=178122400 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14321146 commands=12000 wall_ns=187634400 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=333372 commands=12000 wall_ns=189391600 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=311766 commands=12000 wall_ns=185001200 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16139708 commands=12000 wall_ns=190716100 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14210508 commands=12000 wall_ns=185028900 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7506044 commands=12000 wall_ns=2891200\nC32_SURFACE_TIMING declared=0 cycles=7366840 commands=12000 wall_ns=2837600\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7466888 commands=12000 wall_ns=4282200\nC32_SURFACE_TIMING declared=0 cycles=7368399 commands=12000 wall_ns=2838200\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7604246 commands=12000 wall_ns=2929000\nC32_SURFACE_TIMING declared=1 cycles=7482670 commands=12000 wall_ns=2882300\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7565922 commands=12000 wall_ns=4168300\nC32_SURFACE_TIMING declared=1 cycles=7464106 commands=12000 wall_ns=2882900\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "4",
+    "host_arch": "64",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5504720 commands=12000 wall_ns=175383400 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6057584 commands=12000 wall_ns=187529000 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5324799 commands=12000 wall_ns=175434000 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5753643 commands=12000 wall_ns=187527400 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9283033 commands=12000 wall_ns=175661600 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9802691 commands=12000 wall_ns=187551000 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16492108 commands=12000 wall_ns=175728000 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=17072867 commands=12000 wall_ns=187553400 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=331916 commands=12000 wall_ns=172473900 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=336725 commands=12000 wall_ns=175493800 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=18398588 commands=12000 wall_ns=172545300 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=17856228 commands=12000 wall_ns=175483800 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7637708 commands=12000 wall_ns=2941900\nC32_SURFACE_TIMING declared=0 cycles=7604506 commands=12000 wall_ns=2929200\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7604636 commands=12000 wall_ns=3297400\nC32_SURFACE_TIMING declared=0 cycles=7561528 commands=12000 wall_ns=2928600\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7753928 commands=12000 wall_ns=2986600\nC32_SURFACE_TIMING declared=1 cycles=7607704 commands=12000 wall_ns=2942600\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7719374 commands=12000 wall_ns=3365200\nC32_SURFACE_TIMING declared=1 cycles=7584590 commands=12000 wall_ns=2942100\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "8",
+    "host_arch": "32",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5672185 commands=12000 wall_ns=160354600 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5597410 commands=12000 wall_ns=187475800 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5245760 commands=12000 wall_ns=161416700 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5149582 commands=12000 wall_ns=187480600 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9606839 commands=12000 wall_ns=176331200 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9758649 commands=12000 wall_ns=187643500 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14921598 commands=12000 wall_ns=177769700 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14624915 commands=12000 wall_ns=187647100 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=416676 commands=12000 wall_ns=175992000 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=486122 commands=12000 wall_ns=187474500 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16347968 commands=12000 wall_ns=177350800 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=13382720 commands=12000 wall_ns=187490600 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=8103654 commands=12000 wall_ns=3121500\nC32_SURFACE_TIMING declared=0 cycles=7602998 commands=12000 wall_ns=2928600\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=8065798 commands=12000 wall_ns=4597900\nC32_SURFACE_TIMING declared=0 cycles=7561476 commands=12000 wall_ns=2931200\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7714174 commands=12000 wall_ns=2971400\nC32_SURFACE_TIMING declared=1 cycles=7415746 commands=12000 wall_ns=2856500\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7633860 commands=12000 wall_ns=4544600\nC32_SURFACE_TIMING declared=1 cycles=7416188 commands=12000 wall_ns=2856600\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "8",
+    "host_arch": "64",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6651605 commands=12000 wall_ns=176085800 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6281106 commands=12000 wall_ns=187502000 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5398555 commands=12000 wall_ns=176126500 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5188368 commands=12000 wall_ns=187502900 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9416617 commands=12000 wall_ns=175940500 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9274240 commands=12000 wall_ns=187893300 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16112035 commands=12000 wall_ns=175999800 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16538537 commands=12000 wall_ns=187893300 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=390182 commands=12000 wall_ns=176280400 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=456872 commands=12000 wall_ns=187447300 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=17352244 commands=12000 wall_ns=176344300 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=17492670 commands=12000 wall_ns=187464100 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7207330 commands=12000 wall_ns=2776100\nC32_SURFACE_TIMING declared=0 cycles=7281248 commands=12000 wall_ns=2804700\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7168512 commands=12000 wall_ns=3026800\nC32_SURFACE_TIMING declared=0 cycles=7239180 commands=12000 wall_ns=2804800\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7481084 commands=12000 wall_ns=2881600\nC32_SURFACE_TIMING declared=1 cycles=7494136 commands=12000 wall_ns=2886700\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7442526 commands=12000 wall_ns=3119800\nC32_SURFACE_TIMING declared=1 cycles=7457580 commands=12000 wall_ns=2889000\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "16",
+    "host_arch": "32",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=7247734 commands=12000 wall_ns=175410300 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=6636394 commands=12000 wall_ns=187692400 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5422530 commands=12000 wall_ns=176549600 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5083981 commands=12000 wall_ns=187697200 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9408819 commands=12000 wall_ns=175886400 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9406424 commands=12000 wall_ns=187490100 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14781201 commands=12000 wall_ns=177265500 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14248829 commands=12000 wall_ns=187490100 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=376532 commands=12000 wall_ns=177387200 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=461344 commands=12000 wall_ns=187431400 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=16367910 commands=12000 wall_ns=178765300 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14133314 commands=12000 wall_ns=187415700 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7655804 commands=12000 wall_ns=2948800\nC32_SURFACE_TIMING declared=0 cycles=7478042 commands=12000 wall_ns=2880500\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7624396 commands=12000 wall_ns=4571900\nC32_SURFACE_TIMING declared=0 cycles=7477574 commands=12000 wall_ns=2880300\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7609108 commands=12000 wall_ns=2931900\nC32_SURFACE_TIMING declared=1 cycles=7834554 commands=12000 wall_ns=3018100\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7569172 commands=12000 wall_ns=4374900\nC32_SURFACE_TIMING declared=1 cycles=7803588 commands=12000 wall_ns=3019100\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "16",
+    "host_arch": "64",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=7638323 commands=12000 wall_ns=160256100 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=7635073 commands=12000 wall_ns=187372100 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5452186 commands=12000 wall_ns=160301600 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=5191273 commands=12000 wall_ns=187373400 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9329127 commands=12000 wall_ns=177271400 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9298759 commands=12000 wall_ns=187504700 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15848031 commands=12000 wall_ns=177370100 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15564185 commands=12000 wall_ns=187502700 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=341068 commands=12000 wall_ns=169157100 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=290758 commands=12000 wall_ns=180071700 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=17054257 commands=12000 wall_ns=169217500 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=17155293 commands=12000 wall_ns=180092700 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7315282 commands=12000 wall_ns=2817800\nC32_SURFACE_TIMING declared=0 cycles=7292116 commands=12000 wall_ns=2808900\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7287306 commands=12000 wall_ns=2958000\nC32_SURFACE_TIMING declared=0 cycles=7288033 commands=12000 wall_ns=2807200\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7440264 commands=12000 wall_ns=2865900\nC32_SURFACE_TIMING declared=1 cycles=7578870 commands=12000 wall_ns=2919300\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7411716 commands=12000 wall_ns=3029700\nC32_SURFACE_TIMING declared=1 cycles=7575958 commands=12000 wall_ns=2918200\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "32",
+    "host_arch": "32",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "stream",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=7943465 commands=12000 wall_ns=175636200 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=7458565 commands=12000 wall_ns=187536600 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=4670191 commands=12000 wall_ns=176803000 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=4446274 commands=12000 wall_ns=187538300 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "mixed",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=9340956 commands=12000 wall_ns=176771100 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=10321757 commands=12000 wall_ns=187344400 threaded=0\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=14583360 commands=12000 wall_ns=178053800 threaded=0\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15388218 commands=12000 wall_ns=187349100 threaded=0\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "threaded",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=327106 commands=12000 wall_ns=177061400 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=374842 commands=12000 wall_ns=187395900 threaded=1\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "TRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=15950844 commands=12000 wall_ns=178604900 threaded=1\nTRANSPORT_CAPACITY upload_bytes=2027520\nC32_TIMING cycles=13802984 commands=12000 wall_ns=187387400 threaded=1\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "upload-wrap",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nC32_SURFACE_WRAP_PASS 32 large uploads, every byte, padding hidden from dispatch\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "surface-boundaries",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nC32_SURFACE_BOUNDARY_PASS ordinary/ATI-descriptor/shared/partial/zero/unaligned/full-ring\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "surface-small-generic",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=0 cycles=7888530 commands=12000 wall_ns=3038500\nC32_SURFACE_TIMING declared=0 cycles=7557784 commands=12000 wall_ns=2911200\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=0 cycles=7799636 commands=12000 wall_ns=4459300\nC32_SURFACE_TIMING declared=0 cycles=7553260 commands=12000 wall_ns=2909400\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "surface-small-declared",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "C32_SURFACE_TIMING declared=1 cycles=7717138 commands=12000 wall_ns=2972500\nC32_SURFACE_TIMING declared=1 cycles=7428434 commands=12000 wall_ns=2861400\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "C32_SURFACE_TIMING declared=1 cycles=7679594 commands=12000 wall_ns=4431000\nC32_SURFACE_TIMING declared=1 cycles=7427836 commands=12000 wall_ns=2861100\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "concurrent-replies",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_CONCURRENT_UID_PASS 4 threads x 64 replies\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "handshake",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "iteration": 2,
+    "batch": "32",
+    "host_arch": "64",
+    "mode": "vbib-mapped",
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "host": "IPC_FULL_HANDSHAKE_PASS SYN/ACK/CONTINUE/TERMINATE/zero-body\nVBIB_MAPPED_PRODUCTION_IPC_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  }
+]

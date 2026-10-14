@@ -44,3 +44,22 @@ The checkout must include frozen main `64798c7` (CI uses fetch-depth 0). The run
 Stage inputs are `query`, `shader`, `texture`, `sharedheap`, `host` and `all`. Each stage includes previous stages; implementation advanced only after the preceding native stage passed. The full build workflow runs this gate plus the established IPC, upload safety, buffer/shadow, Steam/IME, lifecycle and diagnostic regressions, then verifies actual Release compile receipts for all three binaries.
 
 These tests use backend/transport adapters where a game or GPU is unnecessary. They do not replace L4D2 map-switch, Steam UI, GPU resource upload or gameplay testing. Final disposition is **AWAITING GAME VALIDATION** after native/build gates pass. Main has not been updated by this development branch.
+
+## Final integrated result
+
+[Final Windows run 38548826740](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38548826740) passed every required gate and compiled all three matched Bridge roles plus L4N, from source `7bfc3e021d739d09b94472edbf84f6cccc42a660`. Build ID: `l4d2-1.3.1+3d545d8aa5ca7164`.
+
+The final IPC matrix contains 360 successful Client32→Host32/64 pairs: three repetitions, six batch settings, two Host architectures and ten modes. It also passes 24 intentional transport-fault cases, the seven SharedHeap native/cross-process cases, and the established upload, buffers, reset, Steam/IME, window capture, diagnostics, wakeup and Readback/residency recovery regressions. This is correctness evidence, not an FPS result.
+
+[Final Host cleanup gate 38548680765](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38548680765) confirms Device Destroy idempotence on x86/x64 and rejects the strict-destroy negative control. An earlier full run passed before this compatibility review; its artifacts were not distributed.
+
+Raw matrix results, fault cases, SharedHeap results/source manifests, compile receipts and a compact production-source diff against frozen main are retained in [results/correctness-20261014](../results/correctness-20261014). Source commit in the compile receipt identifies the binaries; later commits update evidence only.
+
+Disposition: **AWAITING GAME VALIDATION**. Test map entry/repeated switches, resource uploads, Steam invite/Chinese input and normal exit with the matched experimental binaries before merging. Keep the existing configuration; SharedHeap stays disabled by default. Roll back by restoring the previous matched Client and both Hosts together.
+
+Experimental downloads (original CI ZIP bytes, SHA-256 rechecked after upload):
+
+- [Matched update (preserves runtime config/backends)](https://raw.githubusercontent.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/e42dd64da727b8eb64739014857be01e019718fe/correctness-7bfc3e0-r38548826740/l4d2-bridge-correctness-7bfc3e0-r38548826740-patch.zip)
+- [Full Bridge with default config and official DXVK](https://raw.githubusercontent.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/e42dd64da727b8eb64739014857be01e019718fe/correctness-7bfc3e0-r38548826740/l4d2-bridge-correctness-7bfc3e0-r38548826740-full.zip)
+- [Optional L4N plugin](https://raw.githubusercontent.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/e42dd64da727b8eb64739014857be01e019718fe/correctness-7bfc3e0-r38548826740/l4d2-bridge-l4n-correctness-7bfc3e0-r38548826740.zip)
+- [SHA256SUMS](https://raw.githubusercontent.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/e42dd64da727b8eb64739014857be01e019718fe/correctness-7bfc3e0-r38548826740/SHA256SUMS.txt)

@@ -1,0 +1,132 @@
+[
+  {
+    "source": "ipc-full-native",
+    "host": "32",
+    "mode": "reply-short-budget",
+    "expected_pass": true,
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_REPLY_BUDGET_TIMING retries=2 owner_pause_ms=120 elapsed_ms=156 result=0\nIPC_REPLY_BUDGET_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "server": "IPC_REPLY_BUDGET_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "source": "ipc-full-native",
+    "host": "32",
+    "mode": "reply-default-budget",
+    "expected_pass": true,
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_REPLY_BUDGET_TIMING retries=300 owner_pause_ms=3300 elapsed_ms=3329 result=0\nIPC_REPLY_BUDGET_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "server": "IPC_REPLY_BUDGET_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "source": "ipc-full-native",
+    "host": "32",
+    "mode": "reply-default-budget-long",
+    "expected_pass": true,
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_REPLY_BUDGET_TIMING retries=300 owner_pause_ms=6500 elapsed_ms=6547 result=0\nIPC_REPLY_BUDGET_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "server": "IPC_REPLY_BUDGET_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "source": "ipc-full-native",
+    "host": "32",
+    "mode": "reply-abandoned",
+    "expected_pass": true,
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_REPLY_BUDGET_TIMING retries=2 owner_pause_ms=120 elapsed_ms=187 result=2\nIPC_REPLY_BUDGET_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "server": "IPC_REPLY_BUDGET_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "source": "ipc-full-native",
+    "host": "32",
+    "mode": "reply-cancel",
+    "expected_pass": true,
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_REPLY_BUDGET_TIMING retries=2 owner_pause_ms=120 elapsed_ms=0 result=2\nIPC_REPLY_BUDGET_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "server": "IPC_REPLY_CANCEL_PEER_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "source": "ipc-full-native",
+    "host": "64",
+    "mode": "reply-short-budget",
+    "expected_pass": true,
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_REPLY_BUDGET_TIMING retries=2 owner_pause_ms=120 elapsed_ms=125 result=0\nIPC_REPLY_BUDGET_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "server": "IPC_REPLY_BUDGET_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "source": "ipc-full-native",
+    "host": "64",
+    "mode": "reply-default-budget",
+    "expected_pass": true,
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_REPLY_BUDGET_TIMING retries=300 owner_pause_ms=3300 elapsed_ms=3328 result=0\nIPC_REPLY_BUDGET_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "server": "IPC_REPLY_BUDGET_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "source": "ipc-full-native",
+    "host": "64",
+    "mode": "reply-default-budget-long",
+    "expected_pass": true,
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_REPLY_BUDGET_TIMING retries=300 owner_pause_ms=6500 elapsed_ms=6531 result=0\nIPC_REPLY_BUDGET_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "server": "IPC_REPLY_BUDGET_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "source": "ipc-full-native",
+    "host": "64",
+    "mode": "reply-abandoned",
+    "expected_pass": true,
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_REPLY_BUDGET_TIMING retries=2 owner_pause_ms=120 elapsed_ms=187 result=2\nIPC_REPLY_BUDGET_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "server": "IPC_REPLY_BUDGET_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "source": "ipc-full-native",
+    "host": "64",
+    "mode": "reply-cancel",
+    "expected_pass": true,
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_REPLY_BUDGET_TIMING retries=2 owner_pause_ms=120 elapsed_ms=0 result=2\nIPC_REPLY_BUDGET_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "server": "IPC_REPLY_CANCEL_PEER_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "source": "ipc-safety-baseline",
+    "host": "64",
+    "mode": "reply-default-budget",
+    "expected_pass": null,
+    "client_rc": 0,
+    "host_rc": 0,
+    "client": "IPC_REPLY_BUDGET_TIMING retries=300 owner_pause_ms=3300 elapsed_ms=3329 result=0\nIPC_REPLY_BUDGET_PASS\nIPC_FULL_BRIDGE_PASS\n",
+    "server": "IPC_REPLY_BUDGET_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "source": "ipc-safety-baseline",
+    "host": "64",
+    "mode": "reply-default-budget-long",
+    "expected_pass": false,
+    "client_rc": 2,
+    "host_rc": 0,
+    "client": "C32_BRIDGE_FAIL delayed owner reply\n",
+    "server": "IPC_REPLY_BUDGET_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  },
+  {
+    "source": "ipc-safety-baseline",
+    "host": "64",
+    "mode": "reply-short-budget",
+    "expected_pass": false,
+    "client_rc": 2,
+    "host_rc": 0,
+    "client": "C32_BRIDGE_FAIL delayed owner reply\n",
+    "server": "IPC_REPLY_BUDGET_PASS\nIPC_FULL_BRIDGE_PASS\n"
+  }
+]

@@ -1,0 +1,622 @@
+--- a/bridge/src/client/d3d9_device.cpp
++++ b/bridge/src/client/d3d9_device.cpp
+@@ -982,9 +982,15 @@
+   ZoneScoped;
+   LogFunctionCall();
+ 
+-  assert(pSourceTexture->GetType() == pDestinationTexture->GetType() && "UpdateTexture: texture type mismatch!");
+-
+-  switch (pSourceTexture->GetType()) {
++  if (!pSourceTexture || !pDestinationTexture) {
++    return D3DERR_INVALIDCALL;
++  }
++  const auto sourceType = pSourceTexture->GetType();
++  if (sourceType != pDestinationTexture->GetType()) {
++    return D3DERR_INVALIDCALL;
++  }
++
++  switch (sourceType) {
+   case D3DRTYPE_TEXTURE:
+     return UpdateTextureImpl<Direct3DTexture9_LSS>(pSourceTexture, pDestinationTexture);
+   case D3DRTYPE_CUBETEXTURE:
+@@ -4024,13 +4030,13 @@
+                                                                             const uint32_t count) {
+   const     uint32_t regCountHardware = ShaderConstants::getHardwareRegCount<ShaderT, ConstantT>();
+   constexpr uint32_t regCountSoftware = ShaderConstants::getSoftwareRegCount<ShaderT, ConstantT>();
+-  if (startRegister + count > regCountSoftware) {
++  if (startRegister > regCountSoftware || count > regCountSoftware - startRegister) {
+     return { D3DERR_INVALIDCALL, count };
+   }
+-  const auto adjCount = UINT(
+-    std::max<INT>(
+-      std::clamp<INT>(count + startRegister, 0, regCountHardware) - INT(startRegister),
+-      0));
++  constexpr uint32_t bytesPerRegister = ConstantT == ConstantType::Bool ? sizeof(BOOL) : 4u * sizeof(T);
++  static_assert(regCountSoftware <= UINT32_MAX / bytesPerRegister, "constant payload must fit wire size");
++  const uint32_t adjCount = startRegister < regCountHardware
++    ? std::min(count, regCountHardware - startRegister) : 0;
+   if (adjCount == 0) {
+     return { D3D_OK, adjCount };
+   }
+--- a/bridge/src/client/d3d9_query.cpp
++++ b/bridge/src/client/d3d9_query.cpp
+@@ -82,7 +82,7 @@
+   case D3DQUERYTYPE_PIPELINETIMINGS:      return sizeof(D3DDEVINFO_D3D9PIPELINETIMINGS);
+   case D3DQUERYTYPE_INTERFACETIMINGS:     return sizeof(D3DDEVINFO_D3D9INTERFACETIMINGS);
+   case D3DQUERYTYPE_VERTEXTIMINGS:        return sizeof(D3DDEVINFO_D3D9STAGETIMINGS);
+-  case D3DQUERYTYPE_PIXELTIMINGS:         return sizeof(D3DDEVINFO_D3D9PIPELINETIMINGS);
++  case D3DQUERYTYPE_PIXELTIMINGS:         return sizeof(D3DDEVINFO_D3D9STAGETIMINGS);
+   case D3DQUERYTYPE_BANDWIDTHTIMINGS:     return sizeof(D3DDEVINFO_D3D9BANDWIDTHTIMINGS);
+   case D3DQUERYTYPE_CACHEUTILIZATION:     return sizeof(D3DDEVINFO_D3D9CACHEUTILIZATION);
+   default:                                return 0;
+@@ -107,6 +107,11 @@
+ HRESULT Direct3DQuery9_LSS::GetData(void* pData, DWORD dwSize, DWORD dwGetDataFlags) try {
+   LogFunctionCall();
+ 
++  if ((dwGetDataFlags & ~D3DGETDATA_FLUSH) != 0
++    || (dwSize != 0 && (pData == nullptr || dwSize != GetDataSize()))) {
++    return D3DERR_INVALIDCALL;
++  }
++
+   UID currentUID = 0;
+   {
+     ClientMessage c(Commands::IDirect3DQuery9_GetData, getId());
+@@ -117,7 +122,7 @@
+ 
+   WAIT_FOR_SERVER_RESPONSE("Direct3DQuery9_LSS::GetData()", D3DERR_INVALIDCALL, currentUID);
+   HRESULT hresult = DeviceBridge::get_data();
+-  if (SUCCEEDED(hresult) && dwSize > 0 && pData != NULL) {
++  if (hresult == S_OK && dwSize > 0) {
+     void* pDataReturned = NULL;
+     const auto returnedSize = DeviceBridge::get_data(&pDataReturned);
+     if (returnedSize != dwSize || !pDataReturned) { DeviceBridge::pop_front(); return D3DERR_INVALIDCALL; }
+--- a/bridge/src/client/d3d9_surface.cpp
++++ b/bridge/src/client/d3d9_surface.cpp
+@@ -279,6 +279,7 @@
+   }
+   // NV-DXVK end
+   if (m_bUseSharedHeap) {
++    const auto previousBufId = m_bufferId;
+     auto discardBufId = SharedHeap::kInvalidId;
+     const bool bDiscard = (flags & D3DLOCK_DISCARD) != 0;
+     if (bDiscard || (m_bufferId == SharedHeap::kInvalidId)) {
+@@ -286,9 +287,16 @@
+       m_bufferId = SharedHeap::allocate(surfaceSize);
+     }
+     if (m_bufferId == SharedHeap::kInvalidId) {
++      m_bufferId = previousBufId;
++      lockedRect.pBits = nullptr;
+       return false;
+     }
+     lockedRect.pBits = getBufPtr(lockedRect.Pitch, rect);
++    if (!lockedRect.pBits) {
++      if (m_bufferId != previousBufId) { SharedHeap::deallocate(m_bufferId); }
++      m_bufferId = previousBufId;
++      return false;
++    }
+     m_lockInfoQueue.push({ lockedRect, rect, flags, m_bufferId, discardBufId });
+   } else {
+     // NV-DXVK start: Missing contents are restored before publishing a client Lock pointer.
+@@ -380,8 +388,8 @@
+ 
+ void* Direct3DSurface9_LSS::getBufPtr(const int pitch, const RECT& rect) {
+   const size_t byteOffset = bridge_util::calcImageByteOffset(pitch, rect, m_desc.Format);
+-  void* const ptr = SharedHeap::getBuf(m_bufferId) + byteOffset;
+-  return ptr;
++  auto* const buffer = SharedHeap::getBuf(m_bufferId);
++  return buffer ? buffer + byteOffset : nullptr;
+ }
+ 
+ HRESULT Direct3DSurface9_LSS::sendDataToServer(const LockInfo& lockInfo) {
+--- a/bridge/src/client/lockable_buffer.h
++++ b/bridge/src/client/lockable_buffer.h
+@@ -117,8 +117,8 @@
+ 
+   LockableBuffer(T* const pD3dBuf, BaseDirect3DDevice9Ex_LSS* const pDevice, const DescType& desc)
+     : Direct3DResource9_LSS<T>(pD3dBuf, pDevice)
++    , m_bUseSharedHeap(getSharedHeapPolicy(desc))
+     , m_desc(desc)
+-    , m_bUseSharedHeap(getSharedHeapPolicy(m_desc))
+     , m_sendWhole((desc.Usage& D3DUSAGE_DYNAMIC) == 0 && GlobalOptions::getAlwaysCopyEntireStaticBuffer())
+     , m_optimizedLock((desc.Usage& D3DUSAGE_DYNAMIC) != 0 && ClientOptions::getOptimizedDynamicLock()) {
+     if (!m_bUseSharedHeap) {
+@@ -158,6 +158,10 @@
+     }
+ 
+     *ppbData = nullptr;
++    if (offset > m_desc.Size) {
++      m_dataTrace.lock(offset, size, flags, D3DERR_INVALIDCALL);
++      return D3DERR_INVALIDCALL;
++    }
+     if (!DeviceBridge::healthy()) { return D3DERR_DEVICELOST; }
+     uint32_t* checkPtr = nullptr;
+ 
+@@ -170,7 +174,7 @@
+         discardedBufferId = m_bufferId;
+       }
+       const auto nextBufId = (bDiscard || (m_bufferId == SharedHeap::kInvalidId)) ?
+-        m_bufferId = SharedHeap::allocate(m_desc.Size) : m_bufferId;
++        SharedHeap::allocate(m_desc.Size) : m_bufferId;
+       if (nextBufId == SharedHeap::kInvalidId) {
+         std::stringstream ss;
+         ss << "[LockableBuffer][Lock] Failed to allocate on SharedHeap: {";
+@@ -185,8 +189,14 @@
+         // NV-DXVK end
+         return E_FAIL;
+       }
++      auto* const buffer = SharedHeap::getBuf(nextBufId);
++      if (!buffer) {
++        if (nextBufId != m_bufferId) { SharedHeap::deallocate(nextBufId); }
++        m_dataTrace.lock(offset, size, flags, E_FAIL);
++        return E_FAIL;
++      }
+       m_bufferId = nextBufId;
+-      *ppbData = SharedHeap::getBuf(m_bufferId) + offset;
++      *ppbData = buffer + offset;
+       m_lockInfos.push({ offset, size, nullptr, flags, checkPtr, m_bufferId, discardedBufferId });
+     } else {
+       // NV-DXVK start: Keep one stable mapping across every overlapping Lock.
+@@ -209,7 +219,7 @@
+       // NV-DXVK end
+ 
+       if (m_optimizedLock) {
+-        const size_t dataSize = (size == 0) ? m_desc.Size : size;
++        const size_t dataSize = (size == 0) ? m_desc.Size - offset : std::min(size, m_desc.Size - offset);
+ 
+         // Send the buffer lock parameters and handle
+         ClientMessage c(LockCmd, getId(), 0);
+--- a/bridge/src/server/main.cpp
++++ b/bridge/src/server/main.cpp
+@@ -116,8 +116,8 @@
+             const DWORD& name = rpcHeader.pHandle;
+ #define GET_RES(name, map) \
+             GET_HND(name##Handle); \
+-            const auto& name = map[name##Handle]; \
+-            assert(name != NULL)
++            const auto name = lookupHostHandle(map, name##Handle); \
++            if (!name) { DeviceBridge::reportFault("host-resource-handle", static_cast<uint32_t>(rpcHeader.command), currentUID); return; }
+ 
+ // NOTE: MSDN states HWNDs are safe to cross x86-->x64 boundary, and that a truncating cast should be used:
+ // https://docs.microsoft.com/en-us/windows/win32/winprog64/interprocess-communication?redirectedfrom=MSDN
+@@ -253,6 +253,12 @@
+ std::unordered_map<uint32_t, IDirect3DSwapChain9*> gpD3DSwapChains;
+ std::unordered_map<uint32_t, IDirect3DQuery9*> gpD3DQuery;
+ std::unordered_map<uint32_t, void*> gMapRemixApi;
++template<typename Map>
++static typename Map::mapped_type lookupHostHandle(Map& map, uint32_t id) {
++  const auto entry = map.find(id);
++  return entry == map.end() ? nullptr : entry->second;
++}
++
+ uint64_t gProcessedHostCommands = 0;
+ static l4d2_color::DiagnosticMap<uint32_t, uint32_t> gColorParents;
+ static l4d2_color::DiagnosticMap<uint32_t, l4d2_color::TextureRequest> gColorTextures;
+@@ -714,7 +720,9 @@
+         break;
+       case IDirect3DDevice9Ex_Destroy:
+       {
+-        GET_RES(pD3DDevice, gpD3DDevices);
++        // Cleanup is idempotent, including a wrapper whose backend creation failed.
++        GET_HND(pD3DDeviceHandle);
++        const auto pD3DDevice = lookupHostHandle(gpD3DDevices, pD3DDeviceHandle);
+         safeDestroy(pD3DDevice, pD3DDeviceHandle);
+         gpD3DDevices.erase(pD3DDeviceHandle);
+         break;
+@@ -2522,7 +2530,9 @@
+         PULL_U(Level);
+         PULL_OBJ(D3DBOX, pBox);
+         PULL_D(Flags);
+-        const auto& pVolumeTexture = (IDirect3DVolumeTexture9*) gpD3DResources[pHandle];
++        const auto resource = lookupHostHandle(gpD3DResources, pHandle);
++        const auto pVolumeTexture = resource && resource->GetType() == D3DRTYPE_VOLUMETEXTURE
++          ? static_cast<IDirect3DVolumeTexture9*>(resource) : nullptr;
+         PULL_U(bytesPerPixel);
+         PULL_U(width);
+         PULL_U(height);
+@@ -2778,15 +2788,27 @@
+           data = packet.data;
+           if (packet.bytes != SizeToLock) { DeviceBridge::faultChannel(); throw BridgeReadFailure {}; }
+         }
+-        const auto& pVertexBuffer = (IDirect3DVertexBuffer9*) gpD3DResources[pHandle];
++        const auto resource = lookupHostHandle(gpD3DResources, pHandle);
++        const auto pVertexBuffer = resource && resource->GetType() == D3DRTYPE_VERTEXBUFFER
++          ? static_cast<IDirect3DVertexBuffer9*>(resource) : nullptr;
+ 
+         // Resolve any borrowed source before taking a backend lock.
+         const bool reserved = Commands::IsDataReserved(rpcHeader.flags);
++        if (!pVertexBuffer) {
++          if (reserved) { DeviceBridge::unpinRead(pHandle); }
++          DeviceBridge::reportFault("host-buffer-handle", static_cast<uint32_t>(rpcHeader.command), currentUID);
++          return;
++        }
+         if (reserved) {
+           data = DeviceBridge::reservedData(pHandle, reference, SizeToLock);
+         } else if (Commands::IsDataInSharedHeap(rpcHeader.flags)) {
+           auto* base = SharedHeap::getBuf(reference);
+-          data = base ? base + OffsetToLock : nullptr;
++          const size_t capacity = SharedHeap::getAllocationSize(reference);
++          if (!base || OffsetToLock > capacity || SizeToLock > capacity - OffsetToLock) {
++            DeviceBridge::reportFault("host-buffer-shared-allocation", static_cast<uint32_t>(rpcHeader.command), currentUID);
++            return;
++          }
++          data = base + OffsetToLock;
+         }
+         if (!pVertexBuffer || (SizeToLock && !l4d2_upload::pointerSpan(data, SizeToLock))) {
+           if (reserved) { DeviceBridge::unpinRead(pHandle); }
+@@ -2887,15 +2909,27 @@
+           data = packet.data;
+           if (packet.bytes != SizeToLock) { DeviceBridge::faultChannel(); throw BridgeReadFailure {}; }
+         }
+-        const auto& pIndexBuffer = (IDirect3DIndexBuffer9*) gpD3DResources[pHandle];
++        const auto resource = lookupHostHandle(gpD3DResources, pHandle);
++        const auto pIndexBuffer = resource && resource->GetType() == D3DRTYPE_INDEXBUFFER
++          ? static_cast<IDirect3DIndexBuffer9*>(resource) : nullptr;
+ 
+         // Resolve any borrowed source before taking a backend lock.
+         const bool reserved = Commands::IsDataReserved(rpcHeader.flags);
++        if (!pIndexBuffer) {
++          if (reserved) { DeviceBridge::unpinRead(pHandle); }
++          DeviceBridge::reportFault("host-buffer-handle", static_cast<uint32_t>(rpcHeader.command), currentUID);
++          return;
++        }
+         if (reserved) {
+           data = DeviceBridge::reservedData(pHandle, reference, SizeToLock);
+         } else if (Commands::IsDataInSharedHeap(rpcHeader.flags)) {
+           auto* base = SharedHeap::getBuf(reference);
+-          data = base ? base + OffsetToLock : nullptr;
++          const size_t capacity = SharedHeap::getAllocationSize(reference);
++          if (!base || OffsetToLock > capacity || SizeToLock > capacity - OffsetToLock) {
++            DeviceBridge::reportFault("host-buffer-shared-allocation", static_cast<uint32_t>(rpcHeader.command), currentUID);
++            return;
++          }
++          data = base + OffsetToLock;
+         }
+         if (!pIndexBuffer || (SizeToLock && !l4d2_upload::pointerSpan(data, SizeToLock))) {
+           if (reserved) { DeviceBridge::unpinRead(pHandle); }
+@@ -3042,9 +3076,15 @@
+         GET_HND(pHandle);
+         PULL_OBJ(RECT, pRect);
+         PULL_D(Flags);
+-        const auto pSurface = (IDirect3DSurface9*) gpD3DResources[pHandle];
++        const auto resource = lookupHostHandle(gpD3DResources, pHandle);
++        const auto pSurface = resource && resource->GetType() == D3DRTYPE_SURFACE
++          ? static_cast<IDirect3DSurface9*>(resource) : nullptr;
+         PULL_D(dFormat);
+         PULL_D(IncomingPitch);
++        if (!pSurface || !pRect || pRect_len != sizeof(RECT)) {
++          DeviceBridge::reportFault("host-surface-handle-or-rect", static_cast<uint32_t>(rpcHeader.command), currentUID);
++          return;
++        }
+         // NV-DXVK start: DXVK's ATI Lock pitch does not describe compressed storage.
+         if (l4d2_ati::isFormat(dFormat)) {
+           void* data = nullptr;
+@@ -3069,7 +3109,15 @@
+               pHandle, dFormat, IncomingPitch, pulledSize));
+             break;
+           }
+-          if (shared) { data = SharedHeap::getBuf(allocId) + transfer.offset; }
++          if (shared) {
++            auto* base = SharedHeap::getBuf(allocId);
++            const size_t capacity = SharedHeap::getAllocationSize(allocId);
++            if (!base || capacity < layout.bytes || transfer.offset > capacity) {
++              DeviceBridge::reportFault("host-ati-shared-allocation", static_cast<uint32_t>(rpcHeader.command), currentUID);
++              return;
++            }
++            data = base + transfer.offset;
++          }
+           D3DLOCKED_RECT locked {};
+           HRESULT hr = l4d2_api_wait::backend([&]() { return pSurface->LockRect(&locked, pRect, Flags); });
+           if (FAILED(hr)) {
+@@ -3117,6 +3165,7 @@
+         }
+         const auto rowSize = static_cast<uint32_t>(rowSize64);
+         const uint64_t payloadBytes = uint64_t{numRows} * IncomingPitch;
++        uint64_t sourceBytes = payloadBytes;
+         void* pData = nullptr;
+         const bool useSharedHeap = Commands::IsDataInSharedHeap(rpcHeader.flags);
+         if (useSharedHeap) {
+@@ -3124,11 +3173,15 @@
+           auto* base = SharedHeap::getBuf(allocId);
+           const uint64_t byteOffset = uint64_t{bridge_util::calcStride(pRect->top, static_cast<D3DFORMAT>(dFormat))} * IncomingPitch
+             + uint64_t{bridge_util::calcStride(pRect->left, static_cast<D3DFORMAT>(dFormat))} * blockBytes;
+-          if (!base || byteOffset > UINTPTR_MAX - reinterpret_cast<uintptr_t>(base)) {
++          const size_t capacity = SharedHeap::getAllocationSize(allocId);
++          const uint64_t sourceSpan = uint64_t{numRows - 1u} * IncomingPitch + rowSize;
++          if (!base || byteOffset > capacity || sourceSpan > capacity - byteOffset
++            || byteOffset > UINTPTR_MAX - reinterpret_cast<uintptr_t>(base)) {
+             DeviceBridge::reportFault("host-surface-source", static_cast<uint32_t>(rpcHeader.command), currentUID);
+             return;
+           }
+           pData = base + static_cast<size_t>(byteOffset);
++          sourceBytes = capacity - byteOffset;
+         } else {
+           const auto pulledSize = DeviceBridge::get_data(&pData);
+           if (pulledSize != payloadBytes) {
+@@ -3136,7 +3189,7 @@
+             return;
+           }
+         }
+-        if (!l4d2_upload::pointerSpan(pData, payloadBytes)) {
++        if (!l4d2_upload::pointerSpan(pData, sourceBytes)) {
+           DeviceBridge::reportFault("host-surface-source", static_cast<uint32_t>(rpcHeader.command), currentUID);
+           return;
+         }
+@@ -3154,7 +3207,7 @@
+           return;
+         }
+         const bool copied = l4d2_upload::copyRows(lockedRect.pBits, lockedRect.Pitch, 0,
+-          pData, payloadBytes, IncomingPitch, 0, rowSize, numRows, 1);
++          pData, sourceBytes, IncomingPitch, 0, rowSize, numRows, 1);
+         const auto unlockResult = l4d2_api_wait::backend([&]() { return pSurface->UnlockRect(); });
+         const auto colorParent = gColorParents.find(pHandle);
+         l4d2_color::upload(pHandle, colorParent == gColorParents.end() ? 0 : colorParent->second, "SurfaceUploadBackend", currentUID, dFormat,
+@@ -3223,7 +3276,7 @@
+         GET_HND(pHandle);
+         PULL_OBJ(D3DBOX, pBox);
+         PULL_D(Flags);
+-        const auto& pVolume = gpD3DVolumes[pHandle];
++        const auto pVolume = lookupHostHandle(gpD3DVolumes, pHandle);
+         PULL_U(bytesPerPixel);
+         PULL_U(width);
+         PULL_U(height);
+@@ -3307,7 +3360,7 @@
+       case IDirect3DQuery9_Destroy:
+       {
+         GET_HND(pHandle);
+-        const auto& pQuery = (IDirect3DQuery9*) gpD3DQuery[pHandle];
++        const auto pQuery = lookupHostHandle(gpD3DQuery, pHandle);
+         safeDestroy(pQuery, pHandle);
+         gpD3DQuery.erase(pHandle);
+         break;
+@@ -3322,8 +3375,8 @@
+       {
+         GET_HND(pHandle);
+         PULL(DWORD, dwIssueFlags);
+-        const auto &pQuery = gpD3DQuery[pHandle];
+-        const auto hresult = pQuery->Issue(dwIssueFlags);
++        const auto pQuery = lookupHostHandle(gpD3DQuery, pHandle);
++        const auto hresult = pQuery ? pQuery->Issue(dwIssueFlags) : D3DERR_INVALIDCALL;
+         SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
+         break;
+       }
+@@ -3332,25 +3385,37 @@
+         GET_HND(pHandle);
+         PULL(DWORD, dwSize);
+         PULL(DWORD, dwGetDataFlags);
+-        const auto& pQuery = gpD3DQuery[pHandle];
+-        void* pData = NULL;
+-        if (dwSize > 0) {
+-          pData = new char[dwSize];
+-        }
+-        const auto hresult = pQuery->GetData(pData, dwSize, dwGetDataFlags);
++        const auto entry = gpD3DQuery.find(pHandle);
++        const auto pQuery = entry == gpD3DQuery.end() ? nullptr : entry->second;
++        // Bound requests by the D3D9 SDK result types before allocating or calling the backend.
++        union QueryResult {
++          BOOL boolean; DWORD occlusion; UINT64 timestamp;
++          D3DDEVINFO_VCACHE vcache;
++          D3DDEVINFO_RESOURCEMANAGER resources;
++          D3DDEVINFO_D3DVERTEXSTATS vertices;
++          D3DDEVINFO_D3D9PIPELINETIMINGS pipeline;
++          D3DDEVINFO_D3D9INTERFACETIMINGS interfaceTiming;
++          D3DDEVINFO_D3D9STAGETIMINGS stage;
++          D3DDEVINFO_D3D9BANDWIDTHTIMINGS bandwidth;
++          D3DDEVINFO_D3D9CACHEUTILIZATION cache;
++        };
++        void* pData = nullptr;
++        HRESULT hresult = D3DERR_INVALIDCALL;
++        if (pQuery && !(dwGetDataFlags & ~D3DGETDATA_FLUSH) && dwSize <= sizeof(QueryResult)
++          && (dwSize == 0 || dwSize == pQuery->GetDataSize())) {
++          if (dwSize > 0) { pData = new char[dwSize]; }
++          hresult = pQuery->GetData(pData, dwSize, dwGetDataFlags);
++        }
+ 
+         ServerMessage c(Commands::Bridge_Response, currentUID);
+         c.send_data(hresult);
+-        if (SUCCEEDED(hresult) && dwSize > 0) {
++        if (hresult == S_OK && dwSize > 0) {
+           if (auto* blobPacketPtr = c.begin_data_blob(dwSize)) {
+             memcpy(blobPacketPtr, pData, dwSize);
+             c.end_data_blob();
+           }
+         }
+-      
+-        if (dwSize > 0) {
+-          delete[]pData;
+-        }
++        delete[] static_cast<char*>(pData);
+         break;
+       }
+ 
+@@ -3385,14 +3450,21 @@
+         GET_HDR_VAL(_allocId);
+         const auto allocId = (SharedHeap::AllocId) _allocId;
+         PULL_U(chunkId);
+-        SharedHeap::allocate(allocId, chunkId);
++        PULL_U(allocationBytes);
++        if (!SharedHeap::allocate(allocId, chunkId, allocationBytes)) {
++          DeviceBridge::reportFault("host-shared-allocation", static_cast<uint32_t>(rpcHeader.command), currentUID);
++          return;
++        }
+         break;
+       }
+       case Bridge_SharedHeap_Dealloc:
+       {
+         GET_HDR_VAL(_allocId);
+         const auto allocId = (SharedHeap::AllocId) _allocId;
+-        SharedHeap::deallocate(allocId);
++        if (!SharedHeap::deallocate(allocId)) {
++          DeviceBridge::reportFault("host-shared-deallocation", static_cast<uint32_t>(rpcHeader.command), currentUID);
++          return;
++        }
+         break;
+       }
+       case Bridge_UnlinkResource:
+--- a/bridge/src/util/util_sharedheap.cpp
++++ b/bridge/src/util/util_sharedheap.cpp
+@@ -59,11 +59,22 @@
+ }
+ 
+ BYTE* SharedHeap::Instance::getBuf(const AllocId id) {
+-  assert(m_cache.count(id) != 0);
+-  const auto firstChunk = m_cache[id];
++  const auto allocation = m_cache.find(id);
++  if (allocation == m_cache.end() || allocation->second >= m_nChunks) {
++    return nullptr;
++  }
++  const auto firstChunk = allocation->second;
+   const auto segId = chunkIdToSegId(firstChunk);
++  if (segId == kInvalidId || segId >= m_segments.size()) {
++    return nullptr;
++  }
+   BYTE* const pBuf = m_segments[segId].getBuf(firstChunk);
+   return pBuf;
++}
++
++size_t SharedHeap::Instance::getAllocationSize(const AllocId id) const {
++  const auto allocation = m_allocationSizes.find(id);
++  return allocation == m_allocationSizes.end() ? 0 : allocation->second;
+ }
+ 
+ size_t SharedHeap::Instance::getTotalHeapSize() const {
+@@ -150,6 +161,9 @@
+ 
+ #ifdef REMIX_BRIDGE_CLIENT
+ SharedHeap::AllocId SharedHeap::Instance::allocate(const size_t size) {
++  if (!size || size > kMax32BitHeapSize || m_nextUid == kInvalidId) {
++    return kInvalidId;
++  }
+   if (size > m_defaultSegmentSize) {
+     size_t newDefaultSegmentSize = m_defaultSegmentSize;
+     while (size > newDefaultSegmentSize) {
+@@ -181,10 +195,14 @@
+ 
+   const auto id = m_nextUid++;
+   m_cache[id] = alloc.firstChunk;
++  m_allocationSizes[id] = size;
+   m_allocations[alloc.firstChunk] = alloc.finalChunk;
+   {
+     ClientMessage c(Commands::Bridge_SharedHeap_Alloc, id);
+     c.send_data(alloc.firstChunk);
++    // Logical allocation bounds travel with the ID. All three processes must
++    // use the same build identity before this command can be dispatched.
++    c.send_data(static_cast<uint32_t>(size));
+   }
+ 
+   assert(getChunkState(alloc.firstChunk) == ChunkState::Unallocated);
+@@ -203,15 +221,44 @@
+ #endif
+ 
+ #ifdef REMIX_BRIDGE_SERVER
+-void SharedHeap::Instance::allocate(const AllocId id, const ChunkId firstChunk) {
++bool SharedHeap::Instance::allocate(const AllocId id, const ChunkId firstChunk, const uint32_t bytes) {
++  if (id == kInvalidId || !bytes || bytes > kMax32BitHeapSize || firstChunk >= m_nChunks ||
++      m_cache.find(id) != m_cache.end()) {
++    return false;
++  }
++  const auto segId = chunkIdToSegId(firstChunk);
++  if (segId == kInvalidId || segId >= m_segments.size()) {
++    return false;
++  }
++  const auto &segment = m_segments[segId];
++  const size_t firstInSegment = firstChunk - segment.getBaseChunkId();
++  const size_t chunks = (static_cast<size_t>(bytes) + m_chunkSize - 1) / m_chunkSize;
++  if (firstInSegment >= segment.getNumChunks() || chunks > segment.getNumChunks() - firstInSegment) {
++    return false;
++  }
++  const auto finalChunk = firstChunk + static_cast<ChunkId>(chunks) - 1;
++  const auto next = m_allocations.lower_bound(firstChunk);
++  if ((next != m_allocations.end() && next->first <= finalChunk) ||
++      (next != m_allocations.begin() && std::prev(next)->second >= firstChunk)) {
++    return false;
++  }
+   m_cache[id] = firstChunk;
+-}
+-void SharedHeap::Instance::deallocate(const AllocId id) {
+-  assert(m_cache.count(id) != 0);
+-  const auto firstChunk = m_cache[id];
+-  assert(getChunkState(firstChunk) == ChunkState::Allocated);
++  m_allocationSizes[id] = bytes;
++  m_allocations[firstChunk] = finalChunk;
++  return true;
++}
++bool SharedHeap::Instance::deallocate(const AllocId id) {
++  const auto allocation = m_cache.find(id);
++  if (allocation == m_cache.end() || allocation->second >= m_nChunks ||
++      getChunkState(allocation->second) != ChunkState::Allocated) {
++    return false;
++  }
++  const auto firstChunk = allocation->second;
+   setChunkState(firstChunk, ChunkState::Deallocated);
+   m_cache.erase(id);
++  m_allocationSizes.erase(id);
++  m_allocations.erase(firstChunk);
++  return true;
+ }
+ #endif
+ 
+@@ -308,6 +355,7 @@
+   for (const auto deallocatedId : deallocatedIds) {
+     const auto firstChunk = m_cache[deallocatedId];
+     m_cache.erase(deallocatedId);
++    m_allocationSizes.erase(deallocatedId);
+     assert(m_allocations.count(firstChunk) > 0);
+     const auto finalChunk = m_allocations[firstChunk];
+     const size_t numChunks = finalChunk - firstChunk + 1;
+--- a/bridge/src/util/util_sharedheap.h
++++ b/bridge/src/util/util_sharedheap.h
+@@ -39,6 +39,9 @@
+     static BYTE* getBuf(const AllocId id) {
+       return get().getBuf(id);
+     }
++    static size_t getAllocationSize(const AllocId id) {
++      return get().getAllocationSize(id);
++    }
+ #ifdef REMIX_BRIDGE_CLIENT
+     static AllocId allocate(const size_t size) {
+       return get().allocate(size);
+@@ -48,11 +51,11 @@
+     }
+ #endif
+ #ifdef REMIX_BRIDGE_SERVER
+-    static void allocate(const AllocId id, const ChunkId firstChunk) {
+-      get().allocate(id, firstChunk);
++    static bool allocate(const AllocId id, const ChunkId firstChunk, const uint32_t bytes) {
++      return get().allocate(id, firstChunk, bytes);
+     }
+-    static void deallocate(const AllocId id) {
+-      get().deallocate(id);
++    static bool deallocate(const AllocId id) {
++      return get().deallocate(id);
+     }
+     static void addNewHeapSegment(const uint32_t segmentSize) {
+       get().addNewHeapSegment(segmentSize);
+@@ -68,13 +71,14 @@
+     public:
+       Instance();
+       BYTE* getBuf(const AllocId id);
++      size_t getAllocationSize(const AllocId id) const;
+ #ifdef REMIX_BRIDGE_CLIENT
+       AllocId allocate(const size_t size);
+       void deallocate(const AllocId id);
+ #endif
+ #ifdef REMIX_BRIDGE_SERVER
+-      void allocate(const AllocId id, const ChunkId firstChunk);
+-      void deallocate(const AllocId id);
++      bool allocate(const AllocId id, const ChunkId firstChunk, const uint32_t bytes);
++      bool deallocate(const AllocId id);
+       void addNewHeapSegment(const uint32_t segmentSize);
+ #endif
+ 
+@@ -87,9 +91,10 @@
+       uint32_t m_defaultSegmentSize;
+       uint32_t m_nChunks;
+       std::unordered_map<AllocId, ChunkId> m_cache;
++      std::unordered_map<AllocId, size_t> m_allocationSizes;
++      std::map<ChunkId, ChunkId> m_allocations;
+ #ifdef REMIX_BRIDGE_CLIENT
+       AllocId m_nextUid = 0;
+-      std::map<ChunkId, ChunkId> m_allocations;
+       size_t m_sizeAllocated = 0;
+ #endif
+ 

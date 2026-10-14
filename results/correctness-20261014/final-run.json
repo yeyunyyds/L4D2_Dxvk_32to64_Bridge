@@ -1,0 +1,342 @@
+{
+  "conclusion": "success",
+  "headSha": "7bfc3e021d739d09b94472edbf84f6cccc42a660",
+  "jobs": [
+    {
+      "completedAt": "2026-10-14T10:32:00Z",
+      "conclusion": "success",
+      "databaseId": 115801496884,
+      "name": "windows-build",
+      "startedAt": "2026-10-14T10:20:07Z",
+      "status": "completed",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 2,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 3,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 4,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 5,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/setup-python@v5",
+          "number": 6,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Read project version",
+          "number": 7,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Install build tools",
+          "number": 8,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Download pinned upstream DXVK",
+          "number": 9,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Prepare pinned Bridge sources",
+          "number": 10,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "All correctness fixes against frozen main and negative controls",
+          "number": 11,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Presenter IME COM and TSF lifecycle",
+          "number": 12,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Full IPC v2 and integrated Steam native regressions",
+          "number": 13,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Upload safety, close tails and default reply budgets against frozen v1.3.0",
+          "number": 14,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Test Client input hooks, legacy DirectInput results and Query logging",
+          "number": 15,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Test disabled diagnostic work and on-demand input on x86 and x64",
+          "number": 16,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Retained legacy layout units and production API failure ownership",
+          "number": 17,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Build optional L4N v2 HUD control plugin",
+          "number": 18,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Test PageBlock residency, GC and L4N v2 callbacks",
+          "number": 19,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Build x86 client, x64 host and isolated x86 comparison host",
+          "number": 20,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Test exception attribution, flushing and bounded termination",
+          "number": 21,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Test mandatory device reset results and failure state",
+          "number": 22,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Test bounded color diagnostics, texture wire and temporary query references",
+          "number": 23,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Test independent L4N Release packaging",
+          "number": 24,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Test data/resource tracing and offline analysis on x86 and x64",
+          "number": 25,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Test x86 VB and IB historical contents and multiple Lock contract",
+          "number": 26,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Test Volume byte pitches and partial uploads on x86 and x64",
+          "number": 27,
+          "status": "completed"
+        },
+        {
+          "conclusion": "skipped",
+          "name": "Package experimental PageBlock controls",
+          "number": 28,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Test x86 diagnostics and shadow eviction",
+          "number": 29,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Test x64 Host memory and CPU diagnostics",
+          "number": 30,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Test x86 Host address and process memory diagnostics",
+          "number": 31,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Load the official x86 DXVK DLL in a native x86 process",
+          "number": 32,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Test native x86 and x64 adapter identifiers and Shader capability transport",
+          "number": 33,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Test ATI1 and ATI2 guarded texture transfers on x86 and x64",
+          "number": 34,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Test cross-process overlay presentation windows and input capture",
+          "number": 35,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Test API wait attribution and snapshots on x86 and x64",
+          "number": 36,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Test command queue idle CPU and x86 to x64 wakeups",
+          "number": 37,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Test readback, real backing eviction, recovery and persistent retention",
+          "number": 38,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v4",
+          "number": 39,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v4",
+          "number": 40,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v4",
+          "number": 41,
+          "status": "completed"
+        },
+        {
+          "conclusion": "skipped",
+          "name": "Run actions/upload-artifact@v4",
+          "number": 42,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v4",
+          "number": 43,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/setup-python@v5",
+          "number": 82,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 83,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 84,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 85,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 86,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 87,
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38548826740/job/115801496884"
+    },
+    {
+      "completedAt": "2026-10-14T10:20:04Z",
+      "conclusion": "skipped",
+      "databaseId": 115801498993,
+      "name": "publish-existing-prerelease",
+      "startedAt": "2026-10-14T10:20:05Z",
+      "status": "completed",
+      "steps": [],
+      "url": "https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38548826740/job/115801498993"
+    },
+    {
+      "completedAt": "2026-10-14T10:20:04Z",
+      "conclusion": "skipped",
+      "databaseId": 115801499107,
+      "name": "ime-bridge-only",
+      "startedAt": "2026-10-14T10:20:05Z",
+      "status": "completed",
+      "steps": [],
+      "url": "https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38548826740/job/115801499107"
+    },
+    {
+      "completedAt": "2026-10-14T10:20:04Z",
+      "conclusion": "skipped",
+      "databaseId": 115801499519,
+      "name": "correctness-gate",
+      "startedAt": "2026-10-14T10:20:05Z",
+      "status": "completed",
+      "steps": [],
+      "url": "https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38548826740/job/115801499519"
+    }
+  ],
+  "status": "completed"
+}

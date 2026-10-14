@@ -1,0 +1,17 @@
+{
+  "build_id": "l4d2-1.3.1+3d545d8aa5ca7164",
+  "patch_sha256": "3d545d8aa5ca71641f3305f66c1859936dc5628a0519f0e68c348b6e03c8e6f4",
+  "source_commit": "7bfc3e021d739d09b94472edbf84f6cccc42a660",
+  "compiler": "MSVC 14.29",
+  "build_type": "Release",
+  "compile_examples": {
+    "x86": "\"cl\" \"-Isrc\\tracy\\libtracy.a.p\" \"-Isrc\\tracy\" \"-I..\\src\\tracy\" \"/MT\" \"/nologo\" \"/showIncludes\" \"/utf-8\" \"/Zc:__cplusplus\" \"/W2\" \"/WX\" \"/EHsc\" \"/std:c++17\" \"/O2\" \"/Gw\" \"-DNOMINMAX\" \"-DNDEBUG\" \"-DWITH_MULTITHREADED_DEVICE\" \"/DBUILD_NINJA=1\" \"/DBUILD_SOURCE_ROOT=\\\"D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.deps/dxvk-remix/bridge/\\\"\" \"/MP\" \"/DREMIX_BRIDGE_CLIENT\" \"/Fdsrc\\tracy\\libtracy.a.p\\TracyClient.cpp.pdb\" /Fosrc/tracy/libtracy.a.p/TracyClient.cpp.obj \"/c\" ../src/tracy/TracyClient.cpp",
+    "x64": "\"cl\" \"-Isrc\\tracy\\libtracy.a.p\" \"-Isrc\\tracy\" \"-I..\\src\\tracy\" \"/MT\" \"/nologo\" \"/showIncludes\" \"/utf-8\" \"/Zc:__cplusplus\" \"/W2\" \"/WX\" \"/EHsc\" \"/std:c++17\" \"/O2\" \"/Gw\" \"-DNOMINMAX\" \"-DNDEBUG\" \"-DWITH_MULTITHREADED_DEVICE\" \"/DBUILD_NINJA=1\" \"/DBUILD_SOURCE_ROOT=\\\"D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.deps/dxvk-remix/bridge/\\\"\" \"/MP\" \"/DREMIX_BRIDGE_SERVER\" \"/Fdsrc\\tracy\\libtracy.a.p\\TracyClient.cpp.pdb\" /Fosrc/tracy/libtracy.a.p/TracyClient.cpp.obj \"/c\" ../src/tracy/TracyClient.cpp",
+    "x86_server": "\"cl\" \"-Isrc\\tracy\\libtracy.a.p\" \"-Isrc\\tracy\" \"-I..\\src\\tracy\" \"/MT\" \"/nologo\" \"/showIncludes\" \"/utf-8\" \"/Zc:__cplusplus\" \"/W2\" \"/WX\" \"/EHsc\" \"/std:c++17\" \"/O2\" \"/Gw\" \"-DNOMINMAX\" \"-DNDEBUG\" \"-DWITH_MULTITHREADED_DEVICE\" \"/DBUILD_NINJA=1\" \"/DBUILD_SOURCE_ROOT=\\\"D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.deps/dxvk-remix/bridge/\\\"\" \"/MP\" \"/DREMIX_BRIDGE_X86_SERVER\" \"/DREMIX_BRIDGE_SERVER\" \"/Fdsrc\\tracy\\libtracy.a.p\\TracyClient.cpp.pdb\" /Fosrc/tracy/libtracy.a.p/TracyClient.cpp.obj \"/c\" ../src/tracy/TracyClient.cpp"
+  },
+  "ipc": "full-v2",
+  "protocol_version": "0x00020004",
+  "default_batch": 8,
+  "vbib_mapped_shadow_default": false,
+  "steam_source": "876cccd419d7bca214c90fb83e66ede23a63edb4"
+}
