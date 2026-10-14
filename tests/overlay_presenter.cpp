@@ -21,6 +21,7 @@ static bool enabled(HWND window, bool expected) {
 // Host the permission Windows normally supplies with a user's activation click.
 static constexpr UINT kPrepareActivation = WM_APP + 41;
 static constexpr UINT kFinishActivation = WM_APP + 42;
+static constexpr UINT kFocusGame = WM_APP + 43;
 static HWND otherWindow = nullptr;
 static LRESULT CALLBACK parentProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
   if (message == kPrepareActivation) {
@@ -30,6 +31,11 @@ static LRESULT CALLBACK parentProc(HWND hwnd, UINT message, WPARAM wParam, LPARA
     if (!otherWindow || !SetForegroundWindow(otherWindow)
       || !AllowSetForegroundWindow(static_cast<DWORD>(wParam))) { return 0; }
     return reinterpret_cast<LRESULT>(otherWindow);
+  }
+  if (message == kFocusGame) {
+    ShowWindow(hwnd, SW_SHOW);
+    AllowSetForegroundWindow(static_cast<DWORD>(wParam));
+    return SetForegroundWindow(hwnd);
   }
   if (message == kFinishActivation) {
     if (otherWindow) { DestroyWindow(otherWindow); otherWindow = nullptr; }
@@ -73,8 +79,14 @@ int main(int argc, char** argv) {
     l4d2_overlay::InputDiagnostics disabled(false, "test", [&](const char* line) { diagnosticLog += line; });
     disabled.message(WM_LBUTTONDOWN, 0); disabled.sample(parent, nullptr, false);
     require(diagnosticLog.empty(), "diagnostics are inert by default");
+    std::atomic<unsigned> warmupCalls { 0 }, warmupSuccess { 0 };
     l4d2_overlay::Presenter presenter(true, VK_HOME, false,
-      [&](const char* line) { diagnosticLog += line; diagnosticLog += "\n"; }, true, true, true);
+      [&](const char* line) {
+        if (std::strstr(line, "event=native-warmup")) {
+          if (std::strstr(line, "created=1 focused=1 restored=1 destroyed=1")) ++warmupSuccess;
+          ++warmupCalls;
+        } else { diagnosticLog += line; diagnosticLog += "\n"; }
+      }, true, true, true, true, true);
     char modulePath[MAX_PATH] {}; require(GetModuleFileNameA(nullptr, modulePath, MAX_PATH) != 0, "test module path");
     std::string fakePath(modulePath); fakePath = fakePath.substr(0, fakePath.find_last_of("\\/")) + (sizeof(void*) == 8 ? "\\fake-x64.dll" : "\\fake-x86.dll");
     HMODULE fake = LoadLibraryA(fakePath.c_str()); require(fake != nullptr, "load API test double");
@@ -169,6 +181,21 @@ int main(int argc, char** argv) {
       && hostGui.hwndFocus != child, "click does not give keyboard focus to Host presenter");
     require(toggle(false) && enabled(child, false), "ReShade closes and releases capture after reactivation");
     SendMessageW(parent, kFinishActivation, 0, 0);
+    require(warmupCalls.load() == 0, "background Steam and ReShade never initialize or steal IME focus");
+    require(SendMessageW(parent, kFocusGame, GetCurrentProcessId(), 0) != FALSE,
+      "activate owned game for native Steam IME regression");
+    presenter.steamCapture(true);
+    for (int i = 0; i < 100 && !warmupCalls.load(); ++i) { Sleep(10); }
+    require(warmupCalls.load() == 1 && warmupSuccess.load() == 1,
+      "same-thread hidden EDIT focus restored and helper destroyed");
+    hostGui = {}; hostGui.cbSize = sizeof(hostGui);
+    require(GetGUIThreadInfo(GetWindowThreadProcessId(child, nullptr), &hostGui) != FALSE
+      && hostGui.hwndFocus == child, "initialization leaves keyboard focus on Presenter");
+    presenter.steamCapture(false); require(enabled(child, false), "close native Steam after initialization");
+    presenter.steamCapture(true); require(enabled(child, true), "reopen native Steam after initialization");
+    SendMessageW(child, WM_NULL, 0, 0);
+    require(warmupCalls.load() == 1, "no repeated initialization on subsequent Steam opens");
+    presenter.steamCapture(false); require(enabled(child, false), "return game input after repeated open");
     presenter.stop(); require(!toggle(true), "callback unregistered on shutdown"); FreeLibrary(fake);
     presenter.stop(); require(!IsWindow(child), "presenter destruction and idempotent stop");
     std::printf("PASS: host-owned cross-process child, capture, reset routing, resizing and teardown (%zu-bit)\n", sizeof(void*) * 8);

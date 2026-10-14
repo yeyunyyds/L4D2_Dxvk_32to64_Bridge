@@ -61,3 +61,9 @@
 
 - 首个可用的 Windows x86 D3D9 → 独立 x64 DXVK Host 桥接版本。
 - 实现可回收纹理 shadow 映射、命令队列事件唤醒、日志和构建验证；完成带 MOD 战役实机测试。
+
+### Steam Overlay 中文输入
+
+已实机验证的修复会在 Presenter 线程首次接管 Steam 输入时完成一次隐藏 EDIT 聚焦初始化，随后恢复焦点并销毁辅助控件。
+`server.steamImeTsfActivate` 和 `server.steamImeNativeWarmup` 默认开启；诊断默认关闭。
+关闭这两项并重启可恢复之前的输入法初始化行为。此路径独立于 ReShade 开关，仍依赖 Steam 原生输入和 Presenter。
