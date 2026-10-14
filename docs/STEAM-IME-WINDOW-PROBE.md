@@ -22,7 +22,11 @@ x64 child; it neither attaches to the game nor loads/patches Steam. Six buttons:
 6. Case4 without explicit Bridge TSF activation.
 
 Click each case, select Chinese and type pinyin into Custom Unicode first.
-Record candidate UI and whether committed Chinese is shown. THEN click Add
+Record candidate UI and whether committed Chinese is shown. Optionally click
+Use fresh HIMC to reproduce Steam-style context replacement, try typing, then
+Restore original HIMC. This changes only the probe-owned field, never the game,
+and does not force open/conversion. It pairs owned creation/destruction and
+restores the original association before close. THEN click Add
 Native EDIT, try that field and the Custom field again. A native EDIT can itself
 initialize text services: the log samples before/after its creation, and it is
 not pre-created to contaminate the first Custom comparison. The custom field
@@ -40,7 +44,8 @@ validated before cross-process child creation. No taskbar state spoofing.
 
 Logs are written next to the probe executables in logs/ as
 probe-caseN-32-or-64-pPID.log. Send that folder with a short results table:
-case, Custom before EDIT, Native EDIT, Custom after EDIT, taskbar mode indicator.
+case, Custom before EDIT, fresh HIMC/after restore if tested, Native EDIT,
+Custom after EDIT, taskbar mode indicator.
 Logs contain window/process/thread IDs, layout/context/service states and message
 counts, not keys, characters or composition contents. Text visible in the fields
 is private process memory, bounded and discarded when the case is closed.
@@ -84,7 +89,8 @@ claimed. Main, VERSION, Tags and formal release are unchanged.
 Both probe PE architectures and embedded source IDs must match. Test owned top-
 level/same-process controls on x86/x64, then x86-parent/x86-child and x86-parent/
 x64-child for four cross-process cases. Assert control ownership, enablement,
-Unicode synthetic dispatch and bounded close/exit. No real IME, Steam DLL or
+Unicode synthetic dispatch, owned fresh HIMC replacement/restoration/destruction
+and bounded close/exit. No real IME, Steam DLL or
 uploaded third-party binary is executed or redistributed by these tests.
 Full Bridge regressions and matched three-binary build remain mandatory before
 shipping the optional early-hook update. Diagnostic limits remain explicit.

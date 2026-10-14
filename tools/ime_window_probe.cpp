@@ -16,6 +16,7 @@ static FILE* output=nullptr;
 static HWND root=nullptr,custom=nullptr,edit=nullptr,shell=nullptr,anchor=nullptr;
 static l4d2_overlay::ImeChain* chain=nullptr;
 static l4d2_overlay::ImeSession* ime=nullptr;
+static HIMC fresh=nullptr,previousContext=nullptr;
 static std::wstring typed; // Display only. Never persisted in logs.
 static bool selftest=false,launcher=false,closing=false;
 static int caseId=0,result=0,pending=-1;
@@ -54,6 +55,26 @@ static void launchChild(int which){
  if(selftest)closeDeadline=GetTickCount64()+15000;
  SetTimer(root,2,100,nullptr);
 }
+static HIMC currentContext(){HIMC ctx=ImmGetContext(custom);if(ctx)ImmReleaseContext(custom,ctx);return ctx;}
+static void restoreFresh(){
+ if(!fresh)return;
+ if(IsWindow(custom)){
+  HIMC current=currentContext();if(current==fresh)ImmAssociateContext(custom,previousContext);
+  else log("PROBE event=context-changed restoration-skipped=1");
+ }
+ require(ImmDestroyContext(fresh)!=FALSE,"destroy only own fresh context");fresh=nullptr;previousContext=nullptr;
+ log("PROBE event=fresh-restored");
+}
+static void toggleFresh(){
+ if(fresh){restoreFresh();SetWindowTextW(GetDlgItem(root,202),L"Use fresh HIMC");SetFocus(custom);return;}
+ fresh=ImmCreateContext();require(fresh!=nullptr,"create owned fresh context");
+ DWORD conversion=0,sentence=0;const BOOL ok=ImmGetConversionStatus(fresh,&conversion,&sentence);
+ previousContext=ImmAssociateContext(custom,fresh);
+ require(currentContext()==fresh,"fresh context associated with only owned field");
+ char line[300]{};std::snprintf(line,sizeof(line),"PROBE event=fresh-associated context=%p prior=%p preassociate_conversion_ok=%d conversion=0x%lx sentence=0x%lx",reinterpret_cast<void*>(fresh),reinterpret_cast<void*>(previousContext),ok!=FALSE,conversion,sentence);log(line);
+ SetWindowTextW(GetDlgItem(root,202),L"Restore original HIMC");SetFocus(custom);
+ if(chain)chain->sample("fresh-focus",true);if(ime)ime->sample("fresh-focus",true);
+}
 static void addEdit(){
  if(edit)return;
  if(chain)chain->sample("before-native-edit",true);
@@ -63,6 +84,7 @@ static void addEdit(){
  EnableWindow(GetDlgItem(root,201),FALSE);
 }
 static LRESULT CALLBACK panelProc(HWND w,UINT msg,WPARAM wp,LPARAM lp){
+ if(msg==WM_COMMAND && !launcher && LOWORD(wp)==202){toggleFresh();return 0;}
  if(msg==WM_COMMAND && !launcher && LOWORD(wp)==201){addEdit();SetFocus(edit);if(chain)chain->sample("edit-focus",true);return 0;}
  if(msg==WM_COMMAND && launcher && LOWORD(wp)>=101 && LOWORD(wp)<=106){pending=static_cast<int>(LOWORD(wp))-101;if(child.hProcess)stopChild();else{launchChild(pending);pending=-1;}return 0;}
  if(msg==WM_TIMER){
@@ -75,8 +97,8 @@ static LRESULT CALLBACK panelProc(HWND w,UINT msg,WPARAM wp,LPARAM lp){
   return 0;
  }
  if(msg==WM_LBUTTONDOWN && !launcher){SetFocus(custom);return 0;}
- if(msg==WM_CLOSE){if(launcher && child.hProcess){pending=-2;stopChild();}else DestroyWindow(w);return 0;}
- if(msg==WM_DESTROY && w==root){PostQuitMessage(0);return 0;}
+ if(msg==WM_CLOSE){if(!launcher)restoreFresh();if(launcher && child.hProcess){pending=-2;stopChild();}else DestroyWindow(w);return 0;}
+ if(msg==WM_DESTROY && w==root){if(!launcher)restoreFresh();PostQuitMessage(0);return 0;}
  return DefWindowProcW(w,msg,wp,lp);
 }
 static void registerClasses(){WNDCLASSW wc{};wc.hInstance=GetModuleHandleW(nullptr);wc.hCursor=LoadCursorW(nullptr,MAKEINTRESOURCEW(32512));wc.hbrBackground=GetSysColorBrush(COLOR_BTNFACE);wc.lpfnWndProc=panelProc;wc.lpszClassName=L"LdbImeProbePanel";require(RegisterClassW(&wc)!=0,"panel class");wc.lpszClassName=L"LdbImeProbeLauncher";require(RegisterClassW(&wc)!=0,"launcher class");wc.lpfnWndProc=fieldProc;wc.lpszClassName=L"LdbImeProbeField";require(RegisterClassW(&wc)!=0,"field class");}
@@ -97,7 +119,7 @@ int wmain(int argc,wchar_t** argv){
    for(int i=0;i<6;++i)CreateWindowW(L"BUTTON",labels[i],WS_CHILD|WS_VISIBLE|BS_PUSHBUTTON,12+(i%2)*380,68+(i/2)*36,365,32,root,reinterpret_cast<HMENU>(static_cast<uintptr_t>(101+i)),module,nullptr);
   }
  }else{
-  openLog();log("PROBE event=build id=" LDB_PROBE_BUILD_ID);const bool cross=caseId>=2;DWORD pid=0;
+  openLog();log("PROBE event=build id=" LDB_PROBE_BUILD_ID);log("PROBE event=scope low_level_hook=not-installed Steam=not-loaded text=not-recorded");const bool cross=caseId>=2;DWORD pid=0;
   if(cross){require(externalParent && IsWindow(externalParent) && GetWindowThreadProcessId(externalParent,&pid)!=0 && pid==parentPid && pid!=GetCurrentProcessId(),"validated cross-process parent");wchar_t name[100]{};GetClassNameW(externalParent,name,100);require(std::wcscmp(name,L"LdbImeProbeLauncher")==0,"only probe launcher parent, never game");}
   l4d2_overlay::ImeChain observation(true,caseId!=5,false,log);chain=&observation;
   l4d2_overlay::ImeSession session(false,true,log);ime=&session;
@@ -108,12 +130,13 @@ int wmain(int argc,wchar_t** argv){
   root=CreateWindowExW(parent?(WS_EX_NOPARENTNOTIFY|WS_EX_NOACTIVATE):0,L"LdbImeProbePanel",labels[caseId],style,parent?12:200,parent?200:200,750,250,parent,nullptr,module,nullptr);require(root!=nullptr,"probe panel");
   custom=CreateWindowW(L"LdbImeProbeField",L"",WS_CHILD|WS_VISIBLE|WS_BORDER,12,35,350,140,root,nullptr,module,nullptr);
   CreateWindowW(L"STATIC",L"Test Custom first; then add Native EDIT",WS_CHILD|WS_VISIBLE,385,10,330,20,root,nullptr,module,nullptr);
-  CreateWindowW(L"BUTTON",L"Add Native EDIT",WS_CHILD|WS_VISIBLE|BS_PUSHBUTTON,385,180,180,30,root,reinterpret_cast<HMENU>(uintptr_t(201)),module,nullptr);require(custom!=nullptr,"custom Unicode field");
+  CreateWindowW(L"BUTTON",L"Add Native EDIT",WS_CHILD|WS_VISIBLE|BS_PUSHBUTTON,385,180,180,30,root,reinterpret_cast<HMENU>(uintptr_t(201)),module,nullptr);CreateWindowW(L"BUTTON",L"Use fresh HIMC",WS_CHILD|WS_VISIBLE|BS_PUSHBUTTON,12,180,210,30,root,reinterpret_cast<HMENU>(uintptr_t(202)),module,nullptr);require(custom!=nullptr,"custom Unicode field");
   observation.bind(custom);session.bind(custom,parent?parent:root);
   char line[420]{};std::snprintf(line,sizeof(line),"PROBE event=windows case=%d bits=%zu pid=%lu thread=%lu root=%p root_parent=%p parent_pid=%lu custom=%p edit=%p anchor=%p initially_disabled=%d tsf_requested=%d",caseId+1,sizeof(void*)*8,GetCurrentProcessId(),GetCurrentThreadId(),root,GetParent(root),pid,custom,edit,anchor,disabled,caseId!=5);log(line);
   observation.sample("created-style",true);if(disabled)EnableWindow(root,TRUE);
   session.opening();SetFocus(custom);observation.sample("custom-focus",true);session.sample("custom-focus",true);
   if(selftest){
+   HIMC original=currentContext();toggleFresh();require(currentContext()==fresh,"fresh identity");toggleFresh();require(currentContext()==original,"original association restored");
    addEdit();
    require(GetWindowThreadProcessId(custom,&pid)!=0 && pid==GetCurrentProcessId(),"owned custom input");
    require(IsWindowEnabled(root)!=FALSE && IsWindowUnicode(custom)!=FALSE && IsWindowUnicode(edit)!=FALSE,"enabled Unicode controls");

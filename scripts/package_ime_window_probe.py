@@ -13,6 +13,7 @@ for bits,pe in ((32,0x14c),(64,0x8664)):
  assert machine(p)==pe and build.encode() in p.read_bytes(),name
  shutil.copy2(p,out/name);hashes[name]=hashlib.sha256(p.read_bytes()).hexdigest()
 shutil.copy2(root/'docs/STEAM-IME-WINDOW-PROBE.md',out/'README.md')
+shutil.copy2(root/'LICENSE',out/'LICENSE')
 (out/'Start-Probe.cmd').write_text('@echo off\r\ncd /d "%~dp0"\r\nImeWindowProbe32.exe\r\n',newline='')
 (out/'BUILD-INFO.json').write_text(json.dumps({'source_commit':source,'build_id':build,'independent_tool':True,'gameplay_validated':False,'native_synthetic_validation':'PASS','files':hashes},indent=2)+'\n')
 (out/'SHA256.json').write_text(json.dumps(hashes,indent=2)+'\n')

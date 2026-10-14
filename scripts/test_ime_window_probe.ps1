@@ -13,7 +13,7 @@ if($CompileArchitecture){
  $probeSource=(git -C $root rev-parse HEAD).Trim()
  $probeId='ime-window-probe+'+$probeSource.Substring(0,12)
  ('#define LDB_PROBE_BUILD_ID "'+$probeId+'"') | Set-Content -Encoding ASCII (Join-Path $out 'probe_build_identity.h')
- & cl.exe /nologo /std:c++17 /EHsc /O2 /W4 /WX "/FI$out/probe_build_identity.h" "/I$source/bridge/src/server" "$root/tools/ime_window_probe.cpp" user32.lib ole32.lib "/Fe:$out/ImeWindowProbe$probeBits.exe"
+ & cl.exe /nologo /std:c++17 /EHsc /O2 /W4 /WX "/FI$out/probe_build_identity.h" "/I$source/bridge/src/server" "$root/tools/ime_window_probe.cpp" user32.lib ole32.lib imm32.lib "/Fe:$out/ImeWindowProbe$probeBits.exe"
  if($LASTEXITCODE -ne 0){throw 'IME fixture compilation failed'}
  Assert-NativeArchitecture -Path "$out/ImeWindowProbe$probeBits.exe" -Architecture $CompileArchitecture
  # Build-only in architecture-specific subprocess; parent drives native pairs.
@@ -27,10 +27,17 @@ if($CompileArchitecture){
 
 if(-not $CompileArchitecture){
  function Run-Probe([string]$Program,[string[]]$Arguments){
-  $process=Start-Process -FilePath $Program -ArgumentList $Arguments -NoNewWindow -PassThru
-  if(-not $process.WaitForExit(30000)){$process.Kill();throw 'Own probe timed out'}
-  $process.Refresh()
-  if($process.ExitCode -ne 0){throw "Probe failed: $Program $Arguments code=$($process.ExitCode)"}
+  $start=New-Object System.Diagnostics.ProcessStartInfo
+  $start.FileName=$Program; $start.Arguments=($Arguments -join ' '); $start.UseShellExecute=$false; $start.WorkingDirectory=$out
+  $process=New-Object System.Diagnostics.Process
+  $process.StartInfo=$start
+  try {
+   if(-not $process.Start()){throw 'Cannot start own probe'}
+   if(-not $process.WaitForExit(30000)){$process.Kill();throw 'Own probe timed out'}
+   $exitCode=$process.ExitCode
+   if($exitCode -ne 0){throw "Probe failed: $Program $Arguments code=$exitCode"}
+  } finally {$process.Dispose()}
+
  }
  foreach($arch in @('32','64')){
   foreach($case in @(0,1)) {Run-Probe "$out/ImeWindowProbe$arch.exe" @('--selftest','--case',"$case")}
