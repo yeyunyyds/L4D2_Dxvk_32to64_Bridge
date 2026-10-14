@@ -12,7 +12,8 @@ if($CompileArchitecture){
  $probeBits=if($CompileArchitecture -eq 'x86'){'32'}else{'64'}
  $probeSource=(git -C $root rev-parse HEAD).Trim()
  $probeId='ime-window-probe+'+$probeSource.Substring(0,12)
- & cl.exe /nologo /std:c++17 /EHsc /O2 /W4 /WX "/DLDB_PROBE_BUILD_ID=`"$probeId`"" "/I$source/bridge/src/server" "$root/tools/ime_window_probe.cpp" user32.lib ole32.lib "/Fe:$out/ImeWindowProbe$probeBits.exe"
+ ('#define LDB_PROBE_BUILD_ID "'+$probeId+'"') | Set-Content -Encoding ASCII (Join-Path $out 'probe_build_identity.h')
+ & cl.exe /nologo /std:c++17 /EHsc /O2 /W4 /WX "/FI$out/probe_build_identity.h" "/I$source/bridge/src/server" "$root/tools/ime_window_probe.cpp" user32.lib ole32.lib "/Fe:$out/ImeWindowProbe$probeBits.exe"
  if($LASTEXITCODE -ne 0){throw 'IME fixture compilation failed'}
  Assert-NativeArchitecture -Path "$out/ImeWindowProbe$probeBits.exe" -Architecture $CompileArchitecture
  # Build-only in architecture-specific subprocess; parent drives native pairs.
@@ -28,6 +29,7 @@ if(-not $CompileArchitecture){
  function Run-Probe([string]$Program,[string[]]$Arguments){
   $process=Start-Process -FilePath $Program -ArgumentList $Arguments -NoNewWindow -PassThru
   if(-not $process.WaitForExit(30000)){$process.Kill();throw 'Own probe timed out'}
+  $process.Refresh()
   if($process.ExitCode -ne 0){throw "Probe failed: $Program $Arguments code=$($process.ExitCode)"}
  }
  foreach($arch in @('32','64')){

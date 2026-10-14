@@ -51,6 +51,7 @@ static void launchChild(int which){
  if(selftest)args+=L" --selftest";
  STARTUPINFOW startup{};startup.cb=sizeof(startup);std::wstring cwd=directory();
  require(CreateProcessW(childPath.c_str(),args.data(),nullptr,nullptr,FALSE,0,nullptr,cwd.c_str(),&startup,&child)!=FALSE,"launch owned probe child");
+ if(selftest)closeDeadline=GetTickCount64()+15000;
  SetTimer(root,2,100,nullptr);
 }
 static void addEdit(){
@@ -66,6 +67,7 @@ static LRESULT CALLBACK panelProc(HWND w,UINT msg,WPARAM wp,LPARAM lp){
  if(msg==WM_COMMAND && launcher && LOWORD(wp)>=101 && LOWORD(wp)<=106){pending=static_cast<int>(LOWORD(wp))-101;if(child.hProcess)stopChild();else{launchChild(pending);pending=-1;}return 0;}
  if(msg==WM_TIMER){
   if(launcher && child.hProcess){DWORD code=STILL_ACTIVE;require(GetExitCodeProcess(child.hProcess,&code)!=FALSE,"owned child status");
+   if(selftest && !closing && code==STILL_ACTIVE && GetTickCount64()>closeDeadline){result=3;stopChild();}
    if(closing && code==STILL_ACTIVE){if(HWND childWnd=childWindow())PostMessageW(childWnd,WM_CLOSE,0,0);if(GetTickCount64()>closeDeadline){require(TerminateProcess(child.hProcess,3)!=FALSE,"terminate only owned hung probe");result=3;}}
    if(code!=STILL_ACTIVE){if(code!=0)result=static_cast<int>(code);CloseHandle(child.hThread);CloseHandle(child.hProcess);child={};closing=false;
     if(selftest || pending==-2){DestroyWindow(w);return 0;}if(pending>=0){int next=pending;pending=-1;launchChild(next);}}
