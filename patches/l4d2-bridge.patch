@@ -4085,7 +4085,7 @@ index 40cbd31..a1a9d7a 100644
 +  return DeviceBridge::healthy() ? D3D_OK : D3DERR_DEVICELOST;
  }
 diff --git a/bridge/src/client/d3d9_surface.cpp b/bridge/src/client/d3d9_surface.cpp
-index e54aec5..6eef9aa 100644
+index e54aec5..e6a7e4c 100644
 --- a/bridge/src/client/d3d9_surface.cpp
 +++ b/bridge/src/client/d3d9_surface.cpp
 @@ -1,3 +1,7 @@
@@ -4234,7 +4234,7 @@ index e54aec5..6eef9aa 100644
  }
  
  HRESULT Direct3DSurface9_LSS::GetDC(HDC* phdc) {
-@@ -203,10 +266,18 @@ HRESULT Direct3DSurface9_LSS::ReleaseDC(HDC hdc) {
+@@ -203,11 +266,20 @@ HRESULT Direct3DSurface9_LSS::ReleaseDC(HDC hdc) {
  }
  
  bool Direct3DSurface9_LSS::lock(D3DLOCKED_RECT& lockedRect, const RECT* pRect, const DWORD& flags) {
@@ -4252,10 +4252,24 @@ index e54aec5..6eef9aa 100644
 +  }
 +  // NV-DXVK end
    if (m_bUseSharedHeap) {
++    const auto previousBufId = m_bufferId;
      auto discardBufId = SharedHeap::kInvalidId;
      const bool bDiscard = (flags & D3DLOCK_DISCARD) != 0;
-@@ -220,33 +291,85 @@ bool Direct3DSurface9_LSS::lock(D3DLOCKED_RECT& lockedRect, const RECT* pRect, c
+     if (bDiscard || (m_bufferId == SharedHeap::kInvalidId)) {
+@@ -215,38 +287,97 @@ bool Direct3DSurface9_LSS::lock(D3DLOCKED_RECT& lockedRect, const RECT* pRect, c
+       m_bufferId = SharedHeap::allocate(surfaceSize);
+     }
+     if (m_bufferId == SharedHeap::kInvalidId) {
++      m_bufferId = previousBufId;
++      lockedRect.pBits = nullptr;
+       return false;
+     }
      lockedRect.pBits = getBufPtr(lockedRect.Pitch, rect);
++    if (!lockedRect.pBits) {
++      if (m_bufferId != previousBufId) { SharedHeap::deallocate(m_bufferId); }
++      m_bufferId = previousBufId;
++      return false;
++    }
      m_lockInfoQueue.push({ lockedRect, rect, flags, m_bufferId, discardBufId });
    } else {
 -    if (!m_shadow) {
@@ -4351,8 +4365,14 @@ index e54aec5..6eef9aa 100644
  }
  
  RECT Direct3DSurface9_LSS::resolveLockInfoRect(const RECT* const pRect, const D3DSURFACE_DESC& desc) {
-@@ -261,10 +384,62 @@ void* Direct3DSurface9_LSS::getBufPtr(const int pitch, const RECT& rect) {
-   return ptr;
+@@ -257,14 +388,66 @@ RECT Direct3DSurface9_LSS::resolveLockInfoRect(const RECT* const pRect, const D3
+ 
+ void* Direct3DSurface9_LSS::getBufPtr(const int pitch, const RECT& rect) {
+   const size_t byteOffset = bridge_util::calcImageByteOffset(pitch, rect, m_desc.Format);
+-  void* const ptr = SharedHeap::getBuf(m_bufferId) + byteOffset;
+-  return ptr;
++  auto* const buffer = SharedHeap::getBuf(m_bufferId);
++  return buffer ? buffer + byteOffset : nullptr;
  }
  
 -void Direct3DSurface9_LSS::sendDataToServer(const LockInfo& lockInfo) const {
@@ -4416,7 +4436,7 @@ index e54aec5..6eef9aa 100644
      c.send_data(sizeof(RECT), &lockInfo.rect);
      c.send_data(lockInfo.flags);
      c.send_data(m_desc.Format);
-@@ -272,28 +447,46 @@ void Direct3DSurface9_LSS::sendDataToServer(const LockInfo& lockInfo) const {
+@@ -272,28 +455,46 @@ void Direct3DSurface9_LSS::sendDataToServer(const LockInfo& lockInfo) const {
        c.send_data(lockInfo.lockedRect.Pitch);
        c.send_data(lockInfo.bufId);
      } else {
@@ -5856,7 +5876,7 @@ index 5897be9..01a8bd9 100644
  
  }
 diff --git a/bridge/src/client/lockable_buffer.h b/bridge/src/client/lockable_buffer.h
-index fbfc565..ab785b7 100644
+index fbfc565..02d2ff8 100644
 --- a/bridge/src/client/lockable_buffer.h
 +++ b/bridge/src/client/lockable_buffer.h
 @@ -1,3 +1,7 @@
@@ -5928,7 +5948,15 @@ index fbfc565..ab785b7 100644
    }
  
  protected:
-@@ -95,27 +124,41 @@ protected:
+@@ -88,34 +117,52 @@ protected:
+ 
+   LockableBuffer(T* const pD3dBuf, BaseDirect3DDevice9Ex_LSS* const pDevice, const DescType& desc)
+     : Direct3DResource9_LSS<T>(pD3dBuf, pDevice)
++    , m_bUseSharedHeap(getSharedHeapPolicy(desc))
+     , m_desc(desc)
+-    , m_bUseSharedHeap(getSharedHeapPolicy(m_desc))
+     , m_sendWhole((desc.Usage& D3DUSAGE_DYNAMIC) == 0 && GlobalOptions::getAlwaysCopyEntireStaticBuffer())
+     , m_optimizedLock((desc.Usage& D3DUSAGE_DYNAMIC) != 0 && ClientOptions::getOptimizedDynamicLock()) {
      if (!m_bUseSharedHeap) {
        initShadowMem();
      }
@@ -5970,21 +5998,41 @@ index fbfc565..ab785b7 100644
      }
  
 +    *ppbData = nullptr;
++    if (offset > m_desc.Size) {
++      m_dataTrace.lock(offset, size, flags, D3DERR_INVALIDCALL);
++      return D3DERR_INVALIDCALL;
++    }
 +    if (!DeviceBridge::healthy()) { return D3DERR_DEVICELOST; }
      uint32_t* checkPtr = nullptr;
  
      if (m_bUseSharedHeap) {
-@@ -137,13 +180,33 @@ protected:
+@@ -127,7 +174,7 @@ protected:
+         discardedBufferId = m_bufferId;
+       }
+       const auto nextBufId = (bDiscard || (m_bufferId == SharedHeap::kInvalidId)) ?
+-        m_bufferId = SharedHeap::allocate(m_desc.Size) : m_bufferId;
++        SharedHeap::allocate(m_desc.Size) : m_bufferId;
+       if (nextBufId == SharedHeap::kInvalidId) {
+         std::stringstream ss;
+         ss << "[LockableBuffer][Lock] Failed to allocate on SharedHeap: {";
+@@ -137,22 +184,49 @@ protected:
          ss << "m_desc.Size=" << m_desc.Size << ",";
          ss << "m_bufferId=" << m_bufferId << "}";
          Logger::err(ss.str());
 +        // NV-DXVK start: Optional data/resource tracing.
 +        m_dataTrace.lock(offset, size, flags, E_FAIL);
 +        // NV-DXVK end
++        return E_FAIL;
++      }
++      auto* const buffer = SharedHeap::getBuf(nextBufId);
++      if (!buffer) {
++        if (nextBufId != m_bufferId) { SharedHeap::deallocate(nextBufId); }
++        m_dataTrace.lock(offset, size, flags, E_FAIL);
          return E_FAIL;
        }
        m_bufferId = nextBufId;
-       *ppbData = SharedHeap::getBuf(m_bufferId) + offset;
+-      *ppbData = SharedHeap::getBuf(m_bufferId) + offset;
++      *ppbData = buffer + offset;
        m_lockInfos.push({ offset, size, nullptr, flags, checkPtr, m_bufferId, discardedBufferId });
      } else {
 -      *ppbData = m_shadow.get() + offset;
@@ -6008,8 +6056,11 @@ index fbfc565..ab785b7 100644
 +      // NV-DXVK end
  
        if (m_optimizedLock) {
-         const size_t dataSize = (size == 0) ? m_desc.Size : size;
-@@ -153,6 +216,7 @@ protected:
+-        const size_t dataSize = (size == 0) ? m_desc.Size : size;
++        const size_t dataSize = (size == 0) ? m_desc.Size - offset : std::min(size, m_desc.Size - offset);
+ 
+         // Send the buffer lock parameters and handle
+         ClientMessage c(LockCmd, getId(), 0);
          // Reserve blob in data stream
          uintptr_t blobAddr = reinterpret_cast<uintptr_t>(
            c.begin_data_blob(dataSize + sizeof(kLockCheckValue) + kSIMDAlign));
@@ -6017,7 +6068,7 @@ index fbfc565..ab785b7 100644
          c.end_data_blob();
  
          // Push buffer check value in front. If front gets corrupted the entire region deemed invalid.
-@@ -162,19 +226,34 @@ protected:
+@@ -162,19 +236,34 @@ protected:
  
          // Align data blob for SIMD ops
          blobAddr = align<uintptr_t>(blobAddr, kSIMDAlign);
@@ -6057,7 +6108,7 @@ index fbfc565..ab785b7 100644
      // Get most recent locked buffer and grab data before we unlock
      const auto& lockInfo = m_lockInfos.front();
      uint32_t offset = lockInfo.offsetToLock;
-@@ -185,11 +264,14 @@ protected:
+@@ -185,11 +274,14 @@ protected:
      if (m_sendWhole) {
        size = m_desc.Size;
        offset = 0;
@@ -6073,7 +6124,7 @@ index fbfc565..ab785b7 100644
        {
          Commands::Flags cmdFlags = 0;
  
-@@ -205,20 +287,18 @@ protected:
+@@ -205,20 +297,18 @@ protected:
            }
          }
  
@@ -6105,7 +6156,7 @@ index fbfc565..ab785b7 100644
          }
        }
        if (lockInfo.discardedBufferId != SharedHeap::kInvalidId) {
-@@ -226,5 +306,11 @@ protected:
+@@ -226,5 +316,11 @@ protected:
        }
      }
      m_lockInfos.pop();
@@ -9542,7 +9593,7 @@ index 0000000..72eb1ad
 +};
 +}
 diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
-index 86434ec..34221c1 100644
+index 86434ec..b8b6252 100644
 --- a/bridge/src/server/main.cpp
 +++ b/bridge/src/server/main.cpp
 @@ -1,3 +1,7 @@
@@ -10807,7 +10858,7 @@ index 86434ec..34221c1 100644
          void* data = nullptr;
          DeviceBridge::get_data(&data);
          break;
-@@ -2391,31 +2766,49 @@ void ProcessDeviceCommandQueue() {
+@@ -2391,31 +2766,54 @@ void ProcessDeviceCommandQueue() {
        case IDirect3DVertexBuffer9_Unlock:
        {
          GET_HND(pHandle);
@@ -10849,7 +10900,12 @@ index 86434ec..34221c1 100644
 -          const auto size = DeviceBridge::get_data(&data);
 -          assert(SizeToLock == size);
 +          auto* base = SharedHeap::getBuf(reference);
-+          data = base ? base + OffsetToLock : nullptr;
++          const size_t capacity = SharedHeap::getAllocationSize(reference);
++          if (!base || OffsetToLock > capacity || SizeToLock > capacity - OffsetToLock) {
++            DeviceBridge::reportFault("host-buffer-shared-allocation", static_cast<uint32_t>(rpcHeader.command), currentUID);
++            return;
++          }
++          data = base + OffsetToLock;
 +        }
 +        if (!pVertexBuffer || (SizeToLock && !l4d2_upload::pointerSpan(data, SizeToLock))) {
 +          if (reserved) { DeviceBridge::unpinRead(pHandle); }
@@ -10878,7 +10934,7 @@ index 86434ec..34221c1 100644
  
          break;
        }
-@@ -2425,7 +2818,7 @@ void ProcessDeviceCommandQueue() {
+@@ -2425,7 +2823,7 @@ void ProcessDeviceCommandQueue() {
          PULL_OBJ(D3DVERTEXBUFFER_DESC, orig_desc);
          const auto& pVertexBuffer = (IDirect3DVertexBuffer9*) gpD3DResources[pHandle];
          D3DVERTEXBUFFER_DESC pDesc;
@@ -10887,7 +10943,7 @@ index 86434ec..34221c1 100644
          assert(SUCCEEDED(hresult));
          break;
        }
-@@ -2445,9 +2838,13 @@ void ProcessDeviceCommandQueue() {
+@@ -2445,9 +2843,13 @@ void ProcessDeviceCommandQueue() {
        case IDirect3DIndexBuffer9_Destroy:
        {
          GET_HND(pHandle);
@@ -10901,7 +10957,7 @@ index 86434ec..34221c1 100644
          break;
        }
        case IDirect3DIndexBuffer9_GetDevice:
-@@ -2470,6 +2867,7 @@ void ProcessDeviceCommandQueue() {
+@@ -2470,6 +2872,7 @@ void ProcessDeviceCommandQueue() {
        {
          // This is a no-op right now because we're doing all the logic on Unlock
          GET_HND(pHandle);
@@ -10909,7 +10965,7 @@ index 86434ec..34221c1 100644
          void* data = nullptr;
          DeviceBridge::get_data(&data);
          break;
-@@ -2477,31 +2875,50 @@ void ProcessDeviceCommandQueue() {
+@@ -2477,31 +2880,55 @@ void ProcessDeviceCommandQueue() {
        case IDirect3DIndexBuffer9_Unlock:
        {
          GET_HND(pHandle);
@@ -10951,7 +11007,12 @@ index 86434ec..34221c1 100644
 -          const auto size = DeviceBridge::get_data(&data);
 -          assert(SizeToLock == size);
 +          auto* base = SharedHeap::getBuf(reference);
-+          data = base ? base + OffsetToLock : nullptr;
++          const size_t capacity = SharedHeap::getAllocationSize(reference);
++          if (!base || OffsetToLock > capacity || SizeToLock > capacity - OffsetToLock) {
++            DeviceBridge::reportFault("host-buffer-shared-allocation", static_cast<uint32_t>(rpcHeader.command), currentUID);
++            return;
++          }
++          data = base + OffsetToLock;
          }
 -        memcpy(pbData, data, SizeToLock);
 -        hresult = pIndexBuffer->Unlock();
@@ -10981,7 +11042,7 @@ index 86434ec..34221c1 100644
          break;
        }
        case IDirect3DIndexBuffer9_GetDesc:
-@@ -2510,7 +2927,7 @@ void ProcessDeviceCommandQueue() {
+@@ -2510,7 +2937,7 @@ void ProcessDeviceCommandQueue() {
          PULL_OBJ(D3DINDEXBUFFER_DESC, orig_desc);
          const auto& pIndexBuffer = (IDirect3DIndexBuffer9*) gpD3DResources[pHandle];
          D3DINDEXBUFFER_DESC pDesc;
@@ -10990,7 +11051,7 @@ index 86434ec..34221c1 100644
          assert(SUCCEEDED(hresult));
          break;
        }
-@@ -2531,8 +2948,11 @@ void ProcessDeviceCommandQueue() {
+@@ -2531,8 +2958,11 @@ void ProcessDeviceCommandQueue() {
        {
          GET_HND(pHandle);
          const auto& pSurface = (IDirect3DSurface9*) gpD3DResources[pHandle];
@@ -11003,7 +11064,7 @@ index 86434ec..34221c1 100644
          break;
        }
        case IDirect3DSurface9_GetDevice:
-@@ -2559,10 +2979,55 @@ void ProcessDeviceCommandQueue() {
+@@ -2559,10 +2989,55 @@ void ProcessDeviceCommandQueue() {
          PULL_OBJ(D3DSURFACE_DESC, orig_desc);
          const auto& pSurface = (IDirect3DSurface9*) gpD3DResources[pHandle];
          D3DSURFACE_DESC pDesc;
@@ -11060,7 +11121,7 @@ index 86434ec..34221c1 100644
        case IDirect3DSurface9_LockRect:
        {
          // Currently we only recieve calls for LockRect in cases where backbuffer data is to be copied for screenshots
-@@ -2578,37 +3043,126 @@ void ProcessDeviceCommandQueue() {
+@@ -2578,37 +3053,139 @@ void ProcessDeviceCommandQueue() {
          PULL_OBJ(RECT, pRect);
          PULL_D(Flags);
          const auto pSurface = (IDirect3DSurface9*) gpD3DResources[pHandle];
@@ -11099,7 +11160,15 @@ index 86434ec..34221c1 100644
 +              pHandle, dFormat, IncomingPitch, pulledSize));
 +            break;
 +          }
-+          if (shared) { data = SharedHeap::getBuf(allocId) + transfer.offset; }
++          if (shared) {
++            auto* base = SharedHeap::getBuf(allocId);
++            const size_t capacity = SharedHeap::getAllocationSize(allocId);
++            if (!base || capacity < layout.bytes || transfer.offset > capacity) {
++              DeviceBridge::reportFault("host-ati-shared-allocation", static_cast<uint32_t>(rpcHeader.command), currentUID);
++              return;
++            }
++            data = base + transfer.offset;
++          }
 +          D3DLOCKED_RECT locked {};
 +          HRESULT hr = l4d2_api_wait::backend([&]() { return pSurface->LockRect(&locked, pRect, Flags); });
 +          if (FAILED(hr)) {
@@ -11147,6 +11216,7 @@ index 86434ec..34221c1 100644
 +        }
 +        const auto rowSize = static_cast<uint32_t>(rowSize64);
 +        const uint64_t payloadBytes = uint64_t{numRows} * IncomingPitch;
++        uint64_t sourceBytes = payloadBytes;
          void* pData = nullptr;
 -        // If we're using the shared heap, then pData will be pointing
 -        // to the equivalent of a fully allocated pitch line. If we're
@@ -11160,11 +11230,15 @@ index 86434ec..34221c1 100644
 +          auto* base = SharedHeap::getBuf(allocId);
 +          const uint64_t byteOffset = uint64_t{bridge_util::calcStride(pRect->top, static_cast<D3DFORMAT>(dFormat))} * IncomingPitch
 +            + uint64_t{bridge_util::calcStride(pRect->left, static_cast<D3DFORMAT>(dFormat))} * blockBytes;
-+          if (!base || byteOffset > UINTPTR_MAX - reinterpret_cast<uintptr_t>(base)) {
++          const size_t capacity = SharedHeap::getAllocationSize(allocId);
++          const uint64_t sourceSpan = uint64_t{numRows - 1u} * IncomingPitch + rowSize;
++          if (!base || byteOffset > capacity || sourceSpan > capacity - byteOffset
++            || byteOffset > UINTPTR_MAX - reinterpret_cast<uintptr_t>(base)) {
 +            DeviceBridge::reportFault("host-surface-source", static_cast<uint32_t>(rpcHeader.command), currentUID);
 +            return;
 +          }
 +          pData = base + static_cast<size_t>(byteOffset);
++          sourceBytes = capacity - byteOffset;
          } else {
 -          size_t pulledSize = DeviceBridge::get_data(&pData);
 -          const size_t numRows = bridge_util::calcStride(height, format);
@@ -11175,7 +11249,7 @@ index 86434ec..34221c1 100644
 +            return;
 +          }
 +        }
-+        if (!l4d2_upload::pointerSpan(pData, payloadBytes)) {
++        if (!l4d2_upload::pointerSpan(pData, sourceBytes)) {
 +          DeviceBridge::reportFault("host-surface-source", static_cast<uint32_t>(rpcHeader.command), currentUID);
 +          return;
 +        }
@@ -11193,7 +11267,7 @@ index 86434ec..34221c1 100644
 +          return;
 +        }
 +        const bool copied = l4d2_upload::copyRows(lockedRect.pBits, lockedRect.Pitch, 0,
-+          pData, payloadBytes, IncomingPitch, 0, rowSize, numRows, 1);
++          pData, sourceBytes, IncomingPitch, 0, rowSize, numRows, 1);
 +        const auto unlockResult = l4d2_api_wait::backend([&]() { return pSurface->UnlockRect(); });
 +        const auto colorParent = gColorParents.find(pHandle);
 +        l4d2_color::upload(pHandle, colorParent == gColorParents.end() ? 0 : colorParent->second, "SurfaceUploadBackend", currentUID, dFormat,
@@ -11210,7 +11284,7 @@ index 86434ec..34221c1 100644
  
          break;
        }
-@@ -2635,6 +3189,8 @@ void ProcessDeviceCommandQueue() {
+@@ -2635,6 +3212,8 @@ void ProcessDeviceCommandQueue() {
          const auto& pVolume = gpD3DVolumes[pHandle];
          safeDestroy(pVolume, pHandle);
          gpD3DVolumes.erase(pHandle);
@@ -11219,7 +11293,7 @@ index 86434ec..34221c1 100644
          break;
        }
        case IDirect3DVolume9_GetDevice:
-@@ -2653,7 +3209,7 @@ void ProcessDeviceCommandQueue() {
+@@ -2653,7 +3232,7 @@ void ProcessDeviceCommandQueue() {
          PULL_OBJ(D3DVOLUME_DESC, orig_desc);
          const auto& pVolume = gpD3DVolumes[pHandle];
          D3DVOLUME_DESC pDesc;
@@ -11228,7 +11302,7 @@ index 86434ec..34221c1 100644
          assert(SUCCEEDED(hresult));
          break;
        }
-@@ -2668,39 +3224,76 @@ void ProcessDeviceCommandQueue() {
+@@ -2668,39 +3247,76 @@ void ProcessDeviceCommandQueue() {
          PULL_OBJ(D3DBOX, pBox);
          PULL_D(Flags);
          const auto& pVolume = gpD3DVolumes[pHandle];
@@ -11327,7 +11401,7 @@ index 86434ec..34221c1 100644
          break;
        }
  
-@@ -2739,25 +3332,37 @@ void ProcessDeviceCommandQueue() {
+@@ -2739,25 +3355,37 @@ void ProcessDeviceCommandQueue() {
          GET_HND(pHandle);
          PULL(DWORD, dwSize);
          PULL(DWORD, dwGetDataFlags);
@@ -11375,7 +11449,7 @@ index 86434ec..34221c1 100644
          break;
        }
  
-@@ -2769,7 +3374,7 @@ void ProcessDeviceCommandQueue() {
+@@ -2769,7 +3397,7 @@ void ProcessDeviceCommandQueue() {
          PULL_U(i);
          const int length = DeviceBridge::getReaderChannel().data->peek();
          void* text = nullptr;
@@ -11384,7 +11458,29 @@ index 86434ec..34221c1 100644
          std::stringstream ss;
          ss << "DebugMessage. i = " << i << ", length = " << length << " = " << size << ", text = '" << (char*) text << "'";
          Logger::info(ss.str().c_str());
-@@ -2805,13 +3410,17 @@ void ProcessDeviceCommandQueue() {
+@@ -2792,26 +3420,37 @@ void ProcessDeviceCommandQueue() {
+         GET_HDR_VAL(_allocId);
+         const auto allocId = (SharedHeap::AllocId) _allocId;
+         PULL_U(chunkId);
+-        SharedHeap::allocate(allocId, chunkId);
++        PULL_U(allocationBytes);
++        if (!SharedHeap::allocate(allocId, chunkId, allocationBytes)) {
++          DeviceBridge::reportFault("host-shared-allocation", static_cast<uint32_t>(rpcHeader.command), currentUID);
++          return;
++        }
+         break;
+       }
+       case Bridge_SharedHeap_Dealloc:
+       {
+         GET_HDR_VAL(_allocId);
+         const auto allocId = (SharedHeap::AllocId) _allocId;
+-        SharedHeap::deallocate(allocId);
++        if (!SharedHeap::deallocate(allocId)) {
++          DeviceBridge::reportFault("host-shared-deallocation", static_cast<uint32_t>(rpcHeader.command), currentUID);
++          return;
++        }
+         break;
+       }
        case Bridge_UnlinkResource:
        {
          GET_HND(pHandle);
@@ -11402,7 +11498,7 @@ index 86434ec..34221c1 100644
          break;
        }
        /*
-@@ -3156,11 +3765,11 @@ void ProcessDeviceCommandQueue() {
+@@ -3156,11 +3795,11 @@ void ProcessDeviceCommandQueue() {
        case RemixApi_SetConfigVariable:
        {
          void* var_ptr = nullptr;
@@ -11416,7 +11512,7 @@ index 86434ec..34221c1 100644
          std::string value_str((const char*) value_ptr, value_size);
  
          remixapi::g_remix.SetConfigVariable(var_str.c_str(), value_str.c_str());
-@@ -3191,41 +3800,29 @@ void ProcessDeviceCommandQueue() {
+@@ -3191,41 +3830,29 @@ void ProcessDeviceCommandQueue() {
        Logger::warn("Data not in sync");
      }
      assert(CHECK_DATA_OFFSET);
@@ -11468,7 +11564,7 @@ index 86434ec..34221c1 100644
    }
  }
  
-@@ -3268,14 +3865,26 @@ bool InitializeD3D() {
+@@ -3268,14 +3895,26 @@ bool InitializeD3D() {
    // If vanilla dxvk is enabled attempt to load that first.
    if (ServerOptions::getUseVanillaDxvk()) {
      Logger::info("Loading standard Non-RTX DXVK d3d9 dll.");
@@ -11498,7 +11594,7 @@ index 86434ec..34221c1 100644
      // Since vanilla dxvk is diabled attempt loading regular d3d9.dll which
      // could be either the system d3d9 one or our own Remix dxvk flavor of it.
      ghModule = LoadLibraryExA("d3d9.dll", nullptr,
-@@ -3285,6 +3894,10 @@ bool InitializeD3D() {
+@@ -3285,6 +3924,10 @@ bool InitializeD3D() {
    // create the D3D instance used for the lifetime of this process.
    if (ghModule != nullptr) {
      auto Direct3DCreate9 = (D3DC9) GetProcAddress(ghModule, "Direct3DCreate9");
@@ -11509,7 +11605,7 @@ index 86434ec..34221c1 100644
      if (nullptr == (gpD3D = Direct3DCreate9(D3D_SDK_VERSION))) {
        Logger::err(format_string("D3D9 interface object creation failed: %ld\n", GetLastError()));
        return false;
-@@ -3311,6 +3924,10 @@ bool InitializeD3D() {
+@@ -3311,6 +3954,10 @@ bool InitializeD3D() {
    }
  
    CheckD3D9Type(ghModule);
@@ -11520,7 +11616,7 @@ index 86434ec..34221c1 100644
    if (bDxvkModuleLoaded) {
      auto queryFeatureVersion = (version::QueryFunc)GetProcAddress(ghModule, version::QueryFuncName);
      if(queryFeatureVersion == NULL) {
-@@ -3343,18 +3960,29 @@ bool InitializeD3D() {
+@@ -3343,18 +3990,29 @@ bool InitializeD3D() {
  }
  
  void CALLBACK OnClientExited(void* context, BOOLEAN isTimeout) {
@@ -11559,7 +11655,7 @@ index 86434ec..34221c1 100644
  
    // Give the server some time to shut down, but then force quit so it doesn't hang forever
    uint32_t numRetries = 0;
-@@ -3371,7 +3999,7 @@ void CALLBACK OnClientExited(void* context, BOOLEAN isTimeout) {
+@@ -3371,7 +4029,7 @@ void CALLBACK OnClientExited(void* context, BOOLEAN isTimeout) {
  }
  
  bool RegisterExitCallback(const uint32_t hProcess) {
@@ -11568,7 +11664,7 @@ index 86434ec..34221c1 100644
    if (!result) {
      DWORD error = GetLastError();
      Logger::err(format_string("RegisterExitCallback() failed with error code %d", error));
-@@ -3482,22 +4110,51 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+@@ -3482,22 +4140,51 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
  
    Config::init(Config::App::Server);
    GlobalOptions::init();
@@ -11623,7 +11719,7 @@ index 86434ec..34221c1 100644
      Logger::info("Launched server with GUID " + gUniqueIdentifier.toString());
    } else {
      Logger::err("Server was invoked with invalid GUID! Unable to establish bridge, exiting...");
-@@ -3511,6 +4168,12 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+@@ -3511,6 +4198,12 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
    }
    LocalFree(argList);
  
@@ -11636,7 +11732,7 @@ index 86434ec..34221c1 100644
    initModuleBridge();
    initDeviceBridge();
  
-@@ -3541,6 +4204,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+@@ -3541,6 +4234,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
    // Pulling default data sent from client to have the data queue in sync
    {
      PULL_U(uid);
@@ -11644,7 +11740,7 @@ index 86434ec..34221c1 100644
    }
    Logger::info("Registering exit callback in case client exits unexpectedly.");
    RegisterExitCallback(synResponse.pHandle);
-@@ -3554,6 +4218,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+@@ -3554,6 +4248,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
    }
    const SentryShutdownOnExit sentryShutdownOnExit;
  
@@ -11653,7 +11749,7 @@ index 86434ec..34221c1 100644
    // (3) Send ACK to Client. Connection has been established
    Logger::info("Sync request received, sending ACK response...");
    ServerMessage { Commands::Bridge_Ack, (uintptr_t) gpClientMessageChannel->getWorkerThreadId() };
-@@ -3576,6 +4242,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+@@ -3576,6 +4272,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
    // Pulling default data sent from client to have the data queue in sync
    {
      PULL_U(uid);
@@ -11661,7 +11757,7 @@ index 86434ec..34221c1 100644
    }
    // (5) Ready to listen for incoming commands
    Logger::info("Handshake completed! Now waiting for incoming commands...");
-@@ -3589,12 +4256,16 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+@@ -3589,12 +4286,16 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
    bSignalDone.store(true);
    moduleCmdProcessingThread.join();
  
@@ -11679,7 +11775,7 @@ index 86434ec..34221c1 100644
    if (ghModule) {
      // Skip unloading the d3d9.dll for now, since it seems to be doing more harm than good
      // especially with other dependencies loaded by dxvk and threads that may deadlock due
-@@ -3610,6 +4281,10 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+@@ -3610,6 +4311,10 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
      hWait = NULL;
    }
  
@@ -11690,7 +11786,7 @@ index 86434ec..34221c1 100644
    Logger::info("Shutdown cleanup successful, exiting now!");
  
    const auto timeEnd = std::chrono::high_resolution_clock::now();
-@@ -3624,4 +4299,4 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+@@ -3624,4 +4329,4 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
      ServerMessage { Commands::Bridge_Ack };
    }
    return 0;
@@ -20621,7 +20717,7 @@ index a6fd952..fb186a0 100644
      }
  
 diff --git a/bridge/src/util/util_sharedheap.cpp b/bridge/src/util/util_sharedheap.cpp
-index 71c6695..c0ee79c 100644
+index 71c6695..795fedd 100644
 --- a/bridge/src/util/util_sharedheap.cpp
 +++ b/bridge/src/util/util_sharedheap.cpp
 @@ -19,6 +19,7 @@
@@ -20632,7 +20728,34 @@ index 71c6695..c0ee79c 100644
  #include "util_sharedheap.h"
  
  #include "util_bytes.h"
-@@ -94,16 +95,16 @@ bool SharedHeap::Instance::addNewHeapSegment() {
+@@ -58,13 +59,24 @@ SharedHeap::Instance::Instance()
+ }
+ 
+ BYTE* SharedHeap::Instance::getBuf(const AllocId id) {
+-  assert(m_cache.count(id) != 0);
+-  const auto firstChunk = m_cache[id];
++  const auto allocation = m_cache.find(id);
++  if (allocation == m_cache.end() || allocation->second >= m_nChunks) {
++    return nullptr;
++  }
++  const auto firstChunk = allocation->second;
+   const auto segId = chunkIdToSegId(firstChunk);
++  if (segId == kInvalidId || segId >= m_segments.size()) {
++    return nullptr;
++  }
+   BYTE* const pBuf = m_segments[segId].getBuf(firstChunk);
+   return pBuf;
+ }
+ 
++size_t SharedHeap::Instance::getAllocationSize(const AllocId id) const {
++  const auto allocation = m_allocationSizes.find(id);
++  return allocation == m_allocationSizes.end() ? 0 : allocation->second;
++}
++
+ size_t SharedHeap::Instance::getTotalHeapSize() const {
+   size_t size = 0;
+   for (const auto& shMem : m_segments) {
+@@ -94,16 +106,16 @@ bool SharedHeap::Instance::addNewHeapSegment() {
    const size_t segmentSizeUnaligned = std::min((kMax32BitHeapSize - getTotalHeapSize()), m_defaultSegmentSize);
    // Align segment size to chunk size
    size_t segmentSize = segmentSizeUnaligned & ~(m_chunkSize - 1);
@@ -20652,7 +20775,7 @@ index 71c6695..c0ee79c 100644
        segmentSize = segmentSize >> 1; // cut in half
      }
    }
-@@ -111,9 +112,9 @@ bool SharedHeap::Instance::addNewHeapSegment() {
+@@ -111,9 +123,9 @@ bool SharedHeap::Instance::addNewHeapSegment() {
      {
        ClientMessage c(Commands::Bridge_SharedHeap_AddSeg, segmentSize);
      }
@@ -20664,7 +20787,82 @@ index 71c6695..c0ee79c 100644
      const auto  newSegId = m_segments.size() - 1;
      const auto& newSeg = m_segments[newSegId];
      m_mapChunkToSeg[newSegId] = newSeg.getBaseChunkId();
-@@ -222,6 +223,7 @@ SharedHeap::Instance::findAllocation(const size_t numChunks) {
+@@ -149,6 +161,9 @@ void SharedHeap::Instance::addNewHeapSegment(const uint32_t segmentSize) {
+ 
+ #ifdef REMIX_BRIDGE_CLIENT
+ SharedHeap::AllocId SharedHeap::Instance::allocate(const size_t size) {
++  if (!size || size > kMax32BitHeapSize || m_nextUid == kInvalidId) {
++    return kInvalidId;
++  }
+   if (size > m_defaultSegmentSize) {
+     size_t newDefaultSegmentSize = m_defaultSegmentSize;
+     while (size > newDefaultSegmentSize) {
+@@ -180,10 +195,14 @@ SharedHeap::AllocId SharedHeap::Instance::allocate(const size_t size) {
+ 
+   const auto id = m_nextUid++;
+   m_cache[id] = alloc.firstChunk;
++  m_allocationSizes[id] = size;
+   m_allocations[alloc.firstChunk] = alloc.finalChunk;
+   {
+     ClientMessage c(Commands::Bridge_SharedHeap_Alloc, id);
+     c.send_data(alloc.firstChunk);
++    // Logical allocation bounds travel with the ID. All three processes must
++    // use the same build identity before this command can be dispatched.
++    c.send_data(static_cast<uint32_t>(size));
+   }
+ 
+   assert(getChunkState(alloc.firstChunk) == ChunkState::Unallocated);
+@@ -202,15 +221,44 @@ void SharedHeap::Instance::deallocate(const AllocId id) {
+ #endif
+ 
+ #ifdef REMIX_BRIDGE_SERVER
+-void SharedHeap::Instance::allocate(const AllocId id, const ChunkId firstChunk) {
++bool SharedHeap::Instance::allocate(const AllocId id, const ChunkId firstChunk, const uint32_t bytes) {
++  if (id == kInvalidId || !bytes || bytes > kMax32BitHeapSize || firstChunk >= m_nChunks ||
++      m_cache.find(id) != m_cache.end()) {
++    return false;
++  }
++  const auto segId = chunkIdToSegId(firstChunk);
++  if (segId == kInvalidId || segId >= m_segments.size()) {
++    return false;
++  }
++  const auto &segment = m_segments[segId];
++  const size_t firstInSegment = firstChunk - segment.getBaseChunkId();
++  const size_t chunks = (static_cast<size_t>(bytes) + m_chunkSize - 1) / m_chunkSize;
++  if (firstInSegment >= segment.getNumChunks() || chunks > segment.getNumChunks() - firstInSegment) {
++    return false;
++  }
++  const auto finalChunk = firstChunk + static_cast<ChunkId>(chunks) - 1;
++  const auto next = m_allocations.lower_bound(firstChunk);
++  if ((next != m_allocations.end() && next->first <= finalChunk) ||
++      (next != m_allocations.begin() && std::prev(next)->second >= firstChunk)) {
++    return false;
++  }
+   m_cache[id] = firstChunk;
++  m_allocationSizes[id] = bytes;
++  m_allocations[firstChunk] = finalChunk;
++  return true;
+ }
+-void SharedHeap::Instance::deallocate(const AllocId id) {
+-  assert(m_cache.count(id) != 0);
+-  const auto firstChunk = m_cache[id];
+-  assert(getChunkState(firstChunk) == ChunkState::Allocated);
++bool SharedHeap::Instance::deallocate(const AllocId id) {
++  const auto allocation = m_cache.find(id);
++  if (allocation == m_cache.end() || allocation->second >= m_nChunks ||
++      getChunkState(allocation->second) != ChunkState::Allocated) {
++    return false;
++  }
++  const auto firstChunk = allocation->second;
+   setChunkState(firstChunk, ChunkState::Deallocated);
+   m_cache.erase(id);
++  m_allocationSizes.erase(id);
++  m_allocations.erase(firstChunk);
++  return true;
+ }
+ #endif
+ 
+@@ -222,6 +270,7 @@ SharedHeap::Instance::findAllocation(const size_t numChunks) {
    if (bFirstAllocation) {
      return createAllocation(0, numChunks);
    } else {
@@ -20672,7 +20870,7 @@ index 71c6695..c0ee79c 100644
      size_t nFailedIterations = 0;
      bool bTimedOut = false;
      const auto timeoutStart = GetTickCount64();
-@@ -230,6 +232,7 @@ SharedHeap::Instance::findAllocation(const size_t numChunks) {
+@@ -230,6 +279,7 @@ SharedHeap::Instance::findAllocation(const size_t numChunks) {
            isValidAllocation(alloc = findFreeOnEnd(numChunks))) {
          break;
        }
@@ -20680,6 +20878,14 @@ index 71c6695..c0ee79c 100644
        if (nFailedIterations == 1) {
          std::stringstream ss;
          ss << "[SharedHeap][findAllocation] Unable to allocate ";
+@@ -305,6 +355,7 @@ void SharedHeap::Instance::freeDeallocations() {
+   for (const auto deallocatedId : deallocatedIds) {
+     const auto firstChunk = m_cache[deallocatedId];
+     m_cache.erase(deallocatedId);
++    m_allocationSizes.erase(deallocatedId);
+     assert(m_allocations.count(firstChunk) > 0);
+     const auto finalChunk = m_allocations[firstChunk];
+     const size_t numChunks = finalChunk - firstChunk + 1;
 diff --git a/bridge/src/util/util_sharedmemory.cpp b/bridge/src/util/util_sharedmemory.cpp
 index 1dfe466..1935314 100644
 --- a/bridge/src/util/util_sharedmemory.cpp
@@ -20934,3 +21140,62 @@ new file mode 100644
 +  bool active() const { return m_activated; }
 +};
 +}
+diff --git a/bridge/src/util/util_sharedheap.h b/bridge/src/util/util_sharedheap.h
+index fb5c4d4..690e5a7 100644
+--- a/bridge/src/util/util_sharedheap.h
++++ b/bridge/src/util/util_sharedheap.h
+@@ -39,6 +39,9 @@ namespace bridge_util {
+     static BYTE* getBuf(const AllocId id) {
+       return get().getBuf(id);
+     }
++    static size_t getAllocationSize(const AllocId id) {
++      return get().getAllocationSize(id);
++    }
+ #ifdef REMIX_BRIDGE_CLIENT
+     static AllocId allocate(const size_t size) {
+       return get().allocate(size);
+@@ -48,11 +51,11 @@ namespace bridge_util {
+     }
+ #endif
+ #ifdef REMIX_BRIDGE_SERVER
+-    static void allocate(const AllocId id, const ChunkId firstChunk) {
+-      get().allocate(id, firstChunk);
++    static bool allocate(const AllocId id, const ChunkId firstChunk, const uint32_t bytes) {
++      return get().allocate(id, firstChunk, bytes);
+     }
+-    static void deallocate(const AllocId id) {
+-      get().deallocate(id);
++    static bool deallocate(const AllocId id) {
++      return get().deallocate(id);
+     }
+     static void addNewHeapSegment(const uint32_t segmentSize) {
+       get().addNewHeapSegment(segmentSize);
+@@ -68,13 +71,14 @@ namespace bridge_util {
+     public:
+       Instance();
+       BYTE* getBuf(const AllocId id);
++      size_t getAllocationSize(const AllocId id) const;
+ #ifdef REMIX_BRIDGE_CLIENT
+       AllocId allocate(const size_t size);
+       void deallocate(const AllocId id);
+ #endif
+ #ifdef REMIX_BRIDGE_SERVER
+-      void allocate(const AllocId id, const ChunkId firstChunk);
+-      void deallocate(const AllocId id);
++      bool allocate(const AllocId id, const ChunkId firstChunk, const uint32_t bytes);
++      bool deallocate(const AllocId id);
+       void addNewHeapSegment(const uint32_t segmentSize);
+ #endif
+ 
+@@ -87,9 +91,10 @@ namespace bridge_util {
+       uint32_t m_defaultSegmentSize;
+       uint32_t m_nChunks;
+       std::unordered_map<AllocId, ChunkId> m_cache;
++      std::unordered_map<AllocId, size_t> m_allocationSizes;
++      std::map<ChunkId, ChunkId> m_allocations;
+ #ifdef REMIX_BRIDGE_CLIENT
+       AllocId m_nextUid = 0;
+-      std::map<ChunkId, ChunkId> m_allocations;
+       size_t m_sizeAllocated = 0;
+ #endif
+ 

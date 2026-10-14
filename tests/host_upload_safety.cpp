@@ -67,7 +67,9 @@ struct DeviceBridge {
 struct BridgeReadFailure {};
 namespace SharedHeap {
 inline std::array<uint8_t,256> bytes;
-static uint8_t* getBuf(uint32_t) { return bytes.data(); }
+inline size_t capacity=256;
+static uint8_t* getBuf(uint32_t id) { return id==1 ? bytes.data() : nullptr; }
+static size_t getAllocationSize(uint32_t id) { return id==1 ? capacity : 0; }
 }
 struct TestBuffer {
   std::array<uint8_t,256> bytes;
@@ -82,12 +84,14 @@ struct TestSurface {
   std::array<uint8_t,256> bytes;
   HRESULT result=S_OK, unlockResult=S_OK;
   int32_t pitch=4;
+  D3DFORMAT format=D3DFMT_A8R8G8B8;
+  unsigned width=1,height=1;
   unsigned locks=0, unlocks=0, descriptions=0;
   bool nullBits=false;
   TestSurface() { bytes.fill(0xa5); }
   HRESULT LockRect(D3DLOCKED_RECT* output,const RECT*,DWORD) { ++locks; *output={pitch,nullBits?nullptr:bytes.data()}; return result; }
   HRESULT UnlockRect() { ++unlocks; return unlockResult; }
-  HRESULT GetDesc(D3DSURFACE_DESC* output) { ++descriptions; *output={}; output->Width=1; output->Height=1; output->Format=D3DFMT_A8R8G8B8; return S_OK; }
+  HRESULT GetDesc(D3DSURFACE_DESC* output) { ++descriptions; *output={}; output->Width=width; output->Height=height; output->Format=format; return S_OK; }
 };
 struct TestVolume {
   std::array<uint8_t,256> bytes;
@@ -231,11 +235,55 @@ static void volumeCase(bool texture,const std::string& mode) {
     else {require(target.bytes[0]==0x3c && target.bytes[8]==0xa5 && target.bytes[32]==0x3c && target.bytes[52]==0xa5,"volume rows/slices/padding changed");}
   }
 }
+static void sharedCases() {
+  for(bool index:{false,true}) {
+    for(const auto& mode:{"valid","end-empty","overrun","offset","missing"}) {
+      TestBuffer target;
+      reset(index?Commands::IDirect3DIndexBuffer9_Unlock:Commands::IDirect3DVertexBuffer9_Unlock,Commands::DataInSharedHeap);
+      gpD3DResources[1]=&target; SharedHeap::capacity=16; SharedHeap::bytes.fill(0x7b);
+      unsigned offset=4,bytes=12,id=1;
+      if(std::string(mode)=="end-empty"){offset=16;bytes=0;}
+      if(std::string(mode)=="overrun"){bytes=13;}
+      if(std::string(mode)=="offset"){offset=17;bytes=0;}
+      if(std::string(mode)=="missing"){id=999;}
+      DeviceBridge::words={offset,bytes,0,id};
+      dispatchUpload();
+      const bool valid=std::string(mode)=="valid"||std::string(mode)=="end-empty";
+      require(target.locks==unsigned(valid)&&target.unlocks==unsigned(valid),"shared buffer bounds reached backend");
+      require(DeviceBridge::faults==unsigned(!valid),"shared buffer failure hidden");
+      require(target.bytes[0]==(std::string(mode)=="valid"?0x7b:0xa5),"shared buffer contents changed");
+    }
+  }
+  for(const auto& mode:{"valid","short","missing"}) {
+    TestSurface target;target.width=2;target.height=2;
+    reset(Commands::IDirect3DSurface9_UnlockRect,Commands::DataInSharedHeap);gpD3DResources[1]=&target;
+    RECT rect{1,0,2,2};object(rect);
+    SharedHeap::capacity=std::string(mode)=="short"?15:16;SharedHeap::bytes.fill(0x7b);
+    DeviceBridge::words={0,uint32_t(D3DFMT_A8R8G8B8),8,std::string(mode)=="missing"?999u:1u};
+    dispatchUpload();const bool valid=std::string(mode)=="valid";
+    require(target.locks==unsigned(valid)&&target.unlocks==unsigned(valid),"partial shared surface bounds reached backend");
+    require(DeviceBridge::faults==unsigned(!valid),"partial shared surface failure hidden");
+    if(valid){require(target.bytes[0]==0x7b&&target.bytes[7]==0x7b&&target.bytes[8]==0xa5,"partial shared surface padding changed");}
+  }
+  for(const auto format:{l4d2_ati::kAti1,l4d2_ati::kAti2}) for(const auto& mode:{"valid","short","missing"}) {
+    TestSurface target;target.width=4;target.height=4;target.format=static_cast<D3DFORMAT>(format);target.pitch=4;
+    reset(Commands::IDirect3DSurface9_UnlockRect,Commands::DataInSharedHeap);gpD3DResources[1]=&target;
+    RECT rect{0,0,4,4};object(rect);
+    const unsigned bytes=format==l4d2_ati::kAti1?8:16;
+    SharedHeap::capacity=std::string(mode)=="short"?bytes-1:bytes;SharedHeap::bytes.fill(0x7b);
+    DeviceBridge::words={0,format,bytes,std::string(mode)=="missing"?999u:1u};
+    dispatchUpload();const bool valid=std::string(mode)=="valid";
+    require(target.locks==unsigned(valid)&&target.unlocks==unsigned(valid),"ATI shared allocation bounds reached backend");
+    require(DeviceBridge::faults==unsigned(!valid),"ATI shared allocation failure hidden");
+    require(target.bytes[0]==(valid?0x7b:0xa5),"ATI shared allocation copied invalid bytes");
+  }
+}
 int main(int argc,char** argv) {
   SetErrorMode(SEM_FAILCRITICALERRORS|SEM_NOGPFAULTERRORBOX);
   try {
     const std::string mode=argc>1?argv[1]:"all";
-    if(mode=="lock-failure-vb") {bufferCase(false,"lock-failure");}
+    if(mode=="shared") {sharedCases();}
+    else if(mode=="lock-failure-vb") {bufferCase(false,"lock-failure");}
     else if(mode=="lock-failure-ib") {bufferCase(true,"lock-failure");}
     else if(mode=="lock-failure-surface") {surfaceCase("lock-failure");}
     else if(mode=="lock-failure-volume") {volumeCase(false,"lock-failure");}

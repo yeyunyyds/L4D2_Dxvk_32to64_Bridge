@@ -14,6 +14,10 @@ if (!$Platform) {
   & powershell.exe -NoProfile -File $PSCommandPath -Stage $Stage -Platform $arch
   if($LASTEXITCODE -ne 0){throw "Correctness stage failed: $Stage $arch"}
  }
+ if($Stage -notin @('query','shader','texture')) {
+  & powershell.exe -NoProfile -File "$PSScriptRoot/test_sharedheap.ps1"
+  if($LASTEXITCODE -ne 0){throw 'SharedHeap native regressions failed'}
+ }
  exit 0
 }
 . (Join-Path $source 'bridge/build_common.ps1')
@@ -73,4 +77,18 @@ if($Stage -notin @('query','shader')) {
  Client-Case $baseline none texture 'mismatched texture reached wrapper cast'
  Client-Case $source texture-type texture 'mismatched texture reached wrapper cast'
  Client-Case $baseline none texture-null 'ACCESS_VIOLATION'
+}
+
+if($Stage -notin @('query','shader','texture')) {
+ $gen=Join-Path $out 'shared-uploads'
+ python "$root/tests/host_upload_safety_generate.py" --source $source --output $gen
+ if($LASTEXITCODE -ne 0){throw 'Shared upload extraction failed'}
+ Push-Location $gen
+ try {
+  $exe=Join-Path $gen 'shared-upload.exe'
+  & cl.exe /nologo /std:c++17 /EHsc /O2 /DNDEBUG /W3 /DNOMINMAX /DFIXED_UPLOAD_SOURCE "/I$gen" "/I$source/bridge/src/server" "/I$source/bridge/src/util" "$root/tests/host_upload_safety.cpp" "/Fe:$exe"
+  if($LASTEXITCODE -ne 0){throw 'Shared upload compilation failed'}
+  Run-Case $exe @('shared')
+  Run-Case $exe @('all')
+ }finally{Pop-Location}
 }
