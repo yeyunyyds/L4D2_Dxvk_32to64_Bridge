@@ -1,0 +1,14 @@
+{
+  "source_commit": "ad3893e6661a3ad05ae0bad113fa9674ba4318a6",
+  "build_run": 38505071449,
+  "bridge_build_id": "l4d2-1.3.1+b839021167aac481",
+  "probe_build_id": "ime-window-probe+ad3893e6661a",
+  "bridge_ci_archive_sha256": "363be1591c5222f0c6f36df68eb87eef9fe0cb01554ade8ccf0755b6620c078d",
+  "probe_ci_archive_sha256": "c9f236501d7307b36b90487abd2c6188d732acab2c36416cdf07f038fdc27034",
+  "native_validation": "PASS",
+  "real_ime_validation": "PENDING",
+  "repair_claim": false,
+  "release_modified": false,
+  "sha256": "5d5604b50314bed27c6628d62a994bc7ccd801a9ba3f97aed183d2dc7b679ded",
+  "bytes": 4261724
+}
