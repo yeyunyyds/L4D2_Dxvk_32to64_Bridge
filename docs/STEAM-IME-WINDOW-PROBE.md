@@ -192,3 +192,39 @@ manifest SHA256s, original CI archive digest and combined member bytes were
 verified; public immutable ZIP was downloaded again and its SHA256 checked.
 Real IME composition for cases7/8 is pending. This ZIP contains only independent
 tools, not replacement Bridge binaries. Main, VERSION and releases are untouched.
+
+
+## Hidden EDIT initialization follow-up (cases 9--11)
+
+Real case7 PID22116 logs (probe c2f393240c7d) show5 ASCII chars with no
+composition before F4. After native EDIT creation and focus, default IMM window
+appears and conversion queries succeed; after returning to the original direct
+window, its own WndProc receives3 composition results and5 Unicode chars.
+The user confirms both inputs now accept Chinese. This establishes a working
+intervention, not which part of creation/focus or visibility is necessary.
+
+Each new mode starts a fresh owned child process, explicitly activates TSF,
+uses the same direct Presenter-style window with no caret, and performs one
+initialization sequence before user typing:
+
+* **9**: create a1x1 EDIT child without WS_VISIBLE; retain it; never focus it.
+* **10**: create the hidden EDIT, synchronously attempt focus, then immediately
+  restore the direct window's focus; retain the hidden control.
+* **11**: same as10, then destroy the EDIT before user typing.
+
+No forced Chinese/open mode, user text forwarding, caret, extra process, thread,
+backend or keyboard hook is introduced. Log actual focus acquisition/restoration
+rather than assuming hidden focus succeeds. No helper message pump or waits are
+added; normal observation starts after initialization. A missing/disabled IME
+engine or deferred initialization can still cause failure. This is an owned
+probe, not game production integration.
+
+Close game and run Start-Probe.cmd in a new extracted directory. First repeat7
+as negative control and4 as positive control; then test9,10,11 separately.
+Click the direct white panel, switch Chinese and type pinyin before F2/F3/F4.
+Record candidate/committed text and send the logs. F4 later shows the retained
+EDIT in9/10 or creates a visible one in11, providing the previous positive
+intervention. Only do this after the initial typing test. All entered text stays
+in memory. Native tests cover22 runs/pairs, hidden state, ownership, destruction,
+context restoration, synthetic Unicode and bounded close; real IME remains a
+manual gate before production adoption.
