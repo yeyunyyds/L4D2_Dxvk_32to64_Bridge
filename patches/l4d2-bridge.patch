@@ -7653,6 +7653,86 @@ index 0000000..d370fbe
 +  if (c.log != INVALID_HANDLE_VALUE) { FlushFileBuffers(c.log); }
 +}
 +}
+diff --git a/bridge/src/client/remix_state.cpp b/bridge/src/client/remix_state.cpp
+index 05df008..4f0fc17 100644
+--- a/bridge/src/client/remix_state.cpp
++++ b/bridge/src/client/remix_state.cpp
+@@ -26,22 +26,24 @@
+ 
+ using namespace bridge_util;
+ 
+-uint64_t RemixState::m_state = 0;
+-
++std::atomic<uint64_t> RemixState::m_state{0};
++std::recursive_mutex RemixState::m_lock;
++bool RemixState::update(uint64_t bit, bool active) {
++  const std::lock_guard<std::recursive_mutex> lock(m_lock);
++  const auto before=m_state.load(std::memory_order_relaxed);
++  const auto after=active ? before|bit : before&~bit;
++  if (before==after) return false;
++  if (!before && after) DI::onRemixUIActivated();
++  if (before && !after) DI::onRemixUIDeactivated();
++  m_state.store(after,std::memory_order_release);
++  if (!before && after) DI::unsetCooperativeLevel();
++  if (before && !after) DI::resetCooperativeLevel();
++  return bool(before)!=bool(after);
++}
+ void RemixState::init(MessageChannelBase& msgChannel) {
+-  msgChannel.registerHandler(kUIActiveMsgName,
+-    [](uint32_t wParam, uint32_t lParam) {
+-      if (wParam & 1) {
+-        DI::onRemixUIActivated();
+-        m_state |= RemixStateBits::UIActive;
+-        Logger::info("Remix UI activated.");
+-        DI::unsetCooperativeLevel();
+-      } else {
+-        DI::onRemixUIDeactivated();
+-        m_state &= ~RemixStateBits::UIActive;
+-        Logger::info("Remix UI deactivated.");
+-        DI::resetCooperativeLevel();
+-      }
+-      return true;
+-    });
++  msgChannel.registerHandler(kUIActiveMsgName, [](uint32_t wParam,uint32_t) {
++    update(RemixStateBits::UIActive,(wParam&1)!=0);
++    Logger::info((wParam&1)?"Remix UI activated.":"Remix UI deactivated.");
++    return true;
++  });
+ }
+diff --git a/bridge/src/client/remix_state.h b/bridge/src/client/remix_state.h
+index baefff7..573d5a9 100644
+--- a/bridge/src/client/remix_state.h
++++ b/bridge/src/client/remix_state.h
+@@ -21,6 +21,8 @@
+  */
+ #pragma once
+ #include <stdint.h>
++#include <atomic>
++#include <mutex>
+ #include "util_messagechannel.h"
+ 
+ enum RemixStateBits: uint64_t {
+@@ -30,12 +32,18 @@ enum RemixStateBits: uint64_t {
+ // Reflects Remix state at x86 Bridge side.
+ // Implemented with a short message delivery mechanism between Remix Runtime and Bridge.
+ class RemixState {
+-  static uint64_t m_state;
++  static std::atomic<uint64_t> m_state;
++  static std::recursive_mutex m_lock;
++  static bool update(uint64_t bit, bool active);
+   static constexpr const char* kUIActiveMsgName = "UWM_REMIX_UIACTIVE_MSG";
+ 
+ public:
+   static void init(bridge_util::MessageChannelBase& msgChannel);
++  // A real Steam callback owns a separate bit. Presenter/legacy close
++  // notifications cannot retire this source, and vice versa.
++  static bool steamActive() { return (m_state.load(std::memory_order_acquire) & 4) != 0; }
++  static bool setSteam(bool active) { return update(4, active); }
+   inline static bool isUIActive() {
+-    return m_state & RemixStateBits::UIActive;
++    return m_state.load(std::memory_order_acquire) != 0;
+   }
+ };
 diff --git a/bridge/src/client/retention_database.h b/bridge/src/client/retention_database.h
 new file mode 100644
 index 0000000..baf85fd
@@ -8614,6 +8694,7 @@ index 185005e..aa09a47 100644
      END
      BLOCK "VarFileInfo"
 diff --git a/bridge/src/client/window.cpp b/bridge/src/client/window.cpp
+index a6d5a42..b7bfc1f 100644
 --- a/bridge/src/client/window.cpp
 +++ b/bridge/src/client/window.cpp
 @@ -31,6 +31,11 @@
@@ -8628,7 +8709,7 @@ diff --git a/bridge/src/client/window.cpp b/bridge/src/client/window.cpp
  
  #include <unordered_map>
  #include <mutex>
-@@ -49,6 +54,40 @@
+@@ -49,6 +54,40 @@ namespace {
  HWND g_hwnd = nullptr;
  WNDPROC g_gameWndProc = nullptr;
  bool g_bActivateProcessed = false;
@@ -8669,7 +8750,7 @@ diff --git a/bridge/src/client/window.cpp b/bridge/src/client/window.cpp
  std::atomic<bool> g_suppressWindowManagement { false };
  
  // reinterpret_cast wrappers
-@@ -78,12 +117,12 @@
+@@ -78,12 +117,12 @@ static LONG WINAPI NewSetWindowLong(_In_ HWND hWnd, _In_ int nIndex, _In_ LONG d
        // We only handle cases wherein the window's handle matches the window's handle 
        // used in D3DDEVICE_CREATION_PARAMETERS or D3DPRESENT_PARAMETERS
        if(hWnd != g_hwnd) {
@@ -8684,7 +8765,7 @@ diff --git a/bridge/src/client/window.cpp b/bridge/src/client/window.cpp
          return oldGameWndProc;
        }
      }
-@@ -195,14 +234,21 @@
+@@ -195,14 +234,21 @@ void windowMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
  // and so removed from the client application message pump (e.g. you don't want
  // Remix UI clicks to accidentally click "Exit" in game menu)
  bool remixMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
@@ -8706,7 +8787,7 @@ diff --git a/bridge/src/client/window.cpp b/bridge/src/client/window.cpp
      if (!uiWasActive && RemixState::isUIActive()) {
        // Remix UI has been activated - unstick modifier keys at application side
        auto unstick = [hWnd](uint32_t vk) {
-@@ -271,6 +317,7 @@
+@@ -271,6 +317,7 @@ bool remixMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
  
    // Forward to remix renderer
    if (doForward) {
@@ -8714,7 +8795,7 @@ diff --git a/bridge/src/client/window.cpp b/bridge/src/client/window.cpp
      gpRemixMessageChannel->send(msg, wParam, lParam);
    }
  
-@@ -287,6 +334,7 @@
+@@ -287,6 +334,7 @@ bool remixMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
  }
  
  LRESULT WINAPI RemixWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
@@ -8722,7 +8803,7 @@ diff --git a/bridge/src/client/window.cpp b/bridge/src/client/window.cpp
    const bool isUnicode = IsWindowUnicode(hWnd);
    LRESULT lresult = 0;
  
-@@ -310,6 +358,23 @@
+@@ -310,6 +358,23 @@ LRESULT WINAPI RemixWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
  // External funcs //
  ////////////////////
  
@@ -8746,7 +8827,7 @@ diff --git a/bridge/src/client/window.cpp b/bridge/src/client/window.cpp
  bool init() {
    if(!attach()) {
      Logger::err(kStr_init_attachErr);
-@@ -320,6 +385,8 @@
+@@ -320,6 +385,8 @@ bool init() {
  }
  
  bool terminate() {
@@ -8755,7 +8836,7 @@ diff --git a/bridge/src/client/window.cpp b/bridge/src/client/window.cpp
    if(!detach()) {
      Logger::err(kStr_terminate_detachErr);
      return false;
-@@ -364,7 +431,7 @@
+@@ -364,7 +431,7 @@ bool set(HWND hwnd) {
    // Fix up DirectInput forwarding if setting has succeeded
    DInputSetDefaultWindow(hwnd);
  
@@ -8764,7 +8845,7 @@ diff --git a/bridge/src/client/window.cpp b/bridge/src/client/window.cpp
  
    return true;
  }
-@@ -386,11 +453,12 @@
+@@ -386,11 +453,12 @@ bool unset() {
        "another component likely subclassed the window during a mode change", RemixWndProc, prevWndProc));
    }
  
@@ -8778,7 +8859,7 @@ diff --git a/bridge/src/client/window.cpp b/bridge/src/client/window.cpp
  
    return true;
  }
-@@ -439,3 +507,68 @@
+@@ -439,3 +507,68 @@ void prepareForCrashDialog(bool async) {
  }
  
  }
@@ -12138,10 +12219,10 @@ index 0000000..2e52a45
 +}
 diff --git a/bridge/src/server/steam_availability_diagnostics.h b/bridge/src/server/steam_availability_diagnostics.h
 new file mode 100644
-index 0000000..f3d4e3a
+index 0000000..d1dcec6
 --- /dev/null
 +++ b/bridge/src/server/steam_availability_diagnostics.h
-@@ -0,0 +1,72 @@
+@@ -0,0 +1,80 @@
 +// SPDX-License-Identifier: MIT
 +// Copyright (c) 2026 yeyunyyds.
 +// All newly added implementation code in this fork was generated by OpenAI Codex from prompts and specifications provided by yeyunyyds.
@@ -12153,6 +12234,13 @@ index 0000000..f3d4e3a
 +#include "diagnostic_file_hash.h"
 +#include "steam_workshop_status.h"
 +namespace l4d2_steam_availability {
++// Full-file identities of the reviewed user samples. Getter decoding below
++// still validates the loaded instructions and image bounds; unknown files fail closed.
++inline constexpr const char* rendererHashes[] = {
++  "59057f983ae6f02b7eb2495bf65e0430129dd81dff8d9628c764bd1a07e23fee", // 10.96.30.42
++  "cbde033f76ac070ad8b7d25328e8acfbbabae6e40487f40dfcf6203b6c932c0b"  // 11.12.30.7
++};
++inline constexpr size_t rendererHashCount=sizeof(rendererHashes)/sizeof(rendererHashes[0]);
 +// Reproduce the exact supplied renderer getter's single byte read. Never call
 +// its undocumented export, initialize another SDK context, or change a byte.
 +inline uintptr_t decode(uintptr_t base,size_t size,uintptr_t getter,const BYTE code[8]) {
@@ -12187,7 +12275,8 @@ index 0000000..f3d4e3a
 +        if(!waiting){waiting=true;emit(logger,"L4D2_STEAM_WEB_HOST event=waiting reason=renderer-not-loaded");}return;
 +      }
 +      attempted=true;wchar_t path[MAX_PATH]{};
-+      if(!GetModuleFileNameW(module,path,MAX_PATH) || !l4d2_file_hash::hashFile(path,"59057f983ae6f02b7eb2495bf65e0430129dd81dff8d9628c764bd1a07e23fee")){
++      // Hash once at initial identification, including when the second sample matches.
++      if(!GetModuleFileNameW(module,path,MAX_PATH) || !l4d2_file_hash::hashFileAny(path,rendererHashes,rendererHashCount)){
 +        emit(logger,"L4D2_STEAM_WEB_HOST event=unsupported reason=renderer-file-hash-mismatch");return;
 +      }
 +      const auto getter=GetProcAddress(module,"IsOverlayEnabled");
@@ -12216,6 +12305,7 @@ index 0000000..f3d4e3a
 +}
 diff --git a/bridge/src/server/steam_window_diagnostics.h b/bridge/src/server/steam_window_diagnostics.h
 new file mode 100644
+index 0000000..ef2b846
 --- /dev/null
 +++ b/bridge/src/server/steam_window_diagnostics.h
 @@ -0,0 +1,230 @@
@@ -14600,10 +14690,10 @@ index 0000000..8590947
 +}
 diff --git a/bridge/src/util/diagnostic_file_hash.h b/bridge/src/util/diagnostic_file_hash.h
 new file mode 100644
-index 0000000..f469568
+index 0000000..50f7084
 --- /dev/null
 +++ b/bridge/src/util/diagnostic_file_hash.h
-@@ -0,0 +1,35 @@
+@@ -0,0 +1,44 @@
 +// SPDX-License-Identifier: MIT
 +// Copyright (c) 2026 yeyunyyds.
 +// All newly added implementation code in this fork was generated by OpenAI Codex from prompts and specifications provided by yeyunyyds.
@@ -14614,8 +14704,14 @@ index 0000000..f469568
 +#include <cstring>
 +namespace l4d2_file_hash {
 +struct ErrorGuard { DWORD saved=GetLastError(); ~ErrorGuard(){SetLastError(saved);} };
-+inline bool hashFile(const wchar_t* path,const char* expected) {
++inline bool matchesAny(const char* digest,const char* const* expected,size_t count) {
++  if(!digest || !expected)return false;
++  for(size_t i=0;i<count;++i)if(expected[i] && std::strcmp(digest,expected[i])==0)return true;
++  return false;
++}
++inline bool hashFileAny(const wchar_t* path,const char* const* expected,size_t expectedCount) {
 +    ErrorGuard error;
++    if(!path || !expected || !expectedCount)return false;
 +    HMODULE crypto=LoadLibraryExW(L"bcrypt.dll",nullptr,LOAD_LIBRARY_SEARCH_SYSTEM32);if(!crypto)return false;
 +    const auto open=reinterpret_cast<decltype(&BCryptOpenAlgorithmProvider)>(GetProcAddress(crypto,"BCryptOpenAlgorithmProvider"));
 +    const auto create=reinterpret_cast<decltype(&BCryptCreateHash)>(GetProcAddress(crypto,"BCryptCreateHash"));
@@ -14632,12 +14728,15 @@ index 0000000..f469568
 +        std::array<BYTE,65536> buffer{};DWORD count=0;bool ok=true;
 +        for(;;){if(!ReadFile(file,buffer.data(),static_cast<DWORD>(buffer.size()),&count,nullptr)){ok=false;break;}if(!count)break;if(add(hash,buffer.data(),count,0)<0){ok=false;break;}}
 +        BYTE digest[32]{};
-+        if(ok && finish(hash,digest,sizeof(digest),0)>=0){char hex[65]{};const char* digits="0123456789abcdef";for(size_t i=0;i<32;++i){hex[i*2]=digits[digest[i]>>4];hex[i*2+1]=digits[digest[i]&15];}match=std::strcmp(hex,expected)==0;}
++        if(ok && finish(hash,digest,sizeof(digest),0)>=0){char hex[65]{};const char* digits="0123456789abcdef";for(size_t i=0;i<32;++i){hex[i*2]=digits[digest[i]>>4];hex[i*2+1]=digits[digest[i]&15];}match=matchesAny(hex,expected,expectedCount);}
 +      }
 +      if(hash)destroy(hash);if(algorithm)close(algorithm,0);if(file!=INVALID_HANDLE_VALUE)CloseHandle(file);
 +    }
 +    FreeLibrary(crypto);return match;
 +  }
++inline bool hashFile(const wchar_t* path,const char* expected) {
++  return hashFileAny(path,&expected,1);
++}
 +}
 diff --git a/bridge/src/util/exception_diagnostics.cpp b/bridge/src/util/exception_diagnostics.cpp
 new file mode 100644
@@ -17820,6 +17919,7 @@ index 0000000..307d155
 +}
 diff --git a/bridge/src/util/steam_web_diagnostics.h b/bridge/src/util/steam_web_diagnostics.h
 new file mode 100644
+index 0000000..3049fae
 --- /dev/null
 +++ b/bridge/src/util/steam_web_diagnostics.h
 @@ -0,0 +1,189 @@
@@ -18014,6 +18114,7 @@ new file mode 100644
 +}
 diff --git a/bridge/src/util/steam_workshop_status.h b/bridge/src/util/steam_workshop_status.h
 new file mode 100644
+index 0000000..cca0ead
 --- /dev/null
 +++ b/bridge/src/util/steam_workshop_status.h
 @@ -0,0 +1,75 @@
@@ -20629,81 +20730,3 @@ index 0000000..97a6af2
 +  return true;
 +}
 +}
-diff --git a/bridge/src/client/remix_state.h b/bridge/src/client/remix_state.h
---- a/bridge/src/client/remix_state.h
-+++ b/bridge/src/client/remix_state.h
-@@ -21,6 +21,8 @@
-  */
- #pragma once
- #include <stdint.h>
-+#include <atomic>
-+#include <mutex>
- #include "util_messagechannel.h"
- 
- enum RemixStateBits: uint64_t {
-@@ -30,12 +32,18 @@
- // Reflects Remix state at x86 Bridge side.
- // Implemented with a short message delivery mechanism between Remix Runtime and Bridge.
- class RemixState {
--  static uint64_t m_state;
-+  static std::atomic<uint64_t> m_state;
-+  static std::recursive_mutex m_lock;
-+  static bool update(uint64_t bit, bool active);
-   static constexpr const char* kUIActiveMsgName = "UWM_REMIX_UIACTIVE_MSG";
- 
- public:
-   static void init(bridge_util::MessageChannelBase& msgChannel);
-+  // A real Steam callback owns a separate bit. Presenter/legacy close
-+  // notifications cannot retire this source, and vice versa.
-+  static bool steamActive() { return (m_state.load(std::memory_order_acquire) & 4) != 0; }
-+  static bool setSteam(bool active) { return update(4, active); }
-   inline static bool isUIActive() {
--    return m_state & RemixStateBits::UIActive;
-+    return m_state.load(std::memory_order_acquire) != 0;
-   }
- };
-diff --git a/bridge/src/client/remix_state.cpp b/bridge/src/client/remix_state.cpp
---- a/bridge/src/client/remix_state.cpp
-+++ b/bridge/src/client/remix_state.cpp
-@@ -26,22 +26,24 @@
- 
- using namespace bridge_util;
- 
--uint64_t RemixState::m_state = 0;
--
-+std::atomic<uint64_t> RemixState::m_state{0};
-+std::recursive_mutex RemixState::m_lock;
-+bool RemixState::update(uint64_t bit, bool active) {
-+  const std::lock_guard<std::recursive_mutex> lock(m_lock);
-+  const auto before=m_state.load(std::memory_order_relaxed);
-+  const auto after=active ? before|bit : before&~bit;
-+  if (before==after) return false;
-+  if (!before && after) DI::onRemixUIActivated();
-+  if (before && !after) DI::onRemixUIDeactivated();
-+  m_state.store(after,std::memory_order_release);
-+  if (!before && after) DI::unsetCooperativeLevel();
-+  if (before && !after) DI::resetCooperativeLevel();
-+  return bool(before)!=bool(after);
-+}
- void RemixState::init(MessageChannelBase& msgChannel) {
--  msgChannel.registerHandler(kUIActiveMsgName,
--    [](uint32_t wParam, uint32_t lParam) {
--      if (wParam & 1) {
--        DI::onRemixUIActivated();
--        m_state |= RemixStateBits::UIActive;
--        Logger::info("Remix UI activated.");
--        DI::unsetCooperativeLevel();
--      } else {
--        DI::onRemixUIDeactivated();
--        m_state &= ~RemixStateBits::UIActive;
--        Logger::info("Remix UI deactivated.");
--        DI::resetCooperativeLevel();
--      }
--      return true;
--    });
-+  msgChannel.registerHandler(kUIActiveMsgName, [](uint32_t wParam,uint32_t) {
-+    update(RemixStateBits::UIActive,(wParam&1)!=0);
-+    Logger::info((wParam&1)?"Remix UI activated.":"Remix UI deactivated.");
-+    return true;
-+  });
- }

@@ -11,6 +11,7 @@ on:
       - main
       - codex/release-1.3.0
       - codex/ipc-upload-safety
+      - codex/steam-renderer-1112307
       - codex/ipc-data-queue-correctness
   workflow_dispatch:
     inputs:
