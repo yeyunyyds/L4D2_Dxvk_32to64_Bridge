@@ -14,6 +14,10 @@ on:
       - codex/ipc-data-queue-correctness
   workflow_dispatch:
     inputs:
+      ime_probe_only:
+        description: Build and validate only the independent IME window probe
+        type: boolean
+        default: false
       build_l4n:
         description: 'Build and package the optional L4N plugin (disable for Bridge-only updates)'
         type: boolean
@@ -33,8 +37,34 @@ on:
 permissions:
   contents: read
 jobs:
+  ime-probe-only:
+    if: github.event_name == 'workflow_dispatch' && inputs.ime_probe_only && !inputs.publish_existing_prerelease
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Prepare pinned Bridge headers
+        run: python scripts/prepare_bridge.py
+      - name: Native x86 and x64 direct-window probe validation
+        shell: powershell
+        run: ./scripts/test_ime_window_probe.ps1
+      - name: Package validated independent probe
+        run: python scripts/package_ime_window_probe.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: l4d2-ime-window-probe-${{ github.run_id }}
+          path: dist/l4d2-ime-window-probe/
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: l4d2-ime-probe-native-${{ github.run_id }}
+          path: work/ime-window-probe-native/
+          if-no-files-found: warn
   windows-build:
-    if: github.event_name != 'workflow_dispatch' || !inputs.publish_existing_prerelease
+    if: (github.event_name != 'workflow_dispatch' || !inputs.publish_existing_prerelease) && !inputs.ime_probe_only
     runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
@@ -237,7 +267,7 @@ jobs:
           if-no-files-found: error
           retention-days: 30
   publish-existing-prerelease:
-    if: github.event_name == 'workflow_dispatch' && inputs.publish_existing_prerelease
+    if: github.event_name == 'workflow_dispatch' && inputs.publish_existing_prerelease && !inputs.ime_probe_only
     runs-on: ubuntu-latest
     permissions:
       contents: write
