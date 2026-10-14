@@ -1,0 +1,8 @@
+{
+  "schema": 1,
+  "workshop_id": null,
+  "workshop_directory": "left4dead2/addons/workshop",
+  "package_extension": ".vpk",
+  "update_channel": "stable",
+  "manifest_signature_public_key": null
+}
