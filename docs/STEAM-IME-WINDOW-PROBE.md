@@ -194,7 +194,7 @@ Real IME composition for cases7/8 is pending. This ZIP contains only independent
 tools, not replacement Bridge binaries. Main, VERSION and releases are untouched.
 
 
-## Hidden EDIT initialization follow-up (cases 9--11)
+## Hidden EDIT initialization follow-up (cases 9--12)
 
 Real case7 PID22116 logs (probe c2f393240c7d) show5 ASCII chars with no
 composition before F4. After native EDIT creation and focus, default IMM window
@@ -211,6 +211,7 @@ initialization sequence before user typing:
 * **10**: create the hidden EDIT, synchronously attempt focus, then immediately
   restore the direct window's focus; retain the hidden control.
 * **11**: same as10, then destroy the EDIT before user typing.
+* **12**: create the hidden EDIT, destroy it immediately, never focus it.
 
 No forced Chinese/open mode, user text forwarding, caret, extra process, thread,
 backend or keyboard hook is introduced. Log actual focus acquisition/restoration
@@ -220,11 +221,11 @@ engine or deferred initialization can still cause failure. This is an owned
 probe, not game production integration.
 
 Close game and run Start-Probe.cmd in a new extracted directory. First repeat7
-as negative control and4 as positive control; then test9,10,11 separately.
+as negative control and4 as positive control; then test9,10,11,12 separately.
 Click the direct white panel, switch Chinese and type pinyin before F2/F3/F4.
 Record candidate/committed text and send the logs. F4 later shows the retained
-EDIT in9/10 or creates a visible one in11, providing the previous positive
+EDIT in9/10 or creates a visible one in11/12, providing the previous positive
 intervention. Only do this after the initial typing test. All entered text stays
-in memory. Native tests cover22 runs/pairs, hidden state, ownership, destruction,
+in memory. Native tests cover24 runs/pairs, hidden state, ownership, destruction,
 context restoration, synthetic Unicode and bounded close; real IME remains a
 manual gate before production adoption.

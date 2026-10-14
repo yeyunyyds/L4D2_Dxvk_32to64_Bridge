@@ -24,7 +24,7 @@ static bool direct=false,caretEnabled=false;
 static DWORD parentPid=0;static HWND externalParent=nullptr;
 static PROCESS_INFORMATION child{};static ULONGLONG closeDeadline=0;
 static std::wstring childPath;
-static const wchar_t* const labels[]={L"1 Host x64 top-level",L"2 Host same-process child",L"3 x86 parent / x64 child, enabled",L"4 Presenter style: initially disabled",L"5 Presenter style + hidden Host anchor",L"6 Presenter style without explicit TSF",L"7 Direct Presenter: no caret / no controls",L"8 Direct Presenter: caret / no controls",L"9 Hidden EDIT: create only",L"10 Hidden EDIT: focus then restore",L"11 Hidden EDIT: focus, restore, destroy"};
+static const wchar_t* const labels[]={L"1 Host x64 top-level",L"2 Host same-process child",L"3 x86 parent / x64 child, enabled",L"4 Presenter style: initially disabled",L"5 Presenter style + hidden Host anchor",L"6 Presenter style without explicit TSF",L"7 Direct Presenter: no caret / no controls",L"8 Direct Presenter: caret / no controls",L"9 Hidden EDIT: create only",L"10 Hidden EDIT: focus then restore",L"11 Hidden EDIT: focus, restore, destroy",L"12 Hidden EDIT: create, destroy, no focus"};
 static void log(const char* text){if(output){std::fprintf(output,"%s\n",text);std::fflush(output);}}
 static void require(bool ok,const char* why){if(!ok){char line[300]{};std::snprintf(line,sizeof(line),"PROBE_FAIL reason=%s error=%lu",why,GetLastError());log(line);std::fprintf(stderr,"%s\n",line);std::exit(2);}}
 static std::wstring directory(){wchar_t path[MAX_PATH]{};require(GetModuleFileNameW(nullptr,path,MAX_PATH)>0,"module path");std::wstring s(path);return s.substr(0,s.find_last_of(L"\\/"));}
@@ -84,7 +84,7 @@ static void initializeHiddenEdit(){
  require(edit!=nullptr && !IsWindowVisible(edit),"hidden initialization EDIT");
  char line[300]{};std::snprintf(line,sizeof(line),"PROBE event=hidden-edit-created edit=%p visible=%d focus=%p",edit,IsWindowVisible(edit)!=FALSE,GetFocus());log(line);
  if(chain)chain->sample("hidden-created",true);if(ime)ime->sample("hidden-created",true);
- if(caseId>=9){
+ if(caseId==9 || caseId==10){
   SetFocus(edit);const bool acquired=GetFocus()==edit;
   std::snprintf(line,sizeof(line),"PROBE event=hidden-focus acquired=%d focus=%p",acquired,GetFocus());log(line);
   if(chain)chain->sample("hidden-focus",true);
@@ -92,7 +92,7 @@ static void initializeHiddenEdit(){
   std::snprintf(line,sizeof(line),"PROBE event=hidden-focus-restored restored=%d focus=%p",restored,GetFocus());log(line);
   if(chain)chain->sample("hidden-restored",true);if(ime)ime->sample("hidden-restored",true);
  }
- if(caseId==10){
+ if(caseId==10 || caseId==11){
   const HWND owned=edit;require(DestroyWindow(owned)!=FALSE,"destroy owned initialization EDIT");edit=nullptr;
   require(!IsWindow(owned),"initialization EDIT released");log("PROBE event=hidden-edit-destroyed");
   if(chain)chain->sample("hidden-destroyed",true);if(ime)ime->sample("hidden-destroyed",true);
@@ -124,7 +124,7 @@ static LRESULT CALLBACK panelProc(HWND w,UINT msg,WPARAM wp,LPARAM lp){
 
  if(msg==WM_COMMAND && !launcher && LOWORD(wp)==202){toggleFresh();return 0;}
  if(msg==WM_COMMAND && !launcher && LOWORD(wp)==201){addEdit();SetFocus(edit);if(chain)chain->sample("edit-focus",true);return 0;}
- if(msg==WM_COMMAND && launcher && LOWORD(wp)>=101 && LOWORD(wp)<=111){pending=static_cast<int>(LOWORD(wp))-101;if(child.hProcess)stopChild();else{launchChild(pending);pending=-1;}return 0;}
+ if(msg==WM_COMMAND && launcher && LOWORD(wp)>=101 && LOWORD(wp)<=112){pending=static_cast<int>(LOWORD(wp))-101;if(child.hProcess)stopChild();else{launchChild(pending);pending=-1;}return 0;}
  if(msg==WM_TIMER){
   if(launcher && child.hProcess){DWORD code=STILL_ACTIVE;require(GetExitCodeProcess(child.hProcess,&code)!=FALSE,"owned child status");
    if(selftest && !closing && code==STILL_ACTIVE && GetTickCount64()>closeDeadline){result=3;stopChild();}
@@ -147,14 +147,14 @@ int wmain(int argc,wchar_t** argv){
   else if(a==L"--parentpid" && i+1<argc)parentPid=static_cast<DWORD>(_wcstoui64(argv[++i],nullptr,10));
   else if(a==L"--selftest-parent" && i+2<argc){selftest=true;launcher=true;childPath=argv[++i];caseId=_wtoi(argv[++i]);}
   else require(false,"unsupported argument");}
- require(caseId>=0 && caseId<11,"case range");
+ require(caseId>=0 && caseId<12,"case range");
  if(argc==1){launcher=true;childPath=directory()+L"\\ImeWindowProbe64.exe";}
  registerClasses();const HINSTANCE module=GetModuleHandleW(nullptr);
  if(launcher){
   root=CreateWindowW(L"LdbImeProbeLauncher",L"LDB IME window comparison (no Steam)",WS_OVERLAPPEDWINDOW|(selftest?0:WS_VISIBLE),100,100,820,820,nullptr,nullptr,module,nullptr);require(root!=nullptr,"launcher window");
   if(selftest)launchChild(caseId);else{
    CreateWindowW(L"STATIC",L"Close the game. Test one case at a time. Cases 7/8: click the direct panel; F2 context, F3 caret, F4 EDIT. Type Chinese pinyin, not paste.\nOnly metadata is logged in logs/. Typed text stays in the fields and is never saved.",WS_CHILD|WS_VISIBLE,12,10,770,50,root,nullptr,module,nullptr);
-   for(int i=0;i<11;++i)CreateWindowW(L"BUTTON",labels[i],WS_CHILD|WS_VISIBLE|BS_PUSHBUTTON,12+(i%2)*380,68+(i/2)*36,365,32,root,reinterpret_cast<HMENU>(static_cast<uintptr_t>(101+i)),module,nullptr);
+   for(int i=0;i<12;++i)CreateWindowW(L"BUTTON",labels[i],WS_CHILD|WS_VISIBLE|BS_PUSHBUTTON,12+(i%2)*380,68+(i/2)*36,365,32,root,reinterpret_cast<HMENU>(static_cast<uintptr_t>(101+i)),module,nullptr);
   }
  }else{
   direct=caseId>=6;caretEnabled=caseId==7;

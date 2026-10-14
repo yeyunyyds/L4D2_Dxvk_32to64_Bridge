@@ -43,9 +43,9 @@ if(-not $CompileArchitecture){
   foreach($case in @(0,1)) {Run-Probe "$out/ImeWindowProbe$arch.exe" @('--selftest','--case',"$case")}
  }
  foreach($child in @('32','64')){
-  foreach($case in @(2,3,4,5,6,7,8,9,10)){
+  foreach($case in @(2,3,4,5,6,7,8,9,10,11)){
    Run-Probe "$out/ImeWindowProbe32.exe" @('--selftest-parent',"`"$out/ImeWindowProbe$child.exe`"","$case")
   }
  }
- Write-Output 'PROBE_NATIVE_PASS x86/x64 Unicode synthetic controls, eleven window cases, x86->x64 and x86->x86 ownership and bounded cleanup; no real composition tested'
+ Write-Output 'PROBE_NATIVE_PASS x86/x64 Unicode synthetic controls, twelve window cases, x86->x64 and x86->x86 ownership and bounded cleanup; no real composition tested'
 }
