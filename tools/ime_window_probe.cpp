@@ -79,7 +79,7 @@ static LRESULT CALLBACK panelProc(HWND w,UINT msg,WPARAM wp,LPARAM lp){
  if(msg==WM_DESTROY && w==root){PostQuitMessage(0);return 0;}
  return DefWindowProcW(w,msg,wp,lp);
 }
-static void registerClasses(){WNDCLASSW wc{};wc.hInstance=GetModuleHandleW(nullptr);wc.hCursor=LoadCursorW(nullptr,IDC_ARROW);wc.hbrBackground=GetSysColorBrush(COLOR_BTNFACE);wc.lpfnWndProc=panelProc;wc.lpszClassName=L"LdbImeProbePanel";require(RegisterClassW(&wc)!=0,"panel class");wc.lpszClassName=L"LdbImeProbeLauncher";require(RegisterClassW(&wc)!=0,"launcher class");wc.lpfnWndProc=fieldProc;wc.lpszClassName=L"LdbImeProbeField";require(RegisterClassW(&wc)!=0,"field class");}
+static void registerClasses(){WNDCLASSW wc{};wc.hInstance=GetModuleHandleW(nullptr);wc.hCursor=LoadCursorW(nullptr,MAKEINTRESOURCEW(32512));wc.hbrBackground=GetSysColorBrush(COLOR_BTNFACE);wc.lpfnWndProc=panelProc;wc.lpszClassName=L"LdbImeProbePanel";require(RegisterClassW(&wc)!=0,"panel class");wc.lpszClassName=L"LdbImeProbeLauncher";require(RegisterClassW(&wc)!=0,"launcher class");wc.lpfnWndProc=fieldProc;wc.lpszClassName=L"LdbImeProbeField";require(RegisterClassW(&wc)!=0,"field class");}
 int wmain(int argc,wchar_t** argv){
  for(int i=1;i<argc;++i){std::wstring a=argv[i];if(a==L"--selftest")selftest=true;
   else if(a==L"--case" && i+1<argc)caseId=_wtoi(argv[++i]);
