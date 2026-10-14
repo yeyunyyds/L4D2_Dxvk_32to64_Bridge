@@ -6,7 +6,7 @@
 using Diagnostic=l4d2_steam_window::Diagnostics;
 using Probe=uintptr_t(*)(unsigned,HWND,HIMC,DWORD*,DWORD*,DWORD);
 static std::vector<std::string> logs;
-static unsigned calls[9]{};
+static unsigned calls[11]{};
 static HWND window=nullptr;
 static HIMC context=reinterpret_cast<HIMC>(uintptr_t(0x1234));
 static HIMC previous=reinterpret_cast<HIMC>(uintptr_t(0x5678));
@@ -22,6 +22,8 @@ static BOOL WINAPI open(HIMC ctx){require(ctx==context);mark(5);return 0;}
 static BOOL WINAPI setOpen(HIMC ctx,BOOL value){require(ctx==context && value==1);mark(6);return 7;}
 static HKL WINAPI layout(DWORD thread){require(thread==99);mark(7);return reinterpret_cast<HKL>(uintptr_t(0x8040804));}
 static DWORD WINAPI property(HKL h,DWORD index){require(h==reinterpret_cast<HKL>(context) && index==99);mark(8);return 0x40000;}
+static LONG WINAPI compositionW(HIMC ctx,DWORD index,LPVOID buffer,DWORD length){require(ctx==context && index==99 && buffer && length==sizeof(DWORD));mark(9);return -1;}
+static LONG WINAPI compositionA(HIMC ctx,DWORD index,LPVOID buffer,DWORD length){require(ctx==context && index==99 && buffer && length==sizeof(DWORD));*static_cast<DWORD*>(buffer)=0x12345678;mark(10);return sizeof(DWORD);}
 static void** findSlot(HMODULE module, const char* name) {
   const auto base = reinterpret_cast<BYTE*>(module);
   const auto dos = reinterpret_cast<IMAGE_DOS_HEADER*>(base);
@@ -50,19 +52,19 @@ int main(int argc,char** argv){
  HMODULE module=LoadLibraryA(argv[1]);require(module!=nullptr);
  auto probe=reinterpret_cast<Probe>(GetProcAddress(module,"ProbeIme"));require(probe!=nullptr);
  window=CreateWindowW(L"STATIC",L"IME call observer",WS_OVERLAPPED,0,0,100,100,nullptr,nullptr,GetModuleHandleW(nullptr),nullptr);require(window!=nullptr);
- const char* names[]={"ImmCreateContext","ImmDestroyContext","ImmAssociateContext","ImmGetContext","ImmGetConversionStatus","ImmGetOpenStatus","ImmSetOpenStatus","GetKeyboardLayout","ImmGetProperty"};
- void* originals[]={reinterpret_cast<void*>(&create),reinterpret_cast<void*>(&destroy),reinterpret_cast<void*>(&associate),reinterpret_cast<void*>(&get),reinterpret_cast<void*>(&conversion),reinterpret_cast<void*>(&open),reinterpret_cast<void*>(&setOpen),reinterpret_cast<void*>(&layout),reinterpret_cast<void*>(&property)};
- for(unsigned i=0;i<9;++i)replace(findSlot(module,names[i]),originals[i]);
+ const char* names[]={"ImmCreateContext","ImmDestroyContext","ImmAssociateContext","ImmGetContext","ImmGetConversionStatus","ImmGetOpenStatus","ImmSetOpenStatus","GetKeyboardLayout","ImmGetProperty","ImmGetCompositionStringW","ImmGetCompositionStringA"};
+ void* originals[]={reinterpret_cast<void*>(&create),reinterpret_cast<void*>(&destroy),reinterpret_cast<void*>(&associate),reinterpret_cast<void*>(&get),reinterpret_cast<void*>(&conversion),reinterpret_cast<void*>(&open),reinterpret_cast<void*>(&setOpen),reinterpret_cast<void*>(&layout),reinterpret_cast<void*>(&property),reinterpret_cast<void*>(&compositionW),reinterpret_cast<void*>(&compositionA)};
+ for(unsigned i=0;i<11;++i)replace(findSlot(module,names[i]),originals[i]);
  const wchar_t* name=sizeof(void*)==8?L"ime-calls-x64.dll":L"ime-calls-x86.dll";
  SetLastError(12345);Diagnostic::poll(true,window,window,logLine,name,false,"host",enabled);require(GetLastError()==12345);
- for(unsigned api=0;api<9;++api){
-  DWORD c=0,s=0;const uintptr_t expected[]={reinterpret_cast<uintptr_t>(context),7,reinterpret_cast<uintptr_t>(previous),reinterpret_cast<uintptr_t>(context),7,0,7,0x8040804,0x40000};
+ for(unsigned api=0;api<11;++api){
+  DWORD c=0,s=0;const uintptr_t expected[]={reinterpret_cast<uintptr_t>(context),7,reinterpret_cast<uintptr_t>(previous),reinterpret_cast<uintptr_t>(context),7,0,7,0x8040804,0x40000,static_cast<uintptr_t>(LONG(-1)),sizeof(DWORD)};
   for(unsigned n=0;n<1000;++n){require(probe(api,window,context,&c,&s,api==6?1:99)==expected[api]);require(GetLastError()==0x100+api);}
-  require(calls[api]==1000);if(api==4)require(c==0x10 && s==0x20);
+  require(calls[api]==1000);if(api==4)require(c==0x10 && s==0x20);if(api==9)require(c==0);if(api==10)require(c==0x12345678);
  }
  unsigned seen=0;for(const auto& line:logs)if(line.find("L4D2_STEAM_IME_CALL api=")!=std::string::npos){++seen;require(line.find("presenter_thread=")!=std::string::npos && line.find("argument=")!=std::string::npos);}
- require(enabled ? seen>=9 && seen<=4096 : seen==0);
- Diagnostic::stop();for(unsigned i=0;i<9;++i)require(*findSlot(module,names[i])==originals[i]);
+ require(enabled ? seen>=11 && seen<=4096 : seen==0);
+ Diagnostic::stop();for(unsigned i=0;i<11;++i)require(*findSlot(module,names[i])==originals[i]);
  require(DestroyWindow(window)!=FALSE);
  std::puts("PASS Steam IMM IAT observer x86/x64 ABI, exact originals, real arguments/results/buffers/LastError, disabled, bounded logs, restoration; no real composition tested");
 }

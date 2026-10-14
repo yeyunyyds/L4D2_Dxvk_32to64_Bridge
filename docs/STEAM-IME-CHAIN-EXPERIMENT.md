@@ -1,0 +1,122 @@
+# Steam IME full-chain experiment
+
+Status: implementation/native build pending; Chinese gameplay input NOT verified.
+Main, VERSION, release assets, resource/IPC semantics and Exit Game unchanged.
+All new production options default False. Preserve the currently working Steam
+Presenter and native input configuration; do not install an older config file.
+
+## Why multiple configurations
+
+The actual-call diagnostic confirms Steam creates/associates its context on the
+Presenter owning thread, but its first conversion query fails before association
+and focus handoff. This downranks a foreign-thread HIMC explanation for that
+sequence. It does not prove a TSF failure. Chinese/English HKL changes alone do
+not prove an active text input processor. The user reports no candidate or
+composition UI, and English-only typing with every IME attempted.
+
+Previous bootstrap initialized COM, not explicit TSF activation. Previous Client
+polling exemption alone failed; dependencies between Host activation and Client
+IME polling were never tested together. Keep those experiments unaccepted.
+
+One matched three-binary package contains four snippets. Merge exactly one into
+existing bridge.conf, replacing previous occurrences; stop game AND Host between
+runs. Each run takes only one Overlay text field test, not map-loading benchmarks.
+
+| Run | Explicit TSF activation | Client IME polling exemption | TSF GetMessage |
+| --- | --- | --- | --- |
+| A-OBSERVE | False | False | False |
+| B-TSF | True | False | False |
+| C-TSF-POLL | True | True | False |
+| D-TSF-PUMP | True | False | True |
+
+Suggested order: B, A, C, D. Try switching to Chinese, type a short sequence,
+switch to English, then Chinese again. Note candidate window, committed Chinese,
+and whether Shift+Tab/mouse/close remain normal. Save paired bridge logs per run
+before restart. Avoid logging/chatting passwords. No need to change Presenter,
+ReShade, DXVK, IPC or InputFix. Diagnostic content contains no typed text.
+If an experiment disrupts input, revert to A or set all three new flags False.
+The installed formal matching package remains the complete binary rollback.
+
+## New observation points
+
+`L4D2_STEAM_IME_CHAIN` records at most once per second and at focus boundaries:
+- current existing TSF manager, activation flags and document focus presence;
+- existing COM apartment, HKL and ImmIsIME result, default IME window PID/thread;
+- GUI active/focus/capture window, parent and child enabled/style state;
+- bounded module-name inventory (.ime and known Windows text service modules),
+  at bind and when focused layout changes. Missing names do not prove no engine:
+  TSF TIPs can be DLLs, out of process, or loaded later;
+- classified counters for ordinary keys, ASCII/non-ASCII characters, dead chars,
+  composition start/update/result/end, IME context/control, language and focus.
+
+Counters distinguish WH_GETMESSAGE removal, the message returned to the loop,
+WH_CALLWNDPROC entry, Bridge's own WndProc, after DispatchMessage, and
+WH_CALLWNDPROCRET. They neither store nor log virtual keys, character values or
+composition strings. Sent messages may occur without a queue counter. Other
+windows on the Presenter thread are counted explicitly. Hook order still matters:
+an earlier hook may change a message before ours, or intercept WndProc entry.
+Missing counts never prove absent original OS events. TranslateMessage can
+produce later messages, so dispatch-return is not a post-translation text count.
+The after-dispatch stage counts dispatch attempts, not acceptance by Steam.
+No hook handles a negative hook code, changes a message or skips the next hook.
+
+Read-only TSF observation uses a previously loaded MSCTF and TF_GetThreadMgr,
+not creation/activation. Existing IMM diagnostics may themselves cause Windows
+TSF initialization; snapshots are current state, not pristine pre-IMM state.
+Presence of a TSF manager/document and nonzero flags are evidence, not proof that
+Steam's text field has a working IME. ImmIsIME False is possible for modern TSF
+profiles and must not be misclassified as English-only by itself.
+
+State/count output is capped at1800 lines per Presenter; module inventory at256
+selected module lines plus bounded summaries. Limits explicitly mark incomplete
+coverage. The existing Steam IAT observer has its separate4096-line/site bounds.
+It now also observes named ImmGetCompositionStringW/A imports and records only
+index and signed return length/status (encoded in pointer-width value), never
+buffer contents. Successful conversion queries include conversion/sentence
+flags. Original calls, arguments, buffers, returns and LastError are preserved.
+Dynamic resolutions/direct calls remain outside named-IAT coverage.
+
+## Optional behavior, isolated from observation
+
+B explicitly initializes COM STA on the Presenter thread before its window is
+created, obtains/creates a TSF thread manager and calls Activate once. Only its
+own successful Activate is balanced by Deactivate on the same thread, after
+window teardown. Its COM reference is independently balanced. Existing managers
+are reused and their own activations are not removed. Apartment/init failure
+skips activation; no manager or foreign HIMC is forced onto Steam's window.
+No text store/document manager, profile or composition is created/replaced.
+
+D additionally queries the TSF message pump and uses its Unicode GetMessage.
+If initialization/QI fails it retains the ordinary pump and logs that outcome.
+A runtime TSF pump failure is logged and stops the Presenter loop; no retry can
+consume a second message or hide the failure. Native shutdown/quit semantics
+must be tested before delivery. This path remains experimental, not a default.
+
+C combines B with the previously tested narrow Client polling policy: known IME
+modules may poll while Steam UI capture is active; game/MOD callers remain
+suppressed. This does not broaden raw input, DirectInput or setters. Its prior
+standalone failure is preserved rather than presented as an accepted fix.
+
+## Native gate and interpretation
+
+Tests must run separately in native x86 and x64 processes: disabled/observe,
+activation, TSF pump, and conflicting MTA apartment. Verify actual Activate and
+own Deactivate, original queue arguments and WM_QUIT, hook dispatch arguments/
+return, LastError isolation and foreign-thread refusal. Synthetic counter inputs
+only test observation classification; they do not establish IME composition.
+Expanded IAT fixture verifies composition-buffer effects, negative return status,
+conversion output flags and exact original-call count with tracing on/off.
+Full existing native regression suite and all three production binaries required.
+No user's Steam DLL or IME binary is executed or redistributed in the tests.
+
+If B repairs input, isolate explicit activation; if only C does, investigate
+interaction with Client IME polling. If only D does, isolate TSF pump behavior.
+If none does, compare stage counts and TSF focus with actual Steam IMM results;
+do not fake successful queries or force open status to conceal the fault.
+A gameplay result, not CI activation success, decides whether any path is useful.
+
+Primary API sources:
+- https://learn.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-tf_getthreadmgr
+- https://learn.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-tf_createthreadmgr
+- https://learn.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfthreadmgr-activate
+- https://learn.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfmessagepump-getmessagew

@@ -13,6 +13,8 @@ extern "C" __declspec(dllexport) uintptr_t ProbeIme(unsigned api,HWND window,HIM
   case 6:return static_cast<uintptr_t>(ImmSetOpenStatus(context,static_cast<BOOL>(argument)));
   case 7:return reinterpret_cast<uintptr_t>(GetKeyboardLayout(argument));
   case 8:return static_cast<uintptr_t>(ImmGetProperty(reinterpret_cast<HKL>(context),argument));
+  case 9:return static_cast<uintptr_t>(ImmGetCompositionStringW(context,argument,conversion,sizeof(DWORD)));
+  case 10:return static_cast<uintptr_t>(ImmGetCompositionStringA(context,argument,conversion,sizeof(DWORD)));
   default:return 0;
   }
 }
