@@ -181,3 +181,27 @@ or default enablement is warranted while these comparisons remain outstanding.
 
 Own TSF Deactivate returns S_OK and both peers cleanly terminate in this session;
 it does not reproduce the independently tracked Steam Exit Game error.
+
+## Supplied A baseline: failure reproduced
+
+Both peers match build8682d963820507a3 and all A behavior flags are False.
+Fourteen captured focused state samples show an existing TSF manager with
+active_flags0x80000021, no document focus and a NULL default IMM window. Thus
+A is not an entirely TSF-free process: system initialization exists without
+Bridge's explicit activation. The selected module snapshots include Windows
+text-service modules but no .ime names; this limited inventory is not proof of
+absence of all possible text input processors. B's observed Sogou modules and
+flags0x80000000 establish a real initialization difference, yet neither works.
+
+A still creates/associates Steam's context on the owning Presenter thread, and
+its fresh-context conversion query fails. During capture, GETMESSAGE/queue/
+after-dispatch each observe2 key messages and1 ASCII character; no stage sees
+composition/result or Unicode text. Two language changes and focus acquisition
+reach sent-message observers/Bridge WndProc. There is no diagnostic limit record,
+and Sogou Client GetKeyState is still poll-chain-neutralized. Both peers shut down
+normally. Treat A as the baseline, not an unsuccessful proposed behavioral fix.
+
+A and B evidence is now sufficient to prioritize C (same B binary/config except
+Client IME polling exemption True), followed by D if needed. Do not repeat A/B
+or make another speculative initialization build before those supplied-package
+comparisons are available.
