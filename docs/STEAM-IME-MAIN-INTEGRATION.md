@@ -42,3 +42,26 @@ Hosts; native COM/TSF disabled, existing STA and foreign MTA ownership tests;
 disabled observation invariants; all three Release compilations with matching
 identities. Experimental game validation covers one x64 session; this merged
 Renderer+IME combination still deserves the normal subsequent gameplay checks.
+
+
+## Completed integration validation
+
+Source4d61407e3df0e218d40a096c5359c90c18f53eba, based on main20ef9df.
+[Windows integration run38519119353](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38519119353)
+passed: disabled/STA/MTA ImeThread on x86/x64; production Presenter capture,
+focus/helper destruction/one attempt on both Host architectures; Steam capture,
+window adapter, web, PR12 old/new availability, cross-bitness Workshop status,
+and disabled runtime observation. Seven local runtime separation checks passed.
+All three Release binaries compiled and matched the core build receipt:
+`l4d2-1.3.1+d08b980cc177f23d`. Protocol identities, PE architectures, x86 LAA,
+source/build stamps and packaged checksums were verified after downloading the
+CI artifact and checking its archive SHA256. Publication job was skipped.
+
+PR12 availability fixture remains SHA256
+25c3688466d27d2899d319b3c00a673d843c35466649821911fe13da5bf1d55f.
+Every preexisting production patch block other than main.cpp and
+Overlay Presenter is byte-for-byte preserved from main20ef9df; only the new
+ImeThread header is added. The former experiment's diagnostics, probe tooling,
+polling/COM bootstrap alternatives and protocol-unrelated work were not merged.
+The final validation-record commit changes docs only. VERSION remains1.3.1;
+no Tag or Release creation is performed by this integration.
