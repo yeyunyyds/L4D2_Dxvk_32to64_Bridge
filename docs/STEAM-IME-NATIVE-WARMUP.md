@@ -41,3 +41,23 @@ and ReShade coexistence. Keep the known renderer hash rejection separate from
 IME validation; this change does not expand the verified web-adapter allowlist.
 After testing send paired logs and symptoms. Do not declare Steam IME fixed or
 merge before this game validation. Main, VERSION, Tags and Releases unchanged.
+
+## Verified experimental delivery
+
+Source `39ee5168e69d3931e141cc2d82e478e6d4f0f853`; matched Bridge `l4d2-1.3.1+31cae0cdcb96c4ec`.
+[Windows run38514887546](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38514887546)
+passed IME chain/call/session, capture and production Presenter regressions, then
+compiled all three Release binaries with matched protocol/build identities.
+Production Presenter cross-process fixtures passed both Host architectures,
+including helper focus/restore/destruction and one attempt across repeated
+Steam capture. Formal publication was skipped. Full unchanged IPC/gameplay
+regressions are not claimed as rerun in this targeted build.
+
+[Matched experimental update ZIP](https://raw.githubusercontent.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/6f30918cbf375767dc3fd4dba9734b38467986b2/steam-ime-warmup-r38514887546/l4d2-bridge-steam-ime-warmup-31cae0cdcb96c4ec-r38514887546.zip)
+
+SHA256 `825873fb2dc2bd563bb5c34b2535e8259b14330b8b7f9f5efac423a16d5693b1`. Native and Bridge CI artifact digests, core build
+receipt/source/PE architecture/LAA checks, binary identities and checksum
+manifests were verified before repacking; every member was checked against
+the CI archive and the public immutable ZIP was downloaded and reverified.
+Merge config/STEAM-IME-NATIVE-WARMUP.conf rather than overwrite existing config.
+Game Steam IME validation is pending; main and formal releases remain unchanged.
