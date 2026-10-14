@@ -1,0 +1,21 @@
+{
+  "source_commit": "64798c77e96b05d70720bcd5bedab32aa9a0b7e9",
+  "build_run": 38519716416,
+  "build_id": "l4d2-1.3.1+d08b980cc177f23d",
+  "ci_conclusion": "success",
+  "release_published": false,
+  "artifact_bytes_unchanged": true,
+  "contents": "matched Client, x86/x64 Hosts, official x86/x64 DXVK, default config; separate optional L4N plugin",
+  "includes": "PR12 Renderer 11.12.30.7 support and default enabled IME warmup",
+  "excluded": "proposed Nightly correctness backports are not implemented",
+  "files": {
+    "l4d2-bridge-main-64798c7-r38519716416.zip": {
+      "sha256": "6583e86bfe07cdd7b5c784fae11f3fa75b9d5a3a669293bb44f1ce101cd555bc",
+      "bytes": 7251000
+    },
+    "l4d2-bridge-l4n-main-64798c7-r38519716416.zip": {
+      "sha256": "443fa280711fa29f85be68e2b093ccbddfcd4c566f2d746e3e8c30a9c5f34644",
+      "bytes": 101657
+    }
+  }
+}
