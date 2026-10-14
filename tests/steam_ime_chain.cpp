@@ -30,10 +30,12 @@ int main(int argc,char** argv){
    require(SendMessageW(window,WM_APP+76,0x321,0x654)==0x789,"real hook chain preserves return");
    if(mode=="disabled")require(logs.empty(),"default mode inert");
    else{
-    logs.clear();chain.message(1,window,WM_KEYDOWN,0,0);chain.message(1,window,WM_CHAR,'A',0);
+    logs.clear();chain.keyboard(0);chain.keyboard(1,7);chain.keyboard(5,0);
+    chain.message(1,window,WM_KEYDOWN,0,0);chain.message(1,window,WM_CHAR,'A',0);
     chain.message(1,window,WM_CHAR,0x4E2D,0);chain.message(1,window,WM_IME_STARTCOMPOSITION);
     chain.message(1,window,WM_IME_COMPOSITION,0,GCS_RESULTSTR);chain.message(1,window,WM_IME_ENDCOMPOSITION);
     chain.sample("fixture",true);require(logs.find("stage=queue-return")!=std::string::npos && logs.find("key=1 ascii=1 unicode=1 dead=0 start=1 composition=1 result=1 end=1")!=std::string::npos,"classified stage counts");
+    require(logs.find("seen=1 native_next=1 native_next_nonzero=1")!=std::string::npos,"existing hook metadata distinguishes downstream nonzero");
     require(logs.find("manager_present=")!=std::string::npos && logs.find("document_present=")!=std::string::npos,"actual TSF focus evidence");
     std::string before=logs;std::thread foreign([&]{chain.sample("foreign",true);chain.message(1,window,WM_CHAR,'B');});foreign.join();require(logs==before,"foreign thread never queries owned TSF or alters counts");
    }

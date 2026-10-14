@@ -80,10 +80,12 @@ jobs:
         run: |
           python scripts/prepare_v130_fixture.py
           if ($LASTEXITCODE -ne 0) { throw 'Frozen fixture preparation failed' }
-          foreach ($test in @('steam_ime_chain','steam_ime_calls','steam_ime_session','ipc_full','buffer_shadow_arena','steam_capture_state','steam_window_diagnostics','steam_web_diagnostics','steam_availability_diagnostics','steam_workshop_status')) {
+          foreach ($test in @('ime_window_probe','steam_ime_chain','steam_ime_calls','steam_ime_session','ipc_full','buffer_shadow_arena','steam_capture_state','steam_window_diagnostics','steam_web_diagnostics','steam_availability_diagnostics','steam_workshop_status')) {
             & powershell.exe -NoProfile -File "./scripts/test_$test.ps1"
             if ($LASTEXITCODE -ne 0) { throw "$test failed" }
           }
+      - name: Package independent IME window probe
+        run: python scripts/package_ime_window_probe.py
       - name: Upload safety, close tails and default reply budgets against frozen v1.3.0
         shell: powershell
         run: ./scripts/test_ipc_upload_safety.ps1
@@ -208,10 +210,17 @@ jobs:
           include-hidden-files: true
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
+        with:
+          name: l4d2-ime-window-probe-${{ github.run_id }}
+          path: dist/l4d2-ime-window-probe/
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: l4d2-native-v${{ env.L4D2_PROJECT_VERSION }}-${{ github.run_id }}
           path: |
+            work/ime-window-probe-native/
+            work/steam-ime-chain-native/
             work/steam-ime-native/
             work/steam-ime-calls-native/
             work/ipc-full-native/
