@@ -1,6 +1,6 @@
 # Steam IME full-chain experiment
 
-Status: implementation/native build pending; Chinese gameplay input NOT verified.
+Status: Windows x86/x64 native tests and full build PASS; Chinese gameplay input PENDING.
 Main, VERSION, release assets, resource/IPC semantics and Exit Game unchanged.
 All new production options default False. Preserve the currently working Steam
 Presenter and native input configuration; do not install an older config file.
@@ -120,3 +120,25 @@ Primary API sources:
 - https://learn.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-tf_createthreadmgr
 - https://learn.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfthreadmgr-activate
 - https://learn.microsoft.com/en-us/windows/win32/api/msctf/nf-msctf-itfmessagepump-getmessagew
+
+## Verified delivery
+
+Source: `7d6bdecf5df3c22fa72fc87dac5881ea70729eee`.
+Build: `l4d2-1.3.1+8682d963820507a3`.
+[Native tests and full Windows build](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38500284525)
+completed successfully. Five chain modes passed independently on each of x86
+and x64 (ten successful native invocations). Expanded original-call fixtures
+passed enabled/disabled on each architecture (four invocations). Three actual
+Bridge binaries and the existing production regressions passed. The frozen
+v1.3.0 negative-control failures are intentional comparison evidence, not current
+candidate failures. No real IME composition was exercised by CI.
+
+[Matched experimental ZIP](https://raw.githubusercontent.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/18983c5d23fb7d799ba02e9a89e7cd4586a2697d/steam-ime-chain-r38500284525/l4d2-bridge-steam-ime-chain-8682d963820507a3-r38500284525.zip)
+
+SHA-256: `6e23f88b254ce5e6349bda17473adae3e5908d48961a0d4c4d8738df1e594cd4`.
+
+CI archive digest, manifest, binary architecture/build IDs and immutable public
+download bytes were verified. The archive is unchanged CI output; its design
+document was written before the build, while this section records the later
+verification. Main, Tags and formal Release were not changed. Native PASS is not
+a gameplay repair claim. Keep per-case paired logs and user-visible outcomes.

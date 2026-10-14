@@ -124,3 +124,7 @@ default or reuse them as established repairs.
 Primary API references:
 - [IMM conversion query result semantics](https://learn.microsoft.com/en-us/windows/win32/api/imm/nf-imm-immgetconversionstatus)
 - [TSF thread manager and document focus](https://learn.microsoft.com/en-us/windows/win32/tsf/thread-manager)
+
+The next matched [full-chain experiment](STEAM-IME-CHAIN-EXPERIMENT.md) adds
+explicitly gated TSF comparisons and multi-stage observations; actual Chinese
+input remains pending game verification.
