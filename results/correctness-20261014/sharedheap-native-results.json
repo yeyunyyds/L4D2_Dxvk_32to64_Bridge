@@ -1,0 +1,74 @@
+[
+  {
+    "role": "client-x86",
+    "rc": 0,
+    "stdout": "CLIENT_HEAP_PASS VB/IB/Surface first-allocation/discard/null-view/cleanup/recovery\n",
+    "stderr": ""
+  },
+  {
+    "role": "client-x64",
+    "rc": 0,
+    "stdout": "CLIENT_HEAP_PASS VB/IB/Surface first-allocation/discard/null-view/cleanup/recovery\n",
+    "stderr": ""
+  },
+  {
+    "role": "client32",
+    "rc": 0,
+    "stdout": "HEAP_ALLOCATION 0 0 3\nHEAP_ALLOCATION 1 1 4097\nHEAP_ALLOCATION 2 3 131073\nHEAP_READY\nHEAP_BOUNDS_PASS unknown-id/logical-size/overlap/segment-tail/stale/oversize\n",
+    "stderr": ""
+  },
+  {
+    "role": "host32",
+    "rc": 0,
+    "stdout": "HEAP_BOUNDS_PASS unknown-id/logical-size/overlap/segment-tail/stale/oversize\n",
+    "stderr": ""
+  },
+  {
+    "role": "host64",
+    "rc": 0,
+    "stdout": "HEAP_BOUNDS_PASS unknown-id/logical-size/overlap/segment-tail/stale/oversize\n",
+    "stderr": ""
+  },
+  {
+    "role": "host32",
+    "cross_process": true,
+    "fields": [
+      "0",
+      "0",
+      "3",
+      "1",
+      "1",
+      "4097",
+      "2",
+      "3",
+      "131073"
+    ],
+    "client_rc": 0,
+    "host_rc": 0,
+    "host": "HEAP_CROSS_PROCESS_PASS allocation-size/bytes/client-lifetime\n",
+    "stderr": "",
+    "client": "HEAP_ALLOCATION 0 0 3\nHEAP_ALLOCATION 1 1 4097\nHEAP_ALLOCATION 2 3 131073\nHEAP_READY\nHEAP_BOUNDS_PASS unknown-id/logical-size/overlap/segment-tail/stale/oversize\n",
+    "client_stderr": ""
+  },
+  {
+    "role": "host64",
+    "cross_process": true,
+    "fields": [
+      "0",
+      "0",
+      "3",
+      "1",
+      "1",
+      "4097",
+      "2",
+      "3",
+      "131073"
+    ],
+    "client_rc": 0,
+    "host_rc": 0,
+    "host": "HEAP_CROSS_PROCESS_PASS allocation-size/bytes/client-lifetime\n",
+    "stderr": "",
+    "client": "HEAP_ALLOCATION 0 0 3\nHEAP_ALLOCATION 1 1 4097\nHEAP_ALLOCATION 2 3 131073\nHEAP_READY\nHEAP_BOUNDS_PASS unknown-id/logical-size/overlap/segment-tail/stale/oversize\n",
+    "client_stderr": ""
+  }
+]

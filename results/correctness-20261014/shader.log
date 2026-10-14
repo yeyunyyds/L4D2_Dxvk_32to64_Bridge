@@ -1,0 +1,486 @@
+﻿2026-10-14T09:42:41.0755420Z Current runner version: '2.337.0'
+2026-10-14T09:42:41.0779405Z ##[group]Runner Image Provisioner
+2026-10-14T09:42:41.0780212Z Hosted Compute Agent
+2026-10-14T09:42:41.0780749Z Version: 20261002.596
+2026-10-14T09:42:41.0781422Z Commit: c3d12f3313a95f25162a1503be624f3b0617f8c0
+2026-10-14T09:42:41.0782095Z Build Date: 2026-10-02T22:28:27Z
+2026-10-14T09:42:41.0782695Z Worker ID: {00299145-bb2f-4798-8607-d48071493742}
+2026-10-14T09:42:41.0783332Z Region: westcentralus
+2026-10-14T09:42:41.0783856Z Cloud: Azure
+2026-10-14T09:42:41.0784376Z ##[endgroup]
+2026-10-14T09:42:41.0785822Z ##[group]Operating System
+2026-10-14T09:42:41.0786425Z Microsoft Windows Server 2022
+2026-10-14T09:42:41.0787004Z 10.0.20348
+2026-10-14T09:42:41.0787487Z Datacenter
+2026-10-14T09:42:41.0787979Z ##[endgroup]
+2026-10-14T09:42:41.0788478Z ##[group]Runner Image
+2026-10-14T09:42:41.0788992Z Image: windows-2022
+2026-10-14T09:42:41.0789511Z Version: 20261004.326.1
+2026-10-14T09:42:41.0791164Z Included Software: https://github.com/actions/runner-images/blob/win22/20261004.326/images/windows/Windows2022-Readme.md
+2026-10-14T09:42:41.0792683Z Image Release: https://github.com/actions/runner-images/releases/tag/win22%2F20261004.326
+2026-10-14T09:42:41.0793550Z ##[endgroup]
+2026-10-14T09:42:41.0794566Z ##[group]GITHUB_TOKEN Permissions
+2026-10-14T09:42:41.0796520Z Contents: read
+2026-10-14T09:42:41.0797112Z Metadata: read
+2026-10-14T09:42:41.0797601Z ##[endgroup]
+2026-10-14T09:42:41.0799548Z Secret source: Actions
+2026-10-14T09:42:41.0800437Z Cache mode: write
+2026-10-14T09:42:41.0801426Z Prepare workflow directory
+2026-10-14T09:42:41.1172692Z Prepare all required actions
+2026-10-14T09:42:41.1219663Z Getting action download info
+2026-10-14T09:42:41.4237054Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-14T09:42:41.5370002Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-14T09:42:41.6741812Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-14T09:42:42.0022008Z Complete job name: correctness-gate
+2026-10-14T09:42:42.1776960Z ##[group]Run actions/checkout@v4
+2026-10-14T09:42:42.1778027Z with:
+2026-10-14T09:42:42.1778518Z   fetch-depth: 0
+2026-10-14T09:42:42.1779160Z   repository: yeyunyyds/L4D2_Dxvk_32to64_Bridge
+2026-10-14T09:42:42.1784672Z   token: ***
+2026-10-14T09:42:42.1785224Z   ssh-strict: true
+2026-10-14T09:42:42.1785783Z   ssh-user: git
+2026-10-14T09:42:42.1786346Z   persist-credentials: true
+2026-10-14T09:42:42.1786952Z   clean: true
+2026-10-14T09:42:42.1787503Z   sparse-checkout-cone-mode: true
+2026-10-14T09:42:42.1788162Z   fetch-tags: false
+2026-10-14T09:42:42.1788686Z   show-progress: true
+2026-10-14T09:42:42.1789141Z   lfs: false
+2026-10-14T09:42:42.1789568Z   submodules: false
+2026-10-14T09:42:42.1790027Z   set-safe-directory: true
+2026-10-14T09:42:42.1790532Z   allow-unsafe-pr-checkout: false
+2026-10-14T09:42:42.1791307Z ##[endgroup]
+2026-10-14T09:42:42.3209572Z Syncing repository: yeyunyyds/L4D2_Dxvk_32to64_Bridge
+2026-10-14T09:42:42.3212480Z ##[group]Getting Git version info
+2026-10-14T09:42:42.3213807Z Working directory is 'D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge'
+2026-10-14T09:42:42.4203231Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-14T09:42:42.7990162Z git version 2.56.0.windows.1
+2026-10-14T09:42:42.8033728Z ##[endgroup]
+2026-10-14T09:42:42.8052267Z Temporarily overriding HOME='D:\a\_temp\465b8ad0-b5e4-46f7-a65f-d571ae581319' before making global git config changes
+2026-10-14T09:42:42.8054231Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-14T09:42:42.8063760Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge
+2026-10-14T09:42:42.8625898Z Deleting the contents of 'D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge'
+2026-10-14T09:42:42.8630974Z ##[group]Initializing the repository
+2026-10-14T09:42:42.8640042Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge
+2026-10-14T09:42:42.9515372Z Initialized empty Git repository in D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.git/
+2026-10-14T09:42:42.9548879Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge
+2026-10-14T09:42:43.0122436Z ##[endgroup]
+2026-10-14T09:42:43.0124120Z ##[group]Disabling automatic garbage collection
+2026-10-14T09:42:43.0130295Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-10-14T09:42:43.0406788Z ##[endgroup]
+2026-10-14T09:42:43.0408564Z ##[group]Setting up auth
+2026-10-14T09:42:43.0418492Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-14T09:42:43.0701165Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-14T09:42:44.4397083Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-14T09:42:44.4692667Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-14T09:42:44.9384980Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-14T09:42:44.9683343Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-14T09:42:45.4216422Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-10-14T09:42:45.4537345Z ##[endgroup]
+2026-10-14T09:42:45.4538143Z ##[group]Fetching the repository
+2026-10-14T09:42:45.4554047Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+2026-10-14T09:42:48.6974962Z From https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge
+2026-10-14T09:42:48.6975971Z  * [new branch]      codex/development-1.1.2-dev.1 -> origin/codex/development-1.1.2-dev.1
+2026-10-14T09:42:48.6976951Z  * [new branch]      codex/development-next    -> origin/codex/development-next
+2026-10-14T09:42:48.6977895Z  * [new branch]      codex/diagnostics-separation -> origin/codex/diagnostics-separation
+2026-10-14T09:42:48.6978845Z  * [new branch]      codex/ipc-c32-development -> origin/codex/ipc-c32-development
+2026-10-14T09:42:48.6979855Z  * [new branch]      codex/ipc-data-queue-correctness -> origin/codex/ipc-data-queue-correctness
+2026-10-14T09:42:48.6980714Z  * [new branch]      codex/ipc-upload-safety   -> origin/codex/ipc-upload-safety
+2026-10-14T09:42:48.6981700Z  * [new branch]      codex/ipc-v2-full-integration -> origin/codex/ipc-v2-full-integration
+2026-10-14T09:42:48.6982740Z  * [new branch]      codex/ipc-v2-prototype    -> origin/codex/ipc-v2-prototype
+2026-10-14T09:42:48.6983595Z  * [new branch]      codex/l4d2-demo           -> origin/codex/l4d2-demo
+2026-10-14T09:42:48.6984186Z  * [new branch]      codex/ldb-correctness-only -> origin/codex/ldb-correctness-only
+2026-10-14T09:42:48.6984684Z  * [new branch]      codex/main-steam-l4n      -> origin/codex/main-steam-l4n
+2026-10-14T09:42:48.6985214Z  * [new branch]      codex/pageblock-drop-gc   -> origin/codex/pageblock-drop-gc
+2026-10-14T09:42:48.6985692Z  * [new branch]      codex/publish-v1.3.0      -> origin/codex/publish-v1.3.0
+2026-10-14T09:42:48.6986133Z  * [new branch]      codex/release-1.3.0       -> origin/codex/release-1.3.0
+2026-10-14T09:42:48.6986616Z  * [new branch]      codex/release-1.3.1-candidate -> origin/codex/release-1.3.1-candidate
+2026-10-14T09:42:48.6988236Z  * [new branch]      codex/reshade-external-input -> origin/codex/reshade-external-input
+2026-10-14T09:42:48.6988812Z  * [new branch]      codex/steam-ime-actual-calls -> origin/codex/steam-ime-actual-calls
+2026-10-14T09:42:48.6989442Z  * [new branch]      codex/steam-ime-bootstrap-experiment -> origin/codex/steam-ime-bootstrap-experiment
+2026-10-14T09:42:48.6990124Z  * [new branch]      codex/steam-ime-chain-experiment -> origin/codex/steam-ime-chain-experiment
+2026-10-14T09:42:48.6990737Z  * [new branch]      codex/steam-ime-main-integration -> origin/codex/steam-ime-main-integration
+2026-10-14T09:42:48.6991401Z  * [new branch]      codex/steam-ime-mouse-investigation -> origin/codex/steam-ime-mouse-investigation
+2026-10-14T09:42:48.6992105Z  * [new branch]      codex/steam-ime-polling-experiment -> origin/codex/steam-ime-polling-experiment
+2026-10-14T09:42:48.6992710Z  * [new branch]      codex/steam-ime-window-probe -> origin/codex/steam-ime-window-probe
+2026-10-14T09:42:48.6993614Z  * [new branch]      codex/steam-invite-availability -> origin/codex/steam-invite-availability
+2026-10-14T09:42:48.6994664Z  * [new branch]      codex/steam-only-experiment -> origin/codex/steam-only-experiment
+2026-10-14T09:42:48.6995619Z  * [new branch]      codex/steam-overlay-hook-chain -> origin/codex/steam-overlay-hook-chain
+2026-10-14T09:42:48.6996665Z  * [new branch]      codex/steam-overlay-mouse-capture -> origin/codex/steam-overlay-mouse-capture
+2026-10-14T09:42:48.6997797Z  * [new branch]      codex/steam-overlay-poll-chain -> origin/codex/steam-overlay-poll-chain
+2026-10-14T09:42:48.6998862Z  * [new branch]      codex/steam-renderer-1112307 -> origin/codex/steam-renderer-1112307
+2026-10-14T09:42:48.6999994Z  * [new branch]      codex/steam-web-request-diagnostics -> origin/codex/steam-web-request-diagnostics
+2026-10-14T09:42:48.7001134Z  * [new branch]      codex/steam-window-adapter -> origin/codex/steam-window-adapter
+2026-10-14T09:42:48.7002097Z  * [new branch]      codex/steam-window-diagnostics -> origin/codex/steam-window-diagnostics
+2026-10-14T09:42:48.7003982Z  * [new branch]      codex/vbib-mapped-shadow  -> origin/codex/vbib-mapped-shadow
+2026-10-14T09:42:48.7004978Z  * [new branch]      codex/vbib-shadow-pressure -> origin/codex/vbib-shadow-pressure
+2026-10-14T09:42:48.7005924Z  * [new branch]      codex/vbib-shadow-va-allocator -> origin/codex/vbib-shadow-va-allocator
+2026-10-14T09:42:48.7006996Z  * [new branch]      codex/vbib-va-ipc-v2      -> origin/codex/vbib-va-ipc-v2
+2026-10-14T09:42:48.7007996Z  * [new branch]      experimental-downloads-1.1.2-dev.2 -> origin/experimental-downloads-1.1.2-dev.2
+2026-10-14T09:42:48.7008946Z  * [new branch]      main                      -> origin/main
+2026-10-14T09:42:48.7009661Z  * [new tag]         ipc-experimental-c1-dev.1 -> ipc-experimental-c1-dev.1
+2026-10-14T09:42:48.7010391Z  * [new tag]         v1.0.0                    -> v1.0.0
+2026-10-14T09:42:48.7010933Z  * [new tag]         v1.1.0                    -> v1.1.0
+2026-10-14T09:42:48.7011571Z  * [new tag]         v1.1.1                    -> v1.1.1
+2026-10-14T09:42:48.7012140Z  * [new tag]         v1.2.0                    -> v1.2.0
+2026-10-14T09:42:48.7012713Z  * [new tag]         v1.2.0-dev.1              -> v1.2.0-dev.1
+2026-10-14T09:42:48.7013274Z  * [new tag]         v1.2.1                    -> v1.2.1
+2026-10-14T09:42:48.7013773Z  * [new tag]         v1.2.2                    -> v1.2.2
+2026-10-14T09:42:48.7014262Z  * [new tag]         v1.3.0                    -> v1.3.0
+2026-10-14T09:42:48.7014801Z  * [new tag]         v1.3.0-pre.1              -> v1.3.0-pre.1
+2026-10-14T09:42:48.7015352Z  * [new tag]         v1.3.1                    -> v1.3.1
+2026-10-14T09:42:48.7023070Z [command]"C:\Program Files\Git\bin\git.exe" branch --list --remote origin/codex/ldb-correctness-only
+2026-10-14T09:42:48.7392281Z   origin/codex/ldb-correctness-only
+2026-10-14T09:42:48.7425574Z [command]"C:\Program Files\Git\bin\git.exe" rev-parse refs/remotes/origin/codex/ldb-correctness-only
+2026-10-14T09:42:48.7732570Z 360c2a4239cb74ef07e5541d0b64d98e471b109f
+2026-10-14T09:42:48.7757329Z ##[endgroup]
+2026-10-14T09:42:48.7757794Z ##[group]Determining the checkout info
+2026-10-14T09:42:48.7759357Z ##[endgroup]
+2026-10-14T09:42:48.7767901Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-10-14T09:42:48.8198486Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-10-14T09:42:48.8480650Z ##[group]Checking out the ref
+2026-10-14T09:42:48.8489380Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B codex/ldb-correctness-only refs/remotes/origin/codex/ldb-correctness-only
+2026-10-14T09:42:49.0018030Z Switched to a new branch 'codex/ldb-correctness-only'
+2026-10-14T09:42:49.0040923Z branch 'codex/ldb-correctness-only' set up to track 'origin/codex/ldb-correctness-only'.
+2026-10-14T09:42:49.0081703Z ##[endgroup]
+2026-10-14T09:42:49.0464215Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-10-14T09:42:49.0725195Z 360c2a4239cb74ef07e5541d0b64d98e471b109f
+2026-10-14T09:42:49.1190957Z ##[group]Run actions/setup-python@v5
+2026-10-14T09:42:49.1191290Z with:
+2026-10-14T09:42:49.1191475Z   python-version: 3.11
+2026-10-14T09:42:49.1191704Z   check-latest: false
+2026-10-14T09:42:49.1194281Z   token: ***
+2026-10-14T09:42:49.1194471Z   update-environment: true
+2026-10-14T09:42:49.1194694Z   allow-prereleases: false
+2026-10-14T09:42:49.1194901Z   freethreaded: false
+2026-10-14T09:42:49.1195082Z ##[endgroup]
+2026-10-14T09:42:49.2698135Z ##[group]Installed versions
+2026-10-14T09:42:49.2836849Z (node:6124) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-14T09:42:49.2837630Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-14T09:42:49.2838272Z Successfully set up CPython (3.11.9)
+2026-10-14T09:42:49.2838932Z ##[endgroup]
+2026-10-14T09:42:49.3086948Z ##[group]Run python scripts/prepare_bridge.py
+2026-10-14T09:42:49.3087378Z [36;1mpython scripts/prepare_bridge.py[0m
+2026-10-14T09:42:49.3263474Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2026-10-14T09:42:49.3263811Z env:
+2026-10-14T09:42:49.3264073Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-14T09:42:49.3264538Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.11.9\x64/lib/pkgconfig
+2026-10-14T09:42:49.3264989Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-14T09:42:49.3265384Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-14T09:42:49.3265767Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-14T09:42:49.3266068Z ##[endgroup]
+2026-10-14T09:42:50.5229127Z Initialized empty Git repository in D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.deps/dxvk-remix/.git/
+2026-10-14T09:42:52.4181408Z From https://github.com/NVIDIAGameWorks/dxvk-remix
+2026-10-14T09:42:52.4181907Z  * branch            9aa74f8dfad2188efbd0f717c64d9f8fa909787e -> FETCH_HEAD
+2026-10-14T09:42:52.9752965Z HEAD is now at 9aa74f8 Merge branch 'dev/rtxio_woa_update' into 'main'
+2026-10-14T09:42:53.3012984Z D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/patches/l4d2-bridge.patch:2565: trailing whitespace.
+2026-10-14T09:42:53.3014047Z } catch (const BridgeReadFailure&) { return D3DERR_DEVICELOST; } 
+2026-10-14T09:42:53.3489979Z warning: 1 line adds whitespace errors.
+2026-10-14T09:42:53.7887758Z Submodule 'submodules/Detours' (https://github.com/microsoft/Detours.git) registered for path 'submodules/Detours'
+2026-10-14T09:42:53.8285408Z Cloning into 'D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/.deps/dxvk-remix/submodules/Detours'...
+2026-10-14T09:42:55.4993605Z From https://github.com/microsoft/Detours
+2026-10-14T09:42:55.4994262Z  * branch            ea6c4ae7f3f1b1772b8a7cda4199230b932f5a50 -> FETCH_HEAD
+2026-10-14T09:42:55.5970542Z Submodule path 'submodules/Detours': checked out 'ea6c4ae7f3f1b1772b8a7cda4199230b932f5a50'
+2026-10-14T09:42:55.6030215Z Prepared D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\.deps\dxvk-remix; RTX renderer and NVIDIA GPU SDK submodules are not fetched
+2026-10-14T09:42:55.7371399Z ##[group]Run ./scripts/test_correctness.ps1 -Stage $env:CORRECTNESS_STAGE
+2026-10-14T09:42:55.7372017Z [36;1m./scripts/test_correctness.ps1 -Stage $env:CORRECTNESS_STAGE[0m
+2026-10-14T09:42:55.7411540Z shell: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.EXE -command ". '{0}'"
+2026-10-14T09:42:55.7411958Z env:
+2026-10-14T09:42:55.7412216Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-14T09:42:55.7412658Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.11.9\x64/lib/pkgconfig
+2026-10-14T09:42:55.7413108Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-14T09:42:55.7413499Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-14T09:42:55.7413884Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-14T09:42:55.7414209Z   CORRECTNESS_STAGE: shader
+2026-10-14T09:42:55.7414424Z ##[endgroup]
+2026-10-14T09:42:59.6046370Z D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/patches/l4d2-bridge.patch:2564: trailing whitespace.
+2026-10-14T09:42:59.6047364Z } 
+2026-10-14T09:42:59.6048144Z D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/patches/l4d2-bridge.patch:2956: trailing whitespace.
+2026-10-14T09:42:59.6049083Z     
+2026-10-14T09:42:59.6051990Z D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/patches/l4d2-bridge.patch:11139: trailing whitespace.
+2026-10-14T09:42:59.6053411Z         // using the data queue then we've only allocated just enough 
+2026-10-14T09:42:59.6054849Z D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/patches/l4d2-bridge.patch:11140: trailing whitespace.
+2026-10-14T09:42:59.6056131Z         // space as the requested rect would fill. 
+2026-10-14T09:42:59.6057389Z D:/a/L4D2_Dxvk_32to64_Bridge/L4D2_Dxvk_32to64_Bridge/patches/l4d2-bridge.patch:11356: trailing whitespace.
+2026-10-14T09:42:59.6058624Z       
+2026-10-14T09:42:59.6516270Z warning: squelched 9 whitespace errors
+2026-10-14T09:42:59.6516862Z warning: 14 lines add whitespace errors.
+2026-10-14T09:42:59.7116374Z <stdin>:2565: trailing whitespace.
+2026-10-14T09:42:59.7117136Z } catch (const BridgeReadFailure&) { return D3DERR_DEVICELOST; } 
+2026-10-14T09:42:59.7614177Z warning: 1 line adds whitespace errors.
+2026-10-14T09:42:59.7638026Z Frozen main baseline: 64798c77e96b05d70720bcd5bedab32aa9a0b7e9
+2026-10-14T09:43:00.4757628Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-14T09:43:00.9901750Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-14T09:43:00.9955039Z Pinning MSVC toolset to version: 14.29
+2026-10-14T09:43:03.4997897Z Visual Studio Command Prompt variables set.
+2026-10-14T09:43:03.7911951Z client_parameter_contract.cpp
+2026-10-14T09:43:07.7127088Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-none-dxvk-remix\client_methods.h(91): warning C4018: '<': signed/unsigned mismatch
+2026-10-14T09:43:07.7187663Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-none-dxvk-remix\client_methods.h(135): note: see reference to function template instantiation 'auto BaseDirect3DDevice9Ex_LSS::setShaderConstants::<lambda_7534db124f0b2790b51b67665f48931c>::operator ()<BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants>(BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants &) const' being compiled
+2026-10-14T09:43:07.7194059Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-none-dxvk-remix\client_methods.h(229): note: see reference to function template instantiation 'HRESULT BaseDirect3DDevice9Ex_LSS::setShaderConstants<BaseDirect3DDevice9Ex_LSS::ShaderConstants::ShaderType::Vertex,BaseDirect3DDevice9Ex_LSS::ShaderConstants::ConstantType::Float,float>(const uint32_t,const T *const ,const uint32_t)' being compiled
+2026-10-14T09:43:07.7197657Z         with
+2026-10-14T09:43:07.7197863Z         [
+2026-10-14T09:43:07.7198053Z             T=float
+2026-10-14T09:43:07.7200453Z         ]
+2026-10-14T09:43:07.7201795Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-none-dxvk-remix\client_methods.h(211): note: while compiling class template member function 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantF(UINT,const float *,UINT)'
+2026-10-14T09:43:07.7204130Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/client_parameter_contract.cpp(197): note: see reference to function template instantiation 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantF(UINT,const float *,UINT)' being compiled
+2026-10-14T09:43:07.7205975Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/client_parameter_contract.cpp(197): note: see reference to class template instantiation 'Direct3DDevice9Ex_LSS<false>' being compiled
+2026-10-14T09:43:07.7240811Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-none-dxvk-remix\client_methods.h(103): warning C4018: '<': signed/unsigned mismatch
+2026-10-14T09:43:07.7245564Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-none-dxvk-remix\client_methods.h(135): note: see reference to function template instantiation 'auto BaseDirect3DDevice9Ex_LSS::setShaderConstants::<lambda_08afecf54fe4c18726a56cbc8b3a1cf2>::operator ()<BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants>(BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants &) const' being compiled
+2026-10-14T09:43:07.7251429Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-none-dxvk-remix\client_methods.h(284): note: see reference to function template instantiation 'HRESULT BaseDirect3DDevice9Ex_LSS::setShaderConstants<BaseDirect3DDevice9Ex_LSS::ShaderConstants::ShaderType::Vertex,BaseDirect3DDevice9Ex_LSS::ShaderConstants::ConstantType::Int,int>(const uint32_t,const T *const ,const uint32_t)' being compiled
+2026-10-14T09:43:07.7253184Z         with
+2026-10-14T09:43:07.7253365Z         [
+2026-10-14T09:43:07.7253525Z             T=int
+2026-10-14T09:43:07.7253697Z         ]
+2026-10-14T09:43:07.7254720Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-none-dxvk-remix\client_methods.h(267): note: while compiling class template member function 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantI(UINT,const int *,UINT)'
+2026-10-14T09:43:07.7256560Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/client_parameter_contract.cpp(197): note: see reference to function template instantiation 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantI(UINT,const int *,UINT)' being compiled
+2026-10-14T09:43:14.3603733Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-none-dxvk-remix\client.exe
+2026-10-14T09:43:14.5363579Z PASS: query production Client contract (0 range cases).
+2026-10-14T09:43:14.6035387Z client_parameter_contract.cpp
+2026-10-14T09:43:15.4945356Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-none-correctness-baseline\client_methods.h(91): warning C4018: '<': signed/unsigned mismatch
+2026-10-14T09:43:15.4950047Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-none-correctness-baseline\client_methods.h(135): note: see reference to function template instantiation 'auto BaseDirect3DDevice9Ex_LSS::setShaderConstants::<lambda_7534db124f0b2790b51b67665f48931c>::operator ()<BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants>(BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants &) const' being compiled
+2026-10-14T09:43:15.4955545Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-none-correctness-baseline\client_methods.h(229): note: see reference to function template instantiation 'HRESULT BaseDirect3DDevice9Ex_LSS::setShaderConstants<BaseDirect3DDevice9Ex_LSS::ShaderConstants::ShaderType::Vertex,BaseDirect3DDevice9Ex_LSS::ShaderConstants::ConstantType::Float,float>(const uint32_t,const T *const ,const uint32_t)' being compiled
+2026-10-14T09:43:15.4958130Z         with
+2026-10-14T09:43:15.4958349Z         [
+2026-10-14T09:43:15.4958553Z             T=float
+2026-10-14T09:43:15.4958775Z         ]
+2026-10-14T09:43:15.4960220Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-none-correctness-baseline\client_methods.h(211): note: while compiling class template member function 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantF(UINT,const float *,UINT)'
+2026-10-14T09:43:15.4962809Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/client_parameter_contract.cpp(197): note: see reference to function template instantiation 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantF(UINT,const float *,UINT)' being compiled
+2026-10-14T09:43:15.4964302Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/client_parameter_contract.cpp(197): note: see reference to class template instantiation 'Direct3DDevice9Ex_LSS<false>' being compiled
+2026-10-14T09:43:15.4995269Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-none-correctness-baseline\client_methods.h(103): warning C4018: '<': signed/unsigned mismatch
+2026-10-14T09:43:15.4999716Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-none-correctness-baseline\client_methods.h(135): note: see reference to function template instantiation 'auto BaseDirect3DDevice9Ex_LSS::setShaderConstants::<lambda_08afecf54fe4c18726a56cbc8b3a1cf2>::operator ()<BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants>(BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants &) const' being compiled
+2026-10-14T09:43:15.5005898Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-none-correctness-baseline\client_methods.h(284): note: see reference to function template instantiation 'HRESULT BaseDirect3DDevice9Ex_LSS::setShaderConstants<BaseDirect3DDevice9Ex_LSS::ShaderConstants::ShaderType::Vertex,BaseDirect3DDevice9Ex_LSS::ShaderConstants::ConstantType::Int,int>(const uint32_t,const T *const ,const uint32_t)' being compiled
+2026-10-14T09:43:15.5009172Z         with
+2026-10-14T09:43:15.5009471Z         [
+2026-10-14T09:43:15.5009751Z             T=int
+2026-10-14T09:43:15.5010048Z         ]
+2026-10-14T09:43:15.5012034Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-none-correctness-baseline\client_methods.h(267): note: while compiling class template member function 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantI(UINT,const int *,UINT)'
+2026-10-14T09:43:15.5015664Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/client_parameter_contract.cpp(197): note: see reference to function template instantiation 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantI(UINT,const int *,UINT)' being compiled
+2026-10-14T09:43:15.9458088Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-none-correctness-baseline\client.exe
+2026-10-14T09:43:16.0117864Z FAIL: query SDK result size mismatch
+2026-10-14T09:43:16.0118469Z EXPECTED FAILURE: query SDK result size mismatch
+2026-10-14T09:43:16.0779944Z client_parameter_contract.cpp
+2026-10-14T09:43:17.0118315Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-query-dxvk-remix\client_methods.h(91): warning C4018: '<': signed/unsigned mismatch
+2026-10-14T09:43:17.0122811Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-query-dxvk-remix\client_methods.h(135): note: see reference to function template instantiation 'auto BaseDirect3DDevice9Ex_LSS::setShaderConstants::<lambda_7534db124f0b2790b51b67665f48931c>::operator ()<BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants>(BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants &) const' being compiled
+2026-10-14T09:43:17.0128988Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-query-dxvk-remix\client_methods.h(229): note: see reference to function template instantiation 'HRESULT BaseDirect3DDevice9Ex_LSS::setShaderConstants<BaseDirect3DDevice9Ex_LSS::ShaderConstants::ShaderType::Vertex,BaseDirect3DDevice9Ex_LSS::ShaderConstants::ConstantType::Float,float>(const uint32_t,const T *const ,const uint32_t)' being compiled
+2026-10-14T09:43:17.0132196Z         with
+2026-10-14T09:43:17.0132491Z         [
+2026-10-14T09:43:17.0132766Z             T=float
+2026-10-14T09:43:17.0133062Z         ]
+2026-10-14T09:43:17.0134946Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-query-dxvk-remix\client_methods.h(211): note: while compiling class template member function 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantF(UINT,const float *,UINT)'
+2026-10-14T09:43:17.0138712Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/client_parameter_contract.cpp(197): note: see reference to function template instantiation 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantF(UINT,const float *,UINT)' being compiled
+2026-10-14T09:43:17.0141587Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/client_parameter_contract.cpp(197): note: see reference to class template instantiation 'Direct3DDevice9Ex_LSS<false>' being compiled
+2026-10-14T09:43:17.0172787Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-query-dxvk-remix\client_methods.h(103): warning C4018: '<': signed/unsigned mismatch
+2026-10-14T09:43:17.0177143Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-query-dxvk-remix\client_methods.h(135): note: see reference to function template instantiation 'auto BaseDirect3DDevice9Ex_LSS::setShaderConstants::<lambda_08afecf54fe4c18726a56cbc8b3a1cf2>::operator ()<BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants>(BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants &) const' being compiled
+2026-10-14T09:43:17.0183132Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-query-dxvk-remix\client_methods.h(284): note: see reference to function template instantiation 'HRESULT BaseDirect3DDevice9Ex_LSS::setShaderConstants<BaseDirect3DDevice9Ex_LSS::ShaderConstants::ShaderType::Vertex,BaseDirect3DDevice9Ex_LSS::ShaderConstants::ConstantType::Int,int>(const uint32_t,const T *const ,const uint32_t)' being compiled
+2026-10-14T09:43:17.0186308Z         with
+2026-10-14T09:43:17.0186609Z         [
+2026-10-14T09:43:17.0186886Z             T=int
+2026-10-14T09:43:17.0187190Z         ]
+2026-10-14T09:43:17.0189050Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-query-dxvk-remix\client_methods.h(267): note: while compiling class template member function 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantI(UINT,const int *,UINT)'
+2026-10-14T09:43:17.0192591Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/client_parameter_contract.cpp(197): note: see reference to function template instantiation 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantI(UINT,const int *,UINT)' being compiled
+2026-10-14T09:43:17.4904733Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-query-dxvk-remix\client.exe
+2026-10-14T09:43:17.5459530Z FAIL: pending query overwrote caller data
+2026-10-14T09:43:17.5460073Z EXPECTED FAILURE: pending query overwrote caller data
+2026-10-14T09:43:17.6163296Z client_parameter_contract.cpp
+2026-10-14T09:43:18.5279971Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-pixel-size-dxvk-remix\client_methods.h(91): warning C4018: '<': signed/unsigned mismatch
+2026-10-14T09:43:18.5285379Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-pixel-size-dxvk-remix\client_methods.h(135): note: see reference to function template instantiation 'auto BaseDirect3DDevice9Ex_LSS::setShaderConstants::<lambda_7534db124f0b2790b51b67665f48931c>::operator ()<BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants>(BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants &) const' being compiled
+2026-10-14T09:43:18.5290086Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-pixel-size-dxvk-remix\client_methods.h(229): note: see reference to function template instantiation 'HRESULT BaseDirect3DDevice9Ex_LSS::setShaderConstants<BaseDirect3DDevice9Ex_LSS::ShaderConstants::ShaderType::Vertex,BaseDirect3DDevice9Ex_LSS::ShaderConstants::ConstantType::Float,float>(const uint32_t,const T *const ,const uint32_t)' being compiled
+2026-10-14T09:43:18.5292071Z         with
+2026-10-14T09:43:18.5292263Z         [
+2026-10-14T09:43:18.5292452Z             T=float
+2026-10-14T09:43:18.5292651Z         ]
+2026-10-14T09:43:18.5293885Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-pixel-size-dxvk-remix\client_methods.h(211): note: while compiling class template member function 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantF(UINT,const float *,UINT)'
+2026-10-14T09:43:18.5296062Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/client_parameter_contract.cpp(197): note: see reference to function template instantiation 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantF(UINT,const float *,UINT)' being compiled
+2026-10-14T09:43:18.5297831Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/client_parameter_contract.cpp(197): note: see reference to class template instantiation 'Direct3DDevice9Ex_LSS<false>' being compiled
+2026-10-14T09:43:18.5330853Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-pixel-size-dxvk-remix\client_methods.h(103): warning C4018: '<': signed/unsigned mismatch
+2026-10-14T09:43:18.5335562Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-pixel-size-dxvk-remix\client_methods.h(135): note: see reference to function template instantiation 'auto BaseDirect3DDevice9Ex_LSS::setShaderConstants::<lambda_08afecf54fe4c18726a56cbc8b3a1cf2>::operator ()<BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants>(BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants &) const' being compiled
+2026-10-14T09:43:18.5341917Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-pixel-size-dxvk-remix\client_methods.h(284): note: see reference to function template instantiation 'HRESULT BaseDirect3DDevice9Ex_LSS::setShaderConstants<BaseDirect3DDevice9Ex_LSS::ShaderConstants::ShaderType::Vertex,BaseDirect3DDevice9Ex_LSS::ShaderConstants::ConstantType::Int,int>(const uint32_t,const T *const ,const uint32_t)' being compiled
+2026-10-14T09:43:18.5345182Z         with
+2026-10-14T09:43:18.5345482Z         [
+2026-10-14T09:43:18.5345758Z             T=int
+2026-10-14T09:43:18.5346068Z         ]
+2026-10-14T09:43:18.5348009Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-pixel-size-dxvk-remix\client_methods.h(267): note: while compiling class template member function 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantI(UINT,const int *,UINT)'
+2026-10-14T09:43:18.5351499Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/client_parameter_contract.cpp(197): note: see reference to function template instantiation 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantI(UINT,const int *,UINT)' being compiled
+2026-10-14T09:43:18.9752922Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-query-pixel-size-dxvk-remix\client.exe
+2026-10-14T09:43:19.0289865Z FAIL: query SDK result size mismatch
+2026-10-14T09:43:19.0290288Z EXPECTED FAILURE: query SDK result size mismatch
+2026-10-14T09:43:19.0962253Z query_host_contract.cpp
+2026-10-14T09:43:19.1161032Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/query_host_contract.cpp(5): warning C4005: 'NOMINMAX': macro redefinition
+2026-10-14T09:43:19.1162583Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/query_host_contract.cpp: note: see previous definition of 'NOMINMAX'
+2026-10-14T09:43:20.0081487Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\host-query-none-dxvk-remix\host.exe
+2026-10-14T09:43:20.0615069Z PASS: Host Query ready/pending/failure/invalid-size/flags/handle/poll/SDK layouts (745 assertions).
+2026-10-14T09:43:20.1253820Z query_host_contract.cpp
+2026-10-14T09:43:20.1451094Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/query_host_contract.cpp(5): warning C4005: 'NOMINMAX': macro redefinition
+2026-10-14T09:43:20.1452056Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/query_host_contract.cpp: note: see previous definition of 'NOMINMAX'
+2026-10-14T09:43:21.0165387Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\host-query-none-correctness-baseline\host.exe
+2026-10-14T09:43:21.0702670Z FAIL: pending query leaked an uninitialized or stale payload
+2026-10-14T09:43:21.0703765Z EXPECTED FAILURE: pending query leaked an uninitialized or stale payload
+2026-10-14T09:43:21.1347344Z query_host_contract.cpp
+2026-10-14T09:43:21.1540715Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/query_host_contract.cpp(5): warning C4005: 'NOMINMAX': macro redefinition
+2026-10-14T09:43:21.1542336Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/query_host_contract.cpp: note: see previous definition of 'NOMINMAX'
+2026-10-14T09:43:21.9820969Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\host-query-pending-dxvk-remix\host.exe
+2026-10-14T09:43:22.0353035Z FAIL: pending query leaked an uninitialized or stale payload
+2026-10-14T09:43:22.0353553Z EXPECTED FAILURE: pending query leaked an uninitialized or stale payload
+2026-10-14T09:43:22.1054549Z client_parameter_contract.cpp
+2026-10-14T09:43:22.9967102Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-none-dxvk-remix\client_methods.h(91): warning C4018: '<': signed/unsigned mismatch
+2026-10-14T09:43:22.9972495Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-none-dxvk-remix\client_methods.h(135): note: see reference to function template instantiation 'auto BaseDirect3DDevice9Ex_LSS::setShaderConstants::<lambda_7534db124f0b2790b51b67665f48931c>::operator ()<BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants>(BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants &) const' being compiled
+2026-10-14T09:43:22.9978399Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-none-dxvk-remix\client_methods.h(229): note: see reference to function template instantiation 'HRESULT BaseDirect3DDevice9Ex_LSS::setShaderConstants<BaseDirect3DDevice9Ex_LSS::ShaderConstants::ShaderType::Vertex,BaseDirect3DDevice9Ex_LSS::ShaderConstants::ConstantType::Float,float>(const uint32_t,const T *const ,const uint32_t)' being compiled
+2026-10-14T09:43:22.9981558Z         with
+2026-10-14T09:43:22.9981840Z         [
+2026-10-14T09:43:22.9982097Z             T=float
+2026-10-14T09:43:22.9982388Z         ]
+2026-10-14T09:43:22.9984241Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-none-dxvk-remix\client_methods.h(211): note: while compiling class template member function 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantF(UINT,const float *,UINT)'
+2026-10-14T09:43:22.9988164Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/client_parameter_contract.cpp(197): note: see reference to function template instantiation 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantF(UINT,const float *,UINT)' being compiled
+2026-10-14T09:43:22.9990952Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/client_parameter_contract.cpp(197): note: see reference to class template instantiation 'Direct3DDevice9Ex_LSS<false>' being compiled
+2026-10-14T09:43:23.0018309Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-none-dxvk-remix\client_methods.h(103): warning C4018: '<': signed/unsigned mismatch
+2026-10-14T09:43:23.0022468Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-none-dxvk-remix\client_methods.h(135): note: see reference to function template instantiation 'auto BaseDirect3DDevice9Ex_LSS::setShaderConstants::<lambda_08afecf54fe4c18726a56cbc8b3a1cf2>::operator ()<BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants>(BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants &) const' being compiled
+2026-10-14T09:43:23.0025653Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-none-dxvk-remix\client_methods.h(284): note: see reference to function template instantiation 'HRESULT BaseDirect3DDevice9Ex_LSS::setShaderConstants<BaseDirect3DDevice9Ex_LSS::ShaderConstants::ShaderType::Vertex,BaseDirect3DDevice9Ex_LSS::ShaderConstants::ConstantType::Int,int>(const uint32_t,const T *const ,const uint32_t)' being compiled
+2026-10-14T09:43:23.0027280Z         with
+2026-10-14T09:43:23.0027445Z         [
+2026-10-14T09:43:23.0027601Z             T=int
+2026-10-14T09:43:23.0027768Z         ]
+2026-10-14T09:43:23.0028772Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-none-dxvk-remix\client_methods.h(267): note: while compiling class template member function 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantI(UINT,const int *,UINT)'
+2026-10-14T09:43:23.0030576Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/client_parameter_contract.cpp(197): note: see reference to function template instantiation 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantI(UINT,const int *,UINT)' being compiled
+2026-10-14T09:43:23.4349048Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-none-dxvk-remix\client.exe
+2026-10-14T09:43:23.4888386Z PASS: shader production Client contract (390 range cases).
+2026-10-14T09:43:23.5580979Z client_parameter_contract.cpp
+2026-10-14T09:43:24.4380180Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-none-correctness-baseline\client_methods.h(91): warning C4018: '<': signed/unsigned mismatch
+2026-10-14T09:43:24.4384697Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-none-correctness-baseline\client_methods.h(135): note: see reference to function template instantiation 'auto BaseDirect3DDevice9Ex_LSS::setShaderConstants::<lambda_7534db124f0b2790b51b67665f48931c>::operator ()<BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants>(BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants &) const' being compiled
+2026-10-14T09:43:24.4388793Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-none-correctness-baseline\client_methods.h(229): note: see reference to function template instantiation 'HRESULT BaseDirect3DDevice9Ex_LSS::setShaderConstants<BaseDirect3DDevice9Ex_LSS::ShaderConstants::ShaderType::Vertex,BaseDirect3DDevice9Ex_LSS::ShaderConstants::ConstantType::Float,float>(const uint32_t,const T *const ,const uint32_t)' being compiled
+2026-10-14T09:43:24.4391217Z         with
+2026-10-14T09:43:24.4391394Z         [
+2026-10-14T09:43:24.4391560Z             T=float
+2026-10-14T09:43:24.4391736Z         ]
+2026-10-14T09:43:24.4392924Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-none-correctness-baseline\client_methods.h(211): note: while compiling class template member function 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantF(UINT,const float *,UINT)'
+2026-10-14T09:43:24.4394804Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/client_parameter_contract.cpp(197): note: see reference to function template instantiation 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantF(UINT,const float *,UINT)' being compiled
+2026-10-14T09:43:24.4396286Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/client_parameter_contract.cpp(197): note: see reference to class template instantiation 'Direct3DDevice9Ex_LSS<false>' being compiled
+2026-10-14T09:43:24.4430317Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-none-correctness-baseline\client_methods.h(103): warning C4018: '<': signed/unsigned mismatch
+2026-10-14T09:43:24.4434542Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-none-correctness-baseline\client_methods.h(135): note: see reference to function template instantiation 'auto BaseDirect3DDevice9Ex_LSS::setShaderConstants::<lambda_08afecf54fe4c18726a56cbc8b3a1cf2>::operator ()<BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants>(BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants &) const' being compiled
+2026-10-14T09:43:24.4438538Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-none-correctness-baseline\client_methods.h(284): note: see reference to function template instantiation 'HRESULT BaseDirect3DDevice9Ex_LSS::setShaderConstants<BaseDirect3DDevice9Ex_LSS::ShaderConstants::ShaderType::Vertex,BaseDirect3DDevice9Ex_LSS::ShaderConstants::ConstantType::Int,int>(const uint32_t,const T *const ,const uint32_t)' being compiled
+2026-10-14T09:43:24.4440469Z         with
+2026-10-14T09:43:24.4440638Z         [
+2026-10-14T09:43:24.4440796Z             T=int
+2026-10-14T09:43:24.4440967Z         ]
+2026-10-14T09:43:24.4442011Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-none-correctness-baseline\client_methods.h(267): note: while compiling class template member function 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantI(UINT,const int *,UINT)'
+2026-10-14T09:43:24.4443821Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/client_parameter_contract.cpp(197): note: see reference to function template instantiation 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantI(UINT,const int *,UINT)' being compiled
+2026-10-14T09:43:24.8628283Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-none-correctness-baseline\client.exe
+2026-10-14T09:43:24.9162405Z FAIL: wrapped constant range was accepted
+2026-10-14T09:43:24.9162815Z EXPECTED FAILURE: wrapped constant range was accepted
+2026-10-14T09:43:24.9839403Z client_parameter_contract.cpp
+2026-10-14T09:43:25.8714039Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-range-dxvk-remix\client_methods.h(91): warning C4018: '<': signed/unsigned mismatch
+2026-10-14T09:43:25.8717804Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-range-dxvk-remix\client_methods.h(135): note: see reference to function template instantiation 'auto BaseDirect3DDevice9Ex_LSS::setShaderConstants::<lambda_7534db124f0b2790b51b67665f48931c>::operator ()<BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants>(BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants &) const' being compiled
+2026-10-14T09:43:25.8721764Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-range-dxvk-remix\client_methods.h(229): note: see reference to function template instantiation 'HRESULT BaseDirect3DDevice9Ex_LSS::setShaderConstants<BaseDirect3DDevice9Ex_LSS::ShaderConstants::ShaderType::Vertex,BaseDirect3DDevice9Ex_LSS::ShaderConstants::ConstantType::Float,float>(const uint32_t,const T *const ,const uint32_t)' being compiled
+2026-10-14T09:43:25.8723564Z         with
+2026-10-14T09:43:25.8723733Z         [
+2026-10-14T09:43:25.8723888Z             T=float
+2026-10-14T09:43:25.8724061Z         ]
+2026-10-14T09:43:25.8725079Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-range-dxvk-remix\client_methods.h(211): note: while compiling class template member function 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantF(UINT,const float *,UINT)'
+2026-10-14T09:43:25.8726886Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/client_parameter_contract.cpp(197): note: see reference to function template instantiation 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantF(UINT,const float *,UINT)' being compiled
+2026-10-14T09:43:25.8728350Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/client_parameter_contract.cpp(197): note: see reference to class template instantiation 'Direct3DDevice9Ex_LSS<false>' being compiled
+2026-10-14T09:43:25.8765732Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-range-dxvk-remix\client_methods.h(103): warning C4018: '<': signed/unsigned mismatch
+2026-10-14T09:43:25.8769345Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-range-dxvk-remix\client_methods.h(135): note: see reference to function template instantiation 'auto BaseDirect3DDevice9Ex_LSS::setShaderConstants::<lambda_08afecf54fe4c18726a56cbc8b3a1cf2>::operator ()<BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants>(BaseDirect3DDevice9Ex_LSS::ShaderConstants::VertexConstants &) const' being compiled
+2026-10-14T09:43:25.8772464Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-range-dxvk-remix\client_methods.h(284): note: see reference to function template instantiation 'HRESULT BaseDirect3DDevice9Ex_LSS::setShaderConstants<BaseDirect3DDevice9Ex_LSS::ShaderConstants::ShaderType::Vertex,BaseDirect3DDevice9Ex_LSS::ShaderConstants::ConstantType::Int,int>(const uint32_t,const T *const ,const uint32_t)' being compiled
+2026-10-14T09:43:25.8774088Z         with
+2026-10-14T09:43:25.8774258Z         [
+2026-10-14T09:43:25.8774417Z             T=int
+2026-10-14T09:43:25.8774589Z         ]
+2026-10-14T09:43:25.8775585Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-range-dxvk-remix\client_methods.h(267): note: while compiling class template member function 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantI(UINT,const int *,UINT)'
+2026-10-14T09:43:25.8777361Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/client_parameter_contract.cpp(197): note: see reference to function template instantiation 'HRESULT Direct3DDevice9Ex_LSS<false>::SetVertexShaderConstantI(UINT,const int *,UINT)' being compiled
+2026-10-14T09:43:26.2993405Z NATIVE_ARCH_PASS architecture=x86 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x86\client-shader-range-dxvk-remix\client.exe
+2026-10-14T09:43:26.3535909Z FAIL: wrapped constant range was accepted
+2026-10-14T09:43:26.3536340Z EXPECTED FAILURE: wrapped constant range was accepted
+2026-10-14T09:43:26.6918772Z vswhere found at: C:\ProgramData\Chocolatey\bin\vswhere.exe
+2026-10-14T09:43:26.7567361Z Using Visual Studio installation at: C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+2026-10-14T09:43:26.7607803Z Pinning MSVC toolset to version: 14.29
+2026-10-14T09:43:28.2279740Z Visual Studio Command Prompt variables set.
+2026-10-14T09:43:28.4475833Z client_parameter_contract.cpp
+2026-10-14T09:43:33.2167553Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x64\client-query-none-dxvk-remix\client.exe
+2026-10-14T09:43:33.2705375Z PASS: query production Client contract (0 range cases).
+2026-10-14T09:43:33.3352257Z client_parameter_contract.cpp
+2026-10-14T09:43:34.6083253Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x64\client-query-none-correctness-baseline\client.exe
+2026-10-14T09:43:34.6607394Z FAIL: query SDK result size mismatch
+2026-10-14T09:43:34.6607794Z EXPECTED FAILURE: query SDK result size mismatch
+2026-10-14T09:43:34.7250308Z client_parameter_contract.cpp
+2026-10-14T09:43:35.9912797Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x64\client-query-query-dxvk-remix\client.exe
+2026-10-14T09:43:36.0428938Z FAIL: pending query overwrote caller data
+2026-10-14T09:43:36.0429365Z EXPECTED FAILURE: pending query overwrote caller data
+2026-10-14T09:43:36.1098768Z client_parameter_contract.cpp
+2026-10-14T09:43:37.3763595Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x64\client-query-pixel-size-dxvk-remix\client.exe
+2026-10-14T09:43:37.4280951Z FAIL: query SDK result size mismatch
+2026-10-14T09:43:37.4281374Z EXPECTED FAILURE: query SDK result size mismatch
+2026-10-14T09:43:37.4932515Z query_host_contract.cpp
+2026-10-14T09:43:37.5149832Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/query_host_contract.cpp(5): warning C4005: 'NOMINMAX': macro redefinition
+2026-10-14T09:43:37.5157439Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/query_host_contract.cpp: note: see previous definition of 'NOMINMAX'
+2026-10-14T09:43:38.3078823Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x64\host-query-none-dxvk-remix\host.exe
+2026-10-14T09:43:38.3589600Z PASS: Host Query ready/pending/failure/invalid-size/flags/handle/poll/SDK layouts (745 assertions).
+2026-10-14T09:43:38.4231005Z query_host_contract.cpp
+2026-10-14T09:43:38.4408293Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/query_host_contract.cpp(5): warning C4005: 'NOMINMAX': macro redefinition
+2026-10-14T09:43:38.4409897Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/query_host_contract.cpp: note: see previous definition of 'NOMINMAX'
+2026-10-14T09:43:39.2456244Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x64\host-query-none-correctness-baseline\host.exe
+2026-10-14T09:43:39.2962557Z FAIL: pending query leaked an uninitialized or stale payload
+2026-10-14T09:43:39.2963129Z EXPECTED FAILURE: pending query leaked an uninitialized or stale payload
+2026-10-14T09:43:39.3601383Z query_host_contract.cpp
+2026-10-14T09:43:39.3773601Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/query_host_contract.cpp(5): warning C4005: 'NOMINMAX': macro redefinition
+2026-10-14T09:43:39.3775095Z D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge/tests/query_host_contract.cpp: note: see previous definition of 'NOMINMAX'
+2026-10-14T09:43:40.1582861Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x64\host-query-pending-dxvk-remix\host.exe
+2026-10-14T09:43:40.2097034Z FAIL: pending query leaked an uninitialized or stale payload
+2026-10-14T09:43:40.2097556Z EXPECTED FAILURE: pending query leaked an uninitialized or stale payload
+2026-10-14T09:43:40.2803004Z client_parameter_contract.cpp
+2026-10-14T09:43:41.5408175Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x64\client-shader-none-dxvk-remix\client.exe
+2026-10-14T09:43:41.5926184Z PASS: shader production Client contract (390 range cases).
+2026-10-14T09:43:41.6594699Z client_parameter_contract.cpp
+2026-10-14T09:43:42.9289430Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x64\client-shader-none-correctness-baseline\client.exe
+2026-10-14T09:43:42.9806050Z FAIL: wrapped constant range was accepted
+2026-10-14T09:43:42.9806638Z EXPECTED FAILURE: wrapped constant range was accepted
+2026-10-14T09:43:43.0500448Z client_parameter_contract.cpp
+2026-10-14T09:43:44.2983619Z NATIVE_ARCH_PASS architecture=x64 path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\correctness-shader-x64\client-shader-range-dxvk-remix\client.exe
+2026-10-14T09:43:44.3494682Z FAIL: wrapped constant range was accepted
+2026-10-14T09:43:44.3495094Z EXPECTED FAILURE: wrapped constant range was accepted
+2026-10-14T09:43:44.4182449Z ##[group]Run actions/upload-artifact@v4
+2026-10-14T09:43:44.4182809Z with:
+2026-10-14T09:43:44.4183036Z   name: ldb-correctness-shader-38544334751
+2026-10-14T09:43:44.4183356Z   path: work/correctness-*/
+2026-10-14T09:43:44.4183607Z   if-no-files-found: warn
+2026-10-14T09:43:44.4183850Z   compression-level: 6
+2026-10-14T09:43:44.4184072Z   overwrite: false
+2026-10-14T09:43:44.4184285Z   include-hidden-files: false
+2026-10-14T09:43:44.4184512Z env:
+2026-10-14T09:43:44.4184789Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-14T09:43:44.4185287Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.11.9\x64/lib/pkgconfig
+2026-10-14T09:43:44.4185794Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-14T09:43:44.4186234Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-14T09:43:44.4186672Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.11.9\x64
+2026-10-14T09:43:44.4187008Z ##[endgroup]
+2026-10-14T09:43:44.6004345Z (node:3432) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-14T09:43:44.6005174Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-14T09:43:44.6556218Z With the provided path, there will be 122 files uploaded
+2026-10-14T09:43:44.6562049Z Artifact name is valid!
+2026-10-14T09:43:44.6563680Z Root directory input is valid!
+2026-10-14T09:43:45.0086789Z Beginning upload of artifact content to blob storage
+2026-10-14T09:43:45.3335856Z (node:3432) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-14T09:43:46.1253563Z Uploaded bytes 2611555
+2026-10-14T09:43:46.1961534Z Finished uploading artifact content to blob storage!
+2026-10-14T09:43:46.1963367Z SHA256 digest of uploaded artifact zip is 9bac48a1d7c684267ddcd904e024c991a1c23258167677af1f9c9ab5c2bfe73c
+2026-10-14T09:43:46.1965888Z Finalizing artifact upload
+2026-10-14T09:43:46.4816577Z Artifact ldb-correctness-shader-38544334751.zip successfully finalized. Artifact ID 11883647075
+2026-10-14T09:43:46.4817844Z Artifact ldb-correctness-shader-38544334751 has been successfully uploaded! Final size is 2611555 bytes. Artifact ID is 11883647075
+2026-10-14T09:43:46.4825949Z Artifact download URL: https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38544334751/artifacts/11883647075
+2026-10-14T09:43:46.5097301Z Post job cleanup.
+2026-10-14T09:43:46.6441764Z (node:5724) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-14T09:43:46.6530999Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-14T09:43:46.6693317Z Post job cleanup.
+2026-10-14T09:43:46.8992587Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-14T09:43:46.9271745Z git version 2.56.0.windows.1
+2026-10-14T09:43:46.9331329Z Temporarily overriding HOME='D:\a\_temp\0d672096-1177-463b-9959-aef9509e6b60' before making global git config changes
+2026-10-14T09:43:46.9332260Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-14T09:43:46.9343145Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge
+2026-10-14T09:43:46.9699390Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-14T09:43:46.9981385Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-14T09:43:47.4273443Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-14T09:43:47.4520394Z http.https://github.com/.extraheader
+2026-10-14T09:43:47.4553008Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2026-10-14T09:43:47.4831442Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-14T09:43:47.9120844Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-14T09:43:47.9401510Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "git config --local --show-origin --name-only --get-regexp remote.origin.url"
+2026-10-14T09:43:48.4127455Z Cleaning up orphan processes
+2026-10-14T09:43:48.4348549Z Terminate orphan process: pid (7596) (vctip)
+2026-10-14T09:43:48.4369451Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

@@ -15,6 +15,11 @@ on:
       - codex/ipc-data-queue-correctness
   workflow_dispatch:
     inputs:
+      correctness_stage:
+        description: Sequential correctness gate (no packaging or publication)
+        type: choice
+        default: 'off'
+        options: ['off', query, shader, texture, sharedheap, host, all]
       ime_bridge_only:
         description: Run IME main integration gates and compile matched Bridge binaries
         type: boolean
@@ -38,8 +43,31 @@ on:
 permissions:
   contents: read
 jobs:
+  correctness-gate:
+    if: github.event_name == 'workflow_dispatch' && inputs.correctness_stage != '' && inputs.correctness_stage != 'off'
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Prepare pinned production source
+        run: python scripts/prepare_bridge.py
+      - name: Sequential native correctness gate
+        shell: powershell
+        env:
+          CORRECTNESS_STAGE: ${{ inputs.correctness_stage }}
+        run: ./scripts/test_correctness.ps1 -Stage $env:CORRECTNESS_STAGE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ldb-correctness-${{ inputs.correctness_stage }}-${{ github.run_id }}
+          path: work/correctness-*/
+          if-no-files-found: warn
   ime-bridge-only:
-    if: github.event_name == 'workflow_dispatch' && inputs.ime_bridge_only && !inputs.publish_existing_prerelease
+    if: github.event_name == 'workflow_dispatch' && inputs.ime_bridge_only && !inputs.publish_existing_prerelease && (inputs.correctness_stage == '' || inputs.correctness_stage == 'off')
     runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
@@ -87,10 +115,12 @@ jobs:
           include-hidden-files: true
           if-no-files-found: warn
   windows-build:
-    if: (github.event_name != 'workflow_dispatch' || !inputs.publish_existing_prerelease) && !inputs.ime_bridge_only
+    if: (github.event_name != 'workflow_dispatch' || !inputs.publish_existing_prerelease) && !inputs.ime_bridge_only && (inputs.correctness_stage == '' || inputs.correctness_stage == 'off')
     runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/checkout@v4
         with:
           repository: yeyunyyds/L4D2_Dxvk_32to64_Bridge
@@ -128,6 +158,9 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'DXVK extraction failed' }
       - name: Prepare pinned Bridge sources
         run: python scripts/prepare_bridge.py
+      - name: All correctness fixes against frozen main and negative controls
+        shell: powershell
+        run: ./scripts/test_correctness.ps1 -Stage all
       - name: Presenter IME COM and TSF lifecycle
         shell: powershell
         run: ./scripts/test_steam_ime_native.ps1
@@ -274,6 +307,7 @@ jobs:
             work/upload-safety-*/
             work/ipc-safety-replies.json
             work/release-build.json
+            work/correctness-*/
             .deps/observation-test-*/
             .deps/steam-*/
             .deps/pageblock-gc-test/

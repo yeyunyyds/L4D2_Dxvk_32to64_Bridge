@@ -5,7 +5,15 @@
 
 # 更新记录 / Changelog
 
-当前正式版为 **v1.3.1**。简明记录见 [LDBREADME](LDBREADME.md)。
+当前正式版为 **v1.3.2**。简明记录见 [LDBREADME](LDBREADME.md)。
+
+## 1.3.2（正式发布 / Stable）
+
+- 中文输入法修复：整合已实机通过的 Steam Overlay TSF / 原生输入初始化。
+- Steam Overlay 修复：保留邀请好友、鼠标键盘、窗口适配，并包含新版 Steam Renderer 兼容支持。
+- 部分安全性修复：Query 仅在 `S_OK` 时传递结果，修补 Shader 参数溢出、UpdateTexture 参数校验、SharedHeap 分配/上传边界和 Host 资源查找；失败的 DISCARD 保留旧 backing，Device 清理保持幂等。
+- 配套重新编译 x86 Client、x86/x64 Host 和独立 L4N 插件；完整包与升级包使用同一构建标识。默认 C8，SharedHeap 与 mapped Shadow 继续默认关闭。
+- 验证范围、安装及回滚见 [1.3.2 安装说明](docs/RELEASE-V1.3.2.md)，逐项证据见 [正确性审计](docs/LDB-CORRECTNESS-AUDIT.md)。
 
 ## 1.3.1（正式发布 / Stable）
 

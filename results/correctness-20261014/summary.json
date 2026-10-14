@@ -1,0 +1,165 @@
+{
+  "base": "64798c77e96b05d70720bcd5bedab32aa9a0b7e9",
+  "upstream": "9aa74f8dfad2188efbd0f717c64d9f8fa909787e",
+  "patch_sha256": "3d545d8aa5ca71641f3305f66c1859936dc5628a0519f0e68c348b6e03c8e6f4",
+  "branch": "codex/ldb-correctness-only",
+  "compiler": "MSVC 14.29 /O2 NDEBUG",
+  "native_stages": [
+    {
+      "stage": "query",
+      "run_id": 38544104454,
+      "commit": "5f8b996248f739532f77bee2bf0b57166fc9e103",
+      "conclusion": "success",
+      "log": "query.log"
+    },
+    {
+      "stage": "shader",
+      "run_id": 38544334751,
+      "commit": "360c2a4239cb74ef07e5541d0b64d98e471b109f",
+      "conclusion": "success",
+      "log": "shader.log"
+    },
+    {
+      "stage": "texture",
+      "run_id": 38544650695,
+      "commit": "655141234bd58e898f757689b1ca86aa194b3d9e",
+      "conclusion": "success",
+      "log": "texture.log"
+    },
+    {
+      "stage": "sharedheap",
+      "run_id": 38545259380,
+      "commit": "dc74ed5bd57e3f1ad77bc3567207b7057ed44d0a",
+      "conclusion": "success",
+      "log": "sharedheap.log"
+    },
+    {
+      "stage": "host",
+      "run_id": 38546203975,
+      "commit": "e46554973d4624a62470c57718caec8411654c38",
+      "conclusion": "success",
+      "log": "host.log",
+      "note": "Initial Host gate; final Device cleanup compatibility additionally covered by final_host_cleanup_gate and integrated_build."
+    }
+  ],
+  "production_files": {
+    "bridge/src/server/main.cpp": {
+      "before": "da5fe47b2981db34bbd46db3e94b1b2f49e5d897103ba69e639c5d0209880729",
+      "after": "71bad0c5283c10e05c3ee2d604a517b562fb50e214c3d6ae50e70f0d350e897c"
+    },
+    "bridge/src/client/d3d9_surface.cpp": {
+      "before": "64cae1508912e6e6170265ca79e74b9588eeb83e228c73bd4f471a85560647bf",
+      "after": "4614d6e5519e43237248c08d7d595855b379f9e347fe928f8aabeb077183bae7"
+    },
+    "bridge/src/client/d3d9_device.cpp": {
+      "before": "44968ffb4eec2aebbf6cdb2b85a837374729fbc2df753fc0cd5f63b2be0f46dd",
+      "after": "b21171b4c10c80497b06afb12a6d9bfbdb1d7176ed47f084d54af768ec31343e"
+    },
+    "bridge/src/client/d3d9_query.cpp": {
+      "before": "c42636c1cfe9f09ec1bad6239245c75b9fdb63a689a172b07ce0b08193b6dbff",
+      "after": "82bb124d608e0e1e010ba14f1ac5757f0ce4b944f34b8989ce81bebecd74b9ee"
+    },
+    "bridge/src/client/lockable_buffer.h": {
+      "before": "4b8e13437b6431c7b0c90fe58da12468c764fb5caebea78ee28f833b7c01ee6e",
+      "after": "faf0f47b33aa5a5c74945d4c42504e25d75c57a562d1c9417494d7c8cb6331b7"
+    },
+    "bridge/src/util/util_sharedheap.h": {
+      "before": "0266eeac75c98dcf496afe3b2fc0909b1c1e405559965a92cf85ae9e6ce50d76",
+      "after": "2b90ee18704eaaa97e7e209e44ae1cbd87a6bc67d7c2237262fd10432a75dd71"
+    },
+    "bridge/src/util/util_sharedheap.cpp": {
+      "before": "9b3a0f05d070d246475ac541c2879d2b3713482b6d9de215748be93d939fa889",
+      "after": "b8586b2816de6caad9689a58f353cb4c9579c7cfd3feb0ffa911e3bb63054317"
+    }
+  },
+  "failed_fixture_run": {
+    "run_id": 38545895692,
+    "reason": "Windows SDK macro collision in test wrapper; renamed with no production change"
+  },
+  "local_python_tests": {
+    "runtime_separation": 7,
+    "release_packaging": 9
+  },
+  "integrated_build": {
+    "run_id": 38548826740,
+    "job_id": 115801496884,
+    "commit": "7bfc3e021d739d09b94472edbf84f6cccc42a660",
+    "conclusion": "success",
+    "build_id": "l4d2-1.3.1+3d545d8aa5ca7164",
+    "compiler": "MSVC 14.29",
+    "build_type": "Release",
+    "roles": [
+      "x86",
+      "x64",
+      "x86_server"
+    ],
+    "cross_process_cases": 360,
+    "batches": [
+      "1",
+      "16",
+      "2",
+      "32",
+      "4",
+      "8"
+    ],
+    "host_architectures": [
+      "32",
+      "64"
+    ],
+    "intentional_fault_cases": 24,
+    "sharedheap_cases": 7,
+    "native_artifact_id": 11886421428,
+    "native_artifact_sha256": "072b5edc79d288f6b3be7945266ee5d26ceb1b99b8264f64318179a1d6f0f667"
+  },
+  "gameplay_validation": "pending",
+  "merge_recommendation": "AWAITING GAME VALIDATION",
+  "preliminary_integrated_build": {
+    "run_id": 38546726880,
+    "commit": "abd2ec4e18e6b213b4a29d26135910f85a0bb5ef",
+    "conclusion": "success",
+    "published": false,
+    "note": "Not distributed: final review added an explicit idempotent Device Destroy exception and regression"
+  },
+  "final_host_cleanup_gate": {
+    "run_id": 38548680765,
+    "commit": "696779b711156e5ead737184983460ca2d4fa75d",
+    "conclusion": "success",
+    "log": "host-cleanup.log"
+  },
+  "production_diff_sha256": "458658737aaef2c9229f0b0f60ac25009aa38c557e2f56fe77f816d1b4bf815c",
+  "downloads": {
+    "source_commit": "7bfc3e021d739d09b94472edbf84f6cccc42a660",
+    "build_run": 38548826740,
+    "build_id": "l4d2-1.3.1+3d545d8aa5ca7164",
+    "ci_conclusion": "success",
+    "release_published": false,
+    "artifact_bytes_unchanged": true,
+    "contents": "matched Client, x86/x64 Hosts, official x86/x64 DXVK, default config; separate optional L4N plugin",
+    "includes": "Query, Shader range, UpdateTexture, SharedHeap and Host handle correctness fixes on main 64798c7; PR12 and IME preserved",
+    "excluded": "IPC/performance refactors, database tuning, new release publication",
+    "gameplay_validated": false,
+    "recommendation": "AWAITING GAME VALIDATION",
+    "device_cleanup_gate": 38548680765,
+    "files": {
+      "l4d2-bridge-correctness-7bfc3e0-r38548826740-patch.zip": {
+        "sha256": "071a3e64ee7e3cbdf23f9f8421e40a95a7e176d5d4aa8260e47b72f6ede69ade",
+        "bytes": 4060519
+      },
+      "l4d2-bridge-correctness-7bfc3e0-r38548826740-full.zip": {
+        "sha256": "41c0c95da5e628a55b4310848a24043390768150e3b4ec78d6dde54c118b3746",
+        "bytes": 7263637
+      },
+      "l4d2-bridge-l4n-correctness-7bfc3e0-r38548826740.zip": {
+        "sha256": "653915f841d903b3aa7fe109bbaeef66037a6acc8c700156953e798c07854946",
+        "bytes": 101655
+      }
+    },
+    "zip_commit": "e42dd64da727b8eb64739014857be01e019718fe",
+    "download_urls": {
+      "l4d2-bridge-correctness-7bfc3e0-r38548826740-patch.zip": "https://raw.githubusercontent.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/e42dd64da727b8eb64739014857be01e019718fe/correctness-7bfc3e0-r38548826740/l4d2-bridge-correctness-7bfc3e0-r38548826740-patch.zip",
+      "l4d2-bridge-correctness-7bfc3e0-r38548826740-full.zip": "https://raw.githubusercontent.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/e42dd64da727b8eb64739014857be01e019718fe/correctness-7bfc3e0-r38548826740/l4d2-bridge-correctness-7bfc3e0-r38548826740-full.zip",
+      "l4d2-bridge-l4n-correctness-7bfc3e0-r38548826740.zip": "https://raw.githubusercontent.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/e42dd64da727b8eb64739014857be01e019718fe/correctness-7bfc3e0-r38548826740/l4d2-bridge-l4n-correctness-7bfc3e0-r38548826740.zip"
+    },
+    "checksums_url": "https://raw.githubusercontent.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/e42dd64da727b8eb64739014857be01e019718fe/correctness-7bfc3e0-r38548826740/SHA256SUMS.txt"
+  }
+}

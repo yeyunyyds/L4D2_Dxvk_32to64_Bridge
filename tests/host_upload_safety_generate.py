@@ -25,7 +25,7 @@ for name in ['IDirect3DVertexBuffer9_Unlock', 'IDirect3DIndexBuffer9_Unlock',
     text = main[start:end]
     for old, new in [('IDirect3DVertexBuffer9', 'TestBuffer'), ('IDirect3DIndexBuffer9', 'TestBuffer'),
                      ('IDirect3DSurface9', 'TestSurface'), ('IDirect3DVolumeTexture9', 'TestVolumeTexture')]:
-        text = text.replace('(' + old + '*)', '(' + new + '*)')
+        text = re.sub(r'\b' + old + r'\b', new, text)
     cases.append(text)
 a.output.mkdir(parents=True, exist_ok=True)
 (a.output / 'actual_upload_dispatch.h').write_text(
@@ -41,3 +41,10 @@ for marker in ['static uint32_t getBlockSize(', 'static uint32_t getBytesFromFor
 out += '}\n' + formats[formats.index('#define FOR_EACH_RECT_ROW'):]
 (a.output / 'actual_upload_formats.h').write_text(out, encoding='utf-8')
 print('Extracted all five production upload handlers')
+
+lookup=''
+marker='static typename Map::mapped_type lookupHostHandle('
+if marker in main:
+ start,end=method(main,marker)
+ lookup='template<typename Map>\n'+main[start:end]+'\n'
+(a.output/'actual_host_handle_lookup.h').write_text(lookup,encoding='utf-8')

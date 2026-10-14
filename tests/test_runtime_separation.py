@@ -59,7 +59,19 @@ class RuntimeSeparation(unittest.TestCase):
         for name, digest in VOLUME_HANDLERS.items():
             start = server.index('      case ' + name + ':')
             end = server.index('      case ', start + 10)
-            self.assertEqual(hashlib.sha256(server[start:end].encode()).hexdigest(), digest)
+            body = server[start:end]
+            # Normalize only the reviewed handle lookup; keep the original digest
+            # protecting every byte of Volume payload layout/copy/Lock/Unlock.
+            if name == 'IDirect3DVolume9_UnlockBox':
+                reviewed = '        const auto pVolume = lookupHostHandle(gpD3DVolumes, pHandle);'
+                original = '        const auto& pVolume = gpD3DVolumes[pHandle];'
+            else:
+                reviewed = ("        const auto resource = lookupHostHandle(gpD3DResources, pHandle);\n"
+                    "        const auto pVolumeTexture = resource && resource->GetType() == D3DRTYPE_VOLUMETEXTURE\n"
+                    "          ? static_cast<IDirect3DVolumeTexture9*>(resource) : nullptr;")
+                original = '        const auto& pVolumeTexture = (IDirect3DVolumeTexture9*) gpD3DResources[pHandle];'
+            self.assertEqual(body.count(reviewed), 1)
+            self.assertEqual(hashlib.sha256(body.replace(reviewed, original).encode()).hexdigest(), digest)
 
     def test_original_volume_lock_layout_is_unchanged(self):
         from scripts.generate_buffer_contract_test import method

@@ -1,0 +1,170 @@
+[
+  {
+    "batch": "1",
+    "mode": "abort",
+    "rc": 0,
+    "stdout": "IPC_FULL_FAIL_CLOSED_PASS\n",
+    "stderr": ""
+  },
+  {
+    "batch": "1",
+    "mode": "oversize",
+    "rc": 0,
+    "stdout": "IPC_FULL_FAIL_CLOSED_PASS\n",
+    "stderr": ""
+  },
+  {
+    "batch": "1",
+    "mode": "underfill",
+    "rc": 0,
+    "stdout": "IPC_FULL_FAIL_CLOSED_PASS\n",
+    "stderr": ""
+  },
+  {
+    "batch": "1",
+    "mode": "overrun",
+    "rc": 0,
+    "stdout": "IPC_FULL_FAIL_CLOSED_PASS\n",
+    "stderr": ""
+  },
+  {
+    "batch": "2",
+    "mode": "abort",
+    "rc": 0,
+    "stdout": "IPC_FULL_FAIL_CLOSED_PASS\n",
+    "stderr": ""
+  },
+  {
+    "batch": "2",
+    "mode": "oversize",
+    "rc": 0,
+    "stdout": "IPC_FULL_FAIL_CLOSED_PASS\n",
+    "stderr": ""
+  },
+  {
+    "batch": "2",
+    "mode": "underfill",
+    "rc": 0,
+    "stdout": "IPC_FULL_FAIL_CLOSED_PASS\n",
+    "stderr": ""
+  },
+  {
+    "batch": "2",
+    "mode": "overrun",
+    "rc": 0,
+    "stdout": "IPC_FULL_FAIL_CLOSED_PASS\n",
+    "stderr": ""
+  },
+  {
+    "batch": "4",
+    "mode": "abort",
+    "rc": 0,
+    "stdout": "IPC_FULL_FAIL_CLOSED_PASS\n",
+    "stderr": ""
+  },
+  {
+    "batch": "4",
+    "mode": "oversize",
+    "rc": 0,
+    "stdout": "IPC_FULL_FAIL_CLOSED_PASS\n",
+    "stderr": ""
+  },
+  {
+    "batch": "4",
+    "mode": "underfill",
+    "rc": 0,
+    "stdout": "IPC_FULL_FAIL_CLOSED_PASS\n",
+    "stderr": ""
+  },
+  {
+    "batch": "4",
+    "mode": "overrun",
+    "rc": 0,
+    "stdout": "IPC_FULL_FAIL_CLOSED_PASS\n",
+    "stderr": ""
+  },
+  {
+    "batch": "8",
+    "mode": "abort",
+    "rc": 0,
+    "stdout": "IPC_FULL_FAIL_CLOSED_PASS\n",
+    "stderr": ""
+  },
+  {
+    "batch": "8",
+    "mode": "oversize",
+    "rc": 0,
+    "stdout": "IPC_FULL_FAIL_CLOSED_PASS\n",
+    "stderr": ""
+  },
+  {
+    "batch": "8",
+    "mode": "underfill",
+    "rc": 0,
+    "stdout": "IPC_FULL_FAIL_CLOSED_PASS\n",
+    "stderr": ""
+  },
+  {
+    "batch": "8",
+    "mode": "overrun",
+    "rc": 0,
+    "stdout": "IPC_FULL_FAIL_CLOSED_PASS\n",
+    "stderr": ""
+  },
+  {
+    "batch": "16",
+    "mode": "abort",
+    "rc": 0,
+    "stdout": "IPC_FULL_FAIL_CLOSED_PASS\n",
+    "stderr": ""
+  },
+  {
+    "batch": "16",
+    "mode": "oversize",
+    "rc": 0,
+    "stdout": "IPC_FULL_FAIL_CLOSED_PASS\n",
+    "stderr": ""
+  },
+  {
+    "batch": "16",
+    "mode": "underfill",
+    "rc": 0,
+    "stdout": "IPC_FULL_FAIL_CLOSED_PASS\n",
+    "stderr": ""
+  },
+  {
+    "batch": "16",
+    "mode": "overrun",
+    "rc": 0,
+    "stdout": "IPC_FULL_FAIL_CLOSED_PASS\n",
+    "stderr": ""
+  },
+  {
+    "batch": "32",
+    "mode": "abort",
+    "rc": 0,
+    "stdout": "IPC_FULL_FAIL_CLOSED_PASS\n",
+    "stderr": ""
+  },
+  {
+    "batch": "32",
+    "mode": "oversize",
+    "rc": 0,
+    "stdout": "IPC_FULL_FAIL_CLOSED_PASS\n",
+    "stderr": ""
+  },
+  {
+    "batch": "32",
+    "mode": "underfill",
+    "rc": 0,
+    "stdout": "IPC_FULL_FAIL_CLOSED_PASS\n",
+    "stderr": ""
+  },
+  {
+    "batch": "32",
+    "mode": "overrun",
+    "rc": 0,
+    "stdout": "IPC_FULL_FAIL_CLOSED_PASS\n",
+    "stderr": ""
+  }
+]

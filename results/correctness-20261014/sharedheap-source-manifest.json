@@ -1,0 +1,29 @@
+{
+  "files": {
+    "util_sharedheap.h": "2b90ee18704eaaa97e7e209e44ae1cbd87a6bc67d7c2237262fd10432a75dd71",
+    "util_sharedheap.cpp": "b8586b2816de6caad9689a58f353cb4c9579c7cfd3feb0ffa911e3bb63054317",
+    "util_common.h": "d07ca930ee322f5ebd541ee39ff42afdc1146f6821c67cef57b585f37b727839",
+    "util_sharedmemory.h": "220f59b124669b75c7d0a7bc97868533f1f758b9a2edcaa54b2a3baec1c750da",
+    "util_sharedmemory.cpp": "3b2390d77927ed431f50f18a7e4badf3510548289aa1ba54064d02fda0122ac0",
+    "util_guid.h": "d8ae475f61150b900146ca8a32cc22ff4a82a75fe03785dd49c520a5c2b97cbb",
+    "util_bytes.h": "fd5de983c5b722f71a7500c01d40d3c435978fcc769952a3c49b92ff2fe7e1ef",
+    "util_commands.h": "cfd0d69f05b00a6b4f05a04a41ac22c607789330fccd94f1fb6cdcb09b7dddc6"
+  },
+  "adapters": [
+    "logger",
+    "options",
+    "ClientMessage captures exact command fields",
+    "disabled timing spans"
+  ],
+  "memory": "production SharedMemory uses real Windows mappings",
+  "client_files": {
+    "lockable_buffer.h": "faf0f47b33aa5a5c74945d4c42504e25d75c57a562d1c9417494d7c8cb6331b7",
+    "d3d9_surface.cpp": "4614d6e5519e43237248c08d7d595855b379f9e347fe928f8aabeb077183bae7"
+  },
+  "client_adapters": [
+    "SharedHeap allocation/view failure injection",
+    "disabled transport/observers",
+    "full LockableBuffer template",
+    "Surface exact shared-heap branch and pointer helper"
+  ]
+}
