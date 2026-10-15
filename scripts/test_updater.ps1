@@ -17,13 +17,19 @@ if($CompileArchitecture){
   if($LASTEXITCODE -ne 0){throw 'Client updater controls failed'}
   exit 0
 }
+Write-Host "UPDATER_SOURCE_ROOT $root"
 $csc=Join-Path $env:WINDIR 'Microsoft.NET/Framework/v4.0.30319/csc.exe'
+$coreSource=Join-Path $root 'updater\UpdateCore.cs'
+$programSource=Join-Path $root 'updater\Program.cs'
+$testSource=Join-Path $root 'tests\updater_core.cs'
+$updaterOutput=Join-Path $out 'LDBupdater.exe'
+$testOutput=Join-Path $out 'updater-core-tests.exe'
 $refs=@('/r:System.IO.Compression.dll','/r:System.IO.Compression.FileSystem.dll','/r:System.Web.Extensions.dll','/r:System.Windows.Forms.dll')
-& $csc /nologo /target:exe /platform:x86 /optimize+ /warnaserror+ $refs "/out:$out/LDBupdater.exe" "$root/updater/UpdateCore.cs" "$root/updater/Program.cs"
+& $csc /nologo /target:exe /platform:x86 /optimize+ /warnaserror+ $refs "/out:$updaterOutput" $coreSource $programSource
 if($LASTEXITCODE -ne 0){throw 'Updater compilation failed'}
-& $csc /nologo /target:exe /platform:x86 /optimize+ /warnaserror+ $refs "/out:$out/updater-core-tests.exe" "$root/updater/UpdateCore.cs" "$root/tests/updater_core.cs"
+& $csc /nologo /target:exe /platform:x86 /optimize+ /warnaserror+ $refs "/out:$testOutput" $coreSource $testSource
 if($LASTEXITCODE -ne 0){throw 'Updater core fixture compilation failed'}
-& "$out/updater-core-tests.exe"
+& $testOutput
 if($LASTEXITCODE -ne 0){throw 'Updater core regression failed'}
 foreach($arch in @('x86','x64')){
   & powershell.exe -NoProfile -File $PSCommandPath -CompileArchitecture $arch
