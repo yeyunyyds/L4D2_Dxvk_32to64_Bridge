@@ -34,9 +34,9 @@ namespace LdbUpdater {
     static byte[] ReadExactly(NamedPipeClientStream pipe,int count,int timeout) {
       byte[] bytes=new byte[count];int offset=0;
       while(offset<count) {
-        var pending=pipe.BeginRead(bytes,offset,count-offset,null,null);
-        using(var done=pending.AsyncWaitHandle) { if(!done.WaitOne(timeout))throw new TimeoutException("Host control timeout"); }
-        int n=pipe.EndRead(pending);if(n==0)throw new EndOfStreamException("Host disconnected");offset+=n;
+        var pending=pipe.ReadAsync(bytes,offset,count-offset);
+        if(!pending.Wait(timeout))throw new TimeoutException("Host control timeout");
+        int n=pending.GetAwaiter().GetResult();if(n==0)throw new EndOfStreamException("Host disconnected");offset+=n;
       }
       return bytes;
     }
@@ -113,7 +113,7 @@ namespace LdbUpdater {
           } finally { if(owns)mutex.ReleaseMutex(); }
         }
       } catch(Exception e) {
-        try { if(Root!=null)Log("UPDATE_ERROR "+e.GetType().Name+": "+e.Message); } catch {}
+        try { if(Root!=null)Log("UPDATE_ERROR "+e.ToString()); } catch {}
         Console.Error.WriteLine(e.ToString());return 1;
       } finally {
         // Never discard recovery backups after an incomplete/failed rollback.
