@@ -3358,7 +3358,7 @@ index 1593d51ad30d0a460683b5787801ab0cabf8d615..31fe6f3bd7974f70ef8548d956187023
 +  return DeviceBridge::healthy() ? D3D_OK : D3DERR_DEVICELOST;
  }
 diff --git a/bridge/src/client/d3d9_lss.cpp b/bridge/src/client/d3d9_lss.cpp
-index 300aaf52349174026c589c75ab88d7b0192369a6..fb4566c8109d1620ba582410f514f97bda831ca8 100644
+index 300aaf52349174026c589c75ab88d7b0192369a6..549f8e83ec81d0cef9e25450308dc84bf2aef9e2 100644
 --- a/bridge/src/client/d3d9_lss.cpp
 +++ b/bridge/src/client/d3d9_lss.cpp
 @@ -1,3 +1,7 @@
@@ -3603,7 +3603,7 @@ index 300aaf52349174026c589c75ab88d7b0192369a6..fb4566c8109d1620ba582410f514f97b
      Logger::info("Shutdown cleanup successful, exiting now!");
      BridgeState::setClientState(BridgeState::ProcessState::Exited);
  
-@@ -643,6 +720,17 @@ static bool shouldAttachToCurrentProcess() {
+@@ -643,6 +720,18 @@ static bool shouldAttachToCurrentProcess() {
   * Direct3D9 Interface Implementation
   */
  
@@ -3615,13 +3615,14 @@ index 300aaf52349174026c589c75ab88d7b0192369a6..fb4566c8109d1620ba582410f514f97b
 +  if (pending) { MessageBoxW(nullptr,
 +    L"An interrupted LDB update needs recovery. Close this game and all Hosts, then run bin/.l4d2bridge/LDBupdater.exe --recover. Backups have been preserved.",
 +    L"LDB update recovery", MB_OK | MB_ICONWARNING); }
++  SetLastError(saved);
 +  return pending;
 +}
 +
  HRESULT LssDirect3DCreate9Ex(UINT SDKVersion, IDirect3D9Ex** ppDeviceEx) {
    if (!shouldAttachToCurrentProcess()) {
      return orig_Direct3DCreate9Ex(SDKVersion, ppDeviceEx);
-@@ -651,6 +739,8 @@ HRESULT LssDirect3DCreate9Ex(UINT SDKVersion, IDirect3D9Ex** ppDeviceEx) {
+@@ -651,6 +740,8 @@ HRESULT LssDirect3DCreate9Ex(UINT SDKVersion, IDirect3D9Ex** ppDeviceEx) {
      return D3DERR_NOTAVAILABLE;
    }
  
@@ -3630,7 +3631,7 @@ index 300aaf52349174026c589c75ab88d7b0192369a6..fb4566c8109d1620ba582410f514f97b
    // A game may override client's exception handler when it was setup early.
    // Attempt to restore the exeption handler.
    SetupExceptionHandler();
-@@ -668,6 +758,8 @@ IDirect3D9* LssDirect3DCreate9(UINT SDKVersion) {
+@@ -668,6 +759,8 @@ IDirect3D9* LssDirect3DCreate9(UINT SDKVersion) {
      return nullptr;
    }
  
@@ -8832,7 +8833,7 @@ index 185005e0e37354fb798402fcbf0491c26c7124c6..aa09a478918a4a99bb4afaaeb51ce2c7
      END
      BLOCK "VarFileInfo"
 diff --git a/bridge/src/client/window.cpp b/bridge/src/client/window.cpp
-index a6d5a4237e843a37c3c04dceec082b845efc69e8..2ea39272f0055d32205403c1ca8d7dae3ac004af 100644
+index a6d5a4237e843a37c3c04dceec082b845efc69e8..283fdb3fe76251cbdf115d01e23e08acb24c12c2 100644
 --- a/bridge/src/client/window.cpp
 +++ b/bridge/src/client/window.cpp
 @@ -21,6 +21,7 @@
@@ -8941,14 +8942,20 @@ index a6d5a4237e843a37c3c04dceec082b845efc69e8..2ea39272f0055d32205403c1ca8d7dae
      gpRemixMessageChannel->send(msg, wParam, lParam);
    }
  
-@@ -287,6 +335,20 @@ bool remixMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+@@ -287,6 +335,26 @@ bool remixMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
  }
  
  LRESULT WINAPI RemixWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 +  // Local updater test only: no readiness claim or per-frame polling.
-+  if (msg == WM_KEYUP && wParam == VK_F10 && (GetKeyState(VK_CONTROL) & 0x8000)
-+      && (GetKeyState(VK_SHIFT) & 0x8000) && gpServerMessageChannel) {
-+    gpServerMessageChannel->send("LDB_UPDATER_LOCAL_TEST_REQUEST_V1",
++  static bool updateChord = false;
++  if (wParam == VK_F10 && (msg == WM_KEYDOWN || msg == WM_SYSKEYDOWN)) {
++    if (updateChord || ((GetKeyState(VK_CONTROL) & 0x8000) && (GetKeyState(VK_SHIFT) & 0x8000))) {
++      updateChord = true; return 0;
++    }
++  }
++  if (wParam == VK_F10 && (msg == WM_KEYUP || msg == WM_SYSKEYUP) && updateChord) {
++    updateChord = false;
++    if (gpServerMessageChannel) gpServerMessageChannel->send("LDB_UPDATER_LOCAL_TEST_REQUEST_V1",
 +      static_cast<uint32_t>(reinterpret_cast<uintptr_t>(hWnd)), 0);
 +    return 0;
 +  }
@@ -8962,7 +8969,7 @@ index a6d5a4237e843a37c3c04dceec082b845efc69e8..2ea39272f0055d32205403c1ca8d7dae
    const bool isUnicode = IsWindowUnicode(hWnd);
    LRESULT lresult = 0;
  
-@@ -310,6 +372,23 @@ LRESULT WINAPI RemixWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+@@ -310,6 +378,23 @@ LRESULT WINAPI RemixWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
  // External funcs //
  ////////////////////
  
@@ -8986,7 +8993,7 @@ index a6d5a4237e843a37c3c04dceec082b845efc69e8..2ea39272f0055d32205403c1ca8d7dae
  bool init() {
    if(!attach()) {
      Logger::err(kStr_init_attachErr);
-@@ -320,6 +399,8 @@ bool init() {
+@@ -320,6 +405,8 @@ bool init() {
  }
  
  bool terminate() {
@@ -8995,7 +9002,7 @@ index a6d5a4237e843a37c3c04dceec082b845efc69e8..2ea39272f0055d32205403c1ca8d7dae
    if(!detach()) {
      Logger::err(kStr_terminate_detachErr);
      return false;
-@@ -364,7 +445,7 @@ bool set(HWND hwnd) {
+@@ -364,7 +451,7 @@ bool set(HWND hwnd) {
    // Fix up DirectInput forwarding if setting has succeeded
    DInputSetDefaultWindow(hwnd);
  
@@ -9004,7 +9011,7 @@ index a6d5a4237e843a37c3c04dceec082b845efc69e8..2ea39272f0055d32205403c1ca8d7dae
  
    return true;
  }
-@@ -386,11 +467,12 @@ bool unset() {
+@@ -386,11 +473,12 @@ bool unset() {
        "another component likely subclassed the window during a mode change", RemixWndProc, prevWndProc));
    }
  
@@ -9018,7 +9025,7 @@ index a6d5a4237e843a37c3c04dceec082b845efc69e8..2ea39272f0055d32205403c1ca8d7dae
  
    return true;
  }
-@@ -439,3 +521,68 @@ void prepareForCrashDialog(bool async) {
+@@ -439,3 +527,68 @@ void prepareForCrashDialog(bool async) {
  }
  
  }

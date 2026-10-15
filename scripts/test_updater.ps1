@@ -9,6 +9,12 @@ if($CompileArchitecture){
   SetupVS -Platform $CompileArchitecture -VcVarsVer '14.29'
   & cl.exe /nologo /std:c++17 /EHsc /O2 /W4 /WX /utf-8 "/I$root/.deps/dxvk-remix/bridge/src/server" "$root/tests/updater_session.cpp" user32.lib advapi32.lib "/Fe:$out/fixture-$CompileArchitecture.exe"
   if($LASTEXITCODE -ne 0){throw 'Native updater fixture failed'}
+  python "$root/tests/updater_client_generate.py" "$out/client-control.cpp"
+  if($LASTEXITCODE -ne 0){throw 'Client production extraction failed'}
+  & cl.exe /nologo /std:c++17 /EHsc /O2 /W4 /WX /utf-8 "$out/client-control.cpp" user32.lib "/Fe:$out/client-control-$CompileArchitecture.exe"
+  if($LASTEXITCODE -ne 0){throw 'Client updater fixture compilation failed'}
+  & "$out/client-control-$CompileArchitecture.exe"
+  if($LASTEXITCODE -ne 0){throw 'Client updater controls failed'}
   exit 0
 }
 $csc=Join-Path $env:WINDIR 'Microsoft.NET/Framework/v4.0.30319/csc.exe'

@@ -159,13 +159,13 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'DXVK extraction failed' }
       - name: Prepare pinned Bridge sources
         run: python scripts/prepare_bridge.py
-      - name: All correctness fixes against frozen main and negative controls
-        shell: powershell
-        run: ./scripts/test_correctness.ps1 -Stage all
       - name: Local updater core and actual cross-bitness sessions
         if: github.ref == 'refs/heads/codex/ldb-updater-test'
         shell: powershell
         run: ./scripts/test_updater.ps1
+      - name: All correctness fixes against frozen main and negative controls
+        shell: powershell
+        run: ./scripts/test_correctness.ps1 -Stage all
       - name: Presenter IME COM and TSF lifecycle
         shell: powershell
         run: ./scripts/test_steam_ime_native.ps1
