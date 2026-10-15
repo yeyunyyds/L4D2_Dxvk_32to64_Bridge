@@ -12,7 +12,7 @@
 
 1. 将 `LOCAL-TEST.vpk` 作为 ZIP 打开（必要时改名为 `.zip`）。编辑根目录 `VERSION`，从当前 `1.3.2` 改为较新的稳定版本，例如下一个 patch 版本。三段数字，不加哈希或测试后缀。
 2. 保存并重新打包；VERSION、UPDATE-MANIFEST.json 和 bin 必须直接位于包根目录，不要多套一层文件夹。不修改三件套或其哈希清单。修改 payload 会被拒绝。
-3. 选择测试数字文件名，将文件改名为该数字加 `.vpk`，放到游戏的 `left4dead2/addons/workshop/`。
+3. 选择测试数字文件名，将文件改名为该数字加 `.vpk`。首次测试先让游戏加载完成，再放到 `left4dead2/addons/workshop/`。该包实际是 ZIP，本轮没有验证 Source 引擎挂载或 Steam 分发；测试结束先移走它，再启动游戏，以隔离挂载影响。
 4. 在 `bin/.l4d2bridge/LDBupdater-test.ini` 的 **WorkshopId** 填同一个数字。测试数字只在这一项配置，不要改 EXE、桥 conf 或其他脚本。Enabled=1 代表明确启用本地测试。
 
 真实 Workshop ID 尚未决定；测试文件可使用自己选择的未占用数字，勿覆盖已订阅内容。测试不会联网下载、订阅或写入 Workshop 原文件。正式 ID 配置模板仍为 null，正式安装入口仍关闭。

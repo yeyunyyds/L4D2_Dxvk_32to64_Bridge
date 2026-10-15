@@ -1,0 +1,12 @@
+{
+  "commit": "5c853a2f27cd245efb6ed6c8e5f78376524b6a5b",
+  "previous": "e42dd64da727b8eb64739014857be01e019718fe",
+  "files": [
+    "ldb-updater-test-v1.3.2-325f743c-r38663341438.zip",
+    "ldb-updater-test-v1.3.2-325f743c-r38663341438.zip.sha256",
+    "LDB-UPDATER-TEST-325f743c-INSTALL.zh-CN.md"
+  ],
+  "url": "https://raw.githubusercontent.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/5c853a2f27cd245efb6ed6c8e5f78376524b6a5b/ldb-updater-test-v1.3.2-325f743c-r38663341438.zip",
+  "downloaded_bytes": 2805587,
+  "sha256": "598a55c4be22bb3e8c3cc7984786cb69a277a42110f08f0fe10457b9997066f5"
+}

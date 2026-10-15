@@ -1,0 +1,92 @@
+[
+  {
+    "bits": 32,
+    "mode": "decline",
+    "passed": true
+  },
+  {
+    "bits": 32,
+    "mode": "cancel",
+    "passed": true
+  },
+  {
+    "bits": 32,
+    "mode": "accept",
+    "passed": true
+  },
+  {
+    "bits": 32,
+    "mode": "linger",
+    "passed": true
+  },
+  {
+    "bits": 32,
+    "mode": "same",
+    "passed": true
+  },
+  {
+    "bits": 32,
+    "mode": "older",
+    "passed": true
+  },
+  {
+    "bits": 32,
+    "mode": "crash",
+    "passed": true
+  },
+  {
+    "bits": 32,
+    "mode": "alias-client",
+    "passed": true
+  },
+  {
+    "bits": 32,
+    "mode": "new-build",
+    "passed": true
+  },
+  {
+    "bits": 64,
+    "mode": "decline",
+    "passed": true
+  },
+  {
+    "bits": 64,
+    "mode": "cancel",
+    "passed": true
+  },
+  {
+    "bits": 64,
+    "mode": "accept",
+    "passed": true
+  },
+  {
+    "bits": 64,
+    "mode": "linger",
+    "passed": true
+  },
+  {
+    "bits": 64,
+    "mode": "same",
+    "passed": true
+  },
+  {
+    "bits": 64,
+    "mode": "older",
+    "passed": true
+  },
+  {
+    "bits": 64,
+    "mode": "crash",
+    "passed": true
+  },
+  {
+    "bits": 64,
+    "mode": "alias-client",
+    "passed": true
+  },
+  {
+    "bits": 64,
+    "mode": "new-build",
+    "passed": true
+  }
+]

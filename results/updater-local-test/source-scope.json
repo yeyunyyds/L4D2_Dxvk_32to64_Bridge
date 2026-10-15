@@ -1,0 +1,12 @@
+{
+  "base": "cafc0442446c502a0de0ebb52d5e73ccaae67516",
+  "compiled_commit": "c7d9607db3e124a89787fb8f956b843b01dd7101",
+  "changed": [
+    "src/client/d3d9_lss.cpp",
+    "src/client/window.cpp",
+    "src/server/main.cpp",
+    "src/server/update_test_coordinator.h"
+  ],
+  "unchanged_count": 282,
+  "bridge_patch_sha256": "325f743c784c0e30ea136b9e32e31b83c8dc74c5be741a278d157ead9eb67ff2"
+}
