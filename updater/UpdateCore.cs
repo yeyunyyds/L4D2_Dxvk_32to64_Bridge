@@ -93,7 +93,7 @@ namespace LdbUpdater {
       }
     }
     static string ReadText(ZipArchiveEntry entry,long limit) {
-      Require(entry.Length<=limit,"Metadata limit exceeded"); using(var s=entry.Open()) return new UTF8Encoding(false,true).GetString(ReadBounded(s,limit));
+      Require(entry.Length<=limit,"Metadata limit exceeded"); using(var s=entry.Open()) return new UTF8Encoding(false,true).GetString(ReadBounded(s,limit)).TrimStart('\uFEFF');
     }
     static void SafeEntry(ZipArchiveEntry entry) {
       var name=entry.FullName;
@@ -213,6 +213,10 @@ namespace LdbUpdater {
       Require(j!=null&&j.schema==1&&(j.phase=="REPLACING"||j.phase=="COMMITTED"),"Invalid recovery journal");
       string stage=Stage(root,j.transaction);NoLinks(stage);
       Require(j.old!=null && j.old.Length==4 && j.old.Select(x=>x.slot).Distinct().Count()==4 && j.old.All(x=>Slots.Contains(x.slot)),"Invalid backup slots");
+      if(j.phase=="COMMITTED") {
+        Require(j.files!=null && j.files.Length==4 && j.files.Select(x=>x.slot).Distinct().Count()==4 && j.files.All(x=>Slots.Contains(x.slot)),"Invalid committed payload slots");
+        if(j.files.Any(f=>!File.Exists(Target(root,f.slot))||HashFile(Target(root,f.slot))!=f.sha256)) j.phase="REPLACING";
+      }
       if(j.phase!="COMMITTED") {
         // Validate all backups before restoring even the first target.
         foreach(var f in j.old) if(f.existed) Require(HashFile(Path.Combine(stage,"backup",f.slot))==f.sha256,"Recovery backup damaged");

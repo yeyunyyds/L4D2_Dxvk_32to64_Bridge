@@ -98,9 +98,9 @@ namespace LdbUpdater {
               string notes=candidate.Notes.Substring(0,Math.Min(candidate.Notes.Length,1200));
               Send(pipe,"CANDIDATE\n"+candidate.Version+"\n"+notes);
               string command=ReadFrame(pipe);
-              if(command=="DECLINE") { Log("DECLINED version="+candidate.Version);return 0; }
+              if(command=="DECLINE") { Log("DECLINED version="+candidate.Version);Core.Cleanup(Root,candidate.Transaction);candidate=null;Send(pipe,"DECLINED");return 0; }
               Core.Require(command=="PREPARE","Unexpected preparation command");Core.Prepare(Root,candidate);Send(pipe,"PREPARED");
-              command=ReadFrame(pipe);if(command=="CANCEL") { Log("CANCELLED");return 0; }
+              command=ReadFrame(pipe);if(command=="CANCEL") { Log("CANCELLED");Core.Cleanup(Root,candidate.Transaction);candidate=null;Send(pipe,"CANCELLED");return 0; }
               Core.Require(command=="COMMIT_ON_EXIT","Missing explicit update authorization");Send(pipe,"ARMED");
               var wait=Stopwatch.StartNew();
               if(!game.WaitForExit(300000))throw new TimeoutException("Game did not exit; no files replaced");

@@ -67,6 +67,17 @@ class UpdaterTests {
     root=Temp();Initial(root);package=Package(root,"1.3.3",null,false);var busy=Extract(root,package);before=Hashes(root);
     using(var locked=new FileStream(Core.Target(root,"host32"),FileMode.Open,FileAccess.Read,FileShare.None))Reject(()=>Core.Install(root,busy,null),"Locked target did not block install");
     Check(Core.Slots.All(s=>before[s]==Core.HashFile(Core.Target(root,s))),"Locked target left mixed install");Clean(root);
+    root=Temp();Initial(root);package=Package(root,"\uFEFF1.3.3",null,false);var bom=Extract(root,package);Check(bom.Version=="1.3.3","Notepad UTF-8 BOM rejected");Core.Cleanup(root,bom.Transaction);Clean(root);
+    foreach(bool damage in new[]{false,true}) {
+      root=Temp();Initial(root);before=Hashes(root);package=Package(root,"1.3.3",null,false);var c=Extract(root,package);FileStream held=null;
+      try { Core.Install(root,c,i=>{if(i==4)held=new FileStream(Path.Combine(Core.Stage(root,c.Transaction),"backup","client"),FileMode.Open,FileAccess.Read,FileShare.None);}); }
+      finally { if(held!=null)held.Dispose(); }
+      Check(File.Exists(Core.JournalPath(root)),"Failed post-commit cleanup discarded recovery marker");
+      if(damage)File.WriteAllText(Core.Target(root,"client"),"damaged after commit");
+      Core.Recover(root);
+      Check(Core.Slots.All(slot=>damage?before[slot]==Core.HashFile(Core.Target(root,slot)):before[slot]!=Core.HashFile(Core.Target(root,slot))),"Committed recovery kept a damaged or rolled-back valid install");
+      Check(!File.Exists(Core.JournalPath(root)),"Committed recovery did not finish");Preserved(root);Clean(root);
+    }
     Console.WriteLine("UPDATER_CORE_PASS assertions="+assertions+" replacement-failure=4 crash-recovery=4");return 0;
   }
 }
