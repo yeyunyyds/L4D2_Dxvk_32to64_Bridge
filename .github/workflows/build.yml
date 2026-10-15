@@ -12,6 +12,7 @@ on:
       - codex/release-1.3.0
       - codex/ipc-upload-safety
       - codex/steam-renderer-1112307
+      - codex/ldb-updater-test
       - codex/ipc-data-queue-correctness
   workflow_dispatch:
     inputs:
@@ -158,6 +159,10 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'DXVK extraction failed' }
       - name: Prepare pinned Bridge sources
         run: python scripts/prepare_bridge.py
+      - name: Local updater core and actual cross-bitness sessions
+        if: github.ref == 'refs/heads/codex/ldb-updater-test'
+        shell: powershell
+        run: ./scripts/test_updater.ps1
       - name: All correctness fixes against frozen main and negative controls
         shell: powershell
         run: ./scripts/test_correctness.ps1 -Stage all
@@ -204,6 +209,9 @@ jobs:
         run: |
           $bridgeOnly = '${{ github.event_name == 'workflow_dispatch' && !inputs.build_l4n }}' -eq 'true' -and $env:L4D2_PROJECT_VERSION.Contains('-dev')
           ./scripts/build_bridge.ps1 -DxvkDll .deps/dxvk-2.6.1/x64/d3d9.dll -Dxvk32Dll .deps/dxvk-2.6.1/x32/d3d9.dll -PatchOnly:$bridgeOnly
+      - name: Package explicit local updater experiment
+        if: github.ref == 'refs/heads/codex/ldb-updater-test'
+        run: python scripts/package_updater_test.py
       - name: Test exception attribution, flushing and bounded termination
         shell: powershell
         run: ./scripts/test_exception_diagnostics.ps1
@@ -297,6 +305,13 @@ jobs:
           include-hidden-files: true
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
+        if: github.ref == 'refs/heads/codex/ldb-updater-test'
+        with:
+          name: ldb-updater-test-${{ github.run_id }}
+          path: dist/ldb-updater-test/
+          include-hidden-files: true
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: l4d2-native-v${{ env.L4D2_PROJECT_VERSION }}-${{ github.run_id }}
@@ -306,6 +321,7 @@ jobs:
             work/ipc-safety-baseline/
             work/upload-safety-*/
             work/ipc-safety-replies.json
+            work/updater-native/
             work/release-build.json
             work/correctness-*/
             .deps/observation-test-*/

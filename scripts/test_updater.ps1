@@ -1,0 +1,43 @@
+# SPDX-License-Identifier: MIT
+param([ValidateSet('x86','x64')][string]$CompileArchitecture)
+$ErrorActionPreference='Stop'
+$root=Split-Path $PSScriptRoot -Parent
+$out=Join-Path $root 'work/updater-native'
+New-Item -ItemType Directory -Force $out | Out-Null
+if($CompileArchitecture){
+  . (Join-Path $root '.deps/dxvk-remix/bridge/build_common.ps1')
+  SetupVS -Platform $CompileArchitecture -VcVarsVer '14.29'
+  & cl.exe /nologo /std:c++17 /EHsc /O2 /W4 /WX /utf-8 "/I$root/.deps/dxvk-remix/bridge/src/server" "$root/tests/updater_session.cpp" user32.lib advapi32.lib "/Fe:$out/fixture-$CompileArchitecture.exe" /link /LARGEADDRESSAWARE
+  if($LASTEXITCODE -ne 0){throw 'Native updater fixture failed'}
+  if($CompileArchitecture -eq 'x86'){
+    & cl.exe /nologo /LD /O2 /W4 /WX /utf-8 "$root/tests/updater_client_dll.cpp" "/Fe:$out/client-fixture.dll"
+    if($LASTEXITCODE -ne 0){throw 'Loaded Client fixture compilation failed'}
+  }
+  python "$root/tests/updater_client_generate.py" "$out/client-control.cpp"
+  if($LASTEXITCODE -ne 0){throw 'Client production extraction failed'}
+  & cl.exe /nologo /std:c++17 /EHsc /O2 /W4 /WX /utf-8 "$out/client-control.cpp" user32.lib "/Fe:$out/client-control-$CompileArchitecture.exe"
+  if($LASTEXITCODE -ne 0){throw 'Client updater fixture compilation failed'}
+  & "$out/client-control-$CompileArchitecture.exe"
+  if($LASTEXITCODE -ne 0){throw 'Client updater controls failed'}
+  exit 0
+}
+Write-Host "UPDATER_SOURCE_ROOT $root"
+$csc=Join-Path $env:WINDIR 'Microsoft.NET/Framework/v4.0.30319/csc.exe'
+$coreSource=Join-Path $root 'updater\UpdateCore.cs'
+$programSource=Join-Path $root 'updater\Program.cs'
+$testSource=Join-Path $root 'tests\updater_core.cs'
+$updaterOutput=Join-Path $out 'LDBupdater.exe'
+$testOutput=Join-Path $out 'updater-core-tests.exe'
+$refs=@('/r:System.IO.Compression.dll','/r:System.IO.Compression.FileSystem.dll','/r:System.Web.Extensions.dll','/r:System.Windows.Forms.dll')
+& $csc /nologo /target:exe /platform:x86 /optimize+ /warnaserror+ $refs "/out:$updaterOutput" $coreSource $programSource
+if($LASTEXITCODE -ne 0){throw 'Updater compilation failed'}
+& $csc /nologo /target:exe /platform:x86 /optimize+ /warnaserror+ $refs "/out:$testOutput" $coreSource $testSource
+if($LASTEXITCODE -ne 0){throw 'Updater core fixture compilation failed'}
+& $testOutput
+if($LASTEXITCODE -ne 0){throw 'Updater core regression failed'}
+foreach($arch in @('x86','x64')){
+  & powershell.exe -NoProfile -File $PSCommandPath -CompileArchitecture $arch
+  if($LASTEXITCODE -ne 0){throw 'Updater cross-bitness fixture compilation failed'}
+}
+python "$root/scripts/test_updater_sessions.py"
+if($LASTEXITCODE -ne 0){throw 'Updater process/session regression failed'}
