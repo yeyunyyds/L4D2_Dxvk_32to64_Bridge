@@ -8833,7 +8833,7 @@ index 185005e0e37354fb798402fcbf0491c26c7124c6..aa09a478918a4a99bb4afaaeb51ce2c7
      END
      BLOCK "VarFileInfo"
 diff --git a/bridge/src/client/window.cpp b/bridge/src/client/window.cpp
-index a6d5a4237e843a37c3c04dceec082b845efc69e8..283fdb3fe76251cbdf115d01e23e08acb24c12c2 100644
+index a6d5a4237e843a37c3c04dceec082b845efc69e8..b7642b37bd0f8d228e832a5ce3a3c29f9825aedf 100644
 --- a/bridge/src/client/window.cpp
 +++ b/bridge/src/client/window.cpp
 @@ -21,6 +21,7 @@
@@ -8942,7 +8942,7 @@ index a6d5a4237e843a37c3c04dceec082b845efc69e8..283fdb3fe76251cbdf115d01e23e08ac
      gpRemixMessageChannel->send(msg, wParam, lParam);
    }
  
-@@ -287,6 +335,26 @@ bool remixMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+@@ -287,6 +335,28 @@ bool remixMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
  }
  
  LRESULT WINAPI RemixWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
@@ -8955,8 +8955,10 @@ index a6d5a4237e843a37c3c04dceec082b845efc69e8..283fdb3fe76251cbdf115d01e23e08ac
 +  }
 +  if (wParam == VK_F10 && (msg == WM_KEYUP || msg == WM_SYSKEYUP) && updateChord) {
 +    updateChord = false;
-+    if (gpServerMessageChannel) gpServerMessageChannel->send("LDB_UPDATER_LOCAL_TEST_REQUEST_V1",
-+      static_cast<uint32_t>(reinterpret_cast<uintptr_t>(hWnd)), 0);
++    try {
++      if (gpServerMessageChannel) gpServerMessageChannel->send("LDB_UPDATER_LOCAL_TEST_REQUEST_V1",
++        static_cast<uint32_t>(reinterpret_cast<uintptr_t>(hWnd)), 0);
++    } catch (...) { /* Never propagate optional control errors through a Win32 WndProc. */ }
 +    return 0;
 +  }
 +  static const UINT updateClose = RegisterWindowMessageW(L"LDB_UPDATER_LOCAL_TEST_CLOSE_V1");
@@ -8969,7 +8971,7 @@ index a6d5a4237e843a37c3c04dceec082b845efc69e8..283fdb3fe76251cbdf115d01e23e08ac
    const bool isUnicode = IsWindowUnicode(hWnd);
    LRESULT lresult = 0;
  
-@@ -310,6 +378,23 @@ LRESULT WINAPI RemixWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+@@ -310,6 +380,23 @@ LRESULT WINAPI RemixWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
  // External funcs //
  ////////////////////
  
@@ -8993,7 +8995,7 @@ index a6d5a4237e843a37c3c04dceec082b845efc69e8..283fdb3fe76251cbdf115d01e23e08ac
  bool init() {
    if(!attach()) {
      Logger::err(kStr_init_attachErr);
-@@ -320,6 +405,8 @@ bool init() {
+@@ -320,6 +407,8 @@ bool init() {
  }
  
  bool terminate() {
@@ -9002,7 +9004,7 @@ index a6d5a4237e843a37c3c04dceec082b845efc69e8..283fdb3fe76251cbdf115d01e23e08ac
    if(!detach()) {
      Logger::err(kStr_terminate_detachErr);
      return false;
-@@ -364,7 +451,7 @@ bool set(HWND hwnd) {
+@@ -364,7 +453,7 @@ bool set(HWND hwnd) {
    // Fix up DirectInput forwarding if setting has succeeded
    DInputSetDefaultWindow(hwnd);
  
@@ -9011,7 +9013,7 @@ index a6d5a4237e843a37c3c04dceec082b845efc69e8..283fdb3fe76251cbdf115d01e23e08ac
  
    return true;
  }
-@@ -386,11 +473,12 @@ bool unset() {
+@@ -386,11 +475,12 @@ bool unset() {
        "another component likely subclassed the window during a mode change", RemixWndProc, prevWndProc));
    }
  
@@ -9025,7 +9027,7 @@ index a6d5a4237e843a37c3c04dceec082b845efc69e8..283fdb3fe76251cbdf115d01e23e08ac
  
    return true;
  }
-@@ -439,3 +527,68 @@ void prepareForCrashDialog(bool async) {
+@@ -439,3 +529,68 @@ void prepareForCrashDialog(bool async) {
  }
  
  }
@@ -9657,7 +9659,7 @@ index 0000000000000000000000000000000000000000..72eb1adf46deceb9b2d8c32a8d98fc52
 +};
 +}
 diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
-index 86434ece9002c1e05dea9af65efa97568dc450b9..2cb264efc0ec331a6ec2461d38ad95d880bc647a 100644
+index 86434ece9002c1e05dea9af65efa97568dc450b9..21dfd5a56bcbc617ad6a374b082946f0f91ed75b 100644
 --- a/bridge/src/server/main.cpp
 +++ b/bridge/src/server/main.cpp
 @@ -1,3 +1,7 @@
@@ -11814,11 +11816,12 @@ index 86434ece9002c1e05dea9af65efa97568dc450b9..2cb264efc0ec331a6ec2461d38ad95d8
  static bool RegisterMessageChannel() {
    Logger::info("Registering message channel for asynchronous message handling.");
  
-@@ -3398,6 +4089,17 @@ static bool RegisterMessageChannel() {
+@@ -3398,6 +4089,19 @@ static bool RegisterMessageChannel() {
      return false;
    }
  
 +  gpClientMessageChannel->registerHandler(ldb_update_test::requestName, [](uint32_t window, uint32_t) {
++    try {
 +    std::string token = gUniqueIdentifier.toString();
 +    std::string normalized;
 +    for (unsigned char ch : token) { if (ch >= '0' && ch <= '9') normalized += ch;
@@ -11826,13 +11829,14 @@ index 86434ece9002c1e05dea9af65efa97568dc450b9..2cb264efc0ec331a6ec2461d38ad95d8
 +      else if (ch >= 'A' && ch <= 'F') normalized += static_cast<char>(ch - 'A' + 'a'); }
 +    ldb_update_test::request(gUpdaterClientProcess, reinterpret_cast<HWND>(static_cast<uintptr_t>(window)),
 +      BRIDGE_VERSION, normalized, [](const char* line) { Logger::info(line); });
++    } catch (...) { /* Keep optional update failures outside the Bridge command path. */ }
 +    return true;
 +  });
 +
    gpClientMessageChannel->registerHandler(WM_KILLFOCUS, [](uint32_t, uint32_t) {
      Logger::info("Client window became inactive, disabling timeouts for bridge server...");
      GlobalOptions::setInfiniteRetries(true);
-@@ -3482,22 +4184,51 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+@@ -3482,22 +4186,51 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
  
    Config::init(Config::App::Server);
    GlobalOptions::init();
@@ -11887,7 +11891,7 @@ index 86434ece9002c1e05dea9af65efa97568dc450b9..2cb264efc0ec331a6ec2461d38ad95d8
      Logger::info("Launched server with GUID " + gUniqueIdentifier.toString());
    } else {
      Logger::err("Server was invoked with invalid GUID! Unable to establish bridge, exiting...");
-@@ -3511,6 +4242,12 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+@@ -3511,6 +4244,12 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
    }
    LocalFree(argList);
  
@@ -11900,7 +11904,7 @@ index 86434ece9002c1e05dea9af65efa97568dc450b9..2cb264efc0ec331a6ec2461d38ad95d8
    initModuleBridge();
    initDeviceBridge();
  
-@@ -3541,10 +4278,12 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+@@ -3541,10 +4280,12 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
    // Pulling default data sent from client to have the data queue in sync
    {
      PULL_U(uid);
@@ -11913,7 +11917,7 @@ index 86434ece9002c1e05dea9af65efa97568dc450b9..2cb264efc0ec331a6ec2461d38ad95d8
    RegisterMessageChannel();
  
    // (2) Load d3d9.dll, which could be original system, dxvk-remix, or something else...
-@@ -3554,6 +4293,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+@@ -3554,6 +4295,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
    }
    const SentryShutdownOnExit sentryShutdownOnExit;
  
@@ -11922,7 +11926,7 @@ index 86434ece9002c1e05dea9af65efa97568dc450b9..2cb264efc0ec331a6ec2461d38ad95d8
    // (3) Send ACK to Client. Connection has been established
    Logger::info("Sync request received, sending ACK response...");
    ServerMessage { Commands::Bridge_Ack, (uintptr_t) gpClientMessageChannel->getWorkerThreadId() };
-@@ -3576,6 +4317,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+@@ -3576,6 +4319,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
    // Pulling default data sent from client to have the data queue in sync
    {
      PULL_U(uid);
@@ -11930,7 +11934,7 @@ index 86434ece9002c1e05dea9af65efa97568dc450b9..2cb264efc0ec331a6ec2461d38ad95d8
    }
    // (5) Ready to listen for incoming commands
    Logger::info("Handshake completed! Now waiting for incoming commands...");
-@@ -3589,12 +4331,16 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+@@ -3589,12 +4333,16 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
    bSignalDone.store(true);
    moduleCmdProcessingThread.join();
  
@@ -11948,7 +11952,7 @@ index 86434ece9002c1e05dea9af65efa97568dc450b9..2cb264efc0ec331a6ec2461d38ad95d8
    if (ghModule) {
      // Skip unloading the d3d9.dll for now, since it seems to be doing more harm than good
      // especially with other dependencies loaded by dxvk and threads that may deadlock due
-@@ -3610,6 +4356,10 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+@@ -3610,6 +4358,10 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
      hWait = NULL;
    }
  
@@ -11959,7 +11963,7 @@ index 86434ece9002c1e05dea9af65efa97568dc450b9..2cb264efc0ec331a6ec2461d38ad95d8
    Logger::info("Shutdown cleanup successful, exiting now!");
  
    const auto timeEnd = std::chrono::high_resolution_clock::now();
-@@ -3624,4 +4374,4 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+@@ -3624,4 +4376,4 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
      ServerMessage { Commands::Bridge_Ack };
    }
    return 0;
@@ -13095,10 +13099,10 @@ index 0000000000000000000000000000000000000000..335bbb09ff3c332ad9648886e1d55fb9
 +}
 diff --git a/bridge/src/server/update_test_coordinator.h b/bridge/src/server/update_test_coordinator.h
 new file mode 100644
-index 0000000000000000000000000000000000000000..82334b270fff7598f09732511fd3f8f12f015b42
+index 0000000000000000000000000000000000000000..50e6c36216e1a0c8643405f8ac842a7fb7245081
 --- /dev/null
 +++ b/bridge/src/server/update_test_coordinator.h
-@@ -0,0 +1,118 @@
+@@ -0,0 +1,119 @@
 +﻿// SPDX-License-Identifier: MIT
 +// Copyright (c) 2026 yeyunyyds. New implementation generated by OpenAI Codex.
 +#pragma once
@@ -13214,7 +13218,8 @@ index 0000000000000000000000000000000000000000..82334b270fff7598f09732511fd3f8f1
 +inline void request(HANDLE game,HWND window,const std::string& build,const std::string& token,std::function<void(const char*)> log){
 +  static std::atomic<bool> used{false};bool expected=false;if(!used.compare_exchange_strong(expected,true))return;
 +  HANDLE copy=nullptr;if(!DuplicateHandle(GetCurrentProcess(),game,GetCurrentProcess(),&copy,0,FALSE,DUPLICATE_SAME_ACCESS)){log("LDB_UPDATE_TEST process duplication failed");return;}
-+  try{std::thread([copy,window,build,token,log](){Handle owner(copy);run(copy,window,build,token,log);}).detach();}catch(...){CloseHandle(copy);log("LDB_UPDATE_TEST worker creation failed");}
++  try{std::thread([copy,window,build,token,log](){Handle owner(copy);try{run(copy,window,build,token,log);}catch(...){ /* Optional update/UI/log failure cannot terminate Host. */ }}).detach();}
++  catch(...){CloseHandle(copy);try{log("LDB_UPDATE_TEST worker creation failed");}catch(...){}}
 +}
 +}
 diff --git a/bridge/src/server/upload_safety.h b/bridge/src/server/upload_safety.h

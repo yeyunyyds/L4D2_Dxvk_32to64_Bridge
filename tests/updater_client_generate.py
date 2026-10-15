@@ -17,9 +17,11 @@ prelude = r'''
 #include <string>
 #include <cstdio>
 #include <cstdlib>
+#include <stdexcept>
 static void check(bool ok,const char* reason){if(!ok){std::fprintf(stderr,"%s\n",reason);std::exit(2);}}
 static unsigned sent=0,dialogs=0;
-struct Channel{ bool send(const char* name,uint32_t,uint32_t){check(std::string(name)=="LDB_UPDATER_LOCAL_TEST_REQUEST_V1","wrong request");++sent;return true;} } channel;
+static bool failSend=false;
+struct Channel{ bool send(const char* name,uint32_t,uint32_t){check(std::string(name)=="LDB_UPDATER_LOCAL_TEST_REQUEST_V1","wrong request");if(failSend)throw std::runtime_error("injected control failure");++sent;return true;} } channel;
 static Channel* gpServerMessageChannel=&channel;
 struct Server{ DWORD GetProcessId(){return 123;} } server;
 static Server* gpServer=&server;
@@ -40,6 +42,10 @@ int main(){
   keys[VK_CONTROL]=0;keys[VK_SHIFT]=0;SetKeyboardState(keys);
   check(dispatch(window,WM_KEYUP,VK_F10,0)==0 && sent==1,"release order lost request");
   check(dispatch(window,WM_KEYUP,VK_F10,0)==99 && sent==1,"duplicate release resent");
+  failSend=true;keys[VK_CONTROL]=0x80;keys[VK_SHIFT]=0x80;SetKeyboardState(keys);
+  check(dispatch(window,WM_KEYDOWN,VK_F10,0)==0,"failed send keydown");
+  check(dispatch(window,WM_KEYUP,VK_F10,0)==0 && sent==1,"control exception crossed WndProc");
+  failSend=false;keys[VK_CONTROL]=0;keys[VK_SHIFT]=0;SetKeyboardState(keys);
   UINT close=RegisterWindowMessageW(L"LDB_UPDATER_LOCAL_TEST_CLOSE_V1");
   check(dispatch(window,close,124,0)==99,"foreign close accepted");
   check(dispatch(window,close,123,0)==0,"normal close not posted");
