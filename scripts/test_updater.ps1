@@ -7,7 +7,7 @@ New-Item -ItemType Directory -Force $out | Out-Null
 if($CompileArchitecture){
   . (Join-Path $root '.deps/dxvk-remix/bridge/build_common.ps1')
   SetupVS -Platform $CompileArchitecture -VcVarsVer '14.29'
-  & cl.exe /nologo /std:c++17 /EHsc /O2 /W4 /WX /utf-8 "/I$root/.deps/dxvk-remix/bridge/src/server" "$root/tests/updater_session.cpp" user32.lib advapi32.lib "/Fe:$out/fixture-$CompileArchitecture.exe"
+  & cl.exe /nologo /std:c++17 /EHsc /O2 /W4 /WX /utf-8 "/I$root/.deps/dxvk-remix/bridge/src/server" "$root/tests/updater_session.cpp" user32.lib advapi32.lib "/Fe:$out/fixture-$CompileArchitecture.exe" /link /LARGEADDRESSAWARE
   if($LASTEXITCODE -ne 0){throw 'Native updater fixture failed'}
   python "$root/tests/updater_client_generate.py" "$out/client-control.cpp"
   if($LASTEXITCODE -ne 0){throw 'Client production extraction failed'}
