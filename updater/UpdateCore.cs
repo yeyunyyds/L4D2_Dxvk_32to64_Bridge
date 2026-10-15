@@ -210,14 +210,14 @@ namespace LdbUpdater {
       ValidateRoot(root);string path=JournalPath(root);if(!File.Exists(path))return;
       Require(new FileInfo(path).Length<=65536,"Recovery journal too large");
       var j=Json.Deserialize<Journal>(File.ReadAllText(path));
-      Require(j!=null&&j.schema==1&&(j.phase=="REPLACING"||j.phase=="COMMITTED"),"Invalid recovery journal");
+      Require(j!=null&&j.schema==1&&(j.phase=="REPLACING"||j.phase=="COMMITTED"||j.phase=="ROLLED_BACK"),"Invalid recovery journal");
       string stage=Stage(root,j.transaction);NoLinks(stage);
       Require(j.old!=null && j.old.Length==4 && j.old.Select(x=>x.slot).Distinct().Count()==4 && j.old.All(x=>Slots.Contains(x.slot)),"Invalid backup slots");
       if(j.phase=="COMMITTED") {
         Require(j.files!=null && j.files.Length==4 && j.files.Select(x=>x.slot).Distinct().Count()==4 && j.files.All(x=>Slots.Contains(x.slot)),"Invalid committed payload slots");
-        if(j.files.Any(f=>!File.Exists(Target(root,f.slot))||HashFile(Target(root,f.slot))!=f.sha256)) j.phase="REPLACING";
+        Require(j.files.All(f=>File.Exists(Target(root,f.slot))&&HashFile(Target(root,f.slot))==f.sha256),"Committed files changed; preserve journal and repair manually before cleanup");
       }
-      if(j.phase!="COMMITTED") {
+      if(j.phase=="REPLACING") {
         // Validate all backups before restoring even the first target.
         foreach(var f in j.old) if(f.existed) Require(HashFile(Path.Combine(stage,"backup",f.slot))==f.sha256,"Recovery backup damaged");
         foreach(var f in j.old) {
@@ -228,7 +228,10 @@ namespace LdbUpdater {
         // An interrupted state record must not suppress the source on the next startup.
         File.Delete(Path.Combine(HostDir(root),"LDBupdate-package.sha256"));
         File.Delete(Path.Combine(HostDir(root),"LDBupdate-installed.json"));
+        j.phase="ROLLED_BACK";AtomicText(path,Json.Serialize(j));
       }
+      if(j.phase=="ROLLED_BACK") foreach(var f in j.old)
+        Require(f.existed?File.Exists(Target(root,f.slot))&&HashFile(Target(root,f.slot))==f.sha256:!File.Exists(Target(root,f.slot)),"Rolled-back files changed; preserve remaining recovery material");
       Cleanup(root,j.transaction);File.Delete(path);
     }
     public static void Cleanup(string root,string transaction) {

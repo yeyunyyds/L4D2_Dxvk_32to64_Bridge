@@ -13095,7 +13095,7 @@ index 0000000000000000000000000000000000000000..335bbb09ff3c332ad9648886e1d55fb9
 +}
 diff --git a/bridge/src/server/update_test_coordinator.h b/bridge/src/server/update_test_coordinator.h
 new file mode 100644
-index 0000000000000000000000000000000000000000..d05c365b549ee4968fd1f31d636a27c208d1dc03
+index 0000000000000000000000000000000000000000..f2a3a5dc1f5a7a7da111f0d1e4b8e764ecb507a6
 --- /dev/null
 +++ b/bridge/src/server/update_test_coordinator.h
 @@ -0,0 +1,106 @@
@@ -13166,7 +13166,7 @@ index 0000000000000000000000000000000000000000..d05c365b549ee4968fd1f31d636a27c2
 +    require(host.filename()==L".l4d2bridge"&&host.parent_path().filename()==L"bin","Custom install layout requires manual update");
 +    DWORD owner=0;GetWindowThreadProcessId(window,&owner);require(owner==GetProcessId(game),"Update request window is not owned by Client");
 +    Path package=host.parent_path().parent_path()/L"left4dead2"/L"addons"/L"workshop"/(workshopId(host)+L".vpk");std::string digest=packageHash(package);
-+    {std::ifstream previous(host/L"LDBupdate-package.sha256",std::ios::binary);std::string saved((std::istreambuf_iterator<char>(previous)),{});if(saved==digest){log("LDB_UPDATE_TEST unchanged-package");return;}}
++    {std::ifstream previous(host/L"LDBupdate-package.sha256",std::ios::binary);char saved[65]{};previous.read(saved,65);if(previous.gcount()==64&&digest.compare(0,64,saved,64)==0){log("LDB_UPDATE_TEST unchanged-package");return;}}
 +    require(token.size()==32&&token.find_first_not_of("0123456789abcdef")==std::string::npos,"Invalid updater session token");
 +    const std::wstring pipeName=L"LDBUpdateTest-"+wide(token),fullPipe=L"\\\\.\\pipe\\"+pipeName;
 +    PSECURITY_DESCRIPTOR descriptor=nullptr;

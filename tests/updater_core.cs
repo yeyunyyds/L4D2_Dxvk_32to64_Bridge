@@ -73,9 +73,15 @@ class UpdaterTests {
       try { Core.Install(root,c,i=>{if(i==4)held=new FileStream(Path.Combine(Core.Stage(root,c.Transaction),"backup","client"),FileMode.Open,FileAccess.Read,FileShare.None);}); }
       finally { if(held!=null)held.Dispose(); }
       Check(File.Exists(Core.JournalPath(root)),"Failed post-commit cleanup discarded recovery marker");
-      if(damage)File.WriteAllText(Core.Target(root,"client"),"damaged after commit");
+      if(damage) {
+        File.WriteAllText(Core.Target(root,"client"),"damaged after commit");
+        int remaining=Directory.GetFiles(Core.Stage(root,c.Transaction),"*",SearchOption.AllDirectories).Length;
+        Reject(()=>Core.Recover(root),"Committed corruption was silently accepted");
+        Check(File.Exists(Core.JournalPath(root))&&Directory.GetFiles(Core.Stage(root,c.Transaction),"*",SearchOption.AllDirectories).Length==remaining,"Corruption discarded remaining recovery material");
+        File.WriteAllBytes(Core.Target(root,"client"),Pe(0x14c,"new"));
+      }
       Core.Recover(root);
-      Check(Core.Slots.All(slot=>damage?before[slot]==Core.HashFile(Core.Target(root,slot)):before[slot]!=Core.HashFile(Core.Target(root,slot))),"Committed recovery kept a damaged or rolled-back valid install");
+      Check(Core.Slots.All(slot=>before[slot]!=Core.HashFile(Core.Target(root,slot))),"Committed recovery reverted a verified install");
       Check(!File.Exists(Core.JournalPath(root)),"Committed recovery did not finish");Preserved(root);Clean(root);
     }
     Console.WriteLine("UPDATER_CORE_PASS assertions="+assertions+" replacement-failure=4 crash-recovery=4");return 0;
