@@ -157,8 +157,12 @@ namespace LdbUpdater {
       Require(Encoding.ASCII.GetString(data).Contains(buildId),"Unmatched payload build identity");
       if(Path.GetFileName(path)=="host32") Require((BitConverter.ToUInt16(data,pe+22)&0x20)!=0,"Host32 lacks LAA");
     }
-    public static void Prepare(string root,Candidate c) {
+    public static void Prepare(string root,Candidate c,Func<long> availableBytes=null) {
       ValidateRoot(root); Require(!File.Exists(JournalPath(root)),"An update is already pending");
+      long required=1024*1024;
+      checked { foreach(var f in c.Manifest.files) { required+=f.bytes;string old=Target(root,f.slot);if(File.Exists(old))required+=2*new FileInfo(old).Length; } }
+      long free=availableBytes==null?new DriveInfo(Path.GetPathRoot(root)).AvailableFreeSpace:availableBytes();
+      Require(free>=required,"Insufficient free space for complete backup, replacement and rollback");
       foreach(var f in c.Manifest.files) {
         string target=Target(root,f.slot); Require(f.slot=="readme"||File.Exists(target),"Installed payload missing");
         Require(HashFile(Path.Combine(Stage(root,c.Transaction),"payload",f.slot))==f.sha256,"Staging changed");

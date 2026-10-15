@@ -44,6 +44,9 @@ class UpdaterTests {
     Reject(()=>Extract(root,Package(root,"1.3.3","../escape",false)),"Traversal accepted");
     Reject(()=>Extract(root,Package(root,"1.3.3","VERSION",false)),"Duplicate entry accepted");
     Reject(()=>Extract(root,Package(root,"1.3.3",null,true)),"Damaged binary accepted");
+    var lowSpace=Extract(root,package);var untouched=Hashes(root);
+    Reject(()=>Core.Prepare(root,lowSpace,()=>0),"Low-space preparation accepted");
+    Check(Core.Slots.All(slot=>untouched[slot]==Core.HashFile(Core.Target(root,slot)))&&!File.Exists(Core.JournalPath(root)),"Low-space preparation changed the installation");Core.Cleanup(root,lowSpace.Transaction);
     var declined=Extract(root,package);var before=Hashes(root);Core.Cleanup(root,declined.Transaction);
     Check(Core.Slots.All(s=>before[s]==Core.HashFile(Core.Target(root,s))),"Decline changed installed files");
     Check(!File.Exists(Path.Combine(Core.HostDir(root),"LDBupdate-package.sha256")),"Decline persisted package hash");
