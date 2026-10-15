@@ -13095,7 +13095,7 @@ index 0000000000000000000000000000000000000000..335bbb09ff3c332ad9648886e1d55fb9
 +}
 diff --git a/bridge/src/server/update_test_coordinator.h b/bridge/src/server/update_test_coordinator.h
 new file mode 100644
-index 0000000000000000000000000000000000000000..f2a3a5dc1f5a7a7da111f0d1e4b8e764ecb507a6
+index 0000000000000000000000000000000000000000..c61d550a17eb5c3b10611658d81dc0de9c8f2476
 --- /dev/null
 +++ b/bridge/src/server/update_test_coordinator.h
 @@ -0,0 +1,106 @@
@@ -13134,11 +13134,11 @@ index 0000000000000000000000000000000000000000..f2a3a5dc1f5a7a7da111f0d1e4b8e764
 +  (void)process;
 +  auto* p=static_cast<BYTE*>(data);DWORD offset=0;
 +  while(offset<bytes){Handle event(CreateEventW(nullptr,TRUE,FALSE,nullptr));require(event.h!=nullptr,"Pipe event allocation failed");OVERLAPPED ov{};ov.hEvent=event.h;
-+    DWORD transferred=0;BOOL done=writing?WriteFile(pipe,p+offset,bytes-offset,&transferred,&ov):ReadFile(pipe,p+offset,bytes-offset,&transferred,&ov);
++    DWORD transferred=0;BOOL done=writing?WriteFile(pipe,p+offset,bytes-offset,nullptr,&ov):ReadFile(pipe,p+offset,bytes-offset,nullptr,&ov);
 +    if(!done){if(GetLastError()!=ERROR_IO_PENDING)return false;DWORD result=WaitForSingleObject(event.h,120000);
 +      if(result!=WAIT_OBJECT_0){CancelIoEx(pipe,&ov);GetOverlappedResult(pipe,&ov,&transferred,TRUE);return false;}
-+      if(!GetOverlappedResult(pipe,&ov,&transferred,FALSE))return false;
 +    }
++    if(!GetOverlappedResult(pipe,&ov,&transferred,FALSE))return false;
 +    if(!transferred)return false;offset+=transferred;
 +  }return true;
 +}
@@ -13197,7 +13197,7 @@ index 0000000000000000000000000000000000000000..f2a3a5dc1f5a7a7da111f0d1e4b8e764
 +    if(MessageBoxW(window,L"更新已准备。确定后请求正常关闭游戏；若游戏没有退出，请使用游戏菜单退出。\n\n退出后请等待更新完成，勿立即重启。取消可继续游玩。",L"LDB Update Test",MB_OKCANCEL|MB_ICONINFORMATION)!=IDOK){send(pipe.h,child.h,"CANCEL");require(receive(pipe.h,child.h)=="CANCELLED","Updater cancellation failed");log("LDB_UPDATE_TEST cancelled");return;}
 +    send(pipe.h,child.h,"COMMIT_ON_EXIT");require(receive(pipe.h,child.h)=="ARMED","Updater failed to retain update authorization");
 +    require(PostMessageW(window,RegisterWindowMessageW(closeName),GetCurrentProcessId(),0)!=FALSE,"Normal close request failed");log("LDB_UPDATE_TEST armed-awaiting-real-process-exit");
-+  }catch(const std::exception& e){log(e.what());MessageBoxW(window,wide(std::string("更新检查未完成：")+e.what()+"\n查看 bin/.l4d2bridge/LDBupdater.log；未授权或未退出时不会替换文件。").c_str(),L"LDB Update Test",MB_OK|MB_ICONWARNING);}
++  }catch(const std::exception& e){log(e.what());MessageBoxW(window,(std::wstring(L"更新检查未完成：")+wide(e.what())+L"\n查看 bin/.l4d2bridge/LDBupdater.log；未授权或未退出时不会替换文件。").c_str(),L"LDB Update Test",MB_OK|MB_ICONWARNING);}
 +}
 +inline void request(HANDLE game,HWND window,const std::string& build,const std::string& token,std::function<void(const char*)> log){
 +  static std::atomic<bool> used{false};bool expected=false;if(!used.compare_exchange_strong(expected,true))return;

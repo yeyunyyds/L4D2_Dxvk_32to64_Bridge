@@ -16,6 +16,11 @@ namespace LdbUpdater {
     [DllImport("kernel32.dll",CharSet=CharSet.Unicode)] static extern uint GetPrivateProfileString(string section,string key,string fallback,StringBuilder value,uint size,string path);
     [DllImport("kernel32.dll",CharSet=CharSet.Unicode,SetLastError=true)] static extern bool QueryFullProcessImageName(IntPtr process,uint flags,StringBuilder value,ref uint size);
     [DllImport("kernel32.dll",SetLastError=true)] static extern bool GetNamedPipeServerProcessId(IntPtr pipe,out uint process);
+    [DllImport("kernel32.dll",CharSet=CharSet.Unicode,SetLastError=true)] static extern uint GetLongPathName(string path,StringBuilder value,uint size);
+    static string Canonical(string path) {
+      var text=new StringBuilder(32768);uint n=GetLongPathName(Path.GetFullPath(path),text,(uint)text.Capacity);
+      Core.Require(n>0&&n<text.Capacity,"Cannot canonicalize installation/process path");return text.ToString();
+    }
     static string Root;
     static string Ini(string key) {
       var buffer=new StringBuilder(256);
@@ -52,16 +57,16 @@ namespace LdbUpdater {
       int value=0; long time=0;Core.Require(Int32.TryParse(pid,out value)&&Int64.TryParse(creation,out time),"Invalid process identity");
       var p=Process.GetProcessById(value);Core.Require(p.Handle!=IntPtr.Zero,"Process handle unavailable");
       Core.Require(!p.HasExited&&p.StartTime.ToFileTimeUtc()==time,"Process creation identity mismatch");
-      Core.Require(String.Equals(Path.GetFullPath(ProcessPath(p)),Path.GetFullPath(expectedPath),StringComparison.OrdinalIgnoreCase),"Process executable mismatch");
+      Core.Require(String.Equals(Canonical(ProcessPath(p)),Canonical(expectedPath),StringComparison.OrdinalIgnoreCase),"Process executable mismatch");
       return p;
     }
     public static void CheckNoGameProcesses(string root) {
       foreach(var name in new[]{"left4dead2","L4D2Bridge32","L4D2Bridge64"}) foreach(var p in Process.GetProcessesByName(name)) using(p) {
         if(p.HasExited)continue;
-        string executable=ProcessPath(p);
-        if(String.Equals(executable,Path.Combine(root,"left4dead2.exe"),StringComparison.OrdinalIgnoreCase)
-          || String.Equals(executable,Core.Target(root,"host32"),StringComparison.OrdinalIgnoreCase)
-          || String.Equals(executable,Core.Target(root,"host64"),StringComparison.OrdinalIgnoreCase))
+        string executable=Canonical(ProcessPath(p));
+        if(String.Equals(executable,Canonical(Path.Combine(root,"left4dead2.exe")),StringComparison.OrdinalIgnoreCase)
+          || String.Equals(executable,Canonical(Core.Target(root,"host32")),StringComparison.OrdinalIgnoreCase)
+          || String.Equals(executable,Canonical(Core.Target(root,"host64")),StringComparison.OrdinalIgnoreCase))
           throw new IOException("Another game/Host is still using this installation");
       }
     }
@@ -76,7 +81,7 @@ namespace LdbUpdater {
       try {
         string here=Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         Core.Require(String.Equals(Path.GetFileName(here),".l4d2bridge",StringComparison.OrdinalIgnoreCase)&&String.Equals(Path.GetFileName(Path.GetDirectoryName(here)),"bin",StringComparison.OrdinalIgnoreCase),"Run updater from bin/.l4d2bridge");
-        Root=Path.GetDirectoryName(Path.GetDirectoryName(here));Core.ValidateRoot(Root);
+        Root=Canonical(Path.GetDirectoryName(Path.GetDirectoryName(here)));Core.ValidateRoot(Root);
         using(var mutex=new Mutex(false,MutexName(Root))) {
           bool owns=false;
           try {
