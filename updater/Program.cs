@@ -80,6 +80,7 @@ namespace LdbUpdater {
       Candidate candidate=null;bool committed=false;
       try {
         string here=Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        Root=Path.GetDirectoryName(Path.GetDirectoryName(here));Log("BOOT here="+here+" argc="+args.Length);
         Core.Require(String.Equals(Path.GetFileName(here),".l4d2bridge",StringComparison.OrdinalIgnoreCase)&&String.Equals(Path.GetFileName(Path.GetDirectoryName(here)),"bin",StringComparison.OrdinalIgnoreCase),"Run updater from bin/.l4d2bridge");
         Root=Canonical(Path.GetDirectoryName(Path.GetDirectoryName(here)));Core.ValidateRoot(Root);
         using(var mutex=new Mutex(false,MutexName(Root))) {
@@ -94,14 +95,14 @@ namespace LdbUpdater {
             using(var host=Pin(args[2],args[3],Core.Target(Root,hostName)))
             using(var game=Pin(args[4],args[5],Path.Combine(Root,"left4dead2.exe")))
             using(var pipe=new NamedPipeClientStream(".",pipeName,PipeDirection.InOut,PipeOptions.Asynchronous)) {
-              pipe.Connect(15000);uint actualHost;Core.Require(GetNamedPipeServerProcessId(pipe.SafePipeHandle.DangerousGetHandle(),out actualHost)&&actualHost==(uint)host.Id,"Control server identity mismatch");
-              string expected=ReadFrame(pipe);Core.Require(expected.StartsWith("HASH\n"),"Missing package hash");
+              pipe.Connect(15000);Log("PIPE_CONNECTED");uint actualHost;Core.Require(GetNamedPipeServerProcessId(pipe.SafePipeHandle.DangerousGetHandle(),out actualHost)&&actualHost==(uint)host.Id,"Control server identity mismatch");
+              string expected=ReadFrame(pipe);Log("HASH_READ");Core.Require(expected.StartsWith("HASH\n"),"Missing package hash");
               expected=expected.Substring(5);Core.Require(Regex.IsMatch(expected,@"\A[0-9a-f]{64}\z"),"Invalid package hash");
               candidate=Core.Extract(Root,PackagePath(),args[6],expected,true);
               if(candidate==null) { Send(pipe,"NO_UPDATE");Log("NO_UPDATE");return 0; }
               Core.Require(candidate.Manifest.build_id==args[7],"Local test payload must match installed test build");
               string notes=candidate.Notes.Substring(0,Math.Min(candidate.Notes.Length,1200));
-              Send(pipe,"CANDIDATE\n"+candidate.Version+"\n"+notes);
+              Send(pipe,"CANDIDATE\n"+candidate.Version+"\n"+notes);Log("CANDIDATE_SENT");
               string command=ReadFrame(pipe);
               if(command=="DECLINE") { Log("DECLINED version="+candidate.Version);Core.Cleanup(Root,candidate.Transaction);candidate=null;Send(pipe,"DECLINED");return 0; }
               Core.Require(command=="PREPARE","Unexpected preparation command");Core.Prepare(Root,candidate);Send(pipe,"PREPARED");

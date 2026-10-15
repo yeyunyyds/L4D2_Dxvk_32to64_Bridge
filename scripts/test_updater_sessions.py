@@ -102,15 +102,16 @@ def case(bits, mode):
                 game.kill()
                 game.wait()
             if not updater_done:
-                if (host_dir / "LDBupdater.log").exists():
-                    print((host_dir / "LDBupdater.log").read_text(), file=sys.stderr)
+                for log in (host_dir / "LDBupdater.log", host_dir / "LDBupdater-startup.log"):
+                    if log.exists():
+                        print(log.name + "\n" + log.read_text(errors="replace"), file=sys.stderr)
                 # Do not leave a helper waiting on a failed fixture in CI.
                 if helper_pid:
                     subprocess.run(["taskkill", "/F", "/PID", str(helper_pid)], capture_output=True)
                     wait_helper(helper_pid)
             evidence = NATIVE / "evidence" / f"{bits}-{mode}"
             evidence.mkdir(parents=True, exist_ok=True)
-            for source in (root / "host-events.txt", host_dir / "LDBupdater.log"):
+            for source in (root / "host-events.txt", host_dir / "LDBupdater.log", host_dir / "LDBupdater-startup.log"):
                 if source.exists():
                     shutil.copy2(source, evidence / source.name)
         return {"bits": bits, "mode": mode, "passed": True}
