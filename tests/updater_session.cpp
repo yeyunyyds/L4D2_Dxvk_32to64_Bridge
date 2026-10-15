@@ -15,7 +15,7 @@ static int WINAPI fixtureDialog(HWND,LPCWSTR,LPCWSTR,UINT flags){
 static const char identity[]="l4d2-1.3.2+1111111111111111";
 static LRESULT CALLBACK gameWindow(HWND window,UINT message,WPARAM w,LPARAM l){
   if(message==RegisterWindowMessageW(ldb_update_test::closeName)){
-    if(mode!="linger")PostMessageW(window,WM_CLOSE,0,0);return 0;
+    if(mode!="linger"&&mode!="crash")PostMessageW(window,WM_CLOSE,0,0);return 0;
   }
   if(message==WM_CLOSE){DestroyWindow(window);return 0;}
   if(message==WM_DESTROY){PostQuitMessage(0);return 0;}
@@ -24,6 +24,7 @@ static LRESULT CALLBACK gameWindow(HWND window,UINT message,WPARAM w,LPARAM l){
 int main(int argc,char** argv){
   if(argc<3)return 2;mode=argv[2];
   if(std::string(argv[1])=="game"){
+    if(!LoadLibraryW(mode=="alias-client"?L"bin\\alias_bridge.dll":L"bin\\dxvk_d3d9.dll"))return 7;
     WNDCLASSW cls{};cls.lpfnWndProc=gameWindow;cls.hInstance=GetModuleHandleW(nullptr);cls.lpszClassName=L"LDBUpdaterFixture";
     if(!RegisterClassW(&cls))return 3;
     HWND window=CreateWindowW(cls.lpszClassName,L"LDB fixture",0,0,0,32,32,nullptr,nullptr,cls.hInstance,nullptr);if(!window)return 4;

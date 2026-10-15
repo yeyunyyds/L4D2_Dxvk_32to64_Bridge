@@ -70,6 +70,16 @@ namespace LdbUpdater {
           throw new IOException("Another game/Host is still using this installation");
       }
     }
+    static void CheckLoadedClient(Process game,string build) {
+      // One module inventory on explicit local update, never a frame/memory sampler.
+      string expected=Canonical(Core.Target(Root,"client"));int matches=0;
+      foreach(ProcessModule module in game.Modules) {
+        if(!String.Equals(module.ModuleName,"dxvk_d3d9.dll",StringComparison.OrdinalIgnoreCase))continue;
+        Core.Require(String.Equals(Canonical(module.FileName),expected,StringComparison.OrdinalIgnoreCase),"Loaded Client uses a custom path; update manually");++matches;
+      }
+      Core.Require(matches==1,"Standard loaded Client module was not found; update manually");
+      Core.ValidatePe(expected,0x14c,build);
+    }
     static void Log(string text) {
       File.AppendAllText(Path.Combine(Core.HostDir(Root),"LDBupdater.log"),DateTime.UtcNow.ToString("o")+" "+text+Environment.NewLine,new UTF8Encoding(false));
     }
@@ -98,6 +108,7 @@ namespace LdbUpdater {
               pipe.Connect(15000);Log("PIPE_CONNECTED");uint actualHost;Core.Require(GetNamedPipeServerProcessId(pipe.SafePipeHandle.DangerousGetHandle(),out actualHost)&&actualHost==(uint)host.Id,"Control server identity mismatch");
               string expected=ReadFrame(pipe);Log("HASH_READ");Core.Require(expected.StartsWith("HASH\n"),"Missing package hash");
               expected=expected.Substring(5);Core.Require(Regex.IsMatch(expected,@"\A[0-9a-f]{64}\z"),"Invalid package hash");
+              CheckLoadedClient(game,args[7]);
               candidate=Core.Extract(Root,PackagePath(),args[6],expected,true);
               if(candidate==null) { Send(pipe,"NO_UPDATE");Log("NO_UPDATE");return 0; }
               Core.Require(candidate.Manifest.build_id==args[7],"Local test payload must match installed test build");

@@ -48,7 +48,9 @@ def case(bits, mode):
         host_dir = root / "bin/.l4d2bridge"
         host_dir.mkdir(parents=True)
         shutil.copy2(NATIVE / "fixture-x86.exe", root / "left4dead2.exe")
-        shutil.copy2(NATIVE / "fixture-x86.exe", root / "bin/dxvk_d3d9.dll")
+        shutil.copy2(NATIVE / "client-fixture.dll", root / "bin/dxvk_d3d9.dll")
+        if mode == "alias-client":
+            shutil.copy2(NATIVE / "client-fixture.dll", root / "bin/alias_bridge.dll")
         shutil.copy2(NATIVE / "fixture-x86.exe", host_dir / "L4D2Bridge32.exe")
         shutil.copy2(NATIVE / "fixture-x64.exe", host_dir / "L4D2Bridge64.exe")
         shutil.copy2(NATIVE / "LDBupdater.exe", host_dir / "LDBupdater.exe")
@@ -57,7 +59,7 @@ def case(bits, mode):
         (host_dir / "LDBupdater-test.ini").write_text("[LDBUpdaterTest]\nEnabled=1\nWorkshopId=1\n")
         workshop = root / "left4dead2/addons/workshop"
         workshop.mkdir(parents=True)
-        make(root, workshop / "1.vpk", "1.3.3", IDENTITY, "UPDATED README")
+        make(root, workshop / "1.vpk", "1.3.2" if mode == "same" else "1.3.1" if mode == "older" else "1.3.3", IDENTITY, "UPDATED README")
         game = subprocess.Popen([str(root / "left4dead2.exe"), "game", mode], cwd=root)
         updater_done = False
         helper_pid = None
@@ -70,23 +72,35 @@ def case(bits, mode):
             match = re.search(r"updater-pid=(\d+)", events)
             assert match, events
             helper_pid = int(match[1])
-            if mode in ("decline", "cancel"):
+            if mode in ("alias-client", "same", "older"):
+                assert "armed-awaiting" not in events, events
+                if mode != "alias-client":
+                    assert "no-new-version" in events, events
+                assert (host_dir / "README.md").read_text() == "OLD README"
+                ctypes.windll.user32.PostMessageW(int(hwnd), 0x10, 0, 0)
+            elif mode in ("decline", "cancel"):
                 assert "armed-awaiting" not in events, events
                 assert ("LDB_UPDATE_TEST declined" if mode == "decline" else "LDB_UPDATE_TEST cancelled") in events, events
                 assert (host_dir / "README.md").read_text() == "OLD README"
                 assert not (host_dir / "LDBupdate-package.sha256").exists()
                 ctypes.windll.user32.PostMessageW(int(hwnd), 0x10, 0, 0)
-            elif mode == "linger":
+            elif mode in ("linger", "crash"):
                 assert "armed-awaiting" in events, events
                 time.sleep(0.5)
                 assert game.poll() is None
                 assert (host_dir / "README.md").read_text() == "OLD README", "Installed before game exit"
-                ctypes.windll.user32.PostMessageW(int(hwnd), 0x10, 0, 0)
+                if mode == "crash":
+                    game.kill()
+                else:
+                    ctypes.windll.user32.PostMessageW(int(hwnd), 0x10, 0, 0)
             else:
                 assert "armed-awaiting" in events, events
             game.wait(timeout=20)
-            if mode in ("decline", "cancel"):
+            if mode in ("decline", "cancel", "same", "older", "alias-client", "crash"):
+                wait_helper(helper_pid)
                 wait_for(lambda: not list((host_dir / "LDBupdate").glob("*")))
+                assert (host_dir / "README.md").read_text() == "OLD README"
+                assert not (host_dir / "LDBupdate-package.sha256").exists()
             else:
                 wait_for(lambda: (host_dir / "LDBupdater.log").exists() and "UPDATE_OK" in (host_dir / "LDBupdater.log").read_text())
                 assert (host_dir / "README.md").read_text() == "UPDATED README"
@@ -95,7 +109,13 @@ def case(bits, mode):
                 assert not list((host_dir / "LDBupdate").glob("*"))
             assert (host_dir / "bridge.conf").read_text() == "DO NOT CHANGE"
             wait_helper(helper_pid)
-            assert "UPDATE_ERROR" not in (host_dir / "LDBupdater.log").read_text(), "Helper reported a hidden session failure"
+            logs = (host_dir / "LDBupdater.log").read_text(errors="replace")
+            if mode == "crash":
+                assert "Game crashed or returned an unexpected exit code" in logs, logs
+            elif mode == "alias-client":
+                assert "Standard loaded Client module was not found" in logs, logs
+            else:
+                assert "UPDATE_ERROR" not in logs, "Helper reported a hidden session failure"
             updater_done = True
         finally:
             if game.poll() is None:
@@ -121,6 +141,6 @@ def case(bits, mode):
 
 
 if __name__ == "__main__":
-    results = [case(bits, mode) for bits in (32, 64) for mode in ("decline", "cancel", "accept", "linger")]
+    results = [case(bits, mode) for bits in (32, 64) for mode in ("decline", "cancel", "accept", "linger", "same", "older", "crash", "alias-client")]
     (NATIVE / "sessions.json").write_text(json.dumps(results, indent=2))
     print("UPDATER_SESSIONS_PASS", len(results))

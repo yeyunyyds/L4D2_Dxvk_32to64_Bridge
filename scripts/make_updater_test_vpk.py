@@ -30,6 +30,13 @@ def make(source, output, version, build_id, notes):
         archive.writestr("UPDATE-MANIFEST.json", json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
         for slot, body in bodies.items():
             archive.writestr(SOURCES[slot], body)
+        for filename in ("LICENSE", "THIRD_PARTY.md"):
+            if (source / filename).is_file():
+                archive.write(source / filename, filename)
+        if (source / "licenses").is_dir():
+            for item in sorted((source / "licenses").rglob("*")):
+                if item.is_file():
+                    archive.write(item, item.relative_to(source).as_posix())
 
 
 if __name__ == "__main__":

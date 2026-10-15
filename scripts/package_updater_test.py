@@ -28,6 +28,9 @@ def package():
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(data)
     host = bootstrap / "bin/.l4d2bridge"
+    for filename in ("LICENSE", "THIRD_PARTY.md"):
+        shutil.copy2(source / filename, bootstrap / filename)
+    shutil.copytree(source / "licenses", bootstrap / "licenses")
     shutil.copy2(ROOT / "work/updater-native/LDBupdater.exe", host / "LDBupdater.exe")
     (host / "LDBupdater-test.ini").write_text(
         "; Explicit LOCAL TEST only. Set the numeric filename stem in ONE place.\n"

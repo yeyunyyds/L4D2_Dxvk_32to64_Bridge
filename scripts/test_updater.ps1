@@ -9,6 +9,10 @@ if($CompileArchitecture){
   SetupVS -Platform $CompileArchitecture -VcVarsVer '14.29'
   & cl.exe /nologo /std:c++17 /EHsc /O2 /W4 /WX /utf-8 "/I$root/.deps/dxvk-remix/bridge/src/server" "$root/tests/updater_session.cpp" user32.lib advapi32.lib "/Fe:$out/fixture-$CompileArchitecture.exe" /link /LARGEADDRESSAWARE
   if($LASTEXITCODE -ne 0){throw 'Native updater fixture failed'}
+  if($CompileArchitecture -eq 'x86'){
+    & cl.exe /nologo /LD /O2 /W4 /WX /utf-8 "$root/tests/updater_client_dll.cpp" "/Fe:$out/client-fixture.dll"
+    if($LASTEXITCODE -ne 0){throw 'Loaded Client fixture compilation failed'}
+  }
   python "$root/tests/updater_client_generate.py" "$out/client-control.cpp"
   if($LASTEXITCODE -ne 0){throw 'Client production extraction failed'}
   & cl.exe /nologo /std:c++17 /EHsc /O2 /W4 /WX /utf-8 "$out/client-control.cpp" user32.lib "/Fe:$out/client-control-$CompileArchitecture.exe"
