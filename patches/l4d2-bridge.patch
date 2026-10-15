@@ -1,5 +1,5 @@
 diff --git a/bridge/meson.build b/bridge/meson.build
-index 495101d..721b8a8 100644
+index 495101d26b717d683111a25d012c7a349c4f19e9..721b8a8affacc20ab4d5408830a574d257f3e35e 100644
 --- a/bridge/meson.build
 +++ b/bridge/meson.build
 @@ -1,3 +1,7 @@
@@ -60,7 +60,7 @@ index 495101d..721b8a8 100644
    # generate VS project files for ninja
    # note: this writes to <source root>/_vs, which is outside the build directory
 diff --git a/bridge/meson_options.txt b/bridge/meson_options.txt
-index e26a54b..7d84370 100644
+index e26a54bc93ae9502e5acea93c082ef6c70941fd5..7d8437064e917ba5fe3d79128bd401285eae201a 100644
 --- a/bridge/meson_options.txt
 +++ b/bridge/meson_options.txt
 @@ -1,4 +1,7 @@
@@ -72,7 +72,7 @@ index e26a54b..7d84370 100644
  
  option('tracy_on_demand', type : 'boolean', value : false, description : 'On-demand profiling')
 diff --git a/bridge/src/client/base.h b/bridge/src/client/base.h
-index 8e75d5f..aa01e63 100644
+index 8e75d5f5bf7868a855f61a8a29707337340508e5..aa01e63592ebc2486126db8bb81b0e3491c1328d 100644
 --- a/bridge/src/client/base.h
 +++ b/bridge/src/client/base.h
 @@ -1,3 +1,7 @@
@@ -107,7 +107,7 @@ index 8e75d5f..aa01e63 100644
  
 diff --git a/bridge/src/client/bridge_control.cpp b/bridge/src/client/bridge_control.cpp
 new file mode 100644
-index 0000000..5eee372
+index 0000000000000000000000000000000000000000..5eee3725a26f3631ef0859e3e0c49f19e6709c58
 --- /dev/null
 +++ b/bridge/src/client/bridge_control.cpp
 @@ -0,0 +1,47 @@
@@ -160,7 +160,7 @@ index 0000000..5eee372
 +}
 diff --git a/bridge/src/client/bridge_settings.h b/bridge/src/client/bridge_settings.h
 new file mode 100644
-index 0000000..0b28230
+index 0000000000000000000000000000000000000000..0b2823000c53e40539e4a4339c8151ea2d2e5e0f
 --- /dev/null
 +++ b/bridge/src/client/bridge_settings.h
 @@ -0,0 +1,128 @@
@@ -294,7 +294,7 @@ index 0000000..0b28230
 +}
 diff --git a/bridge/src/client/buffer_mapped_shadow.h b/bridge/src/client/buffer_mapped_shadow.h
 new file mode 100644
-index 0000000..024d2f8
+index 0000000000000000000000000000000000000000..024d2f8125043e9d44f5dea1bf5f2c2b088a7ed1
 --- /dev/null
 +++ b/bridge/src/client/buffer_mapped_shadow.h
 @@ -0,0 +1,200 @@
@@ -500,7 +500,7 @@ index 0000000..024d2f8
 +} // namespace l4d2_buffer
 diff --git a/bridge/src/client/buffer_shadow.h b/bridge/src/client/buffer_shadow.h
 new file mode 100644
-index 0000000..fd40fa3
+index 0000000000000000000000000000000000000000..fd40fa3fd1974d5c1844ead0b495c483b5499270
 --- /dev/null
 +++ b/bridge/src/client/buffer_shadow.h
 @@ -0,0 +1,58 @@
@@ -564,7 +564,7 @@ index 0000000..fd40fa3
 +}
 diff --git a/bridge/src/client/buffer_shadow_arena.h b/bridge/src/client/buffer_shadow_arena.h
 new file mode 100644
-index 0000000..998a1f9
+index 0000000000000000000000000000000000000000..998a1f94aa20cbcc2a491c2a78e3971f24ed3f6d
 --- /dev/null
 +++ b/bridge/src/client/buffer_shadow_arena.h
 @@ -0,0 +1,157 @@
@@ -726,7 +726,7 @@ index 0000000..998a1f9
 +};
 +}
 diff --git a/bridge/src/client/client_options.h b/bridge/src/client/client_options.h
-index 6175148..b298f89 100644
+index 6175148938d652b72e153170aabd1decbfea4031..b298f89ec07b20202c2b7c1ad7b995ae6782782a 100644
 --- a/bridge/src/client/client_options.h
 +++ b/bridge/src/client/client_options.h
 @@ -31,6 +31,28 @@
@@ -759,7 +759,7 @@ index 6175148..b298f89 100644
      return bridge_util::Config::getOption<std::string>("client.targetProcess", "");
    }
 diff --git a/bridge/src/client/d3d9_commonshader.h b/bridge/src/client/d3d9_commonshader.h
-index a3c5dba..0e509fb 100644
+index a3c5dba301974a50cf4fcb48af678b43d12ec4aa..0e509fb03080a44fd11f26d54a94895d6448570b 100644
 --- a/bridge/src/client/d3d9_commonshader.h
 +++ b/bridge/src/client/d3d9_commonshader.h
 @@ -162,6 +162,10 @@ public:
@@ -774,7 +774,7 @@ index a3c5dba..0e509fb 100644
      return m_majorVersion;
    }
 diff --git a/bridge/src/client/d3d9_cubetexture.cpp b/bridge/src/client/d3d9_cubetexture.cpp
-index 9de506f..7a4901a 100644
+index 9de506f439ba966a9d22083d47736d83e400a119..7a4901a11748ef9b5d12b55ba2f1dfade714c6ce 100644
 --- a/bridge/src/client/d3d9_cubetexture.cpp
 +++ b/bridge/src/client/d3d9_cubetexture.cpp
 @@ -1,3 +1,7 @@
@@ -842,7 +842,7 @@ index 9de506f..7a4901a 100644
 \ No newline at end of file
 +}
 diff --git a/bridge/src/client/d3d9_device.cpp b/bridge/src/client/d3d9_device.cpp
-index 1abdf20..5a5a91b 100644
+index 1abdf202102af7b252f46a4b96f5b3ed0ac091e2..5a5a91bcab1c4935d4fbfbb53765e8371b18de76 100644
 --- a/bridge/src/client/d3d9_device.cpp
 +++ b/bridge/src/client/d3d9_device.cpp
 @@ -1,3 +1,7 @@
@@ -3168,7 +3168,7 @@ index 1abdf20..5a5a91b 100644
  
  template<bool EnableSync>
 diff --git a/bridge/src/client/d3d9_device.h b/bridge/src/client/d3d9_device.h
-index df90d5f..33ca519 100644
+index df90d5fe8133803f2ddcfae8a42058c4139cb766..33ca519c6a622c799e652bb5cd749d43d6731a24 100644
 --- a/bridge/src/client/d3d9_device.h
 +++ b/bridge/src/client/d3d9_device.h
 @@ -1,3 +1,7 @@
@@ -3226,7 +3226,7 @@ index df90d5f..33ca519 100644
  };
 -
 diff --git a/bridge/src/client/d3d9_device_base.cpp b/bridge/src/client/d3d9_device_base.cpp
-index 00264c5..fd39e4b 100644
+index 00264c5f9b39159e72196ff21f58cf838b357250..fd39e4bbd17e3644d0f9e0265f412bd82c3ea19c 100644
 --- a/bridge/src/client/d3d9_device_base.cpp
 +++ b/bridge/src/client/d3d9_device_base.cpp
 @@ -1,3 +1,7 @@
@@ -3285,7 +3285,7 @@ index 00264c5..fd39e4b 100644
  
  void BaseDirect3DDevice9Ex_LSS::InitRamp() {
 diff --git a/bridge/src/client/d3d9_device_base.h b/bridge/src/client/d3d9_device_base.h
-index 63d0907..4a72ae9 100644
+index 63d09078cec2b3f6049cfd80335c51c03d1d9451..4a72ae98ed33a2d80f7e81049d7d01a652fa5ac5 100644
 --- a/bridge/src/client/d3d9_device_base.h
 +++ b/bridge/src/client/d3d9_device_base.h
 @@ -29,6 +29,9 @@
@@ -3316,7 +3316,7 @@ index 63d0907..4a72ae9 100644
 +  // NV-DXVK end
 +};
 diff --git a/bridge/src/client/d3d9_indexbuffer.cpp b/bridge/src/client/d3d9_indexbuffer.cpp
-index 1593d51..31fe6f3 100644
+index 1593d51ad30d0a460683b5787801ab0cabf8d615..31fe6f3bd7974f70ef8548d956187023ae74c881 100644
 --- a/bridge/src/client/d3d9_indexbuffer.cpp
 +++ b/bridge/src/client/d3d9_indexbuffer.cpp
 @@ -22,6 +22,7 @@
@@ -3358,7 +3358,7 @@ index 1593d51..31fe6f3 100644
 +  return DeviceBridge::healthy() ? D3D_OK : D3DERR_DEVICELOST;
  }
 diff --git a/bridge/src/client/d3d9_lss.cpp b/bridge/src/client/d3d9_lss.cpp
-index 300aaf5..b40d70a 100644
+index 300aaf52349174026c589c75ab88d7b0192369a6..fb4566c8109d1620ba582410f514f97bda831ca8 100644
 --- a/bridge/src/client/d3d9_lss.cpp
 +++ b/bridge/src/client/d3d9_lss.cpp
 @@ -1,3 +1,7 @@
@@ -3603,8 +3603,44 @@ index 300aaf5..b40d70a 100644
      Logger::info("Shutdown cleanup successful, exiting now!");
      BridgeState::setClientState(BridgeState::ProcessState::Exited);
  
+@@ -643,6 +720,17 @@ static bool shouldAttachToCurrentProcess() {
+  * Direct3D9 Interface Implementation
+  */
+ 
++static bool updaterRecoveryPending() {
++  const auto journal = GetServerExecutablePath().parent_path() / L"LDBupdate-transaction.json";
++  const DWORD saved = GetLastError();
++  const bool pending = GetFileAttributesW(journal.c_str()) != INVALID_FILE_ATTRIBUTES;
++  SetLastError(saved);
++  if (pending) { MessageBoxW(nullptr,
++    L"An interrupted LDB update needs recovery. Close this game and all Hosts, then run bin/.l4d2bridge/LDBupdater.exe --recover. Backups have been preserved.",
++    L"LDB update recovery", MB_OK | MB_ICONWARNING); }
++  return pending;
++}
++
+ HRESULT LssDirect3DCreate9Ex(UINT SDKVersion, IDirect3D9Ex** ppDeviceEx) {
+   if (!shouldAttachToCurrentProcess()) {
+     return orig_Direct3DCreate9Ex(SDKVersion, ppDeviceEx);
+@@ -651,6 +739,8 @@ HRESULT LssDirect3DCreate9Ex(UINT SDKVersion, IDirect3D9Ex** ppDeviceEx) {
+     return D3DERR_NOTAVAILABLE;
+   }
+ 
++  if (updaterRecoveryPending()) { if (ppDeviceEx) *ppDeviceEx = nullptr; return D3DERR_NOTAVAILABLE; }
++
+   // A game may override client's exception handler when it was setup early.
+   // Attempt to restore the exeption handler.
+   SetupExceptionHandler();
+@@ -668,6 +758,8 @@ IDirect3D9* LssDirect3DCreate9(UINT SDKVersion) {
+     return nullptr;
+   }
+ 
++  if (updaterRecoveryPending()) { return nullptr; }
++
+   // A game may override client's exception handler when it was setup early.
+   // Attempt to restore the exeption handler.
+   SetupExceptionHandler();
 diff --git a/bridge/src/client/d3d9_lss.def b/bridge/src/client/d3d9_lss.def
-index 0fbd289..61f4f9b 100644
+index 0fbd289005c6106264adaf28cef171e72e19d429..61f4f9b5d9a82f138522560f9cc9a8b111a71ae4 100644
 --- a/bridge/src/client/d3d9_lss.def
 +++ b/bridge/src/client/d3d9_lss.def
 @@ -20,3 +20,6 @@ EXPORTS
@@ -3615,7 +3651,7 @@ index 0fbd289..61f4f9b 100644
 +  L4D2BridgePageBlockControl @ 41
 +  L4D2BridgeControl @ 42
 diff --git a/bridge/src/client/d3d9_lss.h b/bridge/src/client/d3d9_lss.h
-index 8b76f5d..1aafa50 100644
+index 8b76f5d304d7f3d1f14926422b406f485418c331..1aafa5058b47cb343e6eab84f2b2362ea5e7ac9a 100644
 --- a/bridge/src/client/d3d9_lss.h
 +++ b/bridge/src/client/d3d9_lss.h
 @@ -44,7 +44,7 @@ typedef HRESULT(WINAPI* LPDirect3DCreate9Ex)(UINT SDKVersion, IDirect3D9Ex** ppD
@@ -3648,7 +3684,7 @@ index 8b76f5d..1aafa50 100644
  
    friend BaseDirect3DDevice9Ex_LSS;
 diff --git a/bridge/src/client/d3d9_module.cpp b/bridge/src/client/d3d9_module.cpp
-index 175430f..023a322 100644
+index 175430fba3976ba962e6997afc33fd3aefd9fa59..023a3220707db48cd2d711b8216f3bb42ea598a7 100644
 --- a/bridge/src/client/d3d9_module.cpp
 +++ b/bridge/src/client/d3d9_module.cpp
 @@ -1,3 +1,7 @@
@@ -3941,7 +3977,7 @@ index 175430f..023a322 100644
 \ No newline at end of file
 +}
 diff --git a/bridge/src/client/d3d9_pixelshader.cpp b/bridge/src/client/d3d9_pixelshader.cpp
-index 688d883..4e7054d 100644
+index 688d883ffb98e065434026293ff93115e6492a8d..4e7054d8e08f7ad23a079a8a50d46c6ba929e88b 100644
 --- a/bridge/src/client/d3d9_pixelshader.cpp
 +++ b/bridge/src/client/d3d9_pixelshader.cpp
 @@ -74,6 +74,9 @@ HRESULT Direct3DPixelShader9_LSS::GetFunction(void* pFunction, UINT* pSizeOfData
@@ -3955,7 +3991,7 @@ index 688d883..4e7054d 100644
  
    return S_OK;
 diff --git a/bridge/src/client/d3d9_pixelshader.h b/bridge/src/client/d3d9_pixelshader.h
-index 9f82b16..b8d03d9 100644
+index 9f82b163e93fa2478b0c63d75796e715a092a57d..b8d03d955f5f2ebec008d82b46acb9d65b9ced65 100644
 --- a/bridge/src/client/d3d9_pixelshader.h
 +++ b/bridge/src/client/d3d9_pixelshader.h
 @@ -29,6 +29,9 @@
@@ -3986,7 +4022,7 @@ index 9f82b16..b8d03d9 100644
 \ No newline at end of file
 +};
 diff --git a/bridge/src/client/d3d9_query.cpp b/bridge/src/client/d3d9_query.cpp
-index 5f70099..dfcca0a 100644
+index 5f700999da9634e866a9ddc613e8d0b9ff94b836..dfcca0a2cd05a9d8d2043e456f08cb5fcaf2a4c3 100644
 --- a/bridge/src/client/d3d9_query.cpp
 +++ b/bridge/src/client/d3d9_query.cpp
 @@ -42,12 +42,12 @@ HRESULT Direct3DQuery9_LSS::QueryInterface(REFIID riid, LPVOID* ppvObj) {
@@ -4061,7 +4097,7 @@ index 5f70099..dfcca0a 100644
 -}
 +} catch (const BridgeReadFailure&) { return D3DERR_DEVICELOST; }
 diff --git a/bridge/src/client/d3d9_stateblock.cpp b/bridge/src/client/d3d9_stateblock.cpp
-index 40cbd31..a1a9d7a 100644
+index 40cbd31e5fa15fc4be9bded3992c0e96e9f9dee9..a1a9d7abd041fcf8d0f597625936ff48e4bebaca 100644
 --- a/bridge/src/client/d3d9_stateblock.cpp
 +++ b/bridge/src/client/d3d9_stateblock.cpp
 @@ -203,14 +203,17 @@ HRESULT Direct3DStateBlock9_LSS::Capture() {
@@ -4085,7 +4121,7 @@ index 40cbd31..a1a9d7a 100644
 +  return DeviceBridge::healthy() ? D3D_OK : D3DERR_DEVICELOST;
  }
 diff --git a/bridge/src/client/d3d9_surface.cpp b/bridge/src/client/d3d9_surface.cpp
-index e54aec5..e6a7e4c 100644
+index e54aec56f6a42f37dce303845cde33fe5eada0c4..e6a7e4ce1c4529c57bfbe13b6121b154e59bf0a6 100644
 --- a/bridge/src/client/d3d9_surface.cpp
 +++ b/bridge/src/client/d3d9_surface.cpp
 @@ -1,3 +1,7 @@
@@ -4489,7 +4525,7 @@ index e54aec5..e6a7e4c 100644
 \ No newline at end of file
 +}
 diff --git a/bridge/src/client/d3d9_surface.h b/bridge/src/client/d3d9_surface.h
-index e4e9d51..560bfb5 100644
+index e4e9d51705c4cc95d80e20858db1951ec4f1c4aa..560bfb53238868213c48abeaa9a03d8bd4e30c7b 100644
 --- a/bridge/src/client/d3d9_surface.h
 +++ b/bridge/src/client/d3d9_surface.h
 @@ -1,3 +1,7 @@
@@ -4585,7 +4621,7 @@ index e4e9d51..560bfb5 100644
 \ No newline at end of file
 +};
 diff --git a/bridge/src/client/d3d9_surfacebuffer_helper.h b/bridge/src/client/d3d9_surfacebuffer_helper.h
-index 13afedc..4422be8 100644
+index 13afedcc34a8ec49c5b75e959813ebdd2ffc9e25..4422be832e9a1314f9970ad3dfc6bf209e295301 100644
 --- a/bridge/src/client/d3d9_surfacebuffer_helper.h
 +++ b/bridge/src/client/d3d9_surfacebuffer_helper.h
 @@ -1,3 +1,7 @@
@@ -4656,7 +4692,7 @@ index 13afedc..4422be8 100644
 \ No newline at end of file
 +} catch (const BridgeReadFailure&) { return D3DERR_DEVICELOST; }
 diff --git a/bridge/src/client/d3d9_swapchain.cpp b/bridge/src/client/d3d9_swapchain.cpp
-index 86a19d4..2ab41d6 100644
+index 86a19d4ca25f46b6eda91c3d883c6b5ada79bfb8..2ab41d6e405c91f42a857124d837461c31a3c9e5 100644
 --- a/bridge/src/client/d3d9_swapchain.cpp
 +++ b/bridge/src/client/d3d9_swapchain.cpp
 @@ -1,3 +1,7 @@
@@ -4753,7 +4789,7 @@ index 86a19d4..2ab41d6 100644
 \ No newline at end of file
 +}
 diff --git a/bridge/src/client/d3d9_swapchain.h b/bridge/src/client/d3d9_swapchain.h
-index 7244573..51fc718 100644
+index 7244573a1937d64f5db400a872fb48ecd3cbe678..51fc718c77d849f084595b6e38c11d17836399e3 100644
 --- a/bridge/src/client/d3d9_swapchain.h
 +++ b/bridge/src/client/d3d9_swapchain.h
 @@ -74,9 +74,13 @@ public:
@@ -4773,7 +4809,7 @@ index 7244573..51fc718 100644
      }
    }
 diff --git a/bridge/src/client/d3d9_texture.cpp b/bridge/src/client/d3d9_texture.cpp
-index 3f4a64f..4ff3ca3 100644
+index 3f4a64f66b274da916ba3fd09e7d52e5d057a6ee..4ff3ca3de08367d29a749d3e87276e7be96e77d0 100644
 --- a/bridge/src/client/d3d9_texture.cpp
 +++ b/bridge/src/client/d3d9_texture.cpp
 @@ -1,3 +1,7 @@
@@ -4855,7 +4891,7 @@ index 3f4a64f..4ff3ca3 100644
 \ No newline at end of file
 +}
 diff --git a/bridge/src/client/d3d9_texture.h b/bridge/src/client/d3d9_texture.h
-index 2a4b9e4..9f5118a 100644
+index 2a4b9e459991bbcd51d12b0b741ca9ee79fc7c4c..9f5118a63f74602d1a2e954966185a440e5986d3 100644
 --- a/bridge/src/client/d3d9_texture.h
 +++ b/bridge/src/client/d3d9_texture.h
 @@ -1,3 +1,7 @@
@@ -4913,7 +4949,7 @@ index 2a4b9e4..9f5118a 100644
 \ No newline at end of file
 +};
 diff --git a/bridge/src/client/d3d9_util.h b/bridge/src/client/d3d9_util.h
-index 2ef0ed4..da615c3 100644
+index 2ef0ed48d8560f61057866fc5fbd50f73f46e285..da615c3e031c618fc837be89b409c59c0a64f32d 100644
 --- a/bridge/src/client/d3d9_util.h
 +++ b/bridge/src/client/d3d9_util.h
 @@ -1,3 +1,7 @@
@@ -4965,7 +5001,7 @@ index 2ef0ed4..da615c3 100644
  
  static void _LogMissingFunctionCall(const std::string& functionName, bool errorlogLevel = true) {
 diff --git a/bridge/src/client/d3d9_vertexbuffer.cpp b/bridge/src/client/d3d9_vertexbuffer.cpp
-index 36ebe3a..687fa4c 100644
+index 36ebe3aa806dea61d2005543e0b8b473c97ea4a1..687fa4c2fbcf27db4b100a8c04116b6efa3edd61 100644
 --- a/bridge/src/client/d3d9_vertexbuffer.cpp
 +++ b/bridge/src/client/d3d9_vertexbuffer.cpp
 @@ -22,6 +22,7 @@
@@ -5008,7 +5044,7 @@ index 36ebe3a..687fa4c 100644
  }
 \ No newline at end of file
 diff --git a/bridge/src/client/d3d9_vertexdeclaration.cpp b/bridge/src/client/d3d9_vertexdeclaration.cpp
-index a90a28b..02c8b6e 100644
+index a90a28bf79c10312935fd70834599745d2cf49e4..02c8b6ef26ff84d3cb6d717a7ee4baadf617fff1 100644
 --- a/bridge/src/client/d3d9_vertexdeclaration.cpp
 +++ b/bridge/src/client/d3d9_vertexdeclaration.cpp
 @@ -74,6 +74,9 @@ HRESULT Direct3DVertexDeclaration9_LSS::GetDeclaration(D3DVERTEXELEMENT9* pEleme
@@ -5022,7 +5058,7 @@ index a90a28b..02c8b6e 100644
  
    return S_OK;
 diff --git a/bridge/src/client/d3d9_vertexdeclaration.h b/bridge/src/client/d3d9_vertexdeclaration.h
-index 2d450bf..bc80a0f 100644
+index 2d450bfd3ff14a5cce5b9537ec61a4493fd8ca0c..bc80a0f4f5c66dffc3c78a32d849bae06ae80091 100644
 --- a/bridge/src/client/d3d9_vertexdeclaration.h
 +++ b/bridge/src/client/d3d9_vertexdeclaration.h
 @@ -30,6 +30,9 @@
@@ -5054,7 +5090,7 @@ index 2d450bf..bc80a0f 100644
 \ No newline at end of file
 +};
 diff --git a/bridge/src/client/d3d9_vertexshader.cpp b/bridge/src/client/d3d9_vertexshader.cpp
-index 242b864..616a9af 100644
+index 242b864a79572b6f3c5ab8896dd874ed7ec3240f..616a9afba9d768afc67a911dac8296bcb1b76c7c 100644
 --- a/bridge/src/client/d3d9_vertexshader.cpp
 +++ b/bridge/src/client/d3d9_vertexshader.cpp
 @@ -77,6 +77,9 @@ HRESULT Direct3DVertexShader9_LSS::GetFunction(void* pFunction, UINT* pSizeOfDat
@@ -5068,7 +5104,7 @@ index 242b864..616a9af 100644
  
    return S_OK;
 diff --git a/bridge/src/client/d3d9_vertexshader.h b/bridge/src/client/d3d9_vertexshader.h
-index 620bb2c..eb11c3c 100644
+index 620bb2c0cff3a4c2fb2fa34367081b64e6541d54..eb11c3c639fa6c9d7bc1f2b93966af2cf440a47e 100644
 --- a/bridge/src/client/d3d9_vertexshader.h
 +++ b/bridge/src/client/d3d9_vertexshader.h
 @@ -29,6 +29,9 @@
@@ -5099,7 +5135,7 @@ index 620bb2c..eb11c3c 100644
 \ No newline at end of file
 +};
 diff --git a/bridge/src/client/d3d9_volume.cpp b/bridge/src/client/d3d9_volume.cpp
-index 11704cf..b6f6216 100644
+index 11704cf11f84124439968a5f0e1bdb84382bdf91..b6f62162ae4503c2ac92a2a9dd2217a5632e2d58 100644
 --- a/bridge/src/client/d3d9_volume.cpp
 +++ b/bridge/src/client/d3d9_volume.cpp
 @@ -20,9 +20,14 @@
@@ -5284,7 +5320,7 @@ index 11704cf..b6f6216 100644
 -           box.Back   - box.Front };
 -}
 diff --git a/bridge/src/client/d3d9_volume.h b/bridge/src/client/d3d9_volume.h
-index ba9821d..9833439 100644
+index ba9821dd8d163e302980b1e2449b9620f93175e6..9833439ece49fe1cb543d42644fae9ea7364e1b9 100644
 --- a/bridge/src/client/d3d9_volume.h
 +++ b/bridge/src/client/d3d9_volume.h
 @@ -22,14 +22,26 @@
@@ -5350,7 +5386,7 @@ index ba9821d..9833439 100644
 \ No newline at end of file
 +};
 diff --git a/bridge/src/client/d3d9_volumetexture.cpp b/bridge/src/client/d3d9_volumetexture.cpp
-index 3df797e..8df4ae1 100644
+index 3df797eb05ec60779eb4233489ab54fa6812136f..8df4ae12e874ef95828d35a6ad47954af2dc729f 100644
 --- a/bridge/src/client/d3d9_volumetexture.cpp
 +++ b/bridge/src/client/d3d9_volumetexture.cpp
 @@ -20,6 +20,7 @@
@@ -5393,7 +5429,7 @@ index 3df797e..8df4ae1 100644
  
    if (Level >= getDesc().Levels)
 diff --git a/bridge/src/client/di_hook.cpp b/bridge/src/client/di_hook.cpp
-index bbbd470..b2da4ae 100644
+index bbbd47007c8fe639e39e5202b494d92a2a8f198c..b2da4ae18b650afaf0b433a1f29d671b0b32c281 100644
 --- a/bridge/src/client/di_hook.cpp
 +++ b/bridge/src/client/di_hook.cpp
 @@ -20,6 +20,7 @@
@@ -5848,7 +5884,7 @@ index bbbd470..b2da4ae 100644
    // options to know about the window and actual cooperative level.
    // Assume exclusive input by default to force di messages forwarding.
 diff --git a/bridge/src/client/di_hook.h b/bridge/src/client/di_hook.h
-index 5897be9..01a8bd9 100644
+index 5897be91fecdcf99e2f73d112d3571cade7daa6c..01a8bd93685f75ce5022f973fd8ab8133edc2676 100644
 --- a/bridge/src/client/di_hook.h
 +++ b/bridge/src/client/di_hook.h
 @@ -1,3 +1,7 @@
@@ -5876,7 +5912,7 @@ index 5897be9..01a8bd9 100644
  
  }
 diff --git a/bridge/src/client/lockable_buffer.h b/bridge/src/client/lockable_buffer.h
-index fbfc565..02d2ff8 100644
+index fbfc565185489c07cc26a60c37df15d451b81b97..02d2ff81b8e80b3a3f0f5a6b9176faf5433df589 100644
 --- a/bridge/src/client/lockable_buffer.h
 +++ b/bridge/src/client/lockable_buffer.h
 @@ -1,3 +1,7 @@
@@ -6172,7 +6208,7 @@ index fbfc565..02d2ff8 100644
 +};
 diff --git a/bridge/src/client/memory_diagnostics.h b/bridge/src/client/memory_diagnostics.h
 new file mode 100644
-index 0000000..e556c84
+index 0000000000000000000000000000000000000000..e556c84f0ea420db3ebca432394f3dd73d98de3b
 --- /dev/null
 +++ b/bridge/src/client/memory_diagnostics.h
 @@ -0,0 +1,183 @@
@@ -6360,7 +6396,7 @@ index 0000000..e556c84
 +}
 +}
 diff --git a/bridge/src/client/meson.build b/bridge/src/client/meson.build
-index 2ad1e79..c1294a9 100644
+index 2ad1e7905bf3ad00dd6d021e7fc535fd2d600c46..c1294a9c90987eaef87eee126a21fbeb4a07d969 100644
 --- a/bridge/src/client/meson.build
 +++ b/bridge/src/client/meson.build
 @@ -1,3 +1,7 @@
@@ -6439,7 +6475,7 @@ index 2ad1e79..c1294a9 100644
 +endif
 diff --git a/bridge/src/client/pageblock_capability.h b/bridge/src/client/pageblock_capability.h
 new file mode 100644
-index 0000000..690bce4
+index 0000000000000000000000000000000000000000..690bce4e94aa239bbb8487f0e0caed376d9350eb
 --- /dev/null
 +++ b/bridge/src/client/pageblock_capability.h
 @@ -0,0 +1,68 @@
@@ -6513,7 +6549,7 @@ index 0000000..690bce4
 +}
 diff --git a/bridge/src/client/pageblock_control.cpp b/bridge/src/client/pageblock_control.cpp
 new file mode 100644
-index 0000000..420e354
+index 0000000000000000000000000000000000000000..420e354c00764f3602ade9eda24535a93b0e6ef6
 --- /dev/null
 +++ b/bridge/src/client/pageblock_control.cpp
 @@ -0,0 +1,54 @@
@@ -6573,7 +6609,7 @@ index 0000000..420e354
 +}
 diff --git a/bridge/src/client/pageblock_diagnostics.h b/bridge/src/client/pageblock_diagnostics.h
 new file mode 100644
-index 0000000..f0db30d
+index 0000000000000000000000000000000000000000..f0db30d1b38c0103625eaba0691dc0135002fef9
 --- /dev/null
 +++ b/bridge/src/client/pageblock_diagnostics.h
 @@ -0,0 +1,242 @@
@@ -6821,7 +6857,7 @@ index 0000000..f0db30d
 +}
 diff --git a/bridge/src/client/pageblock_residency.h b/bridge/src/client/pageblock_residency.h
 new file mode 100644
-index 0000000..ed3c94d
+index 0000000000000000000000000000000000000000..ed3c94dd0452f9fd45fb7eb1428347effbe4d439
 --- /dev/null
 +++ b/bridge/src/client/pageblock_residency.h
 @@ -0,0 +1,385 @@
@@ -7212,7 +7248,7 @@ index 0000000..ed3c94d
 +}
 diff --git a/bridge/src/client/pageblock_runtime.h b/bridge/src/client/pageblock_runtime.h
 new file mode 100644
-index 0000000..a82f594
+index 0000000000000000000000000000000000000000..a82f5941ec263549bf1e7805d59d83d700dd91ab
 --- /dev/null
 +++ b/bridge/src/client/pageblock_runtime.h
 @@ -0,0 +1,87 @@
@@ -7305,7 +7341,7 @@ index 0000000..a82f594
 +}
 diff --git a/bridge/src/client/pagefile_shadow.h b/bridge/src/client/pagefile_shadow.h
 new file mode 100644
-index 0000000..36f5efd
+index 0000000000000000000000000000000000000000..36f5efdb6a084c0cf2da075086b5d392b5fadc26
 --- /dev/null
 +++ b/bridge/src/client/pagefile_shadow.h
 @@ -0,0 +1,278 @@
@@ -7589,7 +7625,7 @@ index 0000000..36f5efd
 +};
 diff --git a/bridge/src/client/readback_recovery.h b/bridge/src/client/readback_recovery.h
 new file mode 100644
-index 0000000..d370fbe
+index 0000000000000000000000000000000000000000..d370fbea8df77c3705486fca196dfdac8d494646
 --- /dev/null
 +++ b/bridge/src/client/readback_recovery.h
 @@ -0,0 +1,162 @@
@@ -7756,7 +7792,7 @@ index 0000000..d370fbe
 +}
 +}
 diff --git a/bridge/src/client/remix_state.cpp b/bridge/src/client/remix_state.cpp
-index 05df008..4f0fc17 100644
+index 05df008b8008543490272a93e5e112e4361da168..4f0fc17019072e13deac743be8f7c952f1627f9d 100644
 --- a/bridge/src/client/remix_state.cpp
 +++ b/bridge/src/client/remix_state.cpp
 @@ -26,22 +26,24 @@
@@ -7802,7 +7838,7 @@ index 05df008..4f0fc17 100644
 +  });
  }
 diff --git a/bridge/src/client/remix_state.h b/bridge/src/client/remix_state.h
-index baefff7..573d5a9 100644
+index baefff7e3db0d94e2ea508e32ae580f4e6f2f01c..573d5a9d220cbc1109def213d7df509d39d41b3f 100644
 --- a/bridge/src/client/remix_state.h
 +++ b/bridge/src/client/remix_state.h
 @@ -21,6 +21,8 @@
@@ -7837,7 +7873,7 @@ index baefff7..573d5a9 100644
  };
 diff --git a/bridge/src/client/retention_database.h b/bridge/src/client/retention_database.h
 new file mode 100644
-index 0000000..baf85fd
+index 0000000000000000000000000000000000000000..baf85fdbac80a3ae959c36faaf59c7416ac063c5
 --- /dev/null
 +++ b/bridge/src/client/retention_database.h
 @@ -0,0 +1,152 @@
@@ -7995,7 +8031,7 @@ index 0000000..baf85fd
 +}
 diff --git a/bridge/src/client/retention_policy.h b/bridge/src/client/retention_policy.h
 new file mode 100644
-index 0000000..39becf6
+index 0000000000000000000000000000000000000000..39becf6cfd328a72dc1eba6beab8e0c8f1bf2813
 --- /dev/null
 +++ b/bridge/src/client/retention_policy.h
 @@ -0,0 +1,292 @@
@@ -8293,7 +8329,7 @@ index 0000000..39becf6
 +}
 diff --git a/bridge/src/client/retention_runtime.h b/bridge/src/client/retention_runtime.h
 new file mode 100644
-index 0000000..23efccd
+index 0000000000000000000000000000000000000000..23efccdee76adcf59a56d16bb426cfa4b5f8a1e3
 --- /dev/null
 +++ b/bridge/src/client/retention_runtime.h
 @@ -0,0 +1,154 @@
@@ -8453,7 +8489,7 @@ index 0000000..23efccd
 +}
 diff --git a/bridge/src/client/shadow_lifetime.h b/bridge/src/client/shadow_lifetime.h
 new file mode 100644
-index 0000000..5389ad6
+index 0000000000000000000000000000000000000000..5389ad69fc32d997d23a8af0ab810dd959039fb7
 --- /dev/null
 +++ b/bridge/src/client/shadow_lifetime.h
 @@ -0,0 +1,278 @@
@@ -8737,7 +8773,7 @@ index 0000000..5389ad6
 +}
 diff --git a/bridge/src/client/texture_creation.h b/bridge/src/client/texture_creation.h
 new file mode 100644
-index 0000000..2d99dd4
+index 0000000000000000000000000000000000000000..2d99dd46410aa137a04a6e357b7f476e05d2a157
 --- /dev/null
 +++ b/bridge/src/client/texture_creation.h
 @@ -0,0 +1,26 @@
@@ -8768,7 +8804,7 @@ index 0000000..2d99dd4
 +
 +}
 diff --git a/bridge/src/client/version.rc.in b/bridge/src/client/version.rc.in
-index 185005e..aa09a47 100644
+index 185005e0e37354fb798402fcbf0491c26c7124c6..aa09a478918a4a99bb4afaaeb51ce2c72d9f7851 100644
 --- a/bridge/src/client/version.rc.in
 +++ b/bridge/src/client/version.rc.in
 @@ -1,3 +1,7 @@
@@ -8796,10 +8832,18 @@ index 185005e..aa09a47 100644
      END
      BLOCK "VarFileInfo"
 diff --git a/bridge/src/client/window.cpp b/bridge/src/client/window.cpp
-index a6d5a42..b7bfc1f 100644
+index a6d5a4237e843a37c3c04dceec082b845efc69e8..2ea39272f0055d32205403c1ca8d7dae3ac004af 100644
 --- a/bridge/src/client/window.cpp
 +++ b/bridge/src/client/window.cpp
-@@ -31,6 +31,11 @@
+@@ -21,6 +21,7 @@
+  */
+ 
+ #include "window.h"
++#include "d3d9_lss.h"
+ 
+ #include "detours_common.h"
+ #include "di_hook.h"
+@@ -31,6 +32,11 @@
  #include "log/log.h"
  
  #include "util_monitor.h"
@@ -8811,7 +8855,7 @@ index a6d5a42..b7bfc1f 100644
  
  #include <unordered_map>
  #include <mutex>
-@@ -49,6 +54,40 @@ namespace {
+@@ -49,6 +55,40 @@ namespace {
  HWND g_hwnd = nullptr;
  WNDPROC g_gameWndProc = nullptr;
  bool g_bActivateProcessed = false;
@@ -8852,7 +8896,7 @@ index a6d5a42..b7bfc1f 100644
  std::atomic<bool> g_suppressWindowManagement { false };
  
  // reinterpret_cast wrappers
-@@ -78,12 +117,12 @@ static LONG WINAPI NewSetWindowLong(_In_ HWND hWnd, _In_ int nIndex, _In_ LONG d
+@@ -78,12 +118,12 @@ static LONG WINAPI NewSetWindowLong(_In_ HWND hWnd, _In_ int nIndex, _In_ LONG d
        // We only handle cases wherein the window's handle matches the window's handle 
        // used in D3DDEVICE_CREATION_PARAMETERS or D3DPRESENT_PARAMETERS
        if(hWnd != g_hwnd) {
@@ -8867,7 +8911,7 @@ index a6d5a42..b7bfc1f 100644
          return oldGameWndProc;
        }
      }
-@@ -195,14 +234,21 @@ void windowMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+@@ -195,14 +235,21 @@ void windowMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
  // and so removed from the client application message pump (e.g. you don't want
  // Remix UI clicks to accidentally click "Exit" in game menu)
  bool remixMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
@@ -8889,7 +8933,7 @@ index a6d5a42..b7bfc1f 100644
      if (!uiWasActive && RemixState::isUIActive()) {
        // Remix UI has been activated - unstick modifier keys at application side
        auto unstick = [hWnd](uint32_t vk) {
-@@ -271,6 +317,7 @@ bool remixMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+@@ -271,6 +318,7 @@ bool remixMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
  
    // Forward to remix renderer
    if (doForward) {
@@ -8897,15 +8941,28 @@ index a6d5a42..b7bfc1f 100644
      gpRemixMessageChannel->send(msg, wParam, lParam);
    }
  
-@@ -287,6 +334,7 @@ bool remixMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+@@ -287,6 +335,20 @@ bool remixMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
  }
  
  LRESULT WINAPI RemixWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
++  // Local updater test only: no readiness claim or per-frame polling.
++  if (msg == WM_KEYUP && wParam == VK_F10 && (GetKeyState(VK_CONTROL) & 0x8000)
++      && (GetKeyState(VK_SHIFT) & 0x8000) && gpServerMessageChannel) {
++    gpServerMessageChannel->send("LDB_UPDATER_LOCAL_TEST_REQUEST_V1",
++      static_cast<uint32_t>(reinterpret_cast<uintptr_t>(hWnd)), 0);
++    return 0;
++  }
++  static const UINT updateClose = RegisterWindowMessageW(L"LDB_UPDATER_LOCAL_TEST_CLOSE_V1");
++  if (updateClose && msg == updateClose && gpServer && wParam == gpServer->GetProcessId()) {
++    PostMessageW(hWnd, WM_CLOSE, 0, 0);
++    return 0;
++  }
++
 +  if(handleSteamCaptureNotification(msg))return 0;
    const bool isUnicode = IsWindowUnicode(hWnd);
    LRESULT lresult = 0;
  
-@@ -310,6 +358,23 @@ LRESULT WINAPI RemixWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+@@ -310,6 +372,23 @@ LRESULT WINAPI RemixWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
  // External funcs //
  ////////////////////
  
@@ -8929,7 +8986,7 @@ index a6d5a42..b7bfc1f 100644
  bool init() {
    if(!attach()) {
      Logger::err(kStr_init_attachErr);
-@@ -320,6 +385,8 @@ bool init() {
+@@ -320,6 +399,8 @@ bool init() {
  }
  
  bool terminate() {
@@ -8938,7 +8995,7 @@ index a6d5a42..b7bfc1f 100644
    if(!detach()) {
      Logger::err(kStr_terminate_detachErr);
      return false;
-@@ -364,7 +431,7 @@ bool set(HWND hwnd) {
+@@ -364,7 +445,7 @@ bool set(HWND hwnd) {
    // Fix up DirectInput forwarding if setting has succeeded
    DInputSetDefaultWindow(hwnd);
  
@@ -8947,7 +9004,7 @@ index a6d5a42..b7bfc1f 100644
  
    return true;
  }
-@@ -386,11 +453,12 @@ bool unset() {
+@@ -386,11 +467,12 @@ bool unset() {
        "another component likely subclassed the window during a mode change", RemixWndProc, prevWndProc));
    }
  
@@ -8961,7 +9018,7 @@ index a6d5a42..b7bfc1f 100644
  
    return true;
  }
-@@ -439,3 +507,68 @@ void prepareForCrashDialog(bool async) {
+@@ -439,3 +521,68 @@ void prepareForCrashDialog(bool async) {
  }
  
  }
@@ -9031,7 +9088,7 @@ index a6d5a42..b7bfc1f 100644
 +}
 +// NV-DXVK end
 diff --git a/bridge/src/client/window.h b/bridge/src/client/window.h
-index 75a9ac4..73b1546 100644
+index 75a9ac4e74faca987a1df9457d133687819ead6a..73b1546861286eececdac826e2cd299df9c9c0b9 100644
 --- a/bridge/src/client/window.h
 +++ b/bridge/src/client/window.h
 @@ -65,6 +65,12 @@ inline static bool isInputMessage(uint32_t msg) {
@@ -9048,7 +9105,7 @@ index 75a9ac4..73b1546 100644
  extern bool terminate();
  // Set RemixWndProc for hwnd. Only one allowed at a time. Calling again implicitly undoes the previous
 diff --git a/bridge/src/meson.build b/bridge/src/meson.build
-index b7d5bdf..a7d83f6 100644
+index b7d5bdf80b58fdbd5b125127fdedab9cbaf497e7..a7d83f64cbc6a930a756c18780e8d6543dac0d46 100644
 --- a/bridge/src/meson.build
 +++ b/bridge/src/meson.build
 @@ -1,3 +1,7 @@
@@ -9078,7 +9135,7 @@ index b7d5bdf..a7d83f6 100644
  endif
 diff --git a/bridge/src/server/color_backend_diagnostics.h b/bridge/src/server/color_backend_diagnostics.h
 new file mode 100644
-index 0000000..a50bb58
+index 0000000000000000000000000000000000000000..a50bb581b07ba2cb625dd53cd0c95fb469c57066
 --- /dev/null
 +++ b/bridge/src/server/color_backend_diagnostics.h
 @@ -0,0 +1,84 @@
@@ -9168,7 +9225,7 @@ index 0000000..a50bb58
 +}
 diff --git a/bridge/src/server/host_memory_details.h b/bridge/src/server/host_memory_details.h
 new file mode 100644
-index 0000000..7334865
+index 0000000000000000000000000000000000000000..7334865574ba884e447443a1c195b623ea5662af
 --- /dev/null
 +++ b/bridge/src/server/host_memory_details.h
 @@ -0,0 +1,216 @@
@@ -9390,7 +9447,7 @@ index 0000000..7334865
 +}
 diff --git a/bridge/src/server/host_memory_diagnostics.h b/bridge/src/server/host_memory_diagnostics.h
 new file mode 100644
-index 0000000..72eb1ad
+index 0000000000000000000000000000000000000000..72eb1adf46deceb9b2d8c32a8d98fc5237028b37
 --- /dev/null
 +++ b/bridge/src/server/host_memory_diagnostics.h
 @@ -0,0 +1,198 @@
@@ -9593,7 +9650,7 @@ index 0000000..72eb1ad
 +};
 +}
 diff --git a/bridge/src/server/main.cpp b/bridge/src/server/main.cpp
-index 86434ec..73dc9db 100644
+index 86434ece9002c1e05dea9af65efa97568dc450b9..2cb264efc0ec331a6ec2461d38ad95d880bc647a 100644
 --- a/bridge/src/server/main.cpp
 +++ b/bridge/src/server/main.cpp
 @@ -1,3 +1,7 @@
@@ -9604,7 +9661,7 @@ index 86434ec..73dc9db 100644
  /*
   * Copyright (c) 2022-2024, NVIDIA CORPORATION. All rights reserved.
   *
-@@ -19,11 +23,21 @@
+@@ -19,11 +23,22 @@
   * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
   * DEALINGS IN THE SOFTWARE.
   */
@@ -9623,10 +9680,11 @@ index 86434ec..73dc9db 100644
 +#include "swapchain_references.h"
 +#include "color_backend_diagnostics.h"
 +#include "upload_safety.h"
++#include "update_test_coordinator.h"
  
  #include "util_bridge_assert.h"
  #include "util_circularbuffer.h"
-@@ -102,13 +116,100 @@ using namespace remixapi::util;
+@@ -102,13 +117,100 @@ using namespace remixapi::util;
              const DWORD& name = rpcHeader.pHandle;
  #define GET_RES(name, map) \
              GET_HND(name##Handle); \
@@ -9729,7 +9787,7 @@ index 86434ec..73dc9db 100644
  bool bDxvkModuleLoaded = false;
  std::chrono::steady_clock::time_point gTimeStart;
  
-@@ -152,9 +253,44 @@ std::unordered_map<uint32_t, IDirect3DPixelShader9*> gpD3DPixelShaders;
+@@ -152,9 +254,44 @@ std::unordered_map<uint32_t, IDirect3DPixelShader9*> gpD3DPixelShaders;
  std::unordered_map<uint32_t, IDirect3DSwapChain9*> gpD3DSwapChains;
  std::unordered_map<uint32_t, IDirect3DQuery9*> gpD3DQuery;
  std::unordered_map<uint32_t, void*> gMapRemixApi;
@@ -9775,7 +9833,7 @@ index 86434ec..73dc9db 100644
  HANDLE hWait;
  
  namespace {
-@@ -179,8 +315,8 @@ static inline void safeDestroy(IUnknown* obj, uint32_t x86handle) {
+@@ -179,8 +316,8 @@ static inline void safeDestroy(IUnknown* obj, uint32_t x86handle) {
    if (obj) {
      const LONG cnt = static_cast<LONG>(obj->Release());
      if (cnt > 0) {
@@ -9786,7 +9844,7 @@ index 86434ec..73dc9db 100644
      }
    }
  #endif
-@@ -188,6 +324,19 @@ static inline void safeDestroy(IUnknown* obj, uint32_t x86handle) {
+@@ -188,6 +325,19 @@ static inline void safeDestroy(IUnknown* obj, uint32_t x86handle) {
    while (obj && static_cast<LONG>(obj->Release()) > 0);
  }
  
@@ -9806,7 +9864,7 @@ index 86434ec..73dc9db 100644
  D3DPRESENT_PARAMETERS getPresParamFromRaw(const uint32_t* rawPresentationParameters) {
    D3DPRESENT_PARAMETERS presParam;
    // Set up presentation parameters. We can't just directly cast the structure because the hDeviceWindow
-@@ -223,7 +372,7 @@ HRESULT ReturnSurfaceDataToClient(IDirect3DSurface9* pReturnSurfaceData, HRESULT
+@@ -223,7 +373,7 @@ HRESULT ReturnSurfaceDataToClient(IDirect3DSurface9* pReturnSurfaceData, HRESULT
    }
    // Using surface desc to get width, height of the surface
    D3DSURFACE_DESC pDesc;
@@ -9815,7 +9873,7 @@ index 86434ec..73dc9db 100644
    if (!SUCCEEDED(hresult)) {
      c.send_data(hresult);
      return hresult;
-@@ -235,28 +384,51 @@ HRESULT ReturnSurfaceDataToClient(IDirect3DSurface9* pReturnSurfaceData, HRESULT
+@@ -235,28 +385,51 @@ HRESULT ReturnSurfaceDataToClient(IDirect3DSurface9* pReturnSurfaceData, HRESULT
  
    // Obtaining raw buffer from the surface and we send this data to client
    D3DLOCKED_RECT lockedRect;
@@ -9874,7 +9932,7 @@ index 86434ec..73dc9db 100644
    return hresult;
  }
  
-@@ -296,10 +468,17 @@ void ProcessDeviceCommandQueue() {
+@@ -296,10 +469,17 @@ void ProcessDeviceCommandQueue() {
      ZoneScopedN("Process Command");
  #ifdef LOG_SERVER_COMMAND_TIME
      // Take a snapshot of the current tick count for profiling purposes
@@ -9893,7 +9951,7 @@ index 86434ec..73dc9db 100644
  
  #ifdef _DEBUG
      // If data batching is enabled and the data offset on the comamnd is different from
-@@ -318,6 +497,7 @@ void ProcessDeviceCommandQueue() {
+@@ -318,6 +498,7 @@ void ProcessDeviceCommandQueue() {
          ZoneName(commandStr.c_str(), commandStr.size());
        }
        PULL_U(currentUID);
@@ -9901,7 +9959,7 @@ index 86434ec..73dc9db 100644
  #if defined(_DEBUG) || defined(DEBUGOPT)
        if (GlobalOptions::getLogServerCommands()) {
          Logger::info("Device Processing: " + toString(rpcHeader.command) + " UID: " + std::to_string(currentUID));
-@@ -338,9 +518,10 @@ void ProcessDeviceCommandQueue() {
+@@ -338,9 +519,10 @@ void ProcessDeviceCommandQueue() {
          uint32_t* rawPresentationParameters = nullptr;
          DeviceBridge::get_data((void**) &rawPresentationParameters);
          D3DPRESENT_PARAMETERS PresentationParameters = getPresParamFromRaw(rawPresentationParameters);
@@ -9913,7 +9971,7 @@ index 86434ec..73dc9db 100644
          if (!SUCCEEDED(hresult)) {
            std::stringstream ss;
            ss << format_string("CreateDeviceEx() call failed with error code 0x%x", hresult) << std::endl;
-@@ -355,7 +536,7 @@ void ProcessDeviceCommandQueue() {
+@@ -355,7 +537,7 @@ void ProcessDeviceCommandQueue() {
          }
  
          // Send response back to the client
@@ -9922,7 +9980,7 @@ index 86434ec..73dc9db 100644
          {
            ServerMessage c(Commands::Bridge_Response, currentUID);
            c.send_data(hresult);
-@@ -373,9 +554,16 @@ void ProcessDeviceCommandQueue() {
+@@ -373,9 +555,16 @@ void ProcessDeviceCommandQueue() {
          uint32_t* rawPresentationParameters = nullptr;
          DeviceBridge::get_data((void**) &rawPresentationParameters);
          D3DPRESENT_PARAMETERS PresentationParameters = getPresParamFromRaw(rawPresentationParameters);
@@ -9940,7 +9998,7 @@ index 86434ec..73dc9db 100644
          if (!SUCCEEDED(hresult)) {
            std::stringstream ss;
            ss << format_string("CreateDevice() call failed with error code 0x%x", hresult) << std::endl;
-@@ -383,6 +571,12 @@ void ProcessDeviceCommandQueue() {
+@@ -383,6 +572,12 @@ void ProcessDeviceCommandQueue() {
          } else {
            Logger::info("Server side D3D9 Device created successfully!");
            gpD3DDevices[pHandle] = (IDirect3DDevice9Ex*) pD3DDevice;
@@ -9953,7 +10011,7 @@ index 86434ec..73dc9db 100644
            if(GlobalOptions::getExposeRemixApi()) {
              remixapi::g_device = (IDirect3DDevice9Ex*) pD3DDevice;
              remixapi::g_remix.dxvk_RegisterD3D9Device(remixapi::g_device);
-@@ -390,7 +584,7 @@ void ProcessDeviceCommandQueue() {
+@@ -390,7 +585,7 @@ void ProcessDeviceCommandQueue() {
          }
  
          // Send response back to the client
@@ -9962,7 +10020,7 @@ index 86434ec..73dc9db 100644
          {
            ServerMessage c(Commands::Bridge_Response, currentUID);
            c.send_data(hresult);
-@@ -426,9 +620,10 @@ void ProcessDeviceCommandQueue() {
+@@ -426,9 +621,10 @@ void ProcessDeviceCommandQueue() {
          PULL(DWORD, Usage);
          PULL_HND(pHandle);
          LPDIRECT3DSURFACE9 pSurface;
@@ -9974,7 +10032,7 @@ index 86434ec..73dc9db 100644
          }
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
-@@ -444,9 +639,10 @@ void ProcessDeviceCommandQueue() {
+@@ -444,9 +640,10 @@ void ProcessDeviceCommandQueue() {
          PULL(DWORD, Usage);
          PULL_HND(pHandle);
          LPDIRECT3DSURFACE9 pSurface;
@@ -9986,7 +10044,7 @@ index 86434ec..73dc9db 100644
          }
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
-@@ -464,9 +660,10 @@ void ProcessDeviceCommandQueue() {
+@@ -464,9 +661,10 @@ void ProcessDeviceCommandQueue() {
          PULL(DWORD, Usage);
          PULL_HND(pHandle);
          LPDIRECT3DSURFACE9 pSurface;
@@ -9998,7 +10056,7 @@ index 86434ec..73dc9db 100644
          }
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
-@@ -483,6 +680,7 @@ void ProcessDeviceCommandQueue() {
+@@ -483,6 +681,7 @@ void ProcessDeviceCommandQueue() {
          IDirect3DSwapChain9* pSwapChain = nullptr;
          const auto hresult = pD3DDevice->GetSwapChain(0, &pSwapChain);
          if (SUCCEEDED(hresult)) {
@@ -10006,7 +10064,7 @@ index 86434ec..73dc9db 100644
            gpD3DSwapChains[pClientSwapchain] = pSwapChain;
          }
          break;
-@@ -495,7 +693,9 @@ void ProcessDeviceCommandQueue() {
+@@ -495,7 +694,9 @@ void ProcessDeviceCommandQueue() {
          IDirect3DSurface9* pBackbuffer = nullptr;
          const auto hresult = pD3DDevice->GetBackBuffer(0, index, D3DBACKBUFFER_TYPE_MONO, &pBackbuffer);
          if (SUCCEEDED(hresult)) {
@@ -10016,7 +10074,7 @@ index 86434ec..73dc9db 100644
          }
          assert(SUCCEEDED(hresult));
          break;
-@@ -507,7 +707,9 @@ void ProcessDeviceCommandQueue() {
+@@ -507,7 +708,9 @@ void ProcessDeviceCommandQueue() {
          IDirect3DSurface9* pDepthStencil = nullptr;
          const auto hresult = pD3DDevice->GetDepthStencilSurface(&pDepthStencil);
          if (SUCCEEDED(hresult)) {
@@ -10026,7 +10084,7 @@ index 86434ec..73dc9db 100644
          }
          assert(SUCCEEDED(hresult));
          break;
-@@ -518,7 +720,9 @@ void ProcessDeviceCommandQueue() {
+@@ -518,7 +721,9 @@ void ProcessDeviceCommandQueue() {
          break;
        case IDirect3DDevice9Ex_Destroy:
        {
@@ -10037,7 +10095,7 @@ index 86434ec..73dc9db 100644
          safeDestroy(pD3DDevice, pD3DDeviceHandle);
          gpD3DDevices.erase(pD3DDeviceHandle);
          break;
-@@ -527,7 +731,8 @@ void ProcessDeviceCommandQueue() {
+@@ -527,7 +732,8 @@ void ProcessDeviceCommandQueue() {
        {
          GET_RES(pD3DDevice, gpD3DDevices);
          const auto hresult = pD3DDevice->TestCooperativeLevel();
@@ -10047,7 +10105,7 @@ index 86434ec..73dc9db 100644
          break;
        }
        case IDirect3DDevice9Ex_GetAvailableTextureMem:
-@@ -561,8 +766,14 @@ void ProcessDeviceCommandQueue() {
+@@ -561,8 +767,14 @@ void ProcessDeviceCommandQueue() {
        {
  
          GET_RES(pD3DDevice, gpD3DDevices);
@@ -10063,7 +10121,7 @@ index 86434ec..73dc9db 100644
          BRIDGE_ASSERT_LOG(SUCCEEDED(hresult), "Issue retrieving D3D9 device specific information");
          {
            ServerMessage c(Commands::Bridge_Response, currentUID);
-@@ -632,9 +843,11 @@ void ProcessDeviceCommandQueue() {
+@@ -632,9 +844,11 @@ void ProcessDeviceCommandQueue() {
          uint32_t* rawPresentationParameters = nullptr;
          DeviceBridge::get_data((void**) &rawPresentationParameters);
          D3DPRESENT_PARAMETERS PresentationParameters = getPresParamFromRaw(rawPresentationParameters);
@@ -10075,7 +10133,7 @@ index 86434ec..73dc9db 100644
            gpD3DSwapChains[pHandle] = pSwapChain;
          }
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
-@@ -646,8 +859,13 @@ void ProcessDeviceCommandQueue() {
+@@ -646,8 +860,13 @@ void ProcessDeviceCommandQueue() {
          PULL_U(iSwapChain);
          IDirect3DSwapChain9* pSwapChain = nullptr;
          const auto hresult = pD3DDevice->GetSwapChain(iSwapChain, &pSwapChain);
@@ -10091,7 +10149,7 @@ index 86434ec..73dc9db 100644
          break;
        }
        case IDirect3DDevice9Ex_GetNumberOfSwapChains:
-@@ -664,19 +882,31 @@ void ProcessDeviceCommandQueue() {
+@@ -664,19 +883,31 @@ void ProcessDeviceCommandQueue() {
          uint32_t* rawPresentationParameters = nullptr;
          DeviceBridge::get_data((void**) &rawPresentationParameters);
          D3DPRESENT_PARAMETERS PresentationParameters = getPresParamFromRaw(rawPresentationParameters);
@@ -10135,7 +10193,7 @@ index 86434ec..73dc9db 100644
          break;
        }
        case IDirect3DDevice9Ex_ResetEx:
-@@ -689,26 +919,38 @@ void ProcessDeviceCommandQueue() {
+@@ -689,26 +920,38 @@ void ProcessDeviceCommandQueue() {
          PULL_DATA(sizeof(D3DDISPLAYMODEEX), pFullscreenDisplayMode);
  
          D3DPRESENT_PARAMETERS PresentationParameters = getPresParamFromRaw(rawPresentationParameters);
@@ -10187,7 +10245,7 @@ index 86434ec..73dc9db 100644
  #endif
  
          GET_RES(pD3DDevice, gpD3DDevices);
-@@ -717,9 +959,10 @@ void ProcessDeviceCommandQueue() {
+@@ -717,9 +960,10 @@ void ProcessDeviceCommandQueue() {
          PULL(uint32_t, hDestWindowOverride);
          PULL_OBJ(RGNDATA, pDirtyRegion);
  
@@ -10200,7 +10258,7 @@ index 86434ec..73dc9db 100644
          if (!SUCCEEDED(hresult)) {
            std::stringstream ss;
            ss << "Present() failed! Check all logs for reported errors.";
-@@ -730,7 +973,7 @@ void ProcessDeviceCommandQueue() {
+@@ -730,7 +974,7 @@ void ProcessDeviceCommandQueue() {
          if (GlobalOptions::getPresentSemaphoreEnabled()) {
            gpPresent->release();
  #ifdef ENABLE_PRESENT_SEMAPHORE_TRACE
@@ -10209,7 +10267,7 @@ index 86434ec..73dc9db 100644
  #endif
          }
          break;
-@@ -746,6 +989,7 @@ void ProcessDeviceCommandQueue() {
+@@ -746,6 +990,7 @@ void ProcessDeviceCommandQueue() {
          assert(SUCCEEDED(hresult));
          if (SUCCEEDED(hresult)) {
            gpD3DResources[pSurfaceHandle] = pBackbuffer;
@@ -10217,7 +10275,7 @@ index 86434ec..73dc9db 100644
          }
          break;
        }
-@@ -767,6 +1011,7 @@ void ProcessDeviceCommandQueue() {
+@@ -767,6 +1012,7 @@ void ProcessDeviceCommandQueue() {
          PULL_D(Flags);
          PULL_OBJ(D3DGAMMARAMP, pRamp);
          pD3DDevice->SetGammaRamp(iSwapChain, Flags, pRamp);
@@ -10225,7 +10283,7 @@ index 86434ec..73dc9db 100644
          break;
        }
        case IDirect3DDevice9Ex_GetGammaRamp:
-@@ -780,20 +1025,30 @@ void ProcessDeviceCommandQueue() {
+@@ -780,20 +1026,30 @@ void ProcessDeviceCommandQueue() {
        case IDirect3DDevice9Ex_CreateTexture:
        {
          GET_RES(pD3DDevice, gpD3DDevices);
@@ -10266,7 +10324,7 @@ index 86434ec..73dc9db 100644
          break;
        }
        case IDirect3DDevice9Ex_CreateVolumeTexture:
-@@ -807,10 +1062,15 @@ void ProcessDeviceCommandQueue() {
+@@ -807,10 +1063,15 @@ void ProcessDeviceCommandQueue() {
          PULL(D3DFORMAT, Format);
          PULL(D3DPOOL, Pool);
          PULL_HND(pHandle);
@@ -10283,7 +10341,7 @@ index 86434ec..73dc9db 100644
          }
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
-@@ -826,9 +1086,10 @@ void ProcessDeviceCommandQueue() {
+@@ -826,9 +1087,10 @@ void ProcessDeviceCommandQueue() {
          PULL(D3DPOOL, Pool);
          PULL_HND(pHandle);
          LPDIRECT3DCUBETEXTURE9 pCubeTexture;
@@ -10295,7 +10353,7 @@ index 86434ec..73dc9db 100644
          }
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
-@@ -843,9 +1104,10 @@ void ProcessDeviceCommandQueue() {
+@@ -843,9 +1105,10 @@ void ProcessDeviceCommandQueue() {
          PULL(D3DPOOL, Pool);
          PULL_HND(pHandle);
          LPDIRECT3DVERTEXBUFFER9 pVertexBuffer;
@@ -10307,7 +10365,7 @@ index 86434ec..73dc9db 100644
          }
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
-@@ -860,9 +1122,10 @@ void ProcessDeviceCommandQueue() {
+@@ -860,9 +1123,10 @@ void ProcessDeviceCommandQueue() {
          PULL(D3DPOOL, Pool);
          PULL_HND(pHandle);
          LPDIRECT3DINDEXBUFFER9 pIndexBuffer;
@@ -10319,7 +10377,7 @@ index 86434ec..73dc9db 100644
          }
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
-@@ -879,9 +1142,10 @@ void ProcessDeviceCommandQueue() {
+@@ -879,9 +1143,10 @@ void ProcessDeviceCommandQueue() {
          PULL(BOOL, Lockable);
          PULL_HND(pHandle);
          LPDIRECT3DSURFACE9 pSurface;
@@ -10331,7 +10389,7 @@ index 86434ec..73dc9db 100644
          }
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
-@@ -898,9 +1162,10 @@ void ProcessDeviceCommandQueue() {
+@@ -898,9 +1163,10 @@ void ProcessDeviceCommandQueue() {
          PULL(BOOL, Discard);
          PULL_HND(pHandle);
          LPDIRECT3DSURFACE9 pSurface;
@@ -10343,7 +10401,7 @@ index 86434ec..73dc9db 100644
          }
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
-@@ -919,7 +1184,8 @@ void ProcessDeviceCommandQueue() {
+@@ -919,7 +1185,8 @@ void ProcessDeviceCommandQueue() {
          const auto& pDestinationSurface = (IDirect3DSurface9*) gpD3DResources[pDestHandle];
          assert(pDestinationSurface != nullptr);
          if (pSourceSurface != nullptr && pDestinationSurface != nullptr) {
@@ -10353,7 +10411,7 @@ index 86434ec..73dc9db 100644
            assert(SUCCEEDED(hresult));
          }
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
-@@ -936,7 +1202,8 @@ void ProcessDeviceCommandQueue() {
+@@ -936,7 +1203,8 @@ void ProcessDeviceCommandQueue() {
          const auto& pDestinationTexture = (IDirect3DBaseTexture9*) gpD3DResources[pDestinationTextureHandle];
          assert(pDestinationTexture != nullptr);
          if (pSourceTexture != nullptr && pDestinationTexture != nullptr) {
@@ -10363,7 +10421,7 @@ index 86434ec..73dc9db 100644
            assert(SUCCEEDED(hresult));
          }
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
-@@ -949,7 +1216,7 @@ void ProcessDeviceCommandQueue() {
+@@ -949,7 +1217,7 @@ void ProcessDeviceCommandQueue() {
          PULL_HND(pDestSurfaceHandle);
          const auto& pRenderTarget = (IDirect3DSurface9*) gpD3DResources[pRenderTargetHandle];
          const auto& pDestSurface = (IDirect3DSurface9*) gpD3DResources[pDestSurfaceHandle];
@@ -10372,7 +10430,7 @@ index 86434ec..73dc9db 100644
          hresult = ReturnSurfaceDataToClient(pDestSurface, hresult, currentUID);
          assert(SUCCEEDED(hresult));
          break;
-@@ -1002,9 +1269,10 @@ void ProcessDeviceCommandQueue() {
+@@ -1002,9 +1270,10 @@ void ProcessDeviceCommandQueue() {
          PULL(D3DPOOL, Pool);
          PULL_HND(pHandle);
          LPDIRECT3DSURFACE9 pSurface;
@@ -10384,7 +10442,7 @@ index 86434ec..73dc9db 100644
          }
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
-@@ -1023,6 +1291,7 @@ void ProcessDeviceCommandQueue() {
+@@ -1023,6 +1292,7 @@ void ProcessDeviceCommandQueue() {
          assert((pHandle != 0 && pRenderTarget != 0) || pHandle == 0);
          if ((pHandle != 0 && pRenderTarget != 0) || pHandle == 0) {
            hresult = pD3DDevice->SetRenderTarget(IN RenderTargetIndex, IN pRenderTarget);
@@ -10392,7 +10450,7 @@ index 86434ec..73dc9db 100644
            assert(SUCCEEDED(hresult));
          }
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
-@@ -1034,12 +1303,9 @@ void ProcessDeviceCommandQueue() {
+@@ -1034,12 +1304,9 @@ void ProcessDeviceCommandQueue() {
          PULL_D(RenderTargetIndex);
          PULL_HND(pSurfaceHandle);
          IDirect3DSurface9* pRenderTarget = nullptr;
@@ -10407,7 +10465,7 @@ index 86434ec..73dc9db 100644
          break;
        }
        case IDirect3DDevice9Ex_SetDepthStencilSurface:
-@@ -1054,6 +1320,7 @@ void ProcessDeviceCommandQueue() {
+@@ -1054,6 +1321,7 @@ void ProcessDeviceCommandQueue() {
          assert((pHandle != 0 && pDepthStencil != 0) || pHandle == 0);
          if ((pHandle != 0 && pDepthStencil != 0) || pHandle == 0) {
            hresult = pD3DDevice->SetDepthStencilSurface(IN pDepthStencil);
@@ -10415,7 +10473,7 @@ index 86434ec..73dc9db 100644
            assert(SUCCEEDED(hresult));
          }
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
-@@ -1064,11 +1331,8 @@ void ProcessDeviceCommandQueue() {
+@@ -1064,11 +1332,8 @@ void ProcessDeviceCommandQueue() {
          GET_RES(pD3DDevice, gpD3DDevices);
          PULL_HND(pSurfaceHandle);
          IDirect3DSurface9* pZStencilSurface = nullptr;
@@ -10429,7 +10487,7 @@ index 86434ec..73dc9db 100644
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
          break;
        }
-@@ -1084,6 +1348,7 @@ void ProcessDeviceCommandQueue() {
+@@ -1084,6 +1349,7 @@ void ProcessDeviceCommandQueue() {
        {
          GET_RES(pD3DDevice, gpD3DDevices);
          const auto hresult = pD3DDevice->EndScene();
@@ -10437,7 +10495,7 @@ index 86434ec..73dc9db 100644
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
          break;
-@@ -1186,6 +1451,7 @@ void ProcessDeviceCommandQueue() {
+@@ -1186,6 +1452,7 @@ void ProcessDeviceCommandQueue() {
          PULL(D3DRENDERSTATETYPE, State);
          PULL_D(Value);
          const auto hresult = pD3DDevice->SetRenderState(IN State, IN Value);
@@ -10445,7 +10503,7 @@ index 86434ec..73dc9db 100644
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
          break;
-@@ -1244,6 +1510,30 @@ void ProcessDeviceCommandQueue() {
+@@ -1244,6 +1511,30 @@ void ProcessDeviceCommandQueue() {
            assert(pTexture != nullptr);
          }
          const auto hresult = pD3DDevice->SetTexture(IN Stage, IN pTexture);
@@ -10476,7 +10534,7 @@ index 86434ec..73dc9db 100644
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
          break;
-@@ -1270,6 +1560,7 @@ void ProcessDeviceCommandQueue() {
+@@ -1270,6 +1561,7 @@ void ProcessDeviceCommandQueue() {
          PULL(D3DSAMPLERSTATETYPE, Type);
          PULL_D(Value);
          const auto hresult = pD3DDevice->SetSamplerState(IN Sampler, IN Type, IN Value);
@@ -10484,7 +10542,7 @@ index 86434ec..73dc9db 100644
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
          break;
-@@ -1323,6 +1614,7 @@ void ProcessDeviceCommandQueue() {
+@@ -1323,6 +1615,7 @@ void ProcessDeviceCommandQueue() {
        case IDirect3DDevice9Ex_DrawPrimitive:
        {
          GET_RES(pD3DDevice, gpD3DDevices);
@@ -10492,7 +10550,7 @@ index 86434ec..73dc9db 100644
          PULL(D3DPRIMITIVETYPE, PrimitiveType);
          PULL_U(StartVertex);
          PULL_U(PrimitiveCount);
-@@ -1334,6 +1626,7 @@ void ProcessDeviceCommandQueue() {
+@@ -1334,6 +1627,7 @@ void ProcessDeviceCommandQueue() {
        case IDirect3DDevice9Ex_DrawIndexedPrimitive:
        {
          GET_RES(pD3DDevice, gpD3DDevices);
@@ -10500,7 +10558,7 @@ index 86434ec..73dc9db 100644
          PULL(D3DPRIMITIVETYPE, Type);
          PULL_I(BaseVertexIndex);
          PULL_U(MinVertexIndex);
-@@ -1348,6 +1641,7 @@ void ProcessDeviceCommandQueue() {
+@@ -1348,6 +1642,7 @@ void ProcessDeviceCommandQueue() {
        case IDirect3DDevice9Ex_DrawPrimitiveUP:
        {
          GET_RES(pD3DDevice, gpD3DDevices);
@@ -10508,7 +10566,7 @@ index 86434ec..73dc9db 100644
          PULL(D3DPRIMITIVETYPE, PrimitiveType);
          PULL_U(PrimitiveCount);
          void* pVertexStreamZeroData = nullptr;
-@@ -1361,6 +1655,7 @@ void ProcessDeviceCommandQueue() {
+@@ -1361,6 +1656,7 @@ void ProcessDeviceCommandQueue() {
        case IDirect3DDevice9Ex_DrawIndexedPrimitiveUP:
        {
          GET_RES(pD3DDevice, gpD3DDevices);
@@ -10516,7 +10574,7 @@ index 86434ec..73dc9db 100644
          PULL(D3DPRIMITIVETYPE, PrimitiveType);
          PULL_U(MinVertexIndex);
          PULL_U(NumVertices);
-@@ -1450,6 +1745,10 @@ void ProcessDeviceCommandQueue() {
+@@ -1450,6 +1746,10 @@ void ProcessDeviceCommandQueue() {
          if (SUCCEEDED(hresult)) {
            gpD3DVertexShaders[pHandle] = pShader;
          }
@@ -10527,7 +10585,7 @@ index 86434ec..73dc9db 100644
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
          break;
-@@ -1463,6 +1762,7 @@ void ProcessDeviceCommandQueue() {
+@@ -1463,6 +1763,7 @@ void ProcessDeviceCommandQueue() {
            pShader = gpD3DVertexShaders[pHandle];
          }
          const auto hresult = pD3DDevice->SetVertexShader(IN pShader);
@@ -10535,7 +10593,7 @@ index 86434ec..73dc9db 100644
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
          break;
-@@ -1514,10 +1814,11 @@ void ProcessDeviceCommandQueue() {
+@@ -1514,10 +1815,11 @@ void ProcessDeviceCommandQueue() {
        case IDirect3DDevice9Ex_SetStreamSource:
        {
          GET_RES(pD3DDevice, gpD3DDevices);
@@ -10551,7 +10609,7 @@ index 86434ec..73dc9db 100644
          IDirect3DVertexBuffer9* pStreamData = nullptr;
          if (pHandle != NULL) {
            pStreamData = (IDirect3DVertexBuffer9*) gpD3DResources[pHandle];
-@@ -1544,7 +1845,8 @@ void ProcessDeviceCommandQueue() {
+@@ -1544,7 +1846,8 @@ void ProcessDeviceCommandQueue() {
        case IDirect3DDevice9Ex_SetIndices:
        {
          GET_RES(pD3DDevice, gpD3DDevices);
@@ -10561,7 +10619,7 @@ index 86434ec..73dc9db 100644
          IDirect3DIndexBuffer9* pIndexData = NULL;
          if (pHandle != NULL) {
            pIndexData = (IDirect3DIndexBuffer9*) gpD3DResources[pHandle];
-@@ -1568,6 +1870,10 @@ void ProcessDeviceCommandQueue() {
+@@ -1568,6 +1871,10 @@ void ProcessDeviceCommandQueue() {
          if (SUCCEEDED(hresult)) {
            gpD3DPixelShaders[pHandle] = pShader;
          }
@@ -10572,7 +10630,7 @@ index 86434ec..73dc9db 100644
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_CREATE_FUNCTION_SERVER_RESPONSE(hresult, currentUID);
          break;
-@@ -1581,6 +1887,7 @@ void ProcessDeviceCommandQueue() {
+@@ -1581,6 +1888,7 @@ void ProcessDeviceCommandQueue() {
            pShader = gpD3DPixelShaders[pHandle];
          }
          const auto hresult = pD3DDevice->SetPixelShader(IN pShader);
@@ -10580,7 +10638,7 @@ index 86434ec..73dc9db 100644
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
          break;
-@@ -1595,6 +1902,7 @@ void ProcessDeviceCommandQueue() {
+@@ -1595,6 +1903,7 @@ void ProcessDeviceCommandQueue() {
          float* pConstantData = nullptr;
          PULL_DATA(Count * sizeof(float) * 4, pConstantData);
          const auto hresult = pD3DDevice->SetPixelShaderConstantF(IN StartRegister, IN pConstantData, IN Count);
@@ -10588,7 +10646,7 @@ index 86434ec..73dc9db 100644
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
          break;
-@@ -1734,6 +2042,7 @@ void ProcessDeviceCommandQueue() {
+@@ -1734,6 +2043,7 @@ void ProcessDeviceCommandQueue() {
          const auto& pSB = gpD3DStateBlocks[pHandle];
          assert(pSB != nullptr);
          const auto hresult = pSB->Apply();
@@ -10596,7 +10654,7 @@ index 86434ec..73dc9db 100644
          assert(SUCCEEDED(hresult));
          break;
        }
-@@ -1749,7 +2058,17 @@ void ProcessDeviceCommandQueue() {
+@@ -1749,7 +2059,17 @@ void ProcessDeviceCommandQueue() {
        {
          GET_HND(pHandle);
          const auto& pSwapChain = gpD3DSwapChains[pHandle];
@@ -10615,7 +10673,7 @@ index 86434ec..73dc9db 100644
          gpD3DSwapChains.erase(pHandle);
          break;
        }
-@@ -1757,7 +2076,7 @@ void ProcessDeviceCommandQueue() {
+@@ -1757,7 +2077,7 @@ void ProcessDeviceCommandQueue() {
        {
          FrameMark;
  #ifdef ENABLE_PRESENT_SEMAPHORE_TRACE
@@ -10624,7 +10682,7 @@ index 86434ec..73dc9db 100644
  #endif
  
          GET_RES(pSwapChain, gpD3DSwapChains);
-@@ -1767,9 +2086,9 @@ void ProcessDeviceCommandQueue() {
+@@ -1767,9 +2087,9 @@ void ProcessDeviceCommandQueue() {
          PULL_OBJ(RGNDATA, pDirtyRegion);
          PULL(uint32_t, dwFlags);
  
@@ -10636,7 +10694,7 @@ index 86434ec..73dc9db 100644
  
          if (!SUCCEEDED(hresult)) {
            std::stringstream ss;
-@@ -1780,7 +2099,7 @@ void ProcessDeviceCommandQueue() {
+@@ -1780,7 +2100,7 @@ void ProcessDeviceCommandQueue() {
          if (GlobalOptions::getPresentSemaphoreEnabled()) {
            gpPresent->release();
  #ifdef ENABLE_PRESENT_SEMAPHORE_TRACE
@@ -10645,7 +10703,7 @@ index 86434ec..73dc9db 100644
  #endif
          }
          break;
-@@ -1793,6 +2112,7 @@ void ProcessDeviceCommandQueue() {
+@@ -1793,6 +2113,7 @@ void ProcessDeviceCommandQueue() {
          auto hresult = pSwapChain->GetFrontBufferData(pDestSurface);
          if (SUCCEEDED(hresult)) {
            gpD3DResources[pDestSurfaceHandle] = pDestSurface;
@@ -10653,7 +10711,7 @@ index 86434ec..73dc9db 100644
          }
          hresult = ReturnSurfaceDataToClient(pDestSurface, hresult, currentUID);
          assert(SUCCEEDED(hresult));
-@@ -1807,7 +2127,9 @@ void ProcessDeviceCommandQueue() {
+@@ -1807,7 +2128,9 @@ void ProcessDeviceCommandQueue() {
          IDirect3DSurface9* pBackbuffer = nullptr;
          const auto hresult = pSwapChain->GetBackBuffer(iBackBuffer, Type, &pBackbuffer);
          if (SUCCEEDED(hresult)) {
@@ -10663,7 +10721,7 @@ index 86434ec..73dc9db 100644
          }
          assert(SUCCEEDED(hresult));
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
-@@ -2019,6 +2341,9 @@ void ProcessDeviceCommandQueue() {
+@@ -2019,6 +2342,9 @@ void ProcessDeviceCommandQueue() {
          const auto& pTexture = (IDirect3DTexture9*) gpD3DResources[pHandle];
          safeDestroy(pTexture, pHandle);
          gpD3DResources.erase(pHandle);
@@ -10673,7 +10731,7 @@ index 86434ec..73dc9db 100644
          break;
        }
        case IDirect3DTexture9_GetDevice:
-@@ -2063,7 +2388,7 @@ void ProcessDeviceCommandQueue() {
+@@ -2063,7 +2389,7 @@ void ProcessDeviceCommandQueue() {
          PULL_U(Level);
          const auto& pTexture = (IDirect3DTexture9*) gpD3DResources[pHandle];
          D3DSURFACE_DESC pDesc;
@@ -10682,7 +10740,7 @@ index 86434ec..73dc9db 100644
          assert(SUCCEEDED(hresult));
          break;
        }
-@@ -2074,9 +2399,14 @@ void ProcessDeviceCommandQueue() {
+@@ -2074,9 +2400,14 @@ void ProcessDeviceCommandQueue() {
          PULL_HND(pSurfaceHandle);
          const auto& pTexture = (IDirect3DTexture9*) gpD3DResources[pTextureHandle];
          LPDIRECT3DSURFACE9 pSurfaceLevel;
@@ -10698,7 +10756,7 @@ index 86434ec..73dc9db 100644
          }
          assert(SUCCEEDED(hresult));
          break;
-@@ -2120,6 +2450,9 @@ void ProcessDeviceCommandQueue() {
+@@ -2120,6 +2451,9 @@ void ProcessDeviceCommandQueue() {
          const auto& pVolumeTexture = (IDirect3DVolumeTexture9*) gpD3DResources[pHandle];
          safeDestroy(pVolumeTexture, pHandle);
          gpD3DResources.erase(pHandle);
@@ -10708,7 +10766,7 @@ index 86434ec..73dc9db 100644
          break;
        }
        case IDirect3DVolumeTexture9_GetDevice:
-@@ -2164,7 +2497,7 @@ void ProcessDeviceCommandQueue() {
+@@ -2164,7 +2498,7 @@ void ProcessDeviceCommandQueue() {
          PULL_U(Level);
          const auto& pVolumeTexture = (IDirect3DVolumeTexture9*) gpD3DResources[pHandle];
          D3DVOLUME_DESC pDesc;
@@ -10717,7 +10775,7 @@ index 86434ec..73dc9db 100644
          assert(SUCCEEDED(hresult));
          break;
        }
-@@ -2175,9 +2508,13 @@ void ProcessDeviceCommandQueue() {
+@@ -2175,9 +2509,13 @@ void ProcessDeviceCommandQueue() {
          PULL_HND(pVolumeLevelHandle);
          const auto& pVolumeTexture = (IDirect3DVolumeTexture9*) gpD3DResources[pVolumeTextureHandle];
          LPDIRECT3DVOLUME9 pVolumeLevel;
@@ -10732,7 +10790,7 @@ index 86434ec..73dc9db 100644
          }
          assert(SUCCEEDED(hresult));
          break;
-@@ -2193,40 +2530,79 @@ void ProcessDeviceCommandQueue() {
+@@ -2193,40 +2531,79 @@ void ProcessDeviceCommandQueue() {
          PULL_U(Level);
          PULL_OBJ(D3DBOX, pBox);
          PULL_D(Flags);
@@ -10835,7 +10893,7 @@ index 86434ec..73dc9db 100644
          break;
        }
        case IDirect3DVolumeTexture9_AddDirtyBox:
-@@ -2259,6 +2635,9 @@ void ProcessDeviceCommandQueue() {
+@@ -2259,6 +2636,9 @@ void ProcessDeviceCommandQueue() {
          const auto& pCubeTexture = (IDirect3DCubeTexture9*) gpD3DResources[pHandle];
          safeDestroy(pCubeTexture, pHandle);
          gpD3DResources.erase(pHandle);
@@ -10845,7 +10903,7 @@ index 86434ec..73dc9db 100644
          break;
        }
        case IDirect3DCubeTexture9_GetDevice:
-@@ -2303,7 +2682,7 @@ void ProcessDeviceCommandQueue() {
+@@ -2303,7 +2683,7 @@ void ProcessDeviceCommandQueue() {
          GET_HND(pHandle);
          const auto& pCubeTexture = (IDirect3DCubeTexture9*) gpD3DResources[pHandle];
          D3DSURFACE_DESC pDesc;
@@ -10854,7 +10912,7 @@ index 86434ec..73dc9db 100644
          assert(SUCCEEDED(hresult));
          break;
        }
-@@ -2315,9 +2694,10 @@ void ProcessDeviceCommandQueue() {
+@@ -2315,9 +2695,10 @@ void ProcessDeviceCommandQueue() {
          PULL_HND(pCubeMapSurfaceHandle);
          const auto& pCubeTexture = (IDirect3DCubeTexture9*) gpD3DResources[pCubeTextureHandle];
          LPDIRECT3DSURFACE9 pCubeMapSurface;
@@ -10866,7 +10924,7 @@ index 86434ec..73dc9db 100644
          }
          assert(SUCCEEDED(hresult));
          break;
-@@ -2359,9 +2739,13 @@ void ProcessDeviceCommandQueue() {
+@@ -2359,9 +2740,13 @@ void ProcessDeviceCommandQueue() {
        case IDirect3DVertexBuffer9_Destroy:
        {
          GET_HND(pHandle);
@@ -10880,7 +10938,7 @@ index 86434ec..73dc9db 100644
          break;
        }
        case IDirect3DVertexBuffer9_GetDevice:
-@@ -2384,6 +2768,7 @@ void ProcessDeviceCommandQueue() {
+@@ -2384,6 +2769,7 @@ void ProcessDeviceCommandQueue() {
        {
          // This is a no-op right now because we're doing all the logic on Unlock
          GET_HND(pHandle);
@@ -10888,7 +10946,7 @@ index 86434ec..73dc9db 100644
          void* data = nullptr;
          DeviceBridge::get_data(&data);
          break;
-@@ -2391,31 +2776,61 @@ void ProcessDeviceCommandQueue() {
+@@ -2391,31 +2777,61 @@ void ProcessDeviceCommandQueue() {
        case IDirect3DVertexBuffer9_Unlock:
        {
          GET_HND(pHandle);
@@ -10972,7 +11030,7 @@ index 86434ec..73dc9db 100644
  
          break;
        }
-@@ -2425,7 +2840,7 @@ void ProcessDeviceCommandQueue() {
+@@ -2425,7 +2841,7 @@ void ProcessDeviceCommandQueue() {
          PULL_OBJ(D3DVERTEXBUFFER_DESC, orig_desc);
          const auto& pVertexBuffer = (IDirect3DVertexBuffer9*) gpD3DResources[pHandle];
          D3DVERTEXBUFFER_DESC pDesc;
@@ -10981,7 +11039,7 @@ index 86434ec..73dc9db 100644
          assert(SUCCEEDED(hresult));
          break;
        }
-@@ -2445,9 +2860,13 @@ void ProcessDeviceCommandQueue() {
+@@ -2445,9 +2861,13 @@ void ProcessDeviceCommandQueue() {
        case IDirect3DIndexBuffer9_Destroy:
        {
          GET_HND(pHandle);
@@ -10995,7 +11053,7 @@ index 86434ec..73dc9db 100644
          break;
        }
        case IDirect3DIndexBuffer9_GetDevice:
-@@ -2470,6 +2889,7 @@ void ProcessDeviceCommandQueue() {
+@@ -2470,6 +2890,7 @@ void ProcessDeviceCommandQueue() {
        {
          // This is a no-op right now because we're doing all the logic on Unlock
          GET_HND(pHandle);
@@ -11003,7 +11061,7 @@ index 86434ec..73dc9db 100644
          void* data = nullptr;
          DeviceBridge::get_data(&data);
          break;
-@@ -2477,31 +2897,62 @@ void ProcessDeviceCommandQueue() {
+@@ -2477,31 +2898,62 @@ void ProcessDeviceCommandQueue() {
        case IDirect3DIndexBuffer9_Unlock:
        {
          GET_HND(pHandle);
@@ -11088,7 +11146,7 @@ index 86434ec..73dc9db 100644
          break;
        }
        case IDirect3DIndexBuffer9_GetDesc:
-@@ -2510,7 +2961,7 @@ void ProcessDeviceCommandQueue() {
+@@ -2510,7 +2962,7 @@ void ProcessDeviceCommandQueue() {
          PULL_OBJ(D3DINDEXBUFFER_DESC, orig_desc);
          const auto& pIndexBuffer = (IDirect3DIndexBuffer9*) gpD3DResources[pHandle];
          D3DINDEXBUFFER_DESC pDesc;
@@ -11097,7 +11155,7 @@ index 86434ec..73dc9db 100644
          assert(SUCCEEDED(hresult));
          break;
        }
-@@ -2531,8 +2982,11 @@ void ProcessDeviceCommandQueue() {
+@@ -2531,8 +2983,11 @@ void ProcessDeviceCommandQueue() {
        {
          GET_HND(pHandle);
          const auto& pSurface = (IDirect3DSurface9*) gpD3DResources[pHandle];
@@ -11110,7 +11168,7 @@ index 86434ec..73dc9db 100644
          break;
        }
        case IDirect3DSurface9_GetDevice:
-@@ -2559,10 +3013,55 @@ void ProcessDeviceCommandQueue() {
+@@ -2559,10 +3014,55 @@ void ProcessDeviceCommandQueue() {
          PULL_OBJ(D3DSURFACE_DESC, orig_desc);
          const auto& pSurface = (IDirect3DSurface9*) gpD3DResources[pHandle];
          D3DSURFACE_DESC pDesc;
@@ -11167,7 +11225,7 @@ index 86434ec..73dc9db 100644
        case IDirect3DSurface9_LockRect:
        {
          // Currently we only recieve calls for LockRect in cases where backbuffer data is to be copied for screenshots
-@@ -2577,38 +3076,146 @@ void ProcessDeviceCommandQueue() {
+@@ -2577,38 +3077,146 @@ void ProcessDeviceCommandQueue() {
          GET_HND(pHandle);
          PULL_OBJ(RECT, pRect);
          PULL_D(Flags);
@@ -11338,7 +11396,7 @@ index 86434ec..73dc9db 100644
  
          break;
        }
-@@ -2635,6 +3242,8 @@ void ProcessDeviceCommandQueue() {
+@@ -2635,6 +3243,8 @@ void ProcessDeviceCommandQueue() {
          const auto& pVolume = gpD3DVolumes[pHandle];
          safeDestroy(pVolume, pHandle);
          gpD3DVolumes.erase(pHandle);
@@ -11347,7 +11405,7 @@ index 86434ec..73dc9db 100644
          break;
        }
        case IDirect3DVolume9_GetDevice:
-@@ -2653,7 +3262,7 @@ void ProcessDeviceCommandQueue() {
+@@ -2653,7 +3263,7 @@ void ProcessDeviceCommandQueue() {
          PULL_OBJ(D3DVOLUME_DESC, orig_desc);
          const auto& pVolume = gpD3DVolumes[pHandle];
          D3DVOLUME_DESC pDesc;
@@ -11356,7 +11414,7 @@ index 86434ec..73dc9db 100644
          assert(SUCCEEDED(hresult));
          break;
        }
-@@ -2667,40 +3276,77 @@ void ProcessDeviceCommandQueue() {
+@@ -2667,40 +3277,77 @@ void ProcessDeviceCommandQueue() {
          GET_HND(pHandle);
          PULL_OBJ(D3DBOX, pBox);
          PULL_D(Flags);
@@ -11457,7 +11515,7 @@ index 86434ec..73dc9db 100644
          break;
        }
  
-@@ -2714,7 +3360,7 @@ void ProcessDeviceCommandQueue() {
+@@ -2714,7 +3361,7 @@ void ProcessDeviceCommandQueue() {
        case IDirect3DQuery9_Destroy:
        {
          GET_HND(pHandle);
@@ -11466,7 +11524,7 @@ index 86434ec..73dc9db 100644
          safeDestroy(pQuery, pHandle);
          gpD3DQuery.erase(pHandle);
          break;
-@@ -2729,8 +3375,8 @@ void ProcessDeviceCommandQueue() {
+@@ -2729,8 +3376,8 @@ void ProcessDeviceCommandQueue() {
        {
          GET_HND(pHandle);
          PULL(DWORD, dwIssueFlags);
@@ -11477,7 +11535,7 @@ index 86434ec..73dc9db 100644
          SEND_OPTIONAL_SERVER_RESPONSE(hresult, currentUID);
          break;
        }
-@@ -2739,25 +3385,37 @@ void ProcessDeviceCommandQueue() {
+@@ -2739,25 +3386,37 @@ void ProcessDeviceCommandQueue() {
          GET_HND(pHandle);
          PULL(DWORD, dwSize);
          PULL(DWORD, dwGetDataFlags);
@@ -11525,7 +11583,7 @@ index 86434ec..73dc9db 100644
          break;
        }
  
-@@ -2769,7 +3427,7 @@ void ProcessDeviceCommandQueue() {
+@@ -2769,7 +3428,7 @@ void ProcessDeviceCommandQueue() {
          PULL_U(i);
          const int length = DeviceBridge::getReaderChannel().data->peek();
          void* text = nullptr;
@@ -11534,7 +11592,7 @@ index 86434ec..73dc9db 100644
          std::stringstream ss;
          ss << "DebugMessage. i = " << i << ", length = " << length << " = " << size << ", text = '" << (char*) text << "'";
          Logger::info(ss.str().c_str());
-@@ -2792,26 +3450,37 @@ void ProcessDeviceCommandQueue() {
+@@ -2792,26 +3451,37 @@ void ProcessDeviceCommandQueue() {
          GET_HDR_VAL(_allocId);
          const auto allocId = (SharedHeap::AllocId) _allocId;
          PULL_U(chunkId);
@@ -11574,7 +11632,7 @@ index 86434ec..73dc9db 100644
          break;
        }
        /*
-@@ -3156,11 +3825,11 @@ void ProcessDeviceCommandQueue() {
+@@ -3156,11 +3826,11 @@ void ProcessDeviceCommandQueue() {
        case RemixApi_SetConfigVariable:
        {
          void* var_ptr = nullptr;
@@ -11588,7 +11646,7 @@ index 86434ec..73dc9db 100644
          std::string value_str((const char*) value_ptr, value_size);
  
          remixapi::g_remix.SetConfigVariable(var_str.c_str(), value_str.c_str());
-@@ -3191,41 +3860,29 @@ void ProcessDeviceCommandQueue() {
+@@ -3191,41 +3861,29 @@ void ProcessDeviceCommandQueue() {
        Logger::warn("Data not in sync");
      }
      assert(CHECK_DATA_OFFSET);
@@ -11640,7 +11698,7 @@ index 86434ec..73dc9db 100644
    }
  }
  
-@@ -3268,14 +3925,26 @@ bool InitializeD3D() {
+@@ -3268,14 +3926,26 @@ bool InitializeD3D() {
    // If vanilla dxvk is enabled attempt to load that first.
    if (ServerOptions::getUseVanillaDxvk()) {
      Logger::info("Loading standard Non-RTX DXVK d3d9 dll.");
@@ -11670,7 +11728,7 @@ index 86434ec..73dc9db 100644
      // Since vanilla dxvk is diabled attempt loading regular d3d9.dll which
      // could be either the system d3d9 one or our own Remix dxvk flavor of it.
      ghModule = LoadLibraryExA("d3d9.dll", nullptr,
-@@ -3285,6 +3954,10 @@ bool InitializeD3D() {
+@@ -3285,6 +3955,10 @@ bool InitializeD3D() {
    // create the D3D instance used for the lifetime of this process.
    if (ghModule != nullptr) {
      auto Direct3DCreate9 = (D3DC9) GetProcAddress(ghModule, "Direct3DCreate9");
@@ -11681,7 +11739,7 @@ index 86434ec..73dc9db 100644
      if (nullptr == (gpD3D = Direct3DCreate9(D3D_SDK_VERSION))) {
        Logger::err(format_string("D3D9 interface object creation failed: %ld\n", GetLastError()));
        return false;
-@@ -3311,6 +3984,10 @@ bool InitializeD3D() {
+@@ -3311,6 +3985,10 @@ bool InitializeD3D() {
    }
  
    CheckD3D9Type(ghModule);
@@ -11692,7 +11750,7 @@ index 86434ec..73dc9db 100644
    if (bDxvkModuleLoaded) {
      auto queryFeatureVersion = (version::QueryFunc)GetProcAddress(ghModule, version::QueryFuncName);
      if(queryFeatureVersion == NULL) {
-@@ -3343,18 +4020,29 @@ bool InitializeD3D() {
+@@ -3343,18 +4021,29 @@ bool InitializeD3D() {
  }
  
  void CALLBACK OnClientExited(void* context, BOOLEAN isTimeout) {
@@ -11731,7 +11789,7 @@ index 86434ec..73dc9db 100644
  
    // Give the server some time to shut down, but then force quit so it doesn't hang forever
    uint32_t numRetries = 0;
-@@ -3371,7 +4059,7 @@ void CALLBACK OnClientExited(void* context, BOOLEAN isTimeout) {
+@@ -3371,7 +4060,7 @@ void CALLBACK OnClientExited(void* context, BOOLEAN isTimeout) {
  }
  
  bool RegisterExitCallback(const uint32_t hProcess) {
@@ -11740,7 +11798,34 @@ index 86434ec..73dc9db 100644
    if (!result) {
      DWORD error = GetLastError();
      Logger::err(format_string("RegisterExitCallback() failed with error code %d", error));
-@@ -3482,22 +4170,51 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+@@ -3388,6 +4077,8 @@ bool RegisterExitCallback(const uint32_t hProcess) {
+   return result;
+ }
+ 
++static HANDLE gUpdaterClientProcess = nullptr;
++
+ static bool RegisterMessageChannel() {
+   Logger::info("Registering message channel for asynchronous message handling.");
+ 
+@@ -3398,6 +4089,17 @@ static bool RegisterMessageChannel() {
+     return false;
+   }
+ 
++  gpClientMessageChannel->registerHandler(ldb_update_test::requestName, [](uint32_t window, uint32_t) {
++    std::string token = gUniqueIdentifier.toString();
++    std::string normalized;
++    for (unsigned char ch : token) { if (ch >= '0' && ch <= '9') normalized += ch;
++      else if (ch >= 'a' && ch <= 'f') normalized += ch;
++      else if (ch >= 'A' && ch <= 'F') normalized += static_cast<char>(ch - 'A' + 'a'); }
++    ldb_update_test::request(gUpdaterClientProcess, reinterpret_cast<HWND>(static_cast<uintptr_t>(window)),
++      BRIDGE_VERSION, normalized, [](const char* line) { Logger::info(line); });
++    return true;
++  });
++
+   gpClientMessageChannel->registerHandler(WM_KILLFOCUS, [](uint32_t, uint32_t) {
+     Logger::info("Client window became inactive, disabling timeouts for bridge server...");
+     GlobalOptions::setInfiniteRetries(true);
+@@ -3482,22 +4184,51 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
  
    Config::init(Config::App::Server);
    GlobalOptions::init();
@@ -11795,7 +11880,7 @@ index 86434ec..73dc9db 100644
      Logger::info("Launched server with GUID " + gUniqueIdentifier.toString());
    } else {
      Logger::err("Server was invoked with invalid GUID! Unable to establish bridge, exiting...");
-@@ -3511,6 +4228,12 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+@@ -3511,6 +4242,12 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
    }
    LocalFree(argList);
  
@@ -11808,7 +11893,7 @@ index 86434ec..73dc9db 100644
    initModuleBridge();
    initDeviceBridge();
  
-@@ -3541,6 +4264,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+@@ -3541,10 +4278,12 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
    // Pulling default data sent from client to have the data queue in sync
    {
      PULL_U(uid);
@@ -11816,7 +11901,12 @@ index 86434ec..73dc9db 100644
    }
    Logger::info("Registering exit callback in case client exits unexpectedly.");
    RegisterExitCallback(synResponse.pHandle);
-@@ -3554,6 +4278,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+ 
++  gUpdaterClientProcess = TRUNCATE_HANDLE(HANDLE, synResponse.pHandle);
+   RegisterMessageChannel();
+ 
+   // (2) Load d3d9.dll, which could be original system, dxvk-remix, or something else...
+@@ -3554,6 +4293,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
    }
    const SentryShutdownOnExit sentryShutdownOnExit;
  
@@ -11825,7 +11915,7 @@ index 86434ec..73dc9db 100644
    // (3) Send ACK to Client. Connection has been established
    Logger::info("Sync request received, sending ACK response...");
    ServerMessage { Commands::Bridge_Ack, (uintptr_t) gpClientMessageChannel->getWorkerThreadId() };
-@@ -3576,6 +4302,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+@@ -3576,6 +4317,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
    // Pulling default data sent from client to have the data queue in sync
    {
      PULL_U(uid);
@@ -11833,7 +11923,7 @@ index 86434ec..73dc9db 100644
    }
    // (5) Ready to listen for incoming commands
    Logger::info("Handshake completed! Now waiting for incoming commands...");
-@@ -3589,12 +4316,16 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+@@ -3589,12 +4331,16 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
    bSignalDone.store(true);
    moduleCmdProcessingThread.join();
  
@@ -11851,7 +11941,7 @@ index 86434ec..73dc9db 100644
    if (ghModule) {
      // Skip unloading the d3d9.dll for now, since it seems to be doing more harm than good
      // especially with other dependencies loaded by dxvk and threads that may deadlock due
-@@ -3610,6 +4341,10 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+@@ -3610,6 +4356,10 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
      hWait = NULL;
    }
  
@@ -11862,7 +11952,7 @@ index 86434ec..73dc9db 100644
    Logger::info("Shutdown cleanup successful, exiting now!");
  
    const auto timeEnd = std::chrono::high_resolution_clock::now();
-@@ -3624,4 +4359,4 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
+@@ -3624,4 +4374,4 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
      ServerMessage { Commands::Bridge_Ack };
    }
    return 0;
@@ -11870,7 +11960,7 @@ index 86434ec..73dc9db 100644
 \ No newline at end of file
 +}
 diff --git a/bridge/src/server/meson.build b/bridge/src/server/meson.build
-index 908d93f..2347f44 100644
+index 908d93fb561101df0391cc05c5fbd4f695ec3006..2347f447d4f0162d02022ee6e584e7f0ba8c439d 100644
 --- a/bridge/src/server/meson.build
 +++ b/bridge/src/server/meson.build
 @@ -1,3 +1,7 @@
@@ -11936,7 +12026,7 @@ index 908d93f..2347f44 100644
 \ No newline at end of file
 +endif
 diff --git a/bridge/src/server/module_processing.cpp b/bridge/src/server/module_processing.cpp
-index 33c7d79..5fc1d2f 100644
+index 33c7d7982abe0790ad0a2f8b4547c92479a04019..5fc1d2fcdee796508d3476ccc6e92247b20605e6 100644
 --- a/bridge/src/server/module_processing.cpp
 +++ b/bridge/src/server/module_processing.cpp
 @@ -1,3 +1,7 @@
@@ -12003,6 +12093,7 @@ index 33c7d79..5fc1d2f 100644
    if (!destroyReceived && gbBridgeRunning) {
 diff --git a/bridge/src/server/overlay_presenter.h b/bridge/src/server/overlay_presenter.h
 new file mode 100644
+index 0000000000000000000000000000000000000000..cc51a79ac1d30c9f0e12e17bbcb075b6832b14d9
 --- /dev/null
 +++ b/bridge/src/server/overlay_presenter.h
 @@ -0,0 +1,375 @@
@@ -12383,7 +12474,7 @@ new file mode 100644
 +}
 diff --git a/bridge/src/server/readback_backend.h b/bridge/src/server/readback_backend.h
 new file mode 100644
-index 0000000..2e52a45
+index 0000000000000000000000000000000000000000..2e52a4583970b630709a1cea583ffa313acd7101
 --- /dev/null
 +++ b/bridge/src/server/readback_backend.h
 @@ -0,0 +1,133 @@
@@ -12522,7 +12613,7 @@ index 0000000..2e52a45
 +}
 diff --git a/bridge/src/server/steam_availability_diagnostics.h b/bridge/src/server/steam_availability_diagnostics.h
 new file mode 100644
-index 0000000..d1dcec6
+index 0000000000000000000000000000000000000000..d1dcec6d6df308eb9c68a35da26a507932ef1c12
 --- /dev/null
 +++ b/bridge/src/server/steam_availability_diagnostics.h
 @@ -0,0 +1,80 @@
@@ -12606,9 +12697,83 @@ index 0000000..d1dcec6
 +  }
 +};
 +}
+diff --git a/bridge/src/server/steam_ime_native.h b/bridge/src/server/steam_ime_native.h
+new file mode 100644
+index 0000000000000000000000000000000000000000..4e68cea4a4ac162f8d0d8ec4daeb786fe162e726
+--- /dev/null
++++ b/bridge/src/server/steam_ime_native.h
+@@ -0,0 +1,68 @@
++// SPDX-License-Identifier: MIT
++// Copyright (c) 2026 yeyunyyds.
++// All newly added implementation code in this fork was generated by OpenAI Codex from prompts and specifications provided by yeyunyyds.
++#pragma once
++#include <windows.h>
++#include <msctf.h>
++#include <objbase.h>
++#include <cstring>
++#include <cstdio>
++#include <functional>
++#include <utility>
++
++namespace l4d2_overlay {
++// Owning Presenter thread only; pairs only our COM and TSF activations.
++class ImeThread {
++  struct ErrorGuard { DWORD value = GetLastError(); ~ErrorGuard() { SetLastError(value); } };
++  using Init = HRESULT(WINAPI*)(LPVOID, DWORD);
++  using Uninit = void(WINAPI*)();
++  using Manager = HRESULT(WINAPI*)(ITfThreadMgr**);
++  HMODULE m_ole = nullptr, m_ctf = nullptr;
++  Uninit m_uninit = nullptr;
++  ITfThreadMgr* m_manager = nullptr;
++  bool m_comOwned = false, m_activated = false;
++  HRESULT m_com = E_NOTIMPL, m_create = E_NOTIMPL, m_activate = E_NOTIMPL;
++  TfClientId m_client = TF_CLIENTID_NULL;
++  template<class T> static T resolve(HMODULE module, const char* name) {
++    const FARPROC raw = module ? GetProcAddress(module, name) : nullptr;
++    T result = nullptr;
++    static_assert(sizeof(raw) == sizeof(result), "Win32 procedure size");
++    std::memcpy(&result, &raw, sizeof(result)); return result;
++  }
++public:
++  explicit ImeThread(bool enabled, const std::function<void(const char*)>& log = {}) {
++    if (!enabled) { return; }
++    ErrorGuard guard;
++    m_ole = LoadLibraryExW(L"ole32.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32);
++    const auto init = resolve<Init>(m_ole, "CoInitializeEx");
++    m_uninit = resolve<Uninit>(m_ole, "CoUninitialize");
++    if (init && m_uninit) { m_com = init(nullptr, COINIT_APARTMENTTHREADED); m_comOwned = SUCCEEDED(m_com); }
++    if (m_comOwned) {
++      m_ctf = LoadLibraryExW(L"msctf.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32);
++      const auto get = resolve<Manager>(m_ctf, "TF_GetThreadMgr");
++      const auto create = resolve<Manager>(m_ctf, "TF_CreateThreadMgr");
++      if (get) { m_create = get(&m_manager); }
++      if (!m_manager && create) { m_create = create(&m_manager); }
++      if (m_manager) { m_activate = m_manager->Activate(&m_client); m_activated = SUCCEEDED(m_activate); }
++    }
++    if (log) {
++      char line[260] {};
++      std::snprintf(line, sizeof(line), "L4D2_STEAM_IME event=thread-init thread=%lu com_hr=0x%08lx manager_hr=0x%08lx activate_hr=0x%08lx own_activation=%d",
++        GetCurrentThreadId(), static_cast<unsigned long>(m_com), static_cast<unsigned long>(m_create), static_cast<unsigned long>(m_activate), m_activated);
++      log(line);
++    }
++  }
++  ~ImeThread() {
++    ErrorGuard guard;
++    if (m_activated && m_manager) { m_manager->Deactivate(); }
++    if (m_manager) { m_manager->Release(); }
++    if (m_comOwned && m_uninit) { m_uninit(); }
++    if (m_ctf) { FreeLibrary(m_ctf); }
++    if (m_ole) { FreeLibrary(m_ole); }
++  }
++  ImeThread(const ImeThread&) = delete;
++  ImeThread& operator=(const ImeThread&) = delete;
++  HRESULT comResult() const { return m_com; }
++  bool active() const { return m_activated; }
++};
++}
 diff --git a/bridge/src/server/steam_window_diagnostics.h b/bridge/src/server/steam_window_diagnostics.h
 new file mode 100644
-index 0000000..ef2b846
+index 0000000000000000000000000000000000000000..ef2b846d8faee2c7f85e0f59a12f580d8caa516d
 --- /dev/null
 +++ b/bridge/src/server/steam_window_diagnostics.h
 @@ -0,0 +1,230 @@
@@ -12844,7 +13009,7 @@ index 0000000..ef2b846
 +}
 diff --git a/bridge/src/server/swapchain_references.h b/bridge/src/server/swapchain_references.h
 new file mode 100644
-index 0000000..335bbb0
+index 0000000000000000000000000000000000000000..335bbb09ff3c332ad9648886e1d55fb9a203bc83
 --- /dev/null
 +++ b/bridge/src/server/swapchain_references.h
 @@ -0,0 +1,73 @@
@@ -12921,9 +13086,119 @@ index 0000000..335bbb0
 +  std::unordered_map<uint32_t, Entry> m_entries;
 +};
 +}
+diff --git a/bridge/src/server/update_test_coordinator.h b/bridge/src/server/update_test_coordinator.h
+new file mode 100644
+index 0000000000000000000000000000000000000000..e027239664eb46fd0502096236cd224fc2142660
+--- /dev/null
++++ b/bridge/src/server/update_test_coordinator.h
+@@ -0,0 +1,104 @@
++﻿// SPDX-License-Identifier: MIT
++// Copyright (c) 2026 yeyunyyds. New implementation generated by OpenAI Codex.
++#pragma once
++#include <windows.h>
++#include <wincrypt.h>
++#include <sddl.h>
++#include <atomic>
++#include <filesystem>
++#include <fstream>
++#include <functional>
++#include <stdexcept>
++#include <string>
++#include <thread>
++#pragma comment(lib,"advapi32.lib")
++namespace ldb_update_test {
++using Path=std::filesystem::path;
++constexpr const char* requestName="LDB_UPDATER_LOCAL_TEST_REQUEST_V1";
++constexpr const wchar_t* closeName=L"LDB_UPDATER_LOCAL_TEST_CLOSE_V1";
++struct Handle {
++  HANDLE h=INVALID_HANDLE_VALUE;
++  explicit Handle(HANDLE value=INVALID_HANDLE_VALUE):h(value){}
++  ~Handle(){if(h!=INVALID_HANDLE_VALUE&&h)CloseHandle(h);}
++  Handle(const Handle&)=delete; Handle& operator=(const Handle&)=delete;
++};
++inline void require(bool ok,const char* reason){if(!ok)throw std::runtime_error(reason);}
++inline std::wstring wide(const std::string& text){
++  int n=MultiByteToWideChar(CP_UTF8,MB_ERR_INVALID_CHARS,text.data(),static_cast<int>(text.size()),nullptr,0);
++  require(n>0,"Invalid UTF-8 control message");std::wstring out(n,L'\0');
++  require(MultiByteToWideChar(CP_UTF8,MB_ERR_INVALID_CHARS,text.data(),static_cast<int>(text.size()),&out[0],n)==n,"UTF-8 conversion failed");return out;
++}
++inline std::wstring creation(HANDLE process){FILETIME c{},e{},k{},u{};require(GetProcessTimes(process,&c,&e,&k,&u)!=FALSE,"Process creation query failed");ULARGE_INTEGER t{};t.LowPart=c.dwLowDateTime;t.HighPart=c.dwHighDateTime;return std::to_wstring(t.QuadPart);}
++inline bool io(HANDLE pipe,HANDLE process,bool writing,void* data,DWORD bytes){
++  auto* p=static_cast<BYTE*>(data);DWORD offset=0;
++  while(offset<bytes){Handle event(CreateEventW(nullptr,TRUE,FALSE,nullptr));require(event.h!=nullptr,"Pipe event allocation failed");OVERLAPPED ov{};ov.hEvent=event.h;
++    DWORD transferred=0;BOOL done=writing?WriteFile(pipe,p+offset,bytes-offset,&transferred,&ov):ReadFile(pipe,p+offset,bytes-offset,&transferred,&ov);
++    if(!done){if(GetLastError()!=ERROR_IO_PENDING)return false;HANDLE waits[]={event.h,process};DWORD result=WaitForMultipleObjects(2,waits,FALSE,120000);
++      if(result!=WAIT_OBJECT_0){CancelIoEx(pipe,&ov);GetOverlappedResult(pipe,&ov,&transferred,TRUE);return false;}
++      if(!GetOverlappedResult(pipe,&ov,&transferred,FALSE))return false;
++    }
++    if(!transferred)return false;offset+=transferred;
++  }return true;
++}
++inline void send(HANDLE pipe,HANDLE process,const std::string& message){DWORD n=static_cast<DWORD>(message.size());require(n>0&&n<=16384,"Invalid outgoing frame");require(io(pipe,process,true,&n,4)&&io(pipe,process,true,const_cast<char*>(message.data()),n),"Updater pipe write failed");}
++inline std::string receive(HANDLE pipe,HANDLE process){DWORD n=0;require(io(pipe,process,false,&n,4)&&n>0&&n<=16384,"Invalid updater frame");std::string result(n,'\0');require(io(pipe,process,false,&result[0],n),"Updater pipe read failed");return result;}
++inline std::string packageHash(const Path& path){
++  Handle input(CreateFileW(path.c_str(),GENERIC_READ,FILE_SHARE_READ,nullptr,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,nullptr));require(input.h!=INVALID_HANDLE_VALUE,"Workshop VPK missing or busy");
++  LARGE_INTEGER size{};require(GetFileSizeEx(input.h,&size)&&size.QuadPart>0&&size.QuadPart<=64ll*1024*1024,"VPK size outside test limit");
++  HCRYPTPROV provider=0;HCRYPTHASH hash=0;
++  require(CryptAcquireContextW(&provider,nullptr,nullptr,PROV_RSA_AES,CRYPT_VERIFYCONTEXT)!=FALSE,"SHA256 provider failed");
++  struct Cleanup{HCRYPTPROV& p;HCRYPTHASH& h;~Cleanup(){if(h)CryptDestroyHash(h);if(p)CryptReleaseContext(p,0);}}cleanup{provider,hash};
++  require(CryptCreateHash(provider,CALG_SHA_256,0,0,&hash)!=FALSE,"SHA256 initialization failed");
++  BYTE buffer[65536];DWORD count=0;
++  for(;;){require(ReadFile(input.h,buffer,sizeof(buffer),&count,nullptr)!=FALSE,"VPK read failed");if(!count)break;require(CryptHashData(hash,buffer,count,0)!=FALSE,"SHA256 update failed");}
++  BYTE digest[32];DWORD length=sizeof(digest);require(CryptGetHashParam(hash,HP_HASHVAL,digest,&length,0)&&length==32,"SHA256 finish failed");
++  std::string out;for(auto byte:digest){out.push_back("0123456789abcdef"[byte>>4]);out.push_back("0123456789abcdef"[byte&15]);}return out;
++}
++inline Path hostDirectory(){wchar_t name[32768]{};DWORD n=GetModuleFileNameW(nullptr,name,32768);require(n>0&&n<32768,"Host module path unavailable");return Path(name).parent_path();}
++inline bool enabled(const Path& host){return GetPrivateProfileIntW(L"LDBUpdaterTest",L"Enabled",0,(host/L"LDBupdater-test.ini").c_str())==1;}
++inline std::wstring workshopId(const Path& host){wchar_t id[64]{};GetPrivateProfileStringW(L"LDBUpdaterTest",L"WorkshopId",L"",id,64,(host/L"LDBupdater-test.ini").c_str());std::wstring value(id);require(!value.empty()&&value.size()<=20&&value[0]!=L'0',"Fill WorkshopId in LDBupdater-test.ini");unsigned long long number=0;
++  for(auto ch:value){require(ch>=L'0'&&ch<=L'9',"WorkshopId must be decimal digits");unsigned digit=static_cast<unsigned>(ch-L'0');require(number<=(~0ull-digit)/10,"WorkshopId overflow");number=number*10+digit;}return value;}
++inline void run(HANDLE game,HWND window,const std::string& build,const std::string& token,const std::function<void(const char*)>& log){
++  try{
++    Path host=hostDirectory();if(!enabled(host)){log("LDB_UPDATE_TEST disabled");return;}
++    require(host.filename()==L".l4d2bridge"&&host.parent_path().filename()==L"bin","Custom install layout requires manual update");
++    DWORD owner=0;GetWindowThreadProcessId(window,&owner);require(owner==GetProcessId(game),"Update request window is not owned by Client");
++    Path package=host.parent_path().parent_path()/L"left4dead2"/L"addons"/L"workshop"/(workshopId(host)+L".vpk");std::string digest=packageHash(package);
++    {std::ifstream previous(host/L"LDBupdate-package.sha256",std::ios::binary);std::string saved((std::istreambuf_iterator<char>(previous)),{});if(saved==digest){log("LDB_UPDATE_TEST unchanged-package");return;}}
++    require(token.size()==32&&token.find_first_not_of("0123456789abcdef")==std::string::npos,"Invalid updater session token");
++    const std::wstring pipeName=L"LDBUpdateTest-"+wide(token),fullPipe=L"\\\\.\\pipe\\"+pipeName;
++    PSECURITY_DESCRIPTOR descriptor=nullptr;
++    require(ConvertStringSecurityDescriptorToSecurityDescriptorW(L"D:P(A;;GA;;;OW)",SDDL_REVISION_1,&descriptor,nullptr)!=FALSE,"Pipe ACL creation failed");
++    SECURITY_ATTRIBUTES sa{sizeof(sa),descriptor,FALSE};
++    Handle pipe(CreateNamedPipeW(fullPipe.c_str(),PIPE_ACCESS_DUPLEX|FILE_FLAG_OVERLAPPED|FILE_FLAG_FIRST_PIPE_INSTANCE,PIPE_TYPE_BYTE|PIPE_READMODE_BYTE|PIPE_WAIT|PIPE_REJECT_REMOTE_CLIENTS,1,65536,65536,0,&sa));LocalFree(descriptor);
++    require(pipe.h!=INVALID_HANDLE_VALUE,"Updater pipe creation failed");
++    std::string version=build.substr(5,build.find('+')-5);require(build.find("l4d2-")==0&&version.find_first_not_of("0123456789.")==std::string::npos,"Invalid build identity");
++    const wchar_t* role=sizeof(void*)==8?L"host64":L"host32";
++    Path executable=host/L"LDBupdater.exe";
++    std::wstring command=L"\""+executable.wstring()+L"\" --session "+pipeName+L" "+std::to_wstring(GetCurrentProcessId())+L" "+creation(GetCurrentProcess())+L" "+std::to_wstring(GetProcessId(game))+L" "+creation(game)+L" "+wide(version)+L" "+wide(build)+L" "+role;
++    STARTUPINFOW startup{};startup.cb=sizeof(startup);PROCESS_INFORMATION process{};
++    require(CreateProcessW(executable.c_str(),&command[0],nullptr,nullptr,FALSE,CREATE_NO_WINDOW,nullptr,host.c_str(),&startup,&process)!=FALSE,"Unable to start LDBupdater.exe");Handle child(process.hProcess),thread(process.hThread);
++    Handle event(CreateEventW(nullptr,TRUE,FALSE,nullptr));require(event.h!=nullptr,"Connect event failed");OVERLAPPED ov{};ov.hEvent=event.h;
++    BOOL connected=ConnectNamedPipe(pipe.h,&ov);DWORD error=connected?ERROR_SUCCESS:GetLastError();
++    if(!connected&&error==ERROR_IO_PENDING){HANDLE waits[]={event.h,child.h};DWORD result=WaitForMultipleObjects(2,waits,FALSE,20000);if(result!=WAIT_OBJECT_0){CancelIoEx(pipe.h,&ov);DWORD ignored=0;GetOverlappedResult(pipe.h,&ov,&ignored,TRUE);throw std::runtime_error("Updater connection timed out");}}
++    else require(connected||error==ERROR_PIPE_CONNECTED,"Updater connection failed");
++    ULONG updaterPid=0;require(GetNamedPipeClientProcessId(pipe.h,&updaterPid)&&updaterPid==process.dwProcessId,"Unexpected updater pipe client");
++    send(pipe.h,child.h,"HASH\n"+digest);std::string response=receive(pipe.h,child.h);
++    if(response=="NO_UPDATE"){log("LDB_UPDATE_TEST no-new-version");return;}
++    require(response.rfind("CANDIDATE\n",0)==0,"Updater rejected package; see LDBupdater.log");
++    auto separator=response.find('\n',10);require(separator!=std::string::npos,"Invalid candidate version");std::string next=response.substr(10,separator-10);
++    require(!next.empty()&&next.size()<=32&&next.find_first_not_of("0123456789.")==std::string::npos,"Invalid candidate version");
++    std::wstring prompt=L"LDB local updater test / 本地更新测试\n\n当前版本："+wide(version)+L"\n可更新至："+wide(next)+L"\n\n"+wide(response.substr(separator+1))+L"\n\n测试包版本可手动修改。更新需要退出游戏，配置和后端保留。是否更新？";
++    if(MessageBoxW(window,prompt.c_str(),L"LDB Update Test",MB_YESNO|MB_ICONQUESTION|MB_DEFBUTTON2)!=IDYES){send(pipe.h,child.h,"DECLINE");log("LDB_UPDATE_TEST declined");return;}
++    send(pipe.h,child.h,"PREPARE");require(receive(pipe.h,child.h)=="PREPARED","Updater preparation failed");
++    if(MessageBoxW(window,L"更新已准备。确定后请求正常关闭游戏；若游戏没有退出，请使用游戏菜单退出。\n\n退出后请等待更新完成，勿立即重启。取消可继续游玩。",L"LDB Update Test",MB_OKCANCEL|MB_ICONINFORMATION)!=IDOK){send(pipe.h,child.h,"CANCEL");return;}
++    send(pipe.h,child.h,"COMMIT_ON_EXIT");require(receive(pipe.h,child.h)=="ARMED","Updater failed to retain update authorization");
++    require(PostMessageW(window,RegisterWindowMessageW(closeName),GetCurrentProcessId(),0)!=FALSE,"Normal close request failed");log("LDB_UPDATE_TEST armed-awaiting-real-process-exit");
++  }catch(const std::exception& e){log(e.what());MessageBoxW(window,wide(std::string("更新检查未完成：")+e.what()+"\n查看 bin/.l4d2bridge/LDBupdater.log；未授权或未退出时不会替换文件。").c_str(),L"LDB Update Test",MB_OK|MB_ICONWARNING);}
++}
++inline void request(HANDLE game,HWND window,const std::string& build,const std::string& token,std::function<void(const char*)> log){
++  static std::atomic<bool> used{false};bool expected=false;if(!used.compare_exchange_strong(expected,true))return;
++  HANDLE copy=nullptr;if(!DuplicateHandle(GetCurrentProcess(),game,GetCurrentProcess(),&copy,0,FALSE,DUPLICATE_SAME_ACCESS)){log("LDB_UPDATE_TEST process duplication failed");return;}
++  try{std::thread([copy,window,build,token,log](){Handle owner(copy);run(copy,window,build,token,log);}).detach();}catch(...){CloseHandle(copy);log("LDB_UPDATE_TEST worker creation failed");}
++}
++}
 diff --git a/bridge/src/server/upload_safety.h b/bridge/src/server/upload_safety.h
 new file mode 100644
-index 0000000..270c72d
+index 0000000000000000000000000000000000000000..270c72d5a7cd42f12d11475dcdbfdd065ac3c6b2
 --- /dev/null
 +++ b/bridge/src/server/upload_safety.h
 @@ -0,0 +1,65 @@
@@ -12993,7 +13268,7 @@ index 0000000..270c72d
 +}
 +}
 diff --git a/bridge/src/server/version.rc.in b/bridge/src/server/version.rc.in
-index 1c161d1..f13f5ac 100644
+index 1c161d12e83f894329186a05e63761625272f3aa..f13f5acddca50dc5083f9318130296956dc8bdf6 100644
 --- a/bridge/src/server/version.rc.in
 +++ b/bridge/src/server/version.rc.in
 @@ -1,3 +1,7 @@
@@ -13024,7 +13299,7 @@ index 1c161d1..f13f5ac 100644
      BLOCK "VarFileInfo"
 diff --git a/bridge/src/util/adapter_information.h b/bridge/src/util/adapter_information.h
 new file mode 100644
-index 0000000..3d27328
+index 0000000000000000000000000000000000000000..3d2732830bf6d88475e68055aff0120c3d38eb06
 --- /dev/null
 +++ b/bridge/src/util/adapter_information.h
 @@ -0,0 +1,32 @@
@@ -13062,7 +13337,7 @@ index 0000000..3d27328
 +}
 diff --git a/bridge/src/util/api_wait_commands.h b/bridge/src/util/api_wait_commands.h
 new file mode 100644
-index 0000000..f85a675
+index 0000000000000000000000000000000000000000..f85a675e79fe5869ddb2c774e8d2046c88cb9730
 --- /dev/null
 +++ b/bridge/src/util/api_wait_commands.h
 @@ -0,0 +1,46 @@
@@ -13114,7 +13389,7 @@ index 0000000..f85a675
 +}
 diff --git a/bridge/src/util/api_wait_diagnostics.h b/bridge/src/util/api_wait_diagnostics.h
 new file mode 100644
-index 0000000..aad6ff8
+index 0000000000000000000000000000000000000000..aad6ff854f0170919cd85df3e7344fc1bf039d21
 --- /dev/null
 +++ b/bridge/src/util/api_wait_diagnostics.h
 @@ -0,0 +1,272 @@
@@ -13392,7 +13667,7 @@ index 0000000..aad6ff8
 +}
 diff --git a/bridge/src/util/ati_texture_layout.h b/bridge/src/util/ati_texture_layout.h
 new file mode 100644
-index 0000000..2a47a97
+index 0000000000000000000000000000000000000000..2a47a97f588cad805bff63e9fe88d2af5b3f18ed
 --- /dev/null
 +++ b/bridge/src/util/ati_texture_layout.h
 @@ -0,0 +1,70 @@
@@ -13468,7 +13743,7 @@ index 0000000..2a47a97
 +}
 diff --git a/bridge/src/util/bridge_control.h b/bridge/src/util/bridge_control.h
 new file mode 100644
-index 0000000..5f3d726
+index 0000000000000000000000000000000000000000..5f3d72629d43b81defb858ce4e1fafdee5384ee9
 --- /dev/null
 +++ b/bridge/src/util/bridge_control.h
 @@ -0,0 +1,37 @@
@@ -13511,7 +13786,7 @@ index 0000000..5f3d726
 +}
 diff --git a/bridge/src/util/color_diagnostics.cpp b/bridge/src/util/color_diagnostics.cpp
 new file mode 100644
-index 0000000..ea18e0d
+index 0000000000000000000000000000000000000000..ea18e0dcdb40e36683bd095f3044731c6e4c4aba
 --- /dev/null
 +++ b/bridge/src/util/color_diagnostics.cpp
 @@ -0,0 +1,243 @@
@@ -13760,7 +14035,7 @@ index 0000000..ea18e0d
 +}
 diff --git a/bridge/src/util/color_diagnostics.h b/bridge/src/util/color_diagnostics.h
 new file mode 100644
-index 0000000..8cf8c0a
+index 0000000000000000000000000000000000000000..8cf8c0aa94466c7035278b0d5c0902150075f85c
 --- /dev/null
 +++ b/bridge/src/util/color_diagnostics.h
 @@ -0,0 +1,122 @@
@@ -13887,7 +14162,7 @@ index 0000000..8cf8c0a
 +            const Digest& digest, HRESULT lockResult, HRESULT unlockResult, bool valid, bool shared = false);
 +}
 diff --git a/bridge/src/util/config/config.cpp b/bridge/src/util/config/config.cpp
-index 5e1deb0..48aaaae 100644
+index 5e1deb0012782faeec50d23593f0722cc941f943..48aaaae79386f8c53b317217b72ab8e3e1d1f3e7 100644
 --- a/bridge/src/util/config/config.cpp
 +++ b/bridge/src/util/config/config.cpp
 @@ -39,6 +39,7 @@
@@ -14042,7 +14317,7 @@ index 5e1deb0..48aaaae 100644
    static std::mutex s_userSettingsMutex;
  
 diff --git a/bridge/src/util/config/config.h b/bridge/src/util/config/config.h
-index 3640d5c..61d617d 100644
+index 3640d5c313b421730d5fd0926fb30c7d9e9899e4..61d617dcb20caa83882951d41764e94e0bcc91fa 100644
 --- a/bridge/src/util/config/config.h
 +++ b/bridge/src/util/config/config.h
 @@ -30,6 +30,7 @@
@@ -14079,7 +14354,7 @@ index 3640d5c..61d617d 100644
      Config();
 diff --git a/bridge/src/util/config/config_document.h b/bridge/src/util/config/config_document.h
 new file mode 100644
-index 0000000..7b7a6e2
+index 0000000000000000000000000000000000000000..7b7a6e2fc9877619b9187aa7f07cd4b71bc6bf7a
 --- /dev/null
 +++ b/bridge/src/util/config/config_document.h
 @@ -0,0 +1,143 @@
@@ -14227,7 +14502,7 @@ index 0000000..7b7a6e2
 +}
 +}
 diff --git a/bridge/src/util/config/global_options.h b/bridge/src/util/config/global_options.h
-index 9433265..f8fa639 100644
+index 9433265557a6ccad87d9ea31a7ead27756cda9c2..f8fa63938d4d0cced73c03525e1599878a727c4c 100644
 --- a/bridge/src/util/config/global_options.h
 +++ b/bridge/src/util/config/global_options.h
 @@ -1,3 +1,7 @@
@@ -14261,7 +14536,7 @@ index 9433265..f8fa639 100644
    static const bool getAlwaysCopyEntireStaticBuffer() {
 diff --git a/bridge/src/util/data_diagnostics.cpp b/bridge/src/util/data_diagnostics.cpp
 new file mode 100644
-index 0000000..2f72b4c
+index 0000000000000000000000000000000000000000..2f72b4c617bc6a34a4451a15c3f060c1c6f675a4
 --- /dev/null
 +++ b/bridge/src/util/data_diagnostics.cpp
 @@ -0,0 +1,421 @@
@@ -14688,7 +14963,7 @@ index 0000000..2f72b4c
 +}
 diff --git a/bridge/src/util/data_diagnostics.h b/bridge/src/util/data_diagnostics.h
 new file mode 100644
-index 0000000..57fe0d0
+index 0000000000000000000000000000000000000000..57fe0d0564c00a34f590e1df480122e3ca0a6b02
 --- /dev/null
 +++ b/bridge/src/util/data_diagnostics.h
 @@ -0,0 +1,78 @@
@@ -14772,7 +15047,7 @@ index 0000000..57fe0d0
 +}
 diff --git a/bridge/src/util/data_ring_contract.h b/bridge/src/util/data_ring_contract.h
 new file mode 100644
-index 0000000..18f00cd
+index 0000000000000000000000000000000000000000..18f00cde74d634596f0e4f33a0aa2ebb4a9fb786
 --- /dev/null
 +++ b/bridge/src/util/data_ring_contract.h
 @@ -0,0 +1,161 @@
@@ -14939,7 +15214,7 @@ index 0000000..18f00cd
 +}
 diff --git a/bridge/src/util/device_reset.h b/bridge/src/util/device_reset.h
 new file mode 100644
-index 0000000..8590947
+index 0000000000000000000000000000000000000000..859094725b069aa6ca3b22474f34b8dc0e697e86
 --- /dev/null
 +++ b/bridge/src/util/device_reset.h
 @@ -0,0 +1,48 @@
@@ -14993,7 +15268,7 @@ index 0000000..8590947
 +}
 diff --git a/bridge/src/util/diagnostic_file_hash.h b/bridge/src/util/diagnostic_file_hash.h
 new file mode 100644
-index 0000000..50f7084
+index 0000000000000000000000000000000000000000..50f7084fe4b876d41aea71d182809a6f74150413
 --- /dev/null
 +++ b/bridge/src/util/diagnostic_file_hash.h
 @@ -0,0 +1,44 @@
@@ -15043,7 +15318,7 @@ index 0000000..50f7084
 +}
 diff --git a/bridge/src/util/exception_diagnostics.cpp b/bridge/src/util/exception_diagnostics.cpp
 new file mode 100644
-index 0000000..d565009
+index 0000000000000000000000000000000000000000..d565009b5e8c29d734bacee74682801808633e17
 --- /dev/null
 +++ b/bridge/src/util/exception_diagnostics.cpp
 @@ -0,0 +1,453 @@
@@ -15502,7 +15777,7 @@ index 0000000..d565009
 +}
 diff --git a/bridge/src/util/exception_diagnostics.h b/bridge/src/util/exception_diagnostics.h
 new file mode 100644
-index 0000000..543cd78
+index 0000000000000000000000000000000000000000..543cd78fddca4acd4b4613855af68f55b1cf52f7
 --- /dev/null
 +++ b/bridge/src/util/exception_diagnostics.h
 @@ -0,0 +1,67 @@
@@ -15575,7 +15850,7 @@ index 0000000..543cd78
 +}
 diff --git a/bridge/src/util/ipc_c32_message_queue.h b/bridge/src/util/ipc_c32_message_queue.h
 new file mode 100644
-index 0000000..feb2e70
+index 0000000000000000000000000000000000000000..feb2e7041e3e5b31c154e65a97d1391aa3ecb1c4
 --- /dev/null
 +++ b/bridge/src/util/ipc_c32_message_queue.h
 @@ -0,0 +1,220 @@
@@ -15801,7 +16076,7 @@ index 0000000..feb2e70
 +}
 diff --git a/bridge/src/util/ipc_full/message_queue.h b/bridge/src/util/ipc_full/message_queue.h
 new file mode 100644
-index 0000000..72969e6
+index 0000000000000000000000000000000000000000..72969e639fb14cc78e16689558eed9655ac22e85
 --- /dev/null
 +++ b/bridge/src/util/ipc_full/message_queue.h
 @@ -0,0 +1,541 @@
@@ -16348,7 +16623,7 @@ index 0000000..72969e6
 +} // namespace ldb_full
 diff --git a/bridge/src/util/ipc_full/upload_pool.h b/bridge/src/util/ipc_full/upload_pool.h
 new file mode 100644
-index 0000000..93bbbb7
+index 0000000000000000000000000000000000000000..93bbbb774b49d550391eb32adcd78662396f1eb6
 --- /dev/null
 +++ b/bridge/src/util/ipc_full/upload_pool.h
 @@ -0,0 +1,223 @@
@@ -16577,7 +16852,7 @@ index 0000000..93bbbb7
 +} // namespace ldb_full
 diff --git a/bridge/src/util/ipc_v2/ipc_v2_build.h b/bridge/src/util/ipc_v2/ipc_v2_build.h
 new file mode 100644
-index 0000000..abf7055
+index 0000000000000000000000000000000000000000..abf7055c5262a3ec0841bcf18ccffb907fabd22f
 --- /dev/null
 +++ b/bridge/src/util/ipc_v2/ipc_v2_build.h
 @@ -0,0 +1,4 @@
@@ -16587,7 +16862,7 @@ index 0000000..abf7055
 +#define LDB_IPC_V2_BUILD3 0x229e81f1u
 diff --git a/bridge/src/util/ipc_v2/platform.h b/bridge/src/util/ipc_v2/platform.h
 new file mode 100644
-index 0000000..d4163a8
+index 0000000000000000000000000000000000000000..d4163a80c7c0a8c6eedf2ee9f5fe3aa9d7dccda1
 --- /dev/null
 +++ b/bridge/src/util/ipc_v2/platform.h
 @@ -0,0 +1,184 @@
@@ -16777,7 +17052,7 @@ index 0000000..d4163a8
 +}
 diff --git a/bridge/src/util/ipc_v2/transport.h b/bridge/src/util/ipc_v2/transport.h
 new file mode 100644
-index 0000000..59750d4
+index 0000000000000000000000000000000000000000..59750d4d58107ff2b6a007604864f9eddbe11eb3
 --- /dev/null
 +++ b/bridge/src/util/ipc_v2/transport.h
 @@ -0,0 +1,459 @@
@@ -17241,7 +17516,7 @@ index 0000000..59750d4
 +};
 +}
 diff --git a/bridge/src/util/log/log.cpp b/bridge/src/util/log/log.cpp
-index e3722e6..d6e6965 100644
+index e3722e6c686d55af81ac65bbc52dfde9da83a3e8..d6e6965b2e86802349e12aea492e53747839254d 100644
 --- a/bridge/src/util/log/log.cpp
 +++ b/bridge/src/util/log/log.cpp
 @@ -1,3 +1,7 @@
@@ -17321,7 +17596,7 @@ index e3722e6..d6e6965 100644
  #else
        if (m_fileStream.is_open()) {
 diff --git a/bridge/src/util/log/log.h b/bridge/src/util/log/log.h
-index 869be34..9ecf225 100644
+index 869be346c0000e2e6ea13ad25571a43fda7bfec0..9ecf225fb9cc1e4284ac4ecde3094c797b6c6b7d 100644
 --- a/bridge/src/util/log/log.h
 +++ b/bridge/src/util/log/log.h
 @@ -1,3 +1,7 @@
@@ -17360,7 +17635,7 @@ index 869be34..9ecf225 100644
      std::ofstream m_fileStream;
  #endif
 diff --git a/bridge/src/util/meson.build b/bridge/src/util/meson.build
-index fb5d556..a575f65 100644
+index fb5d556b9675dca0c1751822ca346729b1e7a46c..a575f6526f51ac2a57a077253ce35dac662bab97 100644
 --- a/bridge/src/util/meson.build
 +++ b/bridge/src/util/meson.build
 @@ -1,3 +1,7 @@
@@ -17409,7 +17684,7 @@ index fb5d556..a575f65 100644
  	'util_bridge_assert.h',
 diff --git a/bridge/src/util/overlay_input_diagnostics.h b/bridge/src/util/overlay_input_diagnostics.h
 new file mode 100644
-index 0000000..a963fce
+index 0000000000000000000000000000000000000000..a963fce6761548efe3cedf04e6d3c1d145c69716
 --- /dev/null
 +++ b/bridge/src/util/overlay_input_diagnostics.h
 @@ -0,0 +1,139 @@
@@ -17554,7 +17829,7 @@ index 0000000..a963fce
 +}
 diff --git a/bridge/src/util/pageblock_control.h b/bridge/src/util/pageblock_control.h
 new file mode 100644
-index 0000000..2424f5a
+index 0000000000000000000000000000000000000000..2424f5a7eee73623d3e57e4746ea3010c0122bff
 --- /dev/null
 +++ b/bridge/src/util/pageblock_control.h
 @@ -0,0 +1,77 @@
@@ -17637,7 +17912,7 @@ index 0000000..2424f5a
 +}
 diff --git a/bridge/src/util/queue_wait_diagnostics.h b/bridge/src/util/queue_wait_diagnostics.h
 new file mode 100644
-index 0000000..68c4265
+index 0000000000000000000000000000000000000000..68c42655f918ad6a88ebcdc75438fb02554a559b
 --- /dev/null
 +++ b/bridge/src/util/queue_wait_diagnostics.h
 @@ -0,0 +1,69 @@
@@ -17712,7 +17987,7 @@ index 0000000..68c4265
 +}
 diff --git a/bridge/src/util/readback_hash.h b/bridge/src/util/readback_hash.h
 new file mode 100644
-index 0000000..875a4bd
+index 0000000000000000000000000000000000000000..875a4bd729b388af58396991caff57d2ffcf96bb
 --- /dev/null
 +++ b/bridge/src/util/readback_hash.h
 @@ -0,0 +1,70 @@
@@ -17788,7 +18063,7 @@ index 0000000..875a4bd
 +}
 diff --git a/bridge/src/util/readback_layout.h b/bridge/src/util/readback_layout.h
 new file mode 100644
-index 0000000..fab8dd0
+index 0000000000000000000000000000000000000000..fab8dd0f3e3d0c5ab82297fe3660eed22aeca142
 --- /dev/null
 +++ b/bridge/src/util/readback_layout.h
 @@ -0,0 +1,144 @@
@@ -17938,7 +18213,7 @@ index 0000000..fab8dd0
 +}
 diff --git a/bridge/src/util/readback_transport.h b/bridge/src/util/readback_transport.h
 new file mode 100644
-index 0000000..713c431
+index 0000000000000000000000000000000000000000..713c43141de0733b4fe0a4fcdebeded22757149b
 --- /dev/null
 +++ b/bridge/src/util/readback_transport.h
 @@ -0,0 +1,129 @@
@@ -18073,7 +18348,7 @@ index 0000000..713c431
 +}
 diff --git a/bridge/src/util/runtime_observation.h b/bridge/src/util/runtime_observation.h
 new file mode 100644
-index 0000000..98b2443
+index 0000000000000000000000000000000000000000..98b244317dd91460c028b914e9f12eb7f2a40fbb
 --- /dev/null
 +++ b/bridge/src/util/runtime_observation.h
 @@ -0,0 +1,59 @@
@@ -18138,7 +18413,7 @@ index 0000000..98b2443
 +}
 diff --git a/bridge/src/util/steam_activity_diagnostics.h b/bridge/src/util/steam_activity_diagnostics.h
 new file mode 100644
-index 0000000..307d155
+index 0000000000000000000000000000000000000000..307d1554610bb8743f6f1544ef1d86ac65a12a6f
 --- /dev/null
 +++ b/bridge/src/util/steam_activity_diagnostics.h
 @@ -0,0 +1,78 @@
@@ -18222,7 +18497,7 @@ index 0000000..307d155
 +}
 diff --git a/bridge/src/util/steam_web_diagnostics.h b/bridge/src/util/steam_web_diagnostics.h
 new file mode 100644
-index 0000000..3049fae
+index 0000000000000000000000000000000000000000..3049fae9fb089d0544be8e5e65eb8f00f26baed9
 --- /dev/null
 +++ b/bridge/src/util/steam_web_diagnostics.h
 @@ -0,0 +1,189 @@
@@ -18417,7 +18692,7 @@ index 0000000..3049fae
 +}
 diff --git a/bridge/src/util/steam_workshop_status.h b/bridge/src/util/steam_workshop_status.h
 new file mode 100644
-index 0000000..cca0ead
+index 0000000000000000000000000000000000000000..cca0ead68d944f45cf1e79fc4e8e0840d0477413
 --- /dev/null
 +++ b/bridge/src/util/steam_workshop_status.h
 @@ -0,0 +1,75 @@
@@ -18497,7 +18772,7 @@ index 0000000..cca0ead
 +inline bool ready(){return reader.ready();}
 +}
 diff --git a/bridge/src/util/util_atomiccircularqueue.h b/bridge/src/util/util_atomiccircularqueue.h
-index 4be48da..36c5e89 100644
+index 4be48dacb9e519919f7fe823e411584b656c52b5..36c5e896b23b3ce46a1317bfe0cf58059e6f6378 100644
 --- a/bridge/src/util/util_atomiccircularqueue.h
 +++ b/bridge/src/util/util_atomiccircularqueue.h
 @@ -21,17 +21,24 @@
@@ -18767,7 +19042,7 @@ index 4be48da..36c5e89 100644
 \ No newline at end of file
 +}
 diff --git a/bridge/src/util/util_blockingcircularqueue.h b/bridge/src/util/util_blockingcircularqueue.h
-index 3ed228a..d7d7676 100644
+index 3ed228a9889d109c7d867830406cfdc79ed0c542..d7d767629590158dda4d84b0b09ef4956a32e8f2 100644
 --- a/bridge/src/util/util_blockingcircularqueue.h
 +++ b/bridge/src/util/util_blockingcircularqueue.h
 @@ -1,3 +1,7 @@
@@ -18788,7 +19063,7 @@ index 3ed228a..d7d7676 100644
          return 0;
        }
 diff --git a/bridge/src/util/util_bridgecommand.cpp b/bridge/src/util/util_bridgecommand.cpp
-index a3bed63..32b56b7 100644
+index a3bed63a88cbff78b5db8b7213b4373ea50bc8ec..32b56b776fd7e6b8bae234d9ebb1494c2b158b33 100644
 --- a/bridge/src/util/util_bridgecommand.cpp
 +++ b/bridge/src/util/util_bridgecommand.cpp
 @@ -1,3 +1,8 @@
@@ -19378,7 +19653,7 @@ index a3bed63..32b56b7 100644
 +
 +// NV-DXVK end
 diff --git a/bridge/src/util/util_bridgecommand.h b/bridge/src/util/util_bridgecommand.h
-index a555f8c..c626738 100644
+index a555f8cbb84d5b02e4c93b05b63ca6c50cd92f38..c626738abf2a3c730fb519248994ee133a7db773 100644
 --- a/bridge/src/util/util_bridgecommand.h
 +++ b/bridge/src/util/util_bridgecommand.h
 @@ -1,3 +1,8 @@
@@ -20043,7 +20318,7 @@ index a555f8c..c626738 100644
 +
 +// NV-DXVK end
 diff --git a/bridge/src/util/util_circularbuffer.h b/bridge/src/util/util_circularbuffer.h
-index 79310b6..323d390 100644
+index 79310b6cf624e11fb6974999622a545280fe2dd4..323d390a4adefd1c27221911f35a724693353d81 100644
 --- a/bridge/src/util/util_circularbuffer.h
 +++ b/bridge/src/util/util_circularbuffer.h
 @@ -30,133 +30,178 @@
@@ -20331,7 +20606,7 @@ index 79310b6..323d390 100644
  
  #endif // UTIL_CIRCULARBUFFER_H_
 diff --git a/bridge/src/util/util_circularqueue.h b/bridge/src/util/util_circularqueue.h
-index e4a513f..941c074 100644
+index e4a513ffb4c15e75cddcbeddaa5c3375474205c6..941c07447c2a12b73fc8d1f6df724987336a34f6 100644
 --- a/bridge/src/util/util_circularqueue.h
 +++ b/bridge/src/util/util_circularqueue.h
 @@ -1,3 +1,7 @@
@@ -20352,7 +20627,7 @@ index e4a513f..941c074 100644
          return 0;
        }
 diff --git a/bridge/src/util/util_commands.h b/bridge/src/util/util_commands.h
-index e38f874..3507697 100644
+index e38f8748f6ed94d0d9134e31c521a81bd58847a8..3507697615007b977f3c877e71de0b71b6687665 100644
 --- a/bridge/src/util/util_commands.h
 +++ b/bridge/src/util/util_commands.h
 @@ -1,3 +1,7 @@
@@ -20408,7 +20683,7 @@ index e38f874..3507697 100644
                                      // and only allocation id(s) is transferred on the queue
      DataIsReserved   = 0b00000010,  // Data was already reserved in data queue and only its
 diff --git a/bridge/src/util/util_common.h b/bridge/src/util/util_common.h
-index 5c4155f..3ad0dcb 100644
+index 5c4155f7176809549a4ede0b840bacaecf638b3b..3ad0dcbd53be6f30920be21dc2a6d72e47ac577b 100644
 --- a/bridge/src/util/util_common.h
 +++ b/bridge/src/util/util_common.h
 @@ -1,3 +1,7 @@
@@ -20442,7 +20717,7 @@ index 5c4155f..3ad0dcb 100644
  #if defined(REMIX_BRIDGE_CLIENT) && defined(REMIX_BRIDGE_SERVER)
  #error "Both REMIX_BRIDGE_CLIENT and REMIX_BRIDGE_SERVER are defined. Use the vcvars platform that matches the Meson build directory (x86 for *_x86, x64 for *_x64)."
 diff --git a/bridge/src/util/util_filesys.cpp b/bridge/src/util/util_filesys.cpp
-index 15cf4b8..9154be3 100644
+index 15cf4b8b2027492cb0ad6639854fad2d6914ef48..9154be3ca30efe03a3525666ab692c301fa15795 100644
 --- a/bridge/src/util/util_filesys.cpp
 +++ b/bridge/src/util/util_filesys.cpp
 @@ -1,3 +1,7 @@
@@ -20476,7 +20751,7 @@ index 15cf4b8..9154be3 100644
      }
    }
 diff --git a/bridge/src/util/util_filesys.h b/bridge/src/util/util_filesys.h
-index 15915da..6571ee1 100644
+index 15915dab6a9a6f79f538d26a085758910acb6d14..6571ee196c3d046eee17d6bdc08410c55575be5a 100644
 --- a/bridge/src/util/util_filesys.h
 +++ b/bridge/src/util/util_filesys.h
 @@ -1,3 +1,7 @@
@@ -20497,7 +20772,7 @@ index 15915da..6571ee1 100644
  };
  
 diff --git a/bridge/src/util/util_ipcchannel.h b/bridge/src/util/util_ipcchannel.h
-index 462334e..2a1b524 100644
+index 462334e4ff77762bab0aaf8c5841a3191bae3821..2a1b524b1e9636b9316d89db371f173c27318213 100644
 --- a/bridge/src/util/util_ipcchannel.h
 +++ b/bridge/src/util/util_ipcchannel.h
 @@ -20,89 +20,46 @@
@@ -20629,7 +20904,7 @@ index 462334e..2a1b524 100644
 +
 +// NV-DXVK end
 diff --git a/bridge/src/util/util_process.h b/bridge/src/util/util_process.h
-index ef73efa..d6d8dc6 100644
+index ef73efac42e82a2d346acd7f4b5c15bc0dec7f1b..d6d8dc663486ca2c4e0343f8541f4850a780a8b0 100644
 --- a/bridge/src/util/util_process.h
 +++ b/bridge/src/util/util_process.h
 @@ -1,3 +1,7 @@
@@ -20652,7 +20927,7 @@ index ef73efa..d6d8dc6 100644
    private:
      static void CALLBACK OnExited(void* context, BOOLEAN isTimeout) {
 diff --git a/bridge/src/util/util_seh.cpp b/bridge/src/util/util_seh.cpp
-index de9b503..8f8de96 100644
+index de9b5033b2c321025fca83fba5846968148b1594..8f8de96c105ff63756cbe234db425c86265fef50 100644
 --- a/bridge/src/util/util_seh.cpp
 +++ b/bridge/src/util/util_seh.cpp
 @@ -1,3 +1,7 @@
@@ -20772,7 +21047,7 @@ index de9b503..8f8de96 100644
 +}
 +}
 diff --git a/bridge/src/util/util_semaphore.h b/bridge/src/util/util_semaphore.h
-index a6fd952..fb186a0 100644
+index a6fd952db3ec61cc4eca0160deba7549e24b08d3..fb186a055c4c2a07f2d5df59f1e40c0ebdc607ba 100644
 --- a/bridge/src/util/util_semaphore.h
 +++ b/bridge/src/util/util_semaphore.h
 @@ -1,3 +1,7 @@
@@ -20793,7 +21068,7 @@ index a6fd952..fb186a0 100644
      }
  
 diff --git a/bridge/src/util/util_sharedheap.cpp b/bridge/src/util/util_sharedheap.cpp
-index 71c6695..795fedd 100644
+index 71c669556f5be7cc2292ba6ac9ad3922499c53b4..795fedd48cd84b5128d95168d23bf2bec8d18cbe 100644
 --- a/bridge/src/util/util_sharedheap.cpp
 +++ b/bridge/src/util/util_sharedheap.cpp
 @@ -19,6 +19,7 @@
@@ -20962,8 +21237,67 @@ index 71c6695..795fedd 100644
      assert(m_allocations.count(firstChunk) > 0);
      const auto finalChunk = m_allocations[firstChunk];
      const size_t numChunks = finalChunk - firstChunk + 1;
+diff --git a/bridge/src/util/util_sharedheap.h b/bridge/src/util/util_sharedheap.h
+index fb5c4d46bd139ac685e6345f32ef1609b34ee4a6..690e5a71c19ae7228cbd2e7cf0b549e9e3ea49ef 100644
+--- a/bridge/src/util/util_sharedheap.h
++++ b/bridge/src/util/util_sharedheap.h
+@@ -39,6 +39,9 @@ namespace bridge_util {
+     static BYTE* getBuf(const AllocId id) {
+       return get().getBuf(id);
+     }
++    static size_t getAllocationSize(const AllocId id) {
++      return get().getAllocationSize(id);
++    }
+ #ifdef REMIX_BRIDGE_CLIENT
+     static AllocId allocate(const size_t size) {
+       return get().allocate(size);
+@@ -48,11 +51,11 @@ namespace bridge_util {
+     }
+ #endif
+ #ifdef REMIX_BRIDGE_SERVER
+-    static void allocate(const AllocId id, const ChunkId firstChunk) {
+-      get().allocate(id, firstChunk);
++    static bool allocate(const AllocId id, const ChunkId firstChunk, const uint32_t bytes) {
++      return get().allocate(id, firstChunk, bytes);
+     }
+-    static void deallocate(const AllocId id) {
+-      get().deallocate(id);
++    static bool deallocate(const AllocId id) {
++      return get().deallocate(id);
+     }
+     static void addNewHeapSegment(const uint32_t segmentSize) {
+       get().addNewHeapSegment(segmentSize);
+@@ -68,13 +71,14 @@ namespace bridge_util {
+     public:
+       Instance();
+       BYTE* getBuf(const AllocId id);
++      size_t getAllocationSize(const AllocId id) const;
+ #ifdef REMIX_BRIDGE_CLIENT
+       AllocId allocate(const size_t size);
+       void deallocate(const AllocId id);
+ #endif
+ #ifdef REMIX_BRIDGE_SERVER
+-      void allocate(const AllocId id, const ChunkId firstChunk);
+-      void deallocate(const AllocId id);
++      bool allocate(const AllocId id, const ChunkId firstChunk, const uint32_t bytes);
++      bool deallocate(const AllocId id);
+       void addNewHeapSegment(const uint32_t segmentSize);
+ #endif
+ 
+@@ -87,9 +91,10 @@ namespace bridge_util {
+       uint32_t m_defaultSegmentSize;
+       uint32_t m_nChunks;
+       std::unordered_map<AllocId, ChunkId> m_cache;
++      std::unordered_map<AllocId, size_t> m_allocationSizes;
++      std::map<ChunkId, ChunkId> m_allocations;
+ #ifdef REMIX_BRIDGE_CLIENT
+       AllocId m_nextUid = 0;
+-      std::map<ChunkId, ChunkId> m_allocations;
+       size_t m_sizeAllocated = 0;
+ #endif
+ 
 diff --git a/bridge/src/util/util_sharedmemory.cpp b/bridge/src/util/util_sharedmemory.cpp
-index 1dfe466..1935314 100644
+index 1dfe4662cad272c48d8212e47e1a900fbf28bf5b..19353143a1d61ef3a65695370c5febc2dcc02657 100644
 --- a/bridge/src/util/util_sharedmemory.cpp
 +++ b/bridge/src/util/util_sharedmemory.cpp
 @@ -1,3 +1,7 @@
@@ -20993,7 +21327,7 @@ index 1dfe466..1935314 100644
        return false;
      }
 diff --git a/bridge/src/util/util_sharedmemory.h b/bridge/src/util/util_sharedmemory.h
-index 7d16576..59b080c 100644
+index 7d16576aa2cbf8e4fa8040057d2b8730366220bc..59b080c23fdbbe6a495d1330dba0ee1980bafff2 100644
 --- a/bridge/src/util/util_sharedmemory.h
 +++ b/bridge/src/util/util_sharedmemory.h
 @@ -1,3 +1,7 @@
@@ -21029,7 +21363,7 @@ index 7d16576..59b080c 100644
        }
      }
 diff --git a/bridge/src/util/util_texture_and_volume.h b/bridge/src/util/util_texture_and_volume.h
-index fe5045b..4a859fe 100644
+index fe5045b48ecadf8a34212322ba488af7d7486335..4a859fe2c5326a7e900653e0d37e09cad9ae50f2 100644
 --- a/bridge/src/util/util_texture_and_volume.h
 +++ b/bridge/src/util/util_texture_and_volume.h
 @@ -1,3 +1,7 @@
@@ -21068,7 +21402,7 @@ index fe5045b..4a859fe 100644
      case D3DFMT_INST:
 diff --git a/bridge/src/util/volume_layout.h b/bridge/src/util/volume_layout.h
 new file mode 100644
-index 0000000..97a6af2
+index 0000000000000000000000000000000000000000..97a6af2509c238b9e14676b6c6c2c95cc514fd44
 --- /dev/null
 +++ b/bridge/src/util/volume_layout.h
 @@ -0,0 +1,71 @@
@@ -21143,135 +21477,3 @@ index 0000000..97a6af2
 +  return true;
 +}
 +}
-diff --git a/bridge/src/server/steam_ime_native.h b/bridge/src/server/steam_ime_native.h
-new file mode 100644
---- /dev/null
-+++ b/bridge/src/server/steam_ime_native.h
-@@ -0,0 +1,68 @@
-+// SPDX-License-Identifier: MIT
-+// Copyright (c) 2026 yeyunyyds.
-+// All newly added implementation code in this fork was generated by OpenAI Codex from prompts and specifications provided by yeyunyyds.
-+#pragma once
-+#include <windows.h>
-+#include <msctf.h>
-+#include <objbase.h>
-+#include <cstring>
-+#include <cstdio>
-+#include <functional>
-+#include <utility>
-+
-+namespace l4d2_overlay {
-+// Owning Presenter thread only; pairs only our COM and TSF activations.
-+class ImeThread {
-+  struct ErrorGuard { DWORD value = GetLastError(); ~ErrorGuard() { SetLastError(value); } };
-+  using Init = HRESULT(WINAPI*)(LPVOID, DWORD);
-+  using Uninit = void(WINAPI*)();
-+  using Manager = HRESULT(WINAPI*)(ITfThreadMgr**);
-+  HMODULE m_ole = nullptr, m_ctf = nullptr;
-+  Uninit m_uninit = nullptr;
-+  ITfThreadMgr* m_manager = nullptr;
-+  bool m_comOwned = false, m_activated = false;
-+  HRESULT m_com = E_NOTIMPL, m_create = E_NOTIMPL, m_activate = E_NOTIMPL;
-+  TfClientId m_client = TF_CLIENTID_NULL;
-+  template<class T> static T resolve(HMODULE module, const char* name) {
-+    const FARPROC raw = module ? GetProcAddress(module, name) : nullptr;
-+    T result = nullptr;
-+    static_assert(sizeof(raw) == sizeof(result), "Win32 procedure size");
-+    std::memcpy(&result, &raw, sizeof(result)); return result;
-+  }
-+public:
-+  explicit ImeThread(bool enabled, const std::function<void(const char*)>& log = {}) {
-+    if (!enabled) { return; }
-+    ErrorGuard guard;
-+    m_ole = LoadLibraryExW(L"ole32.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32);
-+    const auto init = resolve<Init>(m_ole, "CoInitializeEx");
-+    m_uninit = resolve<Uninit>(m_ole, "CoUninitialize");
-+    if (init && m_uninit) { m_com = init(nullptr, COINIT_APARTMENTTHREADED); m_comOwned = SUCCEEDED(m_com); }
-+    if (m_comOwned) {
-+      m_ctf = LoadLibraryExW(L"msctf.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32);
-+      const auto get = resolve<Manager>(m_ctf, "TF_GetThreadMgr");
-+      const auto create = resolve<Manager>(m_ctf, "TF_CreateThreadMgr");
-+      if (get) { m_create = get(&m_manager); }
-+      if (!m_manager && create) { m_create = create(&m_manager); }
-+      if (m_manager) { m_activate = m_manager->Activate(&m_client); m_activated = SUCCEEDED(m_activate); }
-+    }
-+    if (log) {
-+      char line[260] {};
-+      std::snprintf(line, sizeof(line), "L4D2_STEAM_IME event=thread-init thread=%lu com_hr=0x%08lx manager_hr=0x%08lx activate_hr=0x%08lx own_activation=%d",
-+        GetCurrentThreadId(), static_cast<unsigned long>(m_com), static_cast<unsigned long>(m_create), static_cast<unsigned long>(m_activate), m_activated);
-+      log(line);
-+    }
-+  }
-+  ~ImeThread() {
-+    ErrorGuard guard;
-+    if (m_activated && m_manager) { m_manager->Deactivate(); }
-+    if (m_manager) { m_manager->Release(); }
-+    if (m_comOwned && m_uninit) { m_uninit(); }
-+    if (m_ctf) { FreeLibrary(m_ctf); }
-+    if (m_ole) { FreeLibrary(m_ole); }
-+  }
-+  ImeThread(const ImeThread&) = delete;
-+  ImeThread& operator=(const ImeThread&) = delete;
-+  HRESULT comResult() const { return m_com; }
-+  bool active() const { return m_activated; }
-+};
-+}
-diff --git a/bridge/src/util/util_sharedheap.h b/bridge/src/util/util_sharedheap.h
-index fb5c4d4..690e5a7 100644
---- a/bridge/src/util/util_sharedheap.h
-+++ b/bridge/src/util/util_sharedheap.h
-@@ -39,6 +39,9 @@ namespace bridge_util {
-     static BYTE* getBuf(const AllocId id) {
-       return get().getBuf(id);
-     }
-+    static size_t getAllocationSize(const AllocId id) {
-+      return get().getAllocationSize(id);
-+    }
- #ifdef REMIX_BRIDGE_CLIENT
-     static AllocId allocate(const size_t size) {
-       return get().allocate(size);
-@@ -48,11 +51,11 @@ namespace bridge_util {
-     }
- #endif
- #ifdef REMIX_BRIDGE_SERVER
--    static void allocate(const AllocId id, const ChunkId firstChunk) {
--      get().allocate(id, firstChunk);
-+    static bool allocate(const AllocId id, const ChunkId firstChunk, const uint32_t bytes) {
-+      return get().allocate(id, firstChunk, bytes);
-     }
--    static void deallocate(const AllocId id) {
--      get().deallocate(id);
-+    static bool deallocate(const AllocId id) {
-+      return get().deallocate(id);
-     }
-     static void addNewHeapSegment(const uint32_t segmentSize) {
-       get().addNewHeapSegment(segmentSize);
-@@ -68,13 +71,14 @@ namespace bridge_util {
-     public:
-       Instance();
-       BYTE* getBuf(const AllocId id);
-+      size_t getAllocationSize(const AllocId id) const;
- #ifdef REMIX_BRIDGE_CLIENT
-       AllocId allocate(const size_t size);
-       void deallocate(const AllocId id);
- #endif
- #ifdef REMIX_BRIDGE_SERVER
--      void allocate(const AllocId id, const ChunkId firstChunk);
--      void deallocate(const AllocId id);
-+      bool allocate(const AllocId id, const ChunkId firstChunk, const uint32_t bytes);
-+      bool deallocate(const AllocId id);
-       void addNewHeapSegment(const uint32_t segmentSize);
- #endif
- 
-@@ -87,9 +91,10 @@ namespace bridge_util {
-       uint32_t m_defaultSegmentSize;
-       uint32_t m_nChunks;
-       std::unordered_map<AllocId, ChunkId> m_cache;
-+      std::unordered_map<AllocId, size_t> m_allocationSizes;
-+      std::map<ChunkId, ChunkId> m_allocations;
- #ifdef REMIX_BRIDGE_CLIENT
-       AllocId m_nextUid = 0;
--      std::map<ChunkId, ChunkId> m_allocations;
-       size_t m_sizeAllocated = 0;
- #endif
- 
