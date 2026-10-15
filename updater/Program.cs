@@ -111,7 +111,6 @@ namespace LdbUpdater {
               CheckLoadedClient(game,args[7]);
               candidate=Core.Extract(Root,PackagePath(),args[6],expected,true);
               if(candidate==null) { Send(pipe,"NO_UPDATE");Log("NO_UPDATE");return 0; }
-              Core.Require(candidate.Manifest.build_id==args[7],"Local test payload must match installed test build");
               string notes=candidate.Notes.Substring(0,Math.Min(candidate.Notes.Length,1200));
               Send(pipe,"CANDIDATE\n"+candidate.Version+"\n"+notes);Log("CANDIDATE_SENT");
               string command=ReadFrame(pipe);

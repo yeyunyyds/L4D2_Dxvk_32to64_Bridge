@@ -59,7 +59,18 @@ def case(bits, mode):
         (host_dir / "LDBupdater-test.ini").write_text("[LDBUpdaterTest]\nEnabled=1\nWorkshopId=1\n")
         workshop = root / "left4dead2/addons/workshop"
         workshop.mkdir(parents=True)
-        make(root, workshop / "1.vpk", "1.3.2" if mode == "same" else "1.3.1" if mode == "older" else "1.3.3", IDENTITY, "UPDATED README")
+        payload_source = root
+        payload_identity = IDENTITY
+        if mode == "new-build":
+            payload_source = root / "candidate-source"
+            payload_identity = "l4d2-1.3.3+2222222222222222"
+            for relative in ("bin/dxvk_d3d9.dll", "bin/.l4d2bridge/L4D2Bridge32.exe", "bin/.l4d2bridge/L4D2Bridge64.exe"):
+                target = payload_source / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                body = (root / relative).read_bytes()
+                assert IDENTITY.encode() in body
+                target.write_bytes(body.replace(IDENTITY.encode(), payload_identity.encode()))
+        make(payload_source, workshop / "1.vpk", "1.3.2" if mode == "same" else "1.3.1" if mode == "older" else "1.3.3", payload_identity, "UPDATED README")
         game = subprocess.Popen([str(root / "left4dead2.exe"), "game", mode], cwd=root)
         updater_done = False
         helper_pid = None
@@ -107,6 +118,9 @@ def case(bits, mode):
                 assert (host_dir / "LDBupdate-package.sha256").read_text() == hashlib.sha256((workshop / "1.vpk").read_bytes()).hexdigest()
                 assert not (host_dir / "LDBupdate-transaction.json").exists()
                 assert not list((host_dir / "LDBupdate").glob("*"))
+                if mode == "new-build":
+                    for relative in ("bin/dxvk_d3d9.dll", "bin/.l4d2bridge/L4D2Bridge32.exe", "bin/.l4d2bridge/L4D2Bridge64.exe"):
+                        assert (root / relative).read_bytes() == (payload_source / relative).read_bytes(), "New build did not replace all three binaries"
             assert (host_dir / "bridge.conf").read_text() == "DO NOT CHANGE"
             wait_helper(helper_pid)
             logs = (host_dir / "LDBupdater.log").read_text(errors="replace")
@@ -141,6 +155,6 @@ def case(bits, mode):
 
 
 if __name__ == "__main__":
-    results = [case(bits, mode) for bits in (32, 64) for mode in ("decline", "cancel", "accept", "linger", "same", "older", "crash", "alias-client")]
+    results = [case(bits, mode) for bits in (32, 64) for mode in ("decline", "cancel", "accept", "linger", "same", "older", "crash", "alias-client", "new-build")]
     (NATIVE / "sessions.json").write_text(json.dumps(results, indent=2))
     print("UPDATER_SESSIONS_PASS", len(results))
