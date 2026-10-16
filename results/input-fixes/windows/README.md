@@ -1,0 +1,1 @@
+Windows JSON receipts normalize only outer UTF-8 BOM and CRLF to LF for review; parsed values are unchanged. Exact original bytes, executables and extracted sources remain in native artifact 12072162973, SHA256 735a7c0b5f66de855cb9161e432fe2d085055b9696f7752059ae871b93d8a35f. The compressed IPC JSON files retain the original bytes.
