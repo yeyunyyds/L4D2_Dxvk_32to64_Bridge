@@ -24,7 +24,22 @@
 - 三类测试均使用 frozen main 的未修改 Presenter 作对照。旧实现须在指定断言失败，不能以编译失败代替。
 - 更新既有跨进程真实 Presenter HWND 测试，覆盖两种混合位数、原生焦点、Steam/ReShade 交接、输入子窗口、临时 IME、定时恢复和退出。保留原 IPC、资源生命周期、Steam/IME 及诊断回归和完整三端 Release 编译。
 
-原生模型和 NB 自己的游戏验收不等于 LDB 实机验收。CI 构建链接、构建身份与实际结果将在完成后补入此文档。
+[Windows CI 38958100923](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/38958100923) 全部通过。编译源码 `138e7ca982173cf627d5dd9ce30e949cfe5e44d4`，共同构建 `l4d2-1.3.2+25947f0275b38ed8`，MSVC 14.29 Release `/O2 /DNDEBUG`，IPC ABI `0x00020004`、C8、mapped Shadow 默认关闭。
+
+| 验证 | x86 / x64 结果 |
+|---|---|
+| 键盘路由 | 各 88 断言通过；精确旧源在 Win+Space 断言失败 |
+| IME 提交边界 | 各 280 断言通过；精确旧源在默认重复处理边界失败 |
+| ReShade 6.8 固定源码模型 | 各 7 个 Home/兜底场景、54 断言通过，额外两个组合键场景也通过；旧源每侧 5 个包装器场景在第二次 Home 精确失败，直接/兜底场景仍通过 |
+| 真实 HWND 与混合位数 | x86 父进程→x64 Presenter、x64 父进程→x86 Presenter 均通过；覆盖焦点交接、子窗口、临时 IME、自然定时恢复与清理 |
+| 既有回归与构建 | 360 组 IPC 配对、24 项 fail-closed、上传/回复/资源/Reset/GC/Steam/诊断检查及三端 Release 编译通过 |
+| 独立构件核验 | CI ZIP digest、每文件哈希、PE 架构、共同身份、Host32 LAA 均核对；bin 仅三个桥文件 |
+
+本地 48 项 Python 检查通过。首轮 Windows `38957828947` 被 Git 检出时转换许可证换行导致的固定字节校验阻断；新增该文件的 `-text` 属性后通过，未放松校验或改变生产修复。过时运行被取消；原始失败日志保留在 Actions。
+
+机器可读摘要、原生结果/来源清单、编译收据与压缩 IPC 原始结果见 [results/input-fixes](../results/input-fixes)。完整 native artifact ID `12072162973`、SHA256 `735a7c0b5f66de855cb9161e432fe2d085055b9696f7752059ae871b93d8a35f`。原生模型和 NB 自己的游戏验收不等于 LDB 实机验收；本轮没有新增 FPS、真实中文提交或真实 ReShade 渲染器验收。
+
+[下载已独立核验的实验三件套](https://raw.githubusercontent.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/26884d575f5932db5c6ae6d5ee613fadd8ff3cf2/ldb-input-fixes-v1.3.2-25947f02-r38958100923.zip)。ZIP SHA256：`75a191e5d8468aa40804bc23160e8654e4c1e87c0f2bad59ed29b265cc23cc69`。该下载与 CI 原构件字节一致；后续报告提交仅保存证据，不改变已编译源码。
 
 ## 实机安装与回退
 

@@ -1,0 +1,30 @@
+{
+  "run": 38958100923,
+  "job": 117165964443,
+  "compiled_commit": "138e7ca982173cf627d5dd9ce30e949cfe5e44d4",
+  "conclusion": "success",
+  "inputs": {
+    "x86": {
+      "keyboard_assertions": 88,
+      "ime_result_assertions": 280,
+      "reshade_home_cases": 7,
+      "reshade_home_assertions": 54,
+      "additional_chord_cases": 2,
+      "old_home_failures": 5
+    },
+    "x64": {
+      "keyboard_assertions": 88,
+      "ime_result_assertions": 280,
+      "reshade_home_cases": 7,
+      "reshade_home_assertions": 54,
+      "additional_chord_cases": 2,
+      "old_home_failures": 5
+    }
+  },
+  "ipc_success_pairs": 360,
+  "ipc_fail_closed": 24,
+  "native_artifact_id": 12072162973,
+  "native_artifact_sha256": "735a7c0b5f66de855cb9161e432fe2d085055b9696f7752059ae871b93d8a35f",
+  "gameplay_validated": false,
+  "reply_records": 13
+}
