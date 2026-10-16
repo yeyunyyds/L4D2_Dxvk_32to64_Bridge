@@ -1,0 +1,6 @@
+{
+  "commit": "cafc0442446c502a0de0ebb52d5e73ccaae67516",
+  "file": "bridge/src/server/overlay_presenter.h",
+  "sha256": "90e2cd1c4fe9ba0b56996215aed3f568d01205f15011c8d01035ccb4d4e4c9b9",
+  "scope": "Unmodified pre-fix production header; test compiler/dependencies use candidate tree"
+}

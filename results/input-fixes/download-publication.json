@@ -1,0 +1,13 @@
+{
+  "commit": "26884d575f5932db5c6ae6d5ee613fadd8ff3cf2",
+  "previous": "5c853a2f27cd245efb6ed6c8e5f78376524b6a5b",
+  "files": [
+    "ldb-input-fixes-v1.3.2-25947f02-r38958100923.zip",
+    "ldb-input-fixes-v1.3.2-25947f02-r38958100923.zip.sha256",
+    "LDB-INPUT-FIXES-25947f02-INSTALL.zh-CN.md"
+  ],
+  "source_commit": "138e7ca982173cf627d5dd9ce30e949cfe5e44d4",
+  "archive_sha256": "75a191e5d8468aa40804bc23160e8654e4c1e87c0f2bad59ed29b265cc23cc69",
+  "url": "https://raw.githubusercontent.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/26884d575f5932db5c6ae6d5ee613fadd8ff3cf2/ldb-input-fixes-v1.3.2-25947f02-r38958100923.zip",
+  "verified_download_bytes": 4070576
+}

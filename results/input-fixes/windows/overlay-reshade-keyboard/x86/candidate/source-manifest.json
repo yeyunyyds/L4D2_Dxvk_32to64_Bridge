@@ -1,0 +1,46 @@
+{
+  "source": "D:\\a\\L4D2_Dxvk_32to64_Bridge\\L4D2_Dxvk_32to64_Bridge\\.deps\\dxvk-remix\\bridge\\src\\server\\overlay_presenter.h",
+  "source_sha256": "06d07db137fcaf05b8a059e74212a09ef56780c5dbde359a892b852025cb9374",
+  "presenter_methods": [
+    "keyHook",
+    "foreground",
+    "nativeCapture",
+    "systemShortcut",
+    "capture",
+    "setCapture",
+    "applyMode",
+    "warmupIme",
+    "nativeFocus",
+    "onOverlay",
+    "steamCapture"
+  ],
+  "reshade_commit": "18deaa52de0c425a78b329e9cb3c497281cd00ec",
+  "reshade_source_sha256": {
+    "source/input.cpp": "d91f6b8e28843983cd94281c4efc29446f0d87395ccea10088ea0ca441e4b0cb",
+    "source/input_windows.cpp": "4cd50ec5522c60856ec9da356eeec7a250cc5c84d9f5bc47b176d9b886a9f377",
+    "source/runtime_gui.cpp": "07eb37496e76eae7044f2d75bc2061f2e0d8c6aec63a445d5126d01d105b880f"
+  },
+  "reshade_license_sha256": "237ded5b8344f820113efab1e65e91e1f159d9202c5b4856606a0590d3ffdab0",
+  "generated_sha256": {
+    "production_overlay_reshade_keyboard.h": "471b101da4f4e1f80dc37f9dccda00023380489057771842edc858290799992a",
+    "production_reshade_input.h": "6750a247924991749cb978313704ee05c026d1de91f24c21b65b9f4b68143345",
+    "production_reshade_gui_keyboard.h": "beb23d7fe39a0722527c851acfc62d7a51b454320d9825eb7088619dfe39993d"
+  },
+  "extraction": [
+    "complete Presenter routing/capture/applyMode and recursive helpers",
+    "complete ReShade handle_windows_hook and key-state/next_frame methods",
+    "unchanged ReShade legacy key switch arms and draw_gui keyboard decision block"
+  ],
+  "adapters": [
+    "Win32 focus/foreground and native/post queue delivery model",
+    "ReShade registration lookup map and accepted addon callback",
+    "Steam-style queue modifier observation (not Steam implementation)"
+  ],
+  "excluded": [
+    "actual Windows hooks/input injection/UI",
+    "real Steam",
+    "ReShade rendering",
+    "game",
+    "FPS"
+  ]
+}

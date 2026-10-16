@@ -1,0 +1,24 @@
+{
+  "archive_sha256": "75a191e5d8468aa40804bc23160e8654e4c1e87c0f2bad59ed29b265cc23cc69",
+  "source_commit": "138e7ca982173cf627d5dd9ce30e949cfe5e44d4",
+  "build_id": "l4d2-1.3.2+25947f0275b38ed8",
+  "patch_sha256": "25947f0275b38ed8add8d11bc870d1530e034137f27b96cbacb5e38430e6e2ef",
+  "binaries": {
+    "bin/dxvk_d3d9.dll": {
+      "machine": "0x14c",
+      "sha256": "f57423c077e1ed857aec26a8aac0a46366c7e723f0932b1d57729d196e6296fe"
+    },
+    "bin/.l4d2bridge/L4D2Bridge32.exe": {
+      "machine": "0x14c",
+      "sha256": "22effa1349c0f214437d474b68064fac7d367d38cae6e6635aacb13e21e1558c"
+    },
+    "bin/.l4d2bridge/L4D2Bridge64.exe": {
+      "machine": "0x8664",
+      "sha256": "b416f329b15781d5476576cf0a641cd031e956393c29c27871959abf04b72493"
+    }
+  },
+  "runtime_files": 3,
+  "preserves_existing_configuration": true,
+  "has_updater": false,
+  "gameplay_validated": false
+}

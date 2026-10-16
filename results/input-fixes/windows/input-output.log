@@ -1,0 +1,46 @@
+2026-10-16T19:53:33.5798581Z OVERLAY_KEYBOARD_ROUTE_FAIL: Win+Space down was swallowed or reposted
+2026-10-16T19:53:35.4092455Z OVERLAY_KEYBOARD_ROUTE_PASS bits=32 assertions=88
+2026-10-16T19:53:47.6074392Z OVERLAY_KEYBOARD_ROUTE_FAIL: Win+Space down was swallowed or reposted
+2026-10-16T19:53:48.7490938Z OVERLAY_KEYBOARD_ROUTE_PASS bits=64 assertions=88
+2026-10-16T19:53:51.4297072Z IME_RESULT_BOUNDARY_FAIL: native Steam result reached DefWindowProc assertions=1
+2026-10-16T19:53:52.3124230Z IME_RESULT_BOUNDARY_PASS assertions=280 bits=32 scope=production-wndproc-boundary-no-UI-no-Steam
+2026-10-16T19:53:54.7681661Z IME_RESULT_BOUNDARY_FAIL: native Steam result reached DefWindowProc assertions=1
+2026-10-16T19:53:55.6330775Z IME_RESULT_BOUNDARY_PASS assertions=280 bits=64 scope=production-wndproc-boundary-no-UI-no-Steam
+2026-10-16T19:53:58.5810369Z RESHade_KEYBOARD_PASS case=home-direct bits=32 assertions=7
+2026-10-16T19:53:58.5985744Z RESHade_KEYBOARD_FAIL case=home-wrapper reason=second Home failed to close ReShade
+2026-10-16T19:53:58.6163427Z RESHade_KEYBOARD_FAIL case=home-wrapper-no-steam reason=second Home failed to close ReShade
+2026-10-16T19:53:58.6332529Z RESHade_KEYBOARD_FAIL case=home-wrapper-active-widget reason=second Home failed to close ReShade
+2026-10-16T19:53:58.6499160Z RESHade_KEYBOARD_FAIL case=home-wrapper-ignore-shortcuts reason=second Home failed to close ReShade
+2026-10-16T19:53:58.6667115Z RESHade_KEYBOARD_FAIL case=home-wrapper-repeat reason=second Home failed to close ReShade
+2026-10-16T19:53:58.6844087Z RESHade_KEYBOARD_PASS case=fallback-home bits=32 assertions=9
+2026-10-16T19:53:58.7012846Z RESHade_KEYBOARD_FAIL case=steam-direct reason=Shift+Tab lacks native Host queue modifier state
+2026-10-16T19:53:58.7185201Z RESHade_KEYBOARD_FAIL case=steam-wrapper reason=Shift+Tab lacks native Host queue modifier state
+2026-10-16T19:53:59.8403620Z RESHade_KEYBOARD_PASS case=home-direct bits=32 assertions=7
+2026-10-16T19:53:59.8569491Z RESHade_KEYBOARD_PASS case=home-wrapper bits=32 assertions=7
+2026-10-16T19:53:59.8738549Z RESHade_KEYBOARD_PASS case=home-wrapper-no-steam bits=32 assertions=7
+2026-10-16T19:53:59.8906923Z RESHade_KEYBOARD_PASS case=home-wrapper-active-widget bits=32 assertions=8
+2026-10-16T19:53:59.9230113Z RESHade_KEYBOARD_PASS case=home-wrapper-ignore-shortcuts bits=32 assertions=8
+2026-10-16T19:53:59.9396307Z RESHade_KEYBOARD_PASS case=home-wrapper-repeat bits=32 assertions=8
+2026-10-16T19:53:59.9560305Z RESHade_KEYBOARD_PASS case=fallback-home bits=32 assertions=9
+2026-10-16T19:53:59.9723575Z RESHade_KEYBOARD_PASS case=steam-direct bits=32 assertions=5
+2026-10-16T19:53:59.9889843Z RESHade_KEYBOARD_PASS case=steam-wrapper bits=32 assertions=5
+2026-10-16T19:54:02.6386943Z RESHade_KEYBOARD_PASS case=home-direct bits=64 assertions=7
+2026-10-16T19:54:02.6540960Z RESHade_KEYBOARD_FAIL case=home-wrapper reason=second Home failed to close ReShade
+2026-10-16T19:54:02.6686473Z RESHade_KEYBOARD_FAIL case=home-wrapper-no-steam reason=second Home failed to close ReShade
+2026-10-16T19:54:02.6833399Z RESHade_KEYBOARD_FAIL case=home-wrapper-active-widget reason=second Home failed to close ReShade
+2026-10-16T19:54:02.6979349Z RESHade_KEYBOARD_FAIL case=home-wrapper-ignore-shortcuts reason=second Home failed to close ReShade
+2026-10-16T19:54:02.7134257Z RESHade_KEYBOARD_FAIL case=home-wrapper-repeat reason=second Home failed to close ReShade
+2026-10-16T19:54:02.7281739Z RESHade_KEYBOARD_PASS case=fallback-home bits=64 assertions=9
+2026-10-16T19:54:02.7430336Z RESHade_KEYBOARD_FAIL case=steam-direct reason=Shift+Tab lacks native Host queue modifier state
+2026-10-16T19:54:02.7579006Z RESHade_KEYBOARD_FAIL case=steam-wrapper reason=Shift+Tab lacks native Host queue modifier state
+2026-10-16T19:54:03.8074713Z RESHade_KEYBOARD_PASS case=home-direct bits=64 assertions=7
+2026-10-16T19:54:03.8372180Z RESHade_KEYBOARD_PASS case=home-wrapper bits=64 assertions=7
+2026-10-16T19:54:03.8527727Z RESHade_KEYBOARD_PASS case=home-wrapper-no-steam bits=64 assertions=7
+2026-10-16T19:54:03.8677948Z RESHade_KEYBOARD_PASS case=home-wrapper-active-widget bits=64 assertions=8
+2026-10-16T19:54:03.8826349Z RESHade_KEYBOARD_PASS case=home-wrapper-ignore-shortcuts bits=64 assertions=8
+2026-10-16T19:54:03.8981272Z RESHade_KEYBOARD_PASS case=home-wrapper-repeat bits=64 assertions=8
+2026-10-16T19:54:03.9148392Z RESHade_KEYBOARD_PASS case=fallback-home bits=64 assertions=9
+2026-10-16T19:54:03.9318632Z RESHade_KEYBOARD_PASS case=steam-direct bits=64 assertions=5
+2026-10-16T19:54:03.9484115Z RESHade_KEYBOARD_PASS case=steam-wrapper bits=64 assertions=5
+2026-10-16T20:06:03.1519253Z PASS: host-owned cross-process child, ReShade native focus and capture handoffs, IME lifecycle, focus transitions, reset routing, resizing and teardown (64-bit)
+2026-10-16T20:06:06.1697577Z PASS: host-owned cross-process child, ReShade native focus and capture handoffs, IME lifecycle, focus transitions, reset routing, resizing and teardown (32-bit)

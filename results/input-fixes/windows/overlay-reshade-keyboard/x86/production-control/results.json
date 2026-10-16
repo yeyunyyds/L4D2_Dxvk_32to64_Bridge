@@ -1,0 +1,101 @@
+[
+    {
+        "architecture":  "x86",
+        "variant":  "production-control",
+        "case":  "home-direct",
+        "required":  true,
+        "expected_failure":  false,
+        "exit_code":  0,
+        "passed":  true,
+        "exe_sha256":  "477b46175b4904deda1f3757f315e49ae0f0348416801adc85f5e64e0a1f8c86",
+        "output":  "TRACE close bridge_calls=1 native_host=0 native_game=1 focus=game menu=0 capture=0\r\nRESHade_KEYBOARD_PASS case=home-direct bits=32 assertions=7\r\n"
+    },
+    {
+        "architecture":  "x86",
+        "variant":  "production-control",
+        "case":  "home-wrapper",
+        "required":  true,
+        "expected_failure":  true,
+        "exit_code":  1,
+        "passed":  true,
+        "exe_sha256":  "477b46175b4904deda1f3757f315e49ae0f0348416801adc85f5e64e0a1f8c86",
+        "output":  "RESHade_KEYBOARD_FAIL case=home-wrapper reason=second Home failed to close ReShade\r\nTRACE close bridge_calls=0 native_host=0 native_game=3 focus=game menu=1 capture=1\r\n"
+    },
+    {
+        "architecture":  "x86",
+        "variant":  "production-control",
+        "case":  "home-wrapper-no-steam",
+        "required":  true,
+        "expected_failure":  true,
+        "exit_code":  1,
+        "passed":  true,
+        "exe_sha256":  "477b46175b4904deda1f3757f315e49ae0f0348416801adc85f5e64e0a1f8c86",
+        "output":  "RESHade_KEYBOARD_FAIL case=home-wrapper-no-steam reason=second Home failed to close ReShade\r\nTRACE close bridge_calls=0 native_host=0 native_game=3 focus=game menu=1 capture=1\r\n"
+    },
+    {
+        "architecture":  "x86",
+        "variant":  "production-control",
+        "case":  "home-wrapper-active-widget",
+        "required":  true,
+        "expected_failure":  true,
+        "exit_code":  1,
+        "passed":  true,
+        "exe_sha256":  "477b46175b4904deda1f3757f315e49ae0f0348416801adc85f5e64e0a1f8c86",
+        "output":  "RESHade_KEYBOARD_FAIL case=home-wrapper-active-widget reason=second Home failed to close ReShade\r\nTRACE close bridge_calls=0 native_host=0 native_game=5 focus=game menu=1 capture=1\r\n"
+    },
+    {
+        "architecture":  "x86",
+        "variant":  "production-control",
+        "case":  "home-wrapper-ignore-shortcuts",
+        "required":  true,
+        "expected_failure":  true,
+        "exit_code":  1,
+        "passed":  true,
+        "exe_sha256":  "477b46175b4904deda1f3757f315e49ae0f0348416801adc85f5e64e0a1f8c86",
+        "output":  "RESHade_KEYBOARD_FAIL case=home-wrapper-ignore-shortcuts reason=second Home failed to close ReShade\r\nTRACE close bridge_calls=0 native_host=0 native_game=5 focus=game menu=1 capture=1\r\n"
+    },
+    {
+        "architecture":  "x86",
+        "variant":  "production-control",
+        "case":  "home-wrapper-repeat",
+        "required":  true,
+        "expected_failure":  true,
+        "exit_code":  1,
+        "passed":  true,
+        "exe_sha256":  "477b46175b4904deda1f3757f315e49ae0f0348416801adc85f5e64e0a1f8c86",
+        "output":  "RESHade_KEYBOARD_FAIL case=home-wrapper-repeat reason=second Home failed to close ReShade\r\nTRACE close bridge_calls=0 native_host=0 native_game=4 focus=game menu=1 capture=1\r\n"
+    },
+    {
+        "architecture":  "x86",
+        "variant":  "production-control",
+        "case":  "fallback-home",
+        "required":  true,
+        "expected_failure":  false,
+        "exit_code":  0,
+        "passed":  true,
+        "exe_sha256":  "477b46175b4904deda1f3757f315e49ae0f0348416801adc85f5e64e0a1f8c86",
+        "output":  "RESHade_KEYBOARD_PASS case=fallback-home bits=32 assertions=9\r\n"
+    },
+    {
+        "architecture":  "x86",
+        "variant":  "production-control",
+        "case":  "steam-direct",
+        "required":  false,
+        "expected_failure":  false,
+        "exit_code":  1,
+        "passed":  false,
+        "exe_sha256":  "477b46175b4904deda1f3757f315e49ae0f0348416801adc85f5e64e0a1f8c86",
+        "output":  "RESHade_KEYBOARD_FAIL case=steam-direct reason=Shift+Tab lacks native Host queue modifier state\r\nTRACE chord async_shift=0 host_queue_shift=0 native_host=0 native_game=1 observed=0 missing_modifier=1\r\n"
+    },
+    {
+        "architecture":  "x86",
+        "variant":  "production-control",
+        "case":  "steam-wrapper",
+        "required":  false,
+        "expected_failure":  false,
+        "exit_code":  1,
+        "passed":  false,
+        "exe_sha256":  "477b46175b4904deda1f3757f315e49ae0f0348416801adc85f5e64e0a1f8c86",
+        "output":  "RESHade_KEYBOARD_FAIL case=steam-wrapper reason=Shift+Tab lacks native Host queue modifier state\r\nTRACE chord async_shift=1 host_queue_shift=0 native_host=0 native_game=4 observed=0 missing_modifier=0\r\n"
+    }
+]
