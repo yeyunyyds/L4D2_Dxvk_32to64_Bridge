@@ -1,4 +1,2 @@
-*.patch -text whitespace=-blank-at-eol,-space-before-tab
-*.py text eol=lf
-*.ps1 text eol=lf
-*.yml text eol=lf
+# Preserve the exact upstream license bytes checked by the native source fixture.
+licenses/ReShade-BSD-3-Clause.txt -text
