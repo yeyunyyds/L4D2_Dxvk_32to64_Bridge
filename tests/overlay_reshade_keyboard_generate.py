@@ -85,9 +85,16 @@ def main():
         upstream[relative] = data.decode("utf-8").replace("\r\n", "\n")
     reshade, decision = upstream_extract(upstream)
     args.output.mkdir(parents=True, exist_ok=True)
+    # Native artifacts redistribute extracted upstream bodies: retain the full
+    # pinned BSD notice beside the model binary and in generated source headers.
+    license_bytes = (ROOT / "licenses/ReShade-BSD-3-Clause.txt").read_bytes()
+    if hashlib.sha256(license_bytes).hexdigest() != "237ded5b8344f820113efab1e65e91e1f159d9202c5b4856606a0590d3ffdab0":
+        raise ValueError("Pinned ReShade license differs")
+    notice = "/*\n" + license_bytes.decode("utf-8") + "*/\n"
+    (args.output / "ReShade-BSD-3-Clause.txt").write_bytes(license_bytes)
     outputs = {"production_overlay_reshade_keyboard.h": presenter,
-               "production_reshade_input.h": reshade,
-               "production_reshade_gui_keyboard.h": decision}
+               "production_reshade_input.h": notice + reshade,
+               "production_reshade_gui_keyboard.h": notice + decision}
     for name, text in outputs.items():
         (args.output / name).write_bytes(text.encode("utf-8"))
     manifest = {
@@ -95,6 +102,7 @@ def main():
         "presenter_methods": methods,
         "reshade_commit": UPSTREAM_COMMIT,
         "reshade_source_sha256": PINNED,
+        "reshade_license_sha256": hashlib.sha256(license_bytes).hexdigest(),
         "generated_sha256": {n: hashlib.sha256(t.encode()).hexdigest() for n, t in outputs.items()},
         "extraction": ["complete Presenter routing/capture/applyMode and recursive helpers",
                        "complete ReShade handle_windows_hook and key-state/next_frame methods",

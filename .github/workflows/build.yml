@@ -159,18 +159,18 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'DXVK extraction failed' }
       - name: Prepare pinned Bridge sources
         run: python scripts/prepare_bridge.py
-      - name: All correctness fixes against frozen main and negative controls
-        shell: powershell
-        run: ./scripts/test_correctness.ps1 -Stage all
-      - name: Presenter IME COM and TSF lifecycle
-        shell: powershell
-        run: ./scripts/test_steam_ime_native.ps1
       - name: Steam IME and ReShade 6.8 input with frozen production controls
         shell: powershell
         run: |
           python -m unittest discover -s tests -p test_fetch_reshade_keyboard_source.py
           if ($LASTEXITCODE -ne 0) { throw 'Pinned source fetch checks failed' }
           ./scripts/test_overlay_input_fixes.ps1
+      - name: All correctness fixes against frozen main and negative controls
+        shell: powershell
+        run: ./scripts/test_correctness.ps1 -Stage all
+      - name: Presenter IME COM and TSF lifecycle
+        shell: powershell
+        run: ./scripts/test_steam_ime_native.ps1
       - name: Full IPC v2 and integrated Steam native regressions
         shell: powershell
         run: |
