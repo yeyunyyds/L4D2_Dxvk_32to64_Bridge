@@ -1,0 +1,22 @@
+﻿[
+    {
+        "architecture":  "x64",
+        "variant":  "production-control",
+        "exit_code":  1,
+        "passed":  true,
+        "expected_failure":  true,
+        "exe_sha256":  "ADC6E44B7C6DD27804AEFFC83D831CD02DDA8FE928438082D233B3F23536094D",
+        "fixture_sha256":  "5AFAEF63B89E40C48CD78ED8FAE585DB8D7719AAA02FEE8F4CEE707C1879D20E",
+        "output":  "OVERLAY_KEYBOARD_ROUTE_FAIL: Win+Space down was swallowed or reposted\r\n"
+    },
+    {
+        "architecture":  "x64",
+        "variant":  "candidate",
+        "exit_code":  0,
+        "passed":  true,
+        "expected_failure":  false,
+        "exe_sha256":  "93EE2DCB4A838DEDF6A5E9F53EAFBAE5AB766072D44B559EF46FE2AE12E51CEF",
+        "fixture_sha256":  "5AFAEF63B89E40C48CD78ED8FAE585DB8D7719AAA02FEE8F4CEE707C1879D20E",
+        "output":  "OVERLAY_KEYBOARD_ROUTE_PASS bits=64 assertions=88\r\n"
+    }
+]

@@ -1,0 +1,20 @@
+﻿{
+    "architecture":  "x64",
+    "compiler":  "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX64\\x64\\cl.exe",
+    "compiler_version":  "19.29.30159.0 built by: cloudtest",
+    "vc_tools_version":  "14.29.30133",
+    "windows_sdk_version":  "10.0.26100.0\\",
+    "source":  "D:\\a\\L4D2_Dxvk_32to64_Bridge\\L4D2_Dxvk_32to64_Bridge\\.deps\\dxvk-remix",
+    "source_sha256":  {
+                          "D:\\a\\L4D2_Dxvk_32to64_Bridge\\L4D2_Dxvk_32to64_Bridge\\.deps\\dxvk-remix/bridge/src/util/overlay_input_diagnostics.h":  "4c1150a926c13d8d01db4b7b4b65f3383f19542b4434346f4506aa5546259232",
+                          "D:\\a\\L4D2_Dxvk_32to64_Bridge\\L4D2_Dxvk_32to64_Bridge/tests/overlay_presenter.cpp":  "916ae5cf7f53ffcc02f833f4be3d903308c1ca056517948d4019deba9bb4c9ca",
+                          "D:\\a\\L4D2_Dxvk_32to64_Bridge\\L4D2_Dxvk_32to64_Bridge\\scripts\\test_overlay_presenter.ps1":  "05f08dd52aee65389f2490659a2473b6165d646e8d620c56e32e81e9c61625c1",
+                          "D:\\a\\L4D2_Dxvk_32to64_Bridge\\L4D2_Dxvk_32to64_Bridge/tests/overlay_fake_reshade.def":  "c45ed8e4eca6445f6dfeee60fa8c209ee708a6962e43ac750b8c71a8d8810216",
+                          "D:\\a\\L4D2_Dxvk_32to64_Bridge\\L4D2_Dxvk_32to64_Bridge\\.deps\\dxvk-remix/bridge/src/util/steam_activity_diagnostics.h":  "3bb1eb5dc0de2ff86a69173242404a64b83534520cd256755901a6a3aedcde57",
+                          "D:\\a\\L4D2_Dxvk_32to64_Bridge\\L4D2_Dxvk_32to64_Bridge\\.deps\\dxvk-remix/bridge/src/server/overlay_presenter.h":  "06d07db137fcaf05b8a059e74212a09ef56780c5dbde359a892b852025cb9374",
+                          "D:\\a\\L4D2_Dxvk_32to64_Bridge\\L4D2_Dxvk_32to64_Bridge/tests/overlay_fake_reshade.cpp":  "6250f8bdcb73436d971bf59e73fce58540dfd83f9fc2f53f26eabf918c94fbcf",
+                          "D:\\a\\L4D2_Dxvk_32to64_Bridge\\L4D2_Dxvk_32to64_Bridge\\.deps\\dxvk-remix/bridge/src/server/steam_ime_native.h":  "da9df9aed0e09f443441fbaee062bdfe1f2dd0a9bada158a4a8cc8cd17deb4a5"
+                      },
+    "executable_sha256":  "84a508db2573b3fa8e7395f216cc9c62d9dbdb029be6b0b5876013cdfb893d2f",
+    "fake_dll_sha256":  "e313d52ac2e79f104fb54ceeadbeed726cb4ca68d47bada8bdc96d7f8888d8b9"
+}

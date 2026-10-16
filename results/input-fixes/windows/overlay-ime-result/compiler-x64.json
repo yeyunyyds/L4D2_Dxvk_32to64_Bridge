@@ -1,0 +1,10 @@
+﻿{
+    "architecture":  "x64",
+    "compiler":  "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX64\\x64\\cl.exe",
+    "file_version":  "19.29.30159.0 built by: cloudtest",
+    "requested_toolset":  "14.29",
+    "vc_tools_version":  "14.29.30133",
+    "windows_sdk_version":  "10.0.26100.0\\",
+    "validation_scope":  "extracted production windowProc and helpers; no HWNDs, input injection, UI or game",
+    "formal_ci_toolset_equivalence":  true
+}

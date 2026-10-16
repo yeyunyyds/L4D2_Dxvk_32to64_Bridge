@@ -1,0 +1,44 @@
+{
+  "source": "D:\\a\\L4D2_Dxvk_32to64_Bridge\\L4D2_Dxvk_32to64_Bridge\\.deps\\input-baseline\\bridge\\src\\server\\overlay_presenter.h",
+  "source_sha256": "90e2cd1c4fe9ba0b56996215aed3f568d01205f15011c8d01035ccb4d4e4c9b9",
+  "extracted_sha256": "6e6fde70af33e4669298735f7d99e36db329a26fada1222f78505dbef53a55f2",
+  "production_methods": [
+    "windowProc",
+    "foreground",
+    "resize",
+    "applyMode",
+    "warmupIme",
+    "steamCapture",
+    "setCapture"
+  ],
+  "member_declarations": "exact declarations, public in fixture struct",
+  "fixture_constructor": "initializes the real InputDiagnostics; state otherwise set directly",
+  "production_dependencies": {
+    "overlay_input_diagnostics.h": {
+      "source": "D:\\a\\L4D2_Dxvk_32to64_Bridge\\L4D2_Dxvk_32to64_Bridge\\.deps\\dxvk-remix\\bridge\\src\\util\\overlay_input_diagnostics.h",
+      "sha256": "4c1150a926c13d8d01db4b7b4b65f3383f19542b4434346f4506aa5546259232"
+    },
+    "runtime_observation.h": {
+      "source": "D:\\a\\L4D2_Dxvk_32to64_Bridge\\L4D2_Dxvk_32to64_Bridge\\.deps\\dxvk-remix\\bridge\\src\\util\\runtime_observation.h",
+      "sha256": "e2d36520636f0392b9cf0f302557f9f1263ed1e8b5981130dad9607184ee444f"
+    }
+  },
+  "adapters": [
+    "GetWindowLongPtrW maps the fixture HWND to its Presenter",
+    "DefWindowProcW records exact parameters and returns a sentinel"
+  ],
+  "real_apis": [
+    "GetLastError",
+    "SetLastError",
+    "GetTickCount64"
+  ],
+  "excluded": [
+    "HWND creation",
+    "Windows message dispatch",
+    "Steam hook chain",
+    "real IME composition or text delivery",
+    "input injection",
+    "game",
+    "FPS"
+  ]
+}

@@ -1,0 +1,15 @@
+﻿{
+    "architecture":  "x64",
+    "compiler":  "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX64\\x64\\cl.exe",
+    "file_version":  "19.29.30159.0 built by: cloudtest",
+    "vc_tools_version":  "14.29.30133",
+    "formal_ci_toolset_equivalence":  true,
+    "harness_sha256":  {
+                           "scripts/native_source.py":  "fd7204f29122ce9a17223aff6561168e1084218d20816c2e4ea1c45a23c40a1c",
+                           "tests/overlay_reshade_keyboard.cpp":  "7d8410eeec040d53136b5d34bf40d3873437f917182edc9c24376f0bc6e058f5",
+                           "scripts/test_overlay_reshade_keyboard.ps1":  "c1e285a6612a8be94c71b4ef5c5929ea832a1c622c118a9e08a4f40696f424e2",
+                           "scripts/fetch_reshade_keyboard_source.py":  "6dc8132f2e6b7f14519a6a187981becf15100a9dc1c9c4bffdf8a563af394950",
+                           "tests/overlay_reshade_keyboard_generate.py":  "670af1d1108408a638f002cead625e03bcac6f911beb3fc559b1c8c37fc36889"
+                       },
+    "scope":  "No-UI deterministic native/post queue model with extracted Presenter and ReShade 6.8.0 bodies"
+}

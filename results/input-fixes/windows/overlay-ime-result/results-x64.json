@@ -1,0 +1,24 @@
+﻿[
+    {
+        "architecture":  "x64",
+        "variant":  "pre-fix-control",
+        "exit_code":  1,
+        "passed":  true,
+        "expected_failure":  true,
+        "exe_sha256":  "DF5D384BE749FD5AD00C61AB92F90FAB9F74CA798061BF6EC0D72FF8A153EF3A",
+        "fixture_sha256":  "2B1E510E79DA2B44AF3DE779086EE7142BE3FDBDE5AFF0F0CA2753427EBDAAA5",
+        "generator_sha256":  "EB275C4BAB9157BF82B1BD32DE844084A69232C872F075F155B1E180B2F1F7B5",
+        "output":  "IME_RESULT_BOUNDARY_FAIL: native Steam result reached DefWindowProc assertions=1\r\n"
+    },
+    {
+        "architecture":  "x64",
+        "variant":  "candidate",
+        "exit_code":  0,
+        "passed":  true,
+        "expected_failure":  false,
+        "exe_sha256":  "1F64E75AE1EA9939801E4C681126A4734AAB60AD65B4EC58F3C5CDE9048E14FE",
+        "fixture_sha256":  "2B1E510E79DA2B44AF3DE779086EE7142BE3FDBDE5AFF0F0CA2753427EBDAAA5",
+        "generator_sha256":  "EB275C4BAB9157BF82B1BD32DE844084A69232C872F075F155B1E180B2F1F7B5",
+        "output":  "IME_RESULT_BOUNDARY_PASS assertions=280 bits=64 scope=production-wndproc-boundary-no-UI-no-Steam\r\n"
+    }
+]

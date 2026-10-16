@@ -1,0 +1,24 @@
+{
+  "source": "D:\\a\\L4D2_Dxvk_32to64_Bridge\\L4D2_Dxvk_32to64_Bridge\\.deps\\input-baseline\\bridge\\src\\server\\overlay_presenter.h",
+  "source_sha256": "90e2cd1c4fe9ba0b56996215aed3f568d01205f15011c8d01035ccb4d4e4c9b9",
+  "extracted_sha256": "411ee6abef5abe08c34bb7dad1c2a54227552c84c219e21f8a4b654dcf3463d9",
+  "production_methods": [
+    "keyHook",
+    "foreground"
+  ],
+  "member_declarations": "exact production declarations; public in fixture struct",
+  "adapters": [
+    "Win32 foreground, focus, owner and parent queries",
+    "Win32 keyboard state",
+    "CallNextHookEx and PostMessage routing recorder",
+    "capture transition recorder"
+  ],
+  "excluded": [
+    "actual Windows hook chain",
+    "real OS input queue",
+    "Steam",
+    "IME composition",
+    "game",
+    "FPS"
+  ]
+}

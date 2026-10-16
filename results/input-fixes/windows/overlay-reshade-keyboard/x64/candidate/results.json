@@ -1,0 +1,101 @@
+﻿[
+    {
+        "architecture":  "x64",
+        "variant":  "candidate",
+        "case":  "home-direct",
+        "required":  true,
+        "expected_failure":  false,
+        "exit_code":  0,
+        "passed":  true,
+        "exe_sha256":  "3e0891ce3709949908381ecab025dfbbe454e4260572d19f466338e38d1fedd0",
+        "output":  "TRACE close bridge_calls=1 native_host=2 native_game=1 focus=game menu=0 capture=0\r\nRESHade_KEYBOARD_PASS case=home-direct bits=64 assertions=7\r\n"
+    },
+    {
+        "architecture":  "x64",
+        "variant":  "candidate",
+        "case":  "home-wrapper",
+        "required":  true,
+        "expected_failure":  false,
+        "exit_code":  0,
+        "passed":  true,
+        "exe_sha256":  "3e0891ce3709949908381ecab025dfbbe454e4260572d19f466338e38d1fedd0",
+        "output":  "TRACE close bridge_calls=0 native_host=2 native_game=1 focus=game menu=0 capture=0\r\nRESHade_KEYBOARD_PASS case=home-wrapper bits=64 assertions=7\r\n"
+    },
+    {
+        "architecture":  "x64",
+        "variant":  "candidate",
+        "case":  "home-wrapper-no-steam",
+        "required":  true,
+        "expected_failure":  false,
+        "exit_code":  0,
+        "passed":  true,
+        "exe_sha256":  "3e0891ce3709949908381ecab025dfbbe454e4260572d19f466338e38d1fedd0",
+        "output":  "TRACE close bridge_calls=0 native_host=2 native_game=1 focus=game menu=0 capture=0\r\nRESHade_KEYBOARD_PASS case=home-wrapper-no-steam bits=64 assertions=7\r\n"
+    },
+    {
+        "architecture":  "x64",
+        "variant":  "candidate",
+        "case":  "home-wrapper-active-widget",
+        "required":  true,
+        "expected_failure":  false,
+        "exit_code":  0,
+        "passed":  true,
+        "exe_sha256":  "3e0891ce3709949908381ecab025dfbbe454e4260572d19f466338e38d1fedd0",
+        "output":  "TRACE close bridge_calls=0 native_host=4 native_game=1 focus=game menu=0 capture=0\r\nRESHade_KEYBOARD_PASS case=home-wrapper-active-widget bits=64 assertions=8\r\n"
+    },
+    {
+        "architecture":  "x64",
+        "variant":  "candidate",
+        "case":  "home-wrapper-ignore-shortcuts",
+        "required":  true,
+        "expected_failure":  false,
+        "exit_code":  0,
+        "passed":  true,
+        "exe_sha256":  "3e0891ce3709949908381ecab025dfbbe454e4260572d19f466338e38d1fedd0",
+        "output":  "TRACE close bridge_calls=0 native_host=4 native_game=1 focus=game menu=0 capture=0\r\nRESHade_KEYBOARD_PASS case=home-wrapper-ignore-shortcuts bits=64 assertions=8\r\n"
+    },
+    {
+        "architecture":  "x64",
+        "variant":  "candidate",
+        "case":  "home-wrapper-repeat",
+        "required":  true,
+        "expected_failure":  false,
+        "exit_code":  0,
+        "passed":  true,
+        "exe_sha256":  "3e0891ce3709949908381ecab025dfbbe454e4260572d19f466338e38d1fedd0",
+        "output":  "TRACE close bridge_calls=0 native_host=3 native_game=1 focus=game menu=0 capture=0\r\nRESHade_KEYBOARD_PASS case=home-wrapper-repeat bits=64 assertions=8\r\n"
+    },
+    {
+        "architecture":  "x64",
+        "variant":  "candidate",
+        "case":  "fallback-home",
+        "required":  true,
+        "expected_failure":  false,
+        "exit_code":  0,
+        "passed":  true,
+        "exe_sha256":  "3e0891ce3709949908381ecab025dfbbe454e4260572d19f466338e38d1fedd0",
+        "output":  "RESHade_KEYBOARD_PASS case=fallback-home bits=64 assertions=9\r\n"
+    },
+    {
+        "architecture":  "x64",
+        "variant":  "candidate",
+        "case":  "steam-direct",
+        "required":  false,
+        "expected_failure":  false,
+        "exit_code":  0,
+        "passed":  true,
+        "exe_sha256":  "3e0891ce3709949908381ecab025dfbbe454e4260572d19f466338e38d1fedd0",
+        "output":  "TRACE chord async_shift=1 host_queue_shift=1 native_host=3 native_game=1 observed=1 missing_modifier=0\r\nRESHade_KEYBOARD_PASS case=steam-direct bits=64 assertions=5\r\n"
+    },
+    {
+        "architecture":  "x64",
+        "variant":  "candidate",
+        "case":  "steam-wrapper",
+        "required":  false,
+        "expected_failure":  false,
+        "exit_code":  0,
+        "passed":  true,
+        "exe_sha256":  "3e0891ce3709949908381ecab025dfbbe454e4260572d19f466338e38d1fedd0",
+        "output":  "TRACE chord async_shift=1 host_queue_shift=1 native_host=3 native_game=1 observed=1 missing_modifier=0\r\nRESHade_KEYBOARD_PASS case=steam-wrapper bits=64 assertions=5\r\n"
+    }
+]

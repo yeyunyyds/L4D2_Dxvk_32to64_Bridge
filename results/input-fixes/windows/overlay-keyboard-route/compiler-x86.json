@@ -1,0 +1,9 @@
+﻿{
+    "architecture":  "x86",
+    "compiler":  "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\VC\\Tools\\MSVC\\14.29.30133\\bin\\HostX86\\x86\\cl.exe",
+    "file_version":  "19.29.30159.0 built by: cloudtest",
+    "vc_tools_version":  "14.29.30133",
+    "windows_sdk_version":  "10.0.26100.0\\",
+    "validation_scope":  "extracted production hook with deterministic Win32 adapters; no input injection or UI",
+    "formal_ci_toolset_equivalence":  true
+}
