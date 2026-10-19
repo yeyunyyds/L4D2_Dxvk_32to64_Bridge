@@ -1,0 +1,30 @@
+# Synthetic native test: not a game crash, and not an execution of the supplied StudioRender DLL.
+L4D2_BRIDGE_DIAGNOSTIC timestamp_utc=2026-10-19T08:12:28.054Z side=client pid=6172 tid=5492 session=unavailable studio_model event=begin sequence=1 depth=1 model_tid=5492 model="models/fixture/outer.mdl" name_status=available name_source=studiohdr.name[64] lod=unknown context=0x0 studiohdr=0x12ffc20 vtx=0x0 hardware=0x0
+L4D2_BRIDGE_DIAGNOSTIC timestamp_utc=2026-10-19T08:12:28.054Z side=client pid=6172 tid=5492 session=unavailable studio_model event=begin sequence=2 depth=2 model_tid=5492 model="models/fixture/inner.mdl" name_status=available name_source=studiohdr.name[64] lod=unknown context=0x0 studiohdr=0x12ffc70 vtx=0x0 hardware=0x0
+===== L4D2_BRIDGE_EXCEPTION_BEGIN =====
+exception_code_snapshot=0xc0000005
+timestamp_utc=2026-10-19T08:12:28.054Z side=client pid=6172 tid=5492 session=unavailable
+process_path=D:\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\studio-model-native\studio-test.exe
+exception_code=0xc0000005 exception_name=EXCEPTION_ACCESS_VIOLATION exception_flags=0x0
+exception_address=0x557ce6
+exception address=0x557ce6 module=studio-test.exe module_base=0x550000 module_offset=0x7ce6 module_path=\Device\HarddiskVolume5\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\studio-model-native\studio-test.exe
+access_type=read access_raw=0 target_address=0x1
+current_command=unavailable reason=no_active_bridge_command_on_faulting_thread
+client_call=unavailable client_call_this=0x0
+studio_model kind=active available=1 scope=faulting_thread model_tid=5492 sequence=2 depth=2 model="models/fixture/inner.mdl" name_status=available name_source=studiohdr.name[64] lod=unknown context=0x0 studiohdr=0x12ffc70 vtx=0x0 hardware=0x0
+studio_model kind=recent_completed available=0 scope=faulting_thread
+history=sent scope=faulting_thread count=0 newest_first=1
+history=received scope=faulting_thread count=0 newest_first=1
+architecture=x86
+EIP=0x00557ce6 ESP=0x012ff438 EBP=0x012ffd38
+EAX=0x014e9c98 EBX=0x00000000 ECX=0x00000000 EDX=0x00000000 ESI=0x012ffd64 EDI=0x00000104
+stack_kind=fault_context_x86_frame_pointer_best_effort
+frame0 address=0x557ce6 module=studio-test.exe module_base=0x550000 module_offset=0x7ce6 module_path=\Device\HarddiskVolume5\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\studio-model-native\studio-test.exe
+frame1 address=0x55e0ec module=studio-test.exe module_base=0x550000 module_offset=0xe0ec module_path=\Device\HarddiskVolume5\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\studio-model-native\studio-test.exe
+frame2 address=0x562f85 module=studio-test.exe module_base=0x550000 module_offset=0x12f85 module_path=\Device\HarddiskVolume5\a\L4D2_Dxvk_32to64_Bridge\L4D2_Dxvk_32to64_Bridge\work\studio-model-native\studio-test.exe
+frame3 address=0x75c767f9 module=kernel32.dll module_base=0x75c60000 module_offset=0x167f9 module_path=\Device\HarddiskVolume4\Windows\SysWOW64\kernel32.dll
+frame4 address=0x77227fed module=ntdll.dll module_base=0x771c0000 module_offset=0x67fed module_path=\Device\HarddiskVolume4\Windows\SysWOW64\ntdll.dll
+frame5 address=0x77227fbb module=ntdll.dll module_base=0x771c0000 module_offset=0x67fbb module_path=\Device\HarddiskVolume4\Windows\SysWOW64\ntdll.dll
+stderr_report=raw_write
+termination=TerminateProcess termination_exit_code=0xe04c3441
+===== L4D2_BRIDGE_EXCEPTION_END =====

@@ -2,9 +2,13 @@
 
 本功能只做归因，不修复或跳过模型崩溃。独立分支：`codex/studio-model-diagnostics`，基于 main `cafc0442446c502a0de0ebb52d5e73ccaae67516`（1.3.2）。不修改 IPC、VB/IB、Shadow、PageBlock、DXVK 或模型计算逻辑。
 
+[下载已验证的三件套测试包](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/raw/8ad1af3265b1761789114efd50c419de9016dd21/ldb-studio-diagnostics-v1.3.2-7b8842a6-r39220989490.zip) · [安装与回退说明](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/blob/8ad1af3265b1761789114efd50c419de9016dd21/README-STUDIO-TEST.md) · [Draft PR #15](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/pull/15)
+
+测试 ZIP SHA-256：`5e4cda54d5e0686dcd82aac87e05f50a09c7b9041e151aecbe02945cde52fcd4`。下载分支提交 `8ad1af3265b1761789114efd50c419de9016dd21`；仅新增本次 ZIP、校验值和说明，未覆盖既有构件。
+
 ## 使用
 
-退出游戏，备份原来的配套 Bridge 文件和 `bridge.conf`，安装本分支编译的 Client 与配套 Host。保留原有 DXVK、ReShade、retention DB 和其他配置。**不要用本功能附带或替换游戏的 StudioRender DLL**；构建包不包含 Valve 引擎文件。
+退出游戏，备份原来的配套 Bridge 文件和 `bridge.conf`，安装本分支编译的 Client 与配套 Host：`bin/dxvk_d3d9.dll`、`bin/.l4d2bridge/L4D2Bridge32.exe`、`bin/.l4d2bridge/L4D2Bridge64.exe`。保留原有 DXVK、ReShade、retention DB 和其他配置。**不要用本功能附带或替换游戏的 StudioRender DLL**；构建包不包含 Valve 引擎文件。
 
 在原有 `bridge.conf` 中增加或修改：
 
@@ -22,7 +26,7 @@ studio_model status=installed entry=0x69cd0 slot=0x7f064 sha256=03964dedcf8b7f4e
 - `disabled reason=identity_or_live_code_or_slot_verification_failed`：文件或加载代码不匹配，或者槽已被其他 Hook 修改；没有强行安装。不要自行替换偏移以绕过验证。
 - `event=begin/end`：同一线程同一 `sequence` 的模型构建开始/正常结束。访问违规不会被此功能捕获后继续运行，也不会伪造结束事件。
 
-复现后保留 `bridge32.log` 与现有日志目录 `crash_reports` 下的 `bridge-exception-*.txt`。优先看报告中的 `studio_model kind=active ... scope=faulting_thread`。`recent_completed` 只是该线程最近一次正常完成且名称有效的模型，**不能当作正在崩溃的模型**。
+复现后保留 `bridge32.log` 与现有日志目录 `crash_reports` 下的 `bridge-exception-*.txt`。优先看报告中的 `studio_model kind=active ... scope=faulting_thread`。`recent_completed` 只是该线程最近一次正常返回且名称有效的模型，**不能当作正在崩溃的模型**。
 
 关闭时设为 `False` 并重启。默认值就是 `False`。
 
@@ -82,7 +86,7 @@ python scripts/inspect_studiorender.py <实际studiorender.dll> --require-known 
 1. `RemixAttach` 只读取开关。哈希、模块探测、页保护和 Hook 安装在随后 `Direct3DCreate9/Ex`、`CreateDevice/Ex` 入口执行，不在新加的 DllMain 路径执行。没有 Present/Draw/Lock 轮询。
 2. 开启后，先验证完整磁盘文件 SHA-256，再对加载后的整个 `.text` 与该文件比较，正确应用 PE `HIGHLOW` 基址重定位，并核对实际槽仍指向已审计入口。比较用临时 `VirtualAlloc`，结束 `MEM_RELEASE`；不保留整段引擎代码副本。
 3. 对齐的 32 位槽通过 `InterlockedCompareExchangePointer` 替换，保留已经取到旧函数指针的在途调用；不改写机器指令、不暂停线程、不覆盖第三方已占用槽。记录“安装之后经此虚表槽进入”的模型。安装之前已进入或自行缓存原函数指针的外部调用不在覆盖保证内。
-4. 回调使用经验证的 x86 fastcall 适配 thiscall：ECX 为对象，忽略 EDX，原样转发三个栈参数、bool 返回和异常。保留 Win32 LastError。隔离的 `__try/__finally` 只在异常展开时清除本层 TLS，不吞异常、不改数据、不改变失败返回。异常搜索阶段尚未展开，未处理 AV 的报告仍能读取活动模型；若引擎原有外层 SEH 自行处理异常，展开后也不会留下悬空 TLS。该清理分支不写日志、不分配、不调用 API。
+4. 回调使用经验证的 x86 fastcall 适配 thiscall：ECX 为对象，忽略 EDX，原样转发三个栈参数、bool 返回和异常。保留 Win32 LastError。隔离的 `__try/__finally` 只在异常展开时清除本层 TLS，不吞异常、不改数据、不改变失败返回。异常搜索阶段尚未展开，未处理 AV 的报告仍能读取活动模型；若引擎原有外层 SEH 自行处理异常，展开后也不会留下悬空 TLS。该清理分支不写日志、不分配、不调用 API。包装分开保存返回值与正常返回标记；返回 False 也必须产出正常 end，只有原函数没有返回的异常展开才撤销活动快照。
 5. 每个参与线程首次健康进入时才分配一个小 TLS 状态，包含独立的活动快照和最近正常返回快照。每层 Scope 在自身栈上保留用于嵌套恢复的数据；**异常 getter 只读取 TLS 自有活动副本，不解引用 Scope 栈指针**。进入保存前一层，返回或异常展开时恢复。TLS 析构先清空指针，再释放存储。
 6. 入口用一次 `ReadProcessMemory` 复制 80 字节头前缀，校验 IDST 和最小长度，最多复制 64 字节原名，转义控制字节/引号，明确标记空名、不可读、非法头或截断。不在日志中解引用传入的 context/vtx/hardware 指针。
 7. 异常报告只调用读取已发布 TLS 的 getter；不会调用分配 TLS 的函数，不读引擎资源、不做哈希、不加载模块、不获取新的锁。报告中的名称来自有界副本，输出另设 256 字节上限，即使副本终止符被破坏也不作无界字符串读取。未处理 AV 在异常搜索阶段进入现有报告器，不依靠吞掉 AV 或继续执行来保存上下文。
@@ -107,7 +111,24 @@ Windows 原生测试入口：`scripts/test_studio_model_diagnostics.ps1`。测�
 
 关闭时模型虚表保持原样，不分配模型 TLS、不写模型日志、不做哈希和内存扫描；只有既有少量 D3D/Device 创建入口的开关判断，以及异常发生后读取空 TLS。TLS 增量是每线程少量标量，未开启线程不分配快照。开启时每个模型增加有界头复制、快照维护及两条事件格式化/WriteFile，不做逐顶点日志，也不逐事件 FlushFileBuffers；现有崩溃路径仍强制刷盘。加载期磁盘较慢或模型数量很多时诊断可能增加加载时间，不能宣称开启后零 FPS 成本。
 
-本分支的完整 Windows 构建、原生测试结果及实测微基准数值在 CI 完成后补入。实际游戏的模型定位效果和帧时间仍需用户实机验证。
+最终生产源码提交：`a848177e937e9b3d767af3c971062ea9b803295d`。构建版本：`l4d2-1.3.2+7b8842a668f4c50a`。
+
+[完整 Windows CI 39220989490](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/actions/runs/39220989490) 已通过：x86 Client、x86 Host、x64 Host 均为 Release 编译、版本匹配；模型追踪的 9 个合成 AV 场景、True/False 正常返回事件配对、嵌套/8 线程隔离、外层 SEH 恢复、边界字符串及实际文件/加载代码/槽校验均通过。既有完整回归也通过，包括 360 组跨进程 IPC、上传与回复安全、资源生命周期、Reset、VB/IB、PageBlock、诊断隔离、Steam 及异常归因。
+
+CI x86 原生基准结果（7 轮中位数，每批 4000 次；单位为 **微秒/模型调用**）：
+
+| 路径 | 中位数 |
+| --- | ---: |
+| 未 Hook 的合成空目标 | 0.007800 |
+| 关闭诊断、模型路径未 Hook | 0.007125 |
+| 开启，采集并格式化但没有有效日志句柄 | 6.307025 |
+| 开启，并写实际日志文件（两条事件，不逐条强制刷盘） | 10.043975 |
+
+这次计时覆盖了完整的 begin/end 和 TLS 恢复，不以丢失结束事件换取较低计时。实际文件输出共 19,088,000 字节。开启完整记录相对空目标增加约 **10.04 微秒/次模型构建**；这里的基线没有执行真实引擎网格构建，不能据此计算引擎开销比例，更不能转换为 FPS 损失。两条关闭路径间的微小差值属于这个短基准的噪声，不是性能提升。少量 D3D 创建入口的关闭判断、首次 TLS 分配及一次性文件/代码验证没有作为独立项目测量；不能宣称绝对零开销。
+
+没有逐帧或周期内存扫描；正常绘制已加载模型不经过本 Hook。频繁新建/重建模型时，复制、格式化和文件写入会增加工作量，慢磁盘下还可能增加加载等待。实际游戏的模型定位效果、加载时间、Avg FPS、1% Low、0.1% Low 和帧时间仍需用户实机验证。
+
+可核验材料：[验证记录](studio-model-evidence/validation.json)、[静态二进制证据](studio-model-evidence/binary-audit.json)、[真实生成的合成正常事件](studio-model-evidence/synthetic-normal-events.log)、[真实生成的合成嵌套异常日志](studio-model-evidence/synthetic-nested-exception.log)。原始完整构件在上述 CI；公开证据和构建包均不包含 Valve DLL。最后的报告/证据提交不改变这份已构建的生产补丁。
 
 ## 示例
 
