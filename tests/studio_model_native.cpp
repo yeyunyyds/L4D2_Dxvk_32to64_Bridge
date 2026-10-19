@@ -15,12 +15,20 @@
 #include <thread>
 #include <vector>
 #include <algorithm>
+#include <new>
 
 #include "exception_diagnostics.h"
 #include "studio_model_context.h"
 #include "studio_model_diagnostics.h"
 
 namespace fs = std::filesystem;
+thread_local bool forbidCppAllocation = false;
+void* operator new(size_t bytes) {
+  if (forbidCppAllocation) { abort(); }
+  if (void* memory = malloc(bytes ? bytes : 1)) { return memory; }
+  throw std::bad_alloc();
+}
+void operator delete(void* memory) noexcept { free(memory); }
 struct Header { uint32_t id = 0x54534449; int32_t version = 48; uint32_t checksum = 7; char name[64] {}; int32_t length = 80; };
 Header header(const char* name) { Header result; strcpy_s(result.name, name); return result; }
 std::string read(const fs::path& path) {
@@ -30,7 +38,11 @@ std::string read(const fs::path& path) {
 void contains(const std::string& text, const char* token) {
   if (text.find(token) == std::string::npos) { fprintf(stderr, "Missing %s\n%s\n", token, text.c_str()); abort(); }
 }
-__declspec(noinline) int fault() { return *reinterpret_cast<volatile const int*>(1); }
+__declspec(noinline) int fault() {
+  // Any lazy C++ allocation by the fault-thread context/report path aborts the child.
+  forbidCppAllocation = true;
+  return *reinterpret_cast<volatile const int*>(1);
+}
 using Function = studio_model::LoadModel;
 struct Target;
 __declspec(noinline) bool invoke(Target*, void*, void*, void*);
@@ -40,6 +52,7 @@ struct Target {
   bool nested = false;
   bool throws = false;
   bool expectTrace = false;
+  bool faults = false;
   virtual bool load(void* hdr, void* vtx, void* hardware) {
     ++calls;
     assert(vtx == reinterpret_cast<void*>(0x1234) && hardware == reinterpret_cast<void*>(0x5678));
@@ -56,6 +69,7 @@ struct Target {
       assert(studio_model::active() == previous);
     }
     if (throws) { throw std::runtime_error("original engine exception"); }
+    if (faults) { volatile int value = fault(); (void)value; }
     SetLastError(0x4321);
     return result;
   }
@@ -63,6 +77,15 @@ struct Target {
 __declspec(noinline) bool invoke(Target* target, void* hdr, void* vtx, void* hardware) {
   const auto slot = *reinterpret_cast<void***>(target);
   return reinterpret_cast<Function>(slot[0])(target, hdr, vtx, hardware);
+}
+bool catchOriginalAv(Target* target, Header* hdr) {
+  __try {
+    invoke(target, hdr, reinterpret_cast<void*>(0x1234), reinterpret_cast<void*>(0x5678));
+    return false;
+  } __except (GetExceptionCode() == EXCEPTION_ACCESS_VIOLATION ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH) {
+    forbidCppAllocation = false;
+    return true;
+  }
 }
 void** privateTable(Target& target) {
   auto** table = static_cast<void**>(VirtualAlloc(nullptr, 4096, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE));
@@ -145,6 +168,14 @@ void semantics() {
   try { invoke(&target, &outer, reinterpret_cast<void*>(0x1234), reinterpret_cast<void*>(0x5678)); abort(); }
   catch (const std::runtime_error& error) { assert(strcmp(error.what(), "original engine exception") == 0); }
   assert(!studio_model::active());
+  target.throws = false; target.faults = true;
+  {
+    studio_model::Scope outerScope(nullptr, &outer, nullptr, nullptr);
+    const auto* previous = studio_model::active();
+    assert(catchOriginalAv(&target, &inner));
+    assert(studio_model::active() == previous);
+  }
+  assert(!studio_model::active());
   setSlot(table, reinterpret_cast<void*>(original)); assert(VirtualFree(table, 0, MEM_RELEASE));
   puts("studio semantics: nested, threads, bounded names, x86 ABI, bool return, LastError and C++ exceptions passed");
 }
@@ -159,6 +190,13 @@ void childFault(const std::wstring& mode, const fs::path& directory) {
   bridge_exception::install();
   auto outer = header("models/fixture/outer.mdl");
   auto inner = header("models/fixture/inner.mdl");
+  if (mode == L"hook") {
+    Target target; auto** table = privateTable(target);
+    assert(studio_model::testInstallSlot(table, reinterpret_cast<Function>(table[0])));
+    target.faults = true; target.expectTrace = true;
+    invoke(&target, &inner, reinterpret_cast<void*>(0x1234), reinterpret_cast<void*>(0x5678));
+    abort();
+  }
   if (mode == L"disabled") { volatile int value = fault(); (void)value; }
   if (mode == L"recent") { { studio_model::Scope a(nullptr, &outer, nullptr, nullptr); } volatile int value = fault(); (void)value; }
   if (mode == L"worker") {
@@ -182,7 +220,7 @@ void childFault(const std::wstring& mode, const fs::path& directory) {
 }
 void faults() {
   wchar_t exe[4096] {}; assert(GetModuleFileNameW(nullptr, exe, _countof(exe)));
-  for (const auto* mode : {L"active", L"nested", L"freed", L"unreadable", L"recent", L"worker", L"disabled"}) {
+  for (const auto* mode : {L"active", L"nested", L"freed", L"unreadable", L"recent", L"worker", L"disabled", L"hook"}) {
     const auto directory = fs::absolute(fs::path("cases") / mode);
     fs::remove_all(directory); fs::create_directories(directory);
     std::wstring command = L"\"" + std::wstring(exe) + L"\" crash " + mode + L" \"" + directory.wstring() + L"\"";
@@ -203,7 +241,7 @@ void faults() {
     if (std::wstring(mode) == L"disabled" || std::wstring(mode) == L"recent") {
       contains(text, "studio_model kind=active available=0");
     } else { contains(text, "studio_model kind=active available=1"); }
-    if (std::wstring(mode) == L"nested" || std::wstring(mode) == L"worker" || std::wstring(mode) == L"freed") {
+    if (std::wstring(mode) == L"nested" || std::wstring(mode) == L"worker" || std::wstring(mode) == L"freed" || std::wstring(mode) == L"hook") {
       contains(report, "model=\"models/fixture/inner.mdl\" name_status=available");
     }
     if (std::wstring(mode) == L"nested") { contains(text, "depth=2"); }

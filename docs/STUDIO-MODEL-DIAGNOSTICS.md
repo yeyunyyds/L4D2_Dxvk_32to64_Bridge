@@ -82,7 +82,7 @@ python scripts/inspect_studiorender.py <实际studiorender.dll> --require-known 
 1. `RemixAttach` 只读取开关。哈希、模块探测、页保护和 Hook 安装在随后 `Direct3DCreate9/Ex`、`CreateDevice/Ex` 入口执行，不在新加的 DllMain 路径执行。没有 Present/Draw/Lock 轮询。
 2. 开启后，先验证完整磁盘文件 SHA-256，再对加载后的整个 `.text` 与该文件比较，正确应用 PE `HIGHLOW` 基址重定位，并核对实际槽仍指向已审计入口。比较用临时 `VirtualAlloc`，结束 `MEM_RELEASE`；不保留整段引擎代码副本。
 3. 对齐的 32 位槽通过 `InterlockedCompareExchangePointer` 替换，保留已经取到旧函数指针的在途调用；不改写机器指令、不暂停线程、不覆盖第三方已占用槽。记录“安装之后经此虚表槽进入”的模型。安装之前已进入或自行缓存原函数指针的外部调用不在覆盖保证内。
-4. 回调使用经验证的 x86 fastcall 适配 thiscall：ECX 为对象，忽略 EDX，原样转发三个栈参数、bool 返回和异常。保留 Win32 LastError。没有捕获引擎异常、改数据或改变失败返回。
+4. 回调使用经验证的 x86 fastcall 适配 thiscall：ECX 为对象，忽略 EDX，原样转发三个栈参数、bool 返回和异常。保留 Win32 LastError。隔离的 `__try/__finally` 只在异常展开时清除本层 TLS，不吞异常、不改数据、不改变失败返回。异常搜索阶段尚未展开，未处理 AV 的报告仍能读取活动模型；若引擎原有外层 SEH 自行处理异常，展开后也不会留下悬空 TLS。该清理分支不写日志、不分配、不调用 API。
 5. 每个参与线程首次健康进入时才分配一个小 TLS 状态；每层 Scope 的快照在该调用的栈上。进入保存前一层，返回/正常 C++ 展开时恢复。TLS 析构先清空指针，再释放存储。
 6. 入口用一次 `ReadProcessMemory` 复制 80 字节头前缀，校验 IDST 和最小长度，最多复制 64 字节原名，转义控制字节/引号，明确标记空名、不可读、非法头或截断。不在日志中解引用传入的 context/vtx/hardware 指针。
 7. 异常报告只调用读取已发布 TLS 的 getter；不会调用分配 TLS 的函数，不读引擎资源、不做哈希、不加载模块、不获取新的锁。报告中的名称来自有界副本。未处理 AV 在异常搜索阶段进入现有报告器，不依靠吞掉 AV 或继续执行来保存上下文。
@@ -101,7 +101,7 @@ python scripts/inspect_studiorender.py <实际studiorender.dll> --require-known 
 
 Windows 原生测试入口：`scripts/test_studio_model_diagnostics.ps1`。测试从固定公开来源下载与用户文件哈希完全一致的 DLL；只以 `DONT_RESOLVE_DLL_REFERENCES` 映射，不调用它的 DllMain、导出或引擎函数，不将该 DLL 纳入构建包/测试结果构件。
 
-测试使用真实生产跟踪、安装、校验和异常报告代码，覆盖嵌套、8 线程隔离、读取失败/截断/转义、C++ 展开、x86 thiscall 参数与栈平衡、bool 返回、LastError、原函数抛异常、已释放模型头、故障线程与正常主线程分离、关闭状态、代码/哈希/槽不匹配拒绝以及一次安装。异常测试产生的是合成 AV，不是本图实机复现。
+测试使用真实生产跟踪、安装、校验和异常报告代码，覆盖嵌套、8 线程隔离、读取失败/截断/转义、C++ 展开、x86 thiscall 参数与栈平衡、bool 返回、LastError、原函数抛异常、已释放模型头、故障线程与正常主线程分离、关闭状态、代码/哈希/槽不匹配拒绝以及一次安装。特别测试原函数 AV 由外层原有 SEH 接住后的 TLS 恢复，以及未处理 AV 穿过实际 Hook 包装仍能归因。故障前禁止该线程 C++ `new`，懒分配会导致用例失败；配合源码检查确认新增报告分支只读快照。异常测试产生的是合成 AV，不是本图实机复现。
 
 性能用批次外层 QPC：每批 4000 次模型级调用，重复 7 轮，比较未 Hook、关闭、开启无输出句柄、开启实际文件写入。没有逐调用计时。它衡量“每次模型构建新增诊断工作”，不能换算成实际 Avg FPS、1% Low 或 0.1% Low。
 
