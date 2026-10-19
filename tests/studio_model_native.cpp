@@ -53,6 +53,7 @@ struct Target {
   bool throws = false;
   bool expectTrace = false;
   bool faults = false;
+  uint64_t returnedSequence = 0;
   virtual bool load(void* hdr, void* vtx, void* hardware) {
     ++calls;
     assert(vtx == reinterpret_cast<void*>(0x1234) && hardware == reinterpret_cast<void*>(0x5678));
@@ -70,6 +71,7 @@ struct Target {
     }
     if (throws) { throw std::runtime_error("original engine exception"); }
     if (faults) { volatile int value = fault(); (void)value; }
+    if (expectTrace) { returnedSequence = studio_model::active()->sequence; }
     SetLastError(0x4321);
     return result;
   }
@@ -157,10 +159,27 @@ void semantics() {
   const auto original = reinterpret_cast<Function>(table[0]);
   assert(!studio_model::testInstallSlot(reinterpret_cast<void**>(reinterpret_cast<char*>(table) + 1), original));
   assert(studio_model::testInstallSlot(table, original)); target.expectTrace = true;
+  const auto log = CreateFileW(L"normal-hook.log", GENERIC_WRITE, FILE_SHARE_READ, nullptr,
+                              CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr); assert(log != INVALID_HANDLE_VALUE);
+  bridge_exception::setLogFile(log);
+  assert(invoke(&target, &outer, reinterpret_cast<void*>(0x1234), reinterpret_cast<void*>(0x5678)));
+  target.result = false;
+  assert(!invoke(&target, &inner, reinterpret_cast<void*>(0x1234), reinterpret_cast<void*>(0x5678)));
+  bridge_exception::setLogFile(INVALID_HANDLE_VALUE); CloseHandle(log);
+  const auto normalLog = read(L"normal-hook.log");
+  auto count = [&](const char* token) {
+    unsigned found = 0; size_t offset = 0;
+    while ((offset = normalLog.find(token, offset)) != std::string::npos) { ++found; ++offset; }
+    return found;
+  };
+  assert(count("studio_model event=begin") == 2 && count("studio_model event=end") == 2);
+  assert(studio_model::recent() && studio_model::recent()->sequence == target.returnedSequence);
+  assert(strcmp(studio_model::recent()->name, inner.name) == 0);
   for (unsigned i = 0; i < 20000; ++i) {
     target.result = (i & 1u) != 0;
     assert(invoke(&target, &outer, reinterpret_cast<void*>(0x1234), reinterpret_cast<void*>(0x5678)) == target.result);
     assert(GetLastError() == 0x4321 && !studio_model::active());
+    assert(studio_model::recent() && studio_model::recent()->sequence == target.returnedSequence);
   }
   target.nested = true;
   assert(invoke(&target, &outer, reinterpret_cast<void*>(0x1234), reinterpret_cast<void*>(0x5678)) == target.result);
@@ -177,7 +196,7 @@ void semantics() {
   }
   assert(!studio_model::active());
   setSlot(table, reinterpret_cast<void*>(original)); assert(VirtualFree(table, 0, MEM_RELEASE));
-  puts("studio semantics: nested, threads, bounded names, x86 ABI, bool return, LastError and C++ exceptions passed");
+  puts("studio semantics: paired begin/end on true/false returns, recent snapshot, nested, threads, bounded names, x86 ABI, LastError, C++ and SEH unwind passed");
 }
 void childFault(const std::wstring& mode, const fs::path& directory) {
   SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOGPFAULTERRORBOX);
