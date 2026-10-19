@@ -3358,7 +3358,7 @@ index 1593d51..31fe6f3 100644
 +  return DeviceBridge::healthy() ? D3D_OK : D3DERR_DEVICELOST;
  }
 diff --git a/bridge/src/client/d3d9_lss.cpp b/bridge/src/client/d3d9_lss.cpp
-index 300aaf5..b40d70a 100644
+index 300aaf5..02e8a3b 100644
 --- a/bridge/src/client/d3d9_lss.cpp
 +++ b/bridge/src/client/d3d9_lss.cpp
 @@ -1,3 +1,7 @@
@@ -3389,7 +3389,17 @@ index 300aaf5..b40d70a 100644
  
  #include "util_bridge_assert.h"
  #include "util_bridge_state.h"
-@@ -70,16 +80,20 @@ uintptr_t D3dBaseIdFactory::getNextId() {
+@@ -47,6 +57,9 @@
+ #include "util_hack_d3d_debug.h"
+ #include "util_messagechannel.h"
+ #include "util_seh.h"
++// NV-DXVK start: Opt-in StudioRender mesh-build attribution.
++#include "studio_model_diagnostics.h"
++// NV-DXVK end
+ #include "util_semaphore.h"
+ 
+ #include "../../../src/util/util_crash_report.h"
+@@ -70,16 +83,20 @@ uintptr_t D3dBaseIdFactory::getNextId() {
  
  #if defined(_DEBUG) || defined(DEBUGOPT)
  
@@ -3415,7 +3425,7 @@ index 300aaf5..b40d70a 100644
      for (int i = 0; i < counter; i++) {
        tabs.append("\t");
      }
-@@ -96,11 +110,13 @@ FunctionEntryExitLogger::FunctionEntryExitLogger(const std::string functionName,
+@@ -96,11 +113,13 @@ FunctionEntryExitLogger::FunctionEntryExitLogger(const std::string functionName,
      m_thiz = thiz;
    }
  
@@ -3431,7 +3441,7 @@ index 300aaf5..b40d70a 100644
      counter--;
      if (!GlobalOptions::getLogAllCalls()) {
        return;
-@@ -111,6 +127,7 @@ FunctionEntryExitLogger::~FunctionEntryExitLogger() {
+@@ -111,6 +130,7 @@ FunctionEntryExitLogger::~FunctionEntryExitLogger() {
      }
      _LogFunctionCall(tabs + m_functionName + " EXIT", m_thiz);
    }
@@ -3439,7 +3449,7 @@ index 300aaf5..b40d70a 100644
  }
  
  #endif
-@@ -124,20 +141,25 @@ std::mutex gShadowMapMutex;
+@@ -124,20 +144,25 @@ std::mutex gShadowMapMutex;
  std::mutex serverStartMutex;
  SceneState gSceneState = WaitBeginScene;
  std::chrono::steady_clock::time_point gTimeStart;
@@ -3468,15 +3478,17 @@ index 300aaf5..b40d70a 100644
    // Log history of recent client side commands sent and received by the server
    Logger::info("Most recent Device Queue commands sent from Client");
    DeviceBridge::Command::print_writer_data_sent();
-@@ -152,6 +174,7 @@ void PrintRecentCommandHistory() {
+@@ -151,7 +176,8 @@ void PrintRecentCommandHistory() {
+ 
  // Setup bridge exception handler if requested
  void SetupExceptionHandler() {
-   if (ClientOptions::getSetExceptionHandler()) {
+-  if (ClientOptions::getSetExceptionHandler()) {
++  if (ClientOptions::getSetExceptionHandler() || studio_model::enabled()) {
 +    bridge_exception::setSession(gUniqueIdentifier.toString().c_str());
      ExceptionHandler::get().init();
    }
  }
-@@ -271,7 +294,14 @@ namespace {
+@@ -271,7 +297,14 @@ namespace {
    }
  }
  
@@ -3492,7 +3504,7 @@ index 300aaf5..b40d70a 100644
    BridgeState::setServerState(BridgeState::ProcessState::Exited);
  
    // Stop the WndProc from restoring the fullscreen window during crash handling.
-@@ -315,8 +345,9 @@ void InitServer() {
+@@ -315,8 +348,9 @@ void InitServer() {
      return;
    }
    Logger::info("Launching server with GUID " + gUniqueIdentifier.toString());
@@ -3503,7 +3515,7 @@ index 300aaf5..b40d70a 100644
    cmdSS << " " << gUniqueIdentifier.toString();
    cmdSS << " " << BRIDGE_VERSION;
    cmdSS << " " << std::string(GetCommandLineA());
-@@ -368,8 +399,19 @@ void InitServer() {
+@@ -368,8 +402,19 @@ void InitServer() {
    // Remove Ack from queue and get thread id for thread proc message handler from server
    const auto ackResponse = DeviceBridge::pop_front();
    initServerMessageChannel(ackResponse.pHandle);
@@ -3523,10 +3535,13 @@ index 300aaf5..b40d70a 100644
    Logger::info("Ack received! Handshake completed! Telling server to continue waiting for commands...");
    ClientMessage { Commands::Bridge_Continue };
  
-@@ -513,6 +555,10 @@ bool RemixAttach(HMODULE hModule) {
+@@ -513,6 +558,13 @@ bool RemixAttach(HMODULE hModule) {
      // Initialize options
      Config::init(Config::App::Client, hModule);
      GlobalOptions::init();
++    // NV-DXVK start: No module probing, hashing or Hook installation inside DllMain.
++    studio_model::configure(Config::getOption<bool>("client.studioModelDiagnostics", false));
++    // NV-DXVK end
 +    l4d2_observation::memoryMonitoring = Config::getOption<bool>("client.memoryMonitoring", false);
 +    l4d2_observation::recoveryTiming = Config::getOption<bool>("client.pageBlockDiagnostics", false)
 +      || Config::getOption<bool>("client.testReadbackRecovery", false);
@@ -3534,7 +3549,7 @@ index 300aaf5..b40d70a 100644
  
      // Find path of original executable to properly set up paths
      if (!initFileSys(hModule)) {
-@@ -521,25 +567,49 @@ bool RemixAttach(HMODULE hModule) {
+@@ -521,25 +573,49 @@ bool RemixAttach(HMODULE hModule) {
  
      // Initialize logger
      Logger::init();
@@ -3589,7 +3604,7 @@ index 300aaf5..b40d70a 100644
  
      DInputHookAttach();
  
-@@ -606,6 +676,13 @@ void RemixDetach() {
+@@ -606,6 +682,13 @@ void RemixDetach() {
      // Clean up resources
      delete gpPresent;
  
@@ -3603,6 +3618,28 @@ index 300aaf5..b40d70a 100644
      Logger::info("Shutdown cleanup successful, exiting now!");
      BridgeState::setClientState(BridgeState::ProcessState::Exited);
  
+@@ -655,6 +738,10 @@ HRESULT LssDirect3DCreate9Ex(UINT SDKVersion, IDirect3D9Ex** ppDeviceEx) {
+   // Attempt to restore the exeption handler.
+   SetupExceptionHandler();
+ 
++  // NV-DXVK start: This exported D3D entry runs after module initialization.
++  studio_model::tryInstall();
++  // NV-DXVK end
++
+   (*ppDeviceEx) = new Direct3D9Ex_LSS((IDirect3D9Ex*) nullptr);
+   InitServer();
+   return S_OK;
+@@ -672,6 +759,10 @@ IDirect3D9* LssDirect3DCreate9(UINT SDKVersion) {
+   // Attempt to restore the exeption handler.
+   SetupExceptionHandler();
+ 
++  // NV-DXVK start: No per-frame diagnostic work or background module scan.
++  studio_model::tryInstall();
++  // NV-DXVK end
++
+   auto retval = new Direct3D9Ex_LSS((IDirect3D9*) nullptr);
+   InitServer();
+   return retval;
 diff --git a/bridge/src/client/d3d9_lss.def b/bridge/src/client/d3d9_lss.def
 index 0fbd289..61f4f9b 100644
 --- a/bridge/src/client/d3d9_lss.def
@@ -3648,7 +3685,7 @@ index 8b76f5d..1aafa50 100644
  
    friend BaseDirect3DDevice9Ex_LSS;
 diff --git a/bridge/src/client/d3d9_module.cpp b/bridge/src/client/d3d9_module.cpp
-index 175430f..023a322 100644
+index 175430f..d93ca41 100644
 --- a/bridge/src/client/d3d9_module.cpp
 +++ b/bridge/src/client/d3d9_module.cpp
 @@ -1,3 +1,7 @@
@@ -3659,7 +3696,17 @@ index 175430f..023a322 100644
  /*
   * Copyright (c) 2023, NVIDIA CORPORATION. All rights reserved.
   *
-@@ -27,10 +31,14 @@
+@@ -20,6 +24,9 @@
+  * DEALINGS IN THE SOFTWARE.
+  */
+ #include "d3d9_lss.h"
++// NV-DXVK start: Retry optional diagnostic setup only on device creation.
++#include "studio_model_diagnostics.h"
++// NV-DXVK end
+ 
+ #include "d3d9_device.h"
+ #include "d3d9_swapchain.h"
+@@ -27,10 +34,14 @@
  
  #include "util_bridge_assert.h"
  #include "util_modulecommand.h"
@@ -3674,7 +3721,7 @@ index 175430f..023a322 100644
      const uint32_t timeoutMs = GlobalOptions::getAckTimeout(); \
      if (Result::Success != ModuleBridge::waitForCommand(Commands::Bridge_Response, timeoutMs, nullptr, true, uidVal)) { \
        Logger::err(func " failed with: no response from server."); \
-@@ -100,7 +108,7 @@ HRESULT Direct3D9Ex_LSS::RegisterSoftwareDevice(void* pInitializeFunction) {
+@@ -100,7 +111,7 @@ HRESULT Direct3D9Ex_LSS::RegisterSoftwareDevice(void* pInitializeFunction) {
    return D3DERR_NOTAVAILABLE;
  }
  
@@ -3683,7 +3730,7 @@ index 175430f..023a322 100644
    LogFunctionCall();
  
    // Return cached result if available
-@@ -119,9 +127,9 @@ UINT Direct3D9Ex_LSS::GetAdapterCount() {
+@@ -119,9 +130,9 @@ UINT Direct3D9Ex_LSS::GetAdapterCount() {
    m_adapterCount = (UINT) ModuleBridge::get_data();
    ModuleBridge::pop_front();
    return m_adapterCount;
@@ -3695,7 +3742,7 @@ index 175430f..023a322 100644
    LogFunctionCall();
  
    if (pIdentifier == nullptr) {
-@@ -150,20 +158,28 @@ HRESULT Direct3D9Ex_LSS::GetAdapterIdentifier(UINT Adapter, DWORD Flags, D3DADAP
+@@ -150,20 +161,28 @@ HRESULT Direct3D9Ex_LSS::GetAdapterIdentifier(UINT Adapter, DWORD Flags, D3DADAP
  
    HRESULT hresult = ModuleBridge::get_data();
    if (SUCCEEDED(hresult)) {
@@ -3732,7 +3779,7 @@ index 175430f..023a322 100644
    LogFunctionCall();
  
    // Check Adapter Count if cached
-@@ -188,9 +204,9 @@ UINT Direct3D9Ex_LSS::GetAdapterModeCount(UINT Adapter, D3DFORMAT Format) {
+@@ -188,9 +207,9 @@ UINT Direct3D9Ex_LSS::GetAdapterModeCount(UINT Adapter, D3DFORMAT Format) {
    m_adapterModeCount[key] = (UINT) ModuleBridge::get_data();
    ModuleBridge::pop_front();
    return m_adapterModeCount[key];
@@ -3744,7 +3791,7 @@ index 175430f..023a322 100644
    LogFunctionCall();
  
    // Check Adapter Count if cached
-@@ -225,9 +241,9 @@ HRESULT Direct3D9Ex_LSS::EnumAdapterModes(UINT Adapter, D3DFORMAT Format, UINT M
+@@ -225,9 +244,9 @@ HRESULT Direct3D9Ex_LSS::EnumAdapterModes(UINT Adapter, D3DFORMAT Format, UINT M
    }
    ModuleBridge::pop_front();
    return hresult;
@@ -3756,7 +3803,7 @@ index 175430f..023a322 100644
    LogFunctionCall();
  
    // Check Adapter Count if cached
-@@ -261,9 +277,9 @@ HRESULT Direct3D9Ex_LSS::GetAdapterDisplayMode(UINT Adapter, D3DDISPLAYMODE* pMo
+@@ -261,9 +280,9 @@ HRESULT Direct3D9Ex_LSS::GetAdapterDisplayMode(UINT Adapter, D3DDISPLAYMODE* pMo
    }
    ModuleBridge::pop_front();
    return hresult;
@@ -3768,7 +3815,7 @@ index 175430f..023a322 100644
    LogFunctionCall();
  
    // Check Adapter Count if cached
-@@ -283,9 +299,9 @@ HRESULT Direct3D9Ex_LSS::CheckDeviceType(UINT Adapter, D3DDEVTYPE CheckType, D3D
+@@ -283,9 +302,9 @@ HRESULT Direct3D9Ex_LSS::CheckDeviceType(UINT Adapter, D3DDEVTYPE CheckType, D3D
    HRESULT res = (HRESULT) ModuleBridge::get_data();
    ModuleBridge::pop_front();
    return res;
@@ -3780,7 +3827,7 @@ index 175430f..023a322 100644
    LogFunctionCall();
  
    // Check Adapter Count if cached
-@@ -305,9 +321,9 @@ HRESULT Direct3D9Ex_LSS::CheckDeviceFormat(UINT Adapter, D3DDEVTYPE DeviceType,
+@@ -305,9 +324,9 @@ HRESULT Direct3D9Ex_LSS::CheckDeviceFormat(UINT Adapter, D3DDEVTYPE DeviceType,
    HRESULT res = (HRESULT) ModuleBridge::get_data();
    ModuleBridge::pop_front();
    return res;
@@ -3792,7 +3839,7 @@ index 175430f..023a322 100644
    LogFunctionCall();
  
    // Check Adapter Count if cached
-@@ -337,9 +353,9 @@ HRESULT Direct3D9Ex_LSS::CheckDeviceMultiSampleType(UINT Adapter, D3DDEVTYPE Dev
+@@ -337,9 +356,9 @@ HRESULT Direct3D9Ex_LSS::CheckDeviceMultiSampleType(UINT Adapter, D3DDEVTYPE Dev
    ModuleBridge::pop_front();
  
    return res;
@@ -3804,7 +3851,7 @@ index 175430f..023a322 100644
    LogFunctionCall();
  
    // Check Adapter Count if cached
-@@ -359,9 +375,9 @@ HRESULT Direct3D9Ex_LSS::CheckDepthStencilMatch(UINT Adapter, D3DDEVTYPE DeviceT
+@@ -359,9 +378,9 @@ HRESULT Direct3D9Ex_LSS::CheckDepthStencilMatch(UINT Adapter, D3DDEVTYPE DeviceT
    HRESULT res = (HRESULT) ModuleBridge::get_data();
    ModuleBridge::pop_front();
    return res;
@@ -3816,7 +3863,7 @@ index 175430f..023a322 100644
    LogFunctionCall();
  
    // Check Adapter Count if cached
-@@ -381,9 +397,9 @@ HRESULT Direct3D9Ex_LSS::CheckDeviceFormatConversion(UINT Adapter, D3DDEVTYPE De
+@@ -381,9 +400,9 @@ HRESULT Direct3D9Ex_LSS::CheckDeviceFormatConversion(UINT Adapter, D3DDEVTYPE De
    HRESULT res = (HRESULT) ModuleBridge::get_data();
    ModuleBridge::pop_front();
    return res;
@@ -3828,7 +3875,7 @@ index 175430f..023a322 100644
    LogFunctionCall();
  
    if (pCaps == NULL)
-@@ -412,19 +428,28 @@ HRESULT Direct3D9Ex_LSS::GetDeviceCaps(UINT Adapter, D3DDEVTYPE DeviceType, D3DC
+@@ -412,19 +431,28 @@ HRESULT Direct3D9Ex_LSS::GetDeviceCaps(UINT Adapter, D3DDEVTYPE DeviceType, D3DC
  
    HRESULT hresult = ModuleBridge::get_data();
    if (SUCCEEDED(hresult)) {
@@ -3864,7 +3911,7 @@ index 175430f..023a322 100644
    LogFunctionCall();
  
    UID currentUID = 0;
-@@ -439,7 +464,7 @@ HMONITOR Direct3D9Ex_LSS::GetAdapterMonitor(UINT Adapter) {
+@@ -439,7 +467,7 @@ HMONITOR Direct3D9Ex_LSS::GetAdapterMonitor(UINT Adapter) {
    HMONITOR monitor = (HMONITOR) ModuleBridge::get_data();
    ModuleBridge::pop_front();
    return monitor;
@@ -3873,7 +3920,17 @@ index 175430f..023a322 100644
  
  HRESULT Direct3D9Ex_LSS::CreateDevice(
    UINT Adapter, D3DDEVTYPE DeviceType,
-@@ -456,7 +481,7 @@ HRESULT Direct3D9Ex_LSS::CreateDevice(
+@@ -447,6 +475,9 @@ HRESULT Direct3D9Ex_LSS::CreateDevice(
+   D3DPRESENT_PARAMETERS* pPresentationParameters,
+   IDirect3DDevice9** ppReturnedDeviceInterface
+ ) {
++  // NV-DXVK start: The engine may load StudioRender after Direct3DCreate9.
++  studio_model::tryInstall();
++  // NV-DXVK end
+   LogFunctionCall();
+   const D3DDEVICE_CREATION_PARAMETERS createParams { Adapter, DeviceType, hFocusWindow, BehaviorFlags };
+   auto [hresult, pLssDevice] = createDevice(false, this, createParams, *pPresentationParameters, nullptr);
+@@ -456,7 +487,7 @@ HRESULT Direct3D9Ex_LSS::CreateDevice(
    return hresult;
  }
  
@@ -3882,7 +3939,7 @@ index 175430f..023a322 100644
    assert(m_ex);
    LogFunctionCall();
  
-@@ -479,9 +504,9 @@ UINT Direct3D9Ex_LSS::GetAdapterModeCountEx(UINT Adapter, CONST D3DDISPLAYMODEFI
+@@ -479,9 +510,9 @@ UINT Direct3D9Ex_LSS::GetAdapterModeCountEx(UINT Adapter, CONST D3DDISPLAYMODEFI
    cnt = (UINT) ModuleBridge::get_data();
    ModuleBridge::pop_front();
    return cnt;
@@ -3894,7 +3951,7 @@ index 175430f..023a322 100644
    assert(m_ex);
    LogFunctionCall();
  
-@@ -515,9 +540,9 @@ HRESULT Direct3D9Ex_LSS::EnumAdapterModesEx(UINT Adapter, CONST D3DDISPLAYMODEFI
+@@ -515,9 +546,9 @@ HRESULT Direct3D9Ex_LSS::EnumAdapterModesEx(UINT Adapter, CONST D3DDISPLAYMODEFI
    }
    ModuleBridge::pop_front();
    return hresult;
@@ -3906,7 +3963,7 @@ index 175430f..023a322 100644
    assert(m_ex);
    LogFunctionCall();
  
-@@ -557,7 +582,7 @@ HRESULT Direct3D9Ex_LSS::GetAdapterDisplayModeEx(UINT Adapter, D3DDISPLAYMODEEX*
+@@ -557,7 +588,7 @@ HRESULT Direct3D9Ex_LSS::GetAdapterDisplayModeEx(UINT Adapter, D3DDISPLAYMODEEX*
    }
    ModuleBridge::pop_front();
    return hresult;
@@ -3915,7 +3972,17 @@ index 175430f..023a322 100644
  
  HRESULT Direct3D9Ex_LSS::CreateDeviceEx(
    UINT Adapter, D3DDEVTYPE DeviceType,
-@@ -576,7 +601,7 @@ HRESULT Direct3D9Ex_LSS::CreateDeviceEx(
+@@ -566,6 +597,9 @@ HRESULT Direct3D9Ex_LSS::CreateDeviceEx(
+   D3DDISPLAYMODEEX* pFullscreenDisplayMode,
+   IDirect3DDevice9Ex** ppReturnedDeviceInterface
+ ) {
++  // NV-DXVK start: Same late-module handling for the Ex entry.
++  studio_model::tryInstall();
++  // NV-DXVK end
+   assert(m_ex);
+   LogFunctionCall();
+   const D3DDEVICE_CREATION_PARAMETERS createParams { Adapter, DeviceType, hFocusWindow, BehaviorFlags };
+@@ -576,7 +610,7 @@ HRESULT Direct3D9Ex_LSS::CreateDeviceEx(
    return hresult;
  }
  
@@ -3924,7 +3991,7 @@ index 175430f..023a322 100644
    LogFunctionCall();
  
    // https://learn.microsoft.com/en-us/windows/win32/api/d3d9/nf-d3d9-idirect3d9ex-getadapterluid
-@@ -605,7 +630,7 @@ HRESULT Direct3D9Ex_LSS::GetAdapterLUID(UINT Adapter, LUID* pLUID) {
+@@ -605,7 +639,7 @@ HRESULT Direct3D9Ex_LSS::GetAdapterLUID(UINT Adapter, LUID* pLUID) {
    }
    ModuleBridge::pop_front();
    return hresult;
@@ -3933,7 +4000,7 @@ index 175430f..023a322 100644
  
  std::tuple<HRESULT, BaseDirect3DDevice9Ex_LSS*> Direct3D9Ex_LSS::createDevice(
    const bool bExtended,
-@@ -653,4 +678,4 @@ std::tuple<HRESULT, BaseDirect3DDevice9Ex_LSS*> Direct3D9Ex_LSS::createDevice(
+@@ -653,4 +687,4 @@ std::tuple<HRESULT, BaseDirect3DDevice9Ex_LSS*> Direct3D9Ex_LSS::createDevice(
        bExtended, pDirect3D, createParams, localPresParam, pFullscreenDisplayMode, createDeviceHresult);
    }
    return { createDeviceHresult, pNewDevice };
@@ -6360,7 +6427,7 @@ index 0000000..e556c84
 +}
 +}
 diff --git a/bridge/src/client/meson.build b/bridge/src/client/meson.build
-index 2ad1e79..c1294a9 100644
+index 2ad1e79..19e5b21 100644
 --- a/bridge/src/client/meson.build
 +++ b/bridge/src/client/meson.build
 @@ -1,3 +1,7 @@
@@ -6379,7 +6446,7 @@ index 2ad1e79..c1294a9 100644
    'd3d9_bootstrap.cpp',
    'd3d9_cubetexture.cpp',
    'd3d9_device_base.cpp',
-@@ -49,6 +54,8 @@ d3d9_src = files([
+@@ -49,13 +54,17 @@ d3d9_src = files([
    'd3d9_volumetexture.cpp',
    'di_hook.cpp',
    'message_channels.cpp',
@@ -6388,7 +6455,8 @@ index 2ad1e79..c1294a9 100644
    'pch.cpp',
    'remix_api.cpp',
    'remix_state.cpp',
-@@ -56,6 +63,7 @@ d3d9_src = files([
++  'studio_model_diagnostics.cpp',
+   'window.cpp',
  ])
  
  d3d9_header = files([
@@ -6396,7 +6464,7 @@ index 2ad1e79..c1294a9 100644
    'base.h',
    'client_options.h',
    'd3d9_base_texture.h',
-@@ -83,12 +91,24 @@ d3d9_header = files([
+@@ -83,12 +92,25 @@ d3d9_header = files([
    'detours_common.h',
    'di_hook.h',
    'framework.h',
@@ -6415,13 +6483,14 @@ index 2ad1e79..c1294a9 100644
 +  'shadow_lifetime.h',
    'pch.h',
    'remix_state.h',
++  'studio_model_diagnostics.h',
    'resource.h',
    'shadow_map.h',
 +  'texture_creation.h',
    'window.h',
  ])
  
-@@ -102,7 +122,7 @@ thread_dep = dependency('threads')
+@@ -102,7 +124,7 @@ thread_dep = dependency('threads')
  
  d3d9_dll = shared_library('d3d9', d3d9_header, d3d9_src, d3d9_res, 
    sources             : [ bridge_version ],
@@ -6430,7 +6499,7 @@ index 2ad1e79..c1294a9 100644
    include_directories : [ bridge_include_path, util_include_path, detours_include_path, public_include_path ],
    vs_module_defs      : 'd3d9_lss.def')
  
-@@ -116,4 +136,4 @@ custom_target('copy_d3d9_to_output',
+@@ -116,4 +138,4 @@ custom_target('copy_d3d9_to_output',
      build_by_default : true,
      depends          : [ d3d9_dll ],
      command          : [copy_script_path, meson.current_build_dir(), output_dir, 'd3d9*'] )
@@ -15043,10 +15112,10 @@ index 0000000..50f7084
 +}
 diff --git a/bridge/src/util/exception_diagnostics.cpp b/bridge/src/util/exception_diagnostics.cpp
 new file mode 100644
-index 0000000..d565009
+index 0000000..fe0f160
 --- /dev/null
 +++ b/bridge/src/util/exception_diagnostics.cpp
-@@ -0,0 +1,453 @@
+@@ -0,0 +1,475 @@
 +// SPDX-License-Identifier: MIT
 +// Copyright (c) 2026 yeyunyyds.
 +// All newly added implementation code in this fork was generated by OpenAI Codex from prompts and specifications provided by yeyunyyds.
@@ -15060,6 +15129,11 @@ index 0000000..d565009
 +
 +#include "exception_diagnostics.h"
 +#include "util_commands.h"
++// NV-DXVK start: Optional StudioRender snapshot, never engine pointer reads here.
++#ifdef REMIX_BRIDGE_CLIENT
++#include "studio_model_context.h"
++#endif
++// NV-DXVK end
 +
 +#pragma comment(lib, "psapi")
 +
@@ -15309,6 +15383,23 @@ index 0000000..d565009
 +  } else { append("current_command=unavailable reason=no_active_bridge_command_on_faulting_thread\n"); }
 +  append("client_call=%s client_call_this=0x%llx\n", history && history->call ? history->call : "unavailable",
 +         static_cast<unsigned long long>(history ? history->callObject : 0));
++  // NV-DXVK start: Read only already-created TLS belonging to the faulting thread.
++#ifdef REMIX_BRIDGE_CLIENT
++  const studio_model::Snapshot* snapshots[] = { studio_model::active(), studio_model::recent() };
++  const char* labels[] = { "active", "recent_completed" };
++  for (unsigned i = 0; i < 2; ++i) {
++    const auto* snapshot = snapshots[i];
++    if (!snapshot) { append("studio_model kind=%s available=0 scope=faulting_thread\n", labels[i]); continue; }
++    append("studio_model kind=%s available=1 scope=faulting_thread model_tid=%lu sequence=%llu depth=%u "
++           "model=\"%s\" name_status=%s name_source=studiohdr.name[64] lod=unknown "
++           "context=0x%llx studiohdr=0x%llx vtx=0x%llx hardware=0x%llx\n",
++           labels[i], snapshot->threadId, static_cast<unsigned long long>(snapshot->sequence), snapshot->depth,
++           snapshot->name, studio_model::nameStatus(snapshot->nameStatus),
++           static_cast<unsigned long long>(snapshot->renderContext), static_cast<unsigned long long>(snapshot->studioHeader),
++           static_cast<unsigned long long>(snapshot->vtxData), static_cast<unsigned long long>(snapshot->hardwareData));
++  }
++#endif
++  // NV-DXVK end
 +  if (history) {
 +    reportHistory("sent", history->sent); reportHistory("received", history->received);
 +  } else {
@@ -15455,7 +15546,7 @@ index 0000000..d565009
 +  flushOutput(s_logFile);
 +}
 +void terminateAfterPeerException() { TerminateProcess(GetCurrentProcess(), kPeerExceptionExitCode); }
-+void logDiagnostic(const char* message) {
++void logDiagnostic(const char* message, bool flush) {
 +  SYSTEMTIME now {};
 +  GetSystemTime(&now);
 +  char line[2048] {};
@@ -15464,7 +15555,7 @@ index 0000000..d565009
 +    now.wYear, now.wMonth, now.wDay, now.wHour, now.wMinute, now.wSecond, now.wMilliseconds,
 +    side(), GetCurrentProcessId(), GetCurrentThreadId(), sessionName(), message);
 +  writeBytes(s_logFile, line, length > 0 ? static_cast<unsigned>(length) : static_cast<unsigned>(strlen(line)));
-+  flushOutput(s_logFile);
++  if (flush) { flushOutput(s_logFile); }
 +}
 +CommandScope::CommandScope(Queue queue, uint16_t opcode, uint32_t objectId, const char* handler, bool uidKnown, uint32_t uid)
 +{
@@ -15502,7 +15593,7 @@ index 0000000..d565009
 +}
 diff --git a/bridge/src/util/exception_diagnostics.h b/bridge/src/util/exception_diagnostics.h
 new file mode 100644
-index 0000000..543cd78
+index 0000000..1b9a61e
 --- /dev/null
 +++ b/bridge/src/util/exception_diagnostics.h
 @@ -0,0 +1,67 @@
@@ -15535,7 +15626,7 @@ index 0000000..543cd78
 +bool isExceptionExitCode(DWORD code);
 +void logPeerExit(const char* peerRole, DWORD peerPid, DWORD exitCode);
 +// Rare lifecycle/reset diagnostics bypass the normal logger lock/filter.
-+void logDiagnostic(const char* message);
++void logDiagnostic(const char* message, bool flush = true);
 +void terminateAfterPeerException();
 +constexpr DWORD kUnhandledExceptionExitCode = 0xE04C3441u;
 +constexpr DWORD kPeerExceptionExitCode = 0xE04C3442u;
@@ -17360,7 +17451,7 @@ index 869be34..9ecf225 100644
      std::ofstream m_fileStream;
  #endif
 diff --git a/bridge/src/util/meson.build b/bridge/src/util/meson.build
-index fb5d556..a575f65 100644
+index fb5d556..b5c80ff 100644
 --- a/bridge/src/util/meson.build
 +++ b/bridge/src/util/meson.build
 @@ -1,3 +1,7 @@
@@ -17371,17 +17462,18 @@ index fb5d556..a575f65 100644
  #############################################################################
  # Copyright (c) 2022-2024, NVIDIA CORPORATION. All rights reserved.
  #
-@@ -21,6 +25,9 @@
+@@ -21,6 +25,10 @@
  #############################################################################
  
  util_src = files([
 +  'color_diagnostics.cpp',
 +  'data_diagnostics.cpp',
 +  'exception_diagnostics.cpp',
++  'studio_model_context.cpp',
  	'util_bridgecommand.cpp',
  	'util_filesys.cpp',
  	'util_gdi.cpp',
-@@ -38,6 +45,25 @@ util_src = files([
+@@ -38,6 +46,26 @@ util_src = files([
  ])
  
  util_header = files([
@@ -17393,6 +17485,7 @@ index fb5d556..a575f65 100644
 +  'device_reset.h',
 +  'data_ring_contract.h',
 +  'exception_diagnostics.h',
++  'studio_model_context.h',
 +  'adapter_information.h',
 +  'api_wait_commands.h',
 +  'api_wait_diagnostics.h',
@@ -21275,3 +21368,413 @@ index fb5c4d4..690e5a7 100644
        size_t m_sizeAllocated = 0;
  #endif
  
+diff --git a/bridge/src/client/studio_model_diagnostics.cpp b/bridge/src/client/studio_model_diagnostics.cpp
+new file mode 100644
+index 0000000..bac522e
+--- /dev/null
++++ b/bridge/src/client/studio_model_diagnostics.cpp
+@@ -0,0 +1,202 @@
++// SPDX-License-Identifier: MIT
++// Copyright (c) 2026 yeyunyyds.
++// All newly added implementation code in this fork was generated by OpenAI Codex from prompts and specifications provided by yeyunyyds.
++#include <atomic>
++#include <cstring>
++#include <cstdio>
++#include <windows.h>
++#include <bcrypt.h>
++
++#include "exception_diagnostics.h"
++#include "studio_model_context.h"
++#include "studio_model_diagnostics.h"
++
++#pragma comment(lib, "bcrypt")
++
++namespace studio_model {
++namespace {
++using ModelFunction = bool(__thiscall*)(void*, void*, void*, void*);
++constexpr DWORD kEntryRva = 0x69cd0;
++constexpr DWORD kSlotRva = 0x7f064;
++constexpr DWORD kImageSize = 0x653000;
++constexpr DWORD kFileSize = 634672;
++// Exact user-supplied x86 ThinFlex sample. Unknown builds are never hooked.
++constexpr char kFileHash[] = "03964dedcf8b7f4ebde24cd3d0738873d37c075a7a9b313dad001bb937f9d1b6";
++bool s_enabled = false;
++volatile LONG s_state = 0; // 0=waiting, 1=installing, 2=installed, 3=rejected
++volatile LONG s_missingLogged = 0;
++std::atomic<ModelFunction> s_original { nullptr };
++
++struct Memory {
++  unsigned char* data = nullptr;
++  explicit Memory(SIZE_T size) noexcept : data(static_cast<unsigned char*>(
++    VirtualAlloc(nullptr, size, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE))) { }
++  ~Memory() { if (data) { VirtualFree(data, 0, MEM_RELEASE); } }
++};
++struct File {
++  HANDLE handle;
++  explicit File(const wchar_t* path) noexcept : handle(CreateFileW(path, GENERIC_READ,
++    FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr)) { }
++  ~File() { if (handle != INVALID_HANDLE_VALUE) { CloseHandle(handle); } }
++};
++bool readMemory(const void* address, void* output, SIZE_T size) noexcept {
++  SIZE_T read = 0;
++  return ReadProcessMemory(GetCurrentProcess(), address, output, size, &read) && read == size;
++}
++bool digest(const unsigned char* data, DWORD size, char (&hex)[65]) noexcept {
++  BCRYPT_ALG_HANDLE algorithm = nullptr;
++  BCRYPT_HASH_HANDLE hash = nullptr;
++  unsigned char bytes[32] {};
++  bool ok = BCryptOpenAlgorithmProvider(&algorithm, BCRYPT_SHA256_ALGORITHM, nullptr, 0) >= 0;
++  if (ok) { ok = BCryptCreateHash(algorithm, &hash, nullptr, 0, nullptr, 0, 0) >= 0; }
++  if (ok) { ok = BCryptHashData(hash, const_cast<PUCHAR>(data), size, 0) >= 0; }
++  if (ok) { ok = BCryptFinishHash(hash, bytes, sizeof(bytes), 0) >= 0; }
++  if (hash) { BCryptDestroyHash(hash); }
++  if (algorithm) { BCryptCloseAlgorithmProvider(algorithm, 0); }
++  if (!ok) { return false; }
++  constexpr char digits[] = "0123456789abcdef";
++  for (unsigned i = 0; i < sizeof(bytes); ++i) {
++    hex[i * 2] = digits[bytes[i] >> 4]; hex[i * 2 + 1] = digits[bytes[i] & 15];
++  }
++  hex[64] = 0;
++  return true;
++}
++// Called only after the complete file hash has matched the audited file.
++bool sameText(HMODULE module, const unsigned char* file) noexcept {
++  const auto* dos = reinterpret_cast<const IMAGE_DOS_HEADER*>(file);
++  if (dos->e_magic != IMAGE_DOS_SIGNATURE || dos->e_lfanew < 0
++      || static_cast<DWORD>(dos->e_lfanew) > kFileSize - sizeof(IMAGE_NT_HEADERS32)) { return false; }
++  const auto* nt = reinterpret_cast<const IMAGE_NT_HEADERS32*>(file + dos->e_lfanew);
++  IMAGE_NT_HEADERS32 loaded {};
++  const auto* base = reinterpret_cast<const unsigned char*>(module);
++  if (!readMemory(base + dos->e_lfanew, &loaded, sizeof(loaded))
++      || nt->Signature != IMAGE_NT_SIGNATURE || nt->FileHeader.Machine != IMAGE_FILE_MACHINE_I386
++      || nt->OptionalHeader.Magic != IMAGE_NT_OPTIONAL_HDR32_MAGIC
++      || nt->OptionalHeader.SizeOfImage != kImageSize
++      || loaded.Signature != nt->Signature || loaded.FileHeader.Machine != nt->FileHeader.Machine
++      || loaded.FileHeader.TimeDateStamp != nt->FileHeader.TimeDateStamp
++      || loaded.OptionalHeader.SizeOfImage != nt->OptionalHeader.SizeOfImage) { return false; }
++  const auto* sections = IMAGE_FIRST_SECTION(nt);
++  const IMAGE_SECTION_HEADER* text = nullptr;
++  const IMAGE_SECTION_HEADER* reloc = nullptr;
++  for (unsigned i = 0; i < nt->FileHeader.NumberOfSections; ++i) {
++    if (memcmp(sections[i].Name, ".text\0\0\0", 8) == 0) { text = &sections[i]; }
++    if (memcmp(sections[i].Name, ".reloc\0\0", 8) == 0) { reloc = &sections[i]; }
++  }
++  if (!text || !reloc || text->PointerToRawData > kFileSize
++      || text->SizeOfRawData > kFileSize - text->PointerToRawData) { return false; }
++  Memory expected(text->SizeOfRawData);
++  if (!expected.data) { return false; }
++  memcpy(expected.data, file + text->PointerToRawData, text->SizeOfRawData);
++  const auto& directory = nt->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_BASERELOC];
++  if (directory.VirtualAddress < reloc->VirtualAddress) { return false; }
++  const DWORD offset = reloc->PointerToRawData + directory.VirtualAddress - reloc->VirtualAddress;
++  if (offset > kFileSize || directory.Size > kFileSize - offset) { return false; }
++  const DWORD delta = static_cast<DWORD>(reinterpret_cast<uintptr_t>(module)) - nt->OptionalHeader.ImageBase;
++  for (DWORD cursor = 0; cursor < directory.Size;) {
++    if (directory.Size - cursor < sizeof(IMAGE_BASE_RELOCATION)) { return false; }
++    const auto* block = reinterpret_cast<const IMAGE_BASE_RELOCATION*>(file + offset + cursor);
++    if (block->SizeOfBlock < sizeof(*block) || block->SizeOfBlock > directory.Size - cursor
++        || (block->SizeOfBlock & 1u)) { return false; }
++    const auto* entries = reinterpret_cast<const WORD*>(block + 1);
++    const unsigned count = (block->SizeOfBlock - sizeof(*block)) / sizeof(WORD);
++    for (unsigned i = 0; i < count; ++i) {
++      const unsigned type = entries[i] >> 12;
++      if (!type) { continue; }
++      const DWORD rva = block->VirtualAddress + (entries[i] & 0xfff);
++      if (rva < text->VirtualAddress || rva - text->VirtualAddress >= text->SizeOfRawData) { continue; }
++      const DWORD index = rva - text->VirtualAddress;
++      if (type != IMAGE_REL_BASED_HIGHLOW || text->SizeOfRawData - index < sizeof(DWORD)) { return false; }
++      DWORD value = 0;
++      memcpy(&value, expected.data + index, sizeof(value)); value += delta;
++      memcpy(expected.data + index, &value, sizeof(value));
++    }
++    cursor += block->SizeOfBlock;
++  }
++  unsigned char actual[4096] {};
++  for (DWORD cursor = 0; cursor < text->SizeOfRawData;) {
++    const DWORD remaining = text->SizeOfRawData - cursor;
++    const DWORD size = remaining < sizeof(actual) ? remaining : sizeof(actual);
++    if (!readMemory(base + text->VirtualAddress + cursor, actual, size)
++        || memcmp(actual, expected.data + cursor, size)) { return false; }
++    cursor += size;
++  }
++  void* entry = nullptr;
++  return readMemory(base + kSlotRva, &entry, sizeof(entry)) && entry == base + kEntryRva;
++}
++bool verifyImage(HMODULE module) noexcept {
++  wchar_t path[4096] {};
++  const DWORD length = GetModuleFileNameW(module, path, _countof(path));
++  if (!length || length >= _countof(path)) { return false; }
++  File file(path);
++  if (file.handle == INVALID_HANDLE_VALUE) { return false; }
++  LARGE_INTEGER size {};
++  if (!GetFileSizeEx(file.handle, &size) || size.QuadPart != kFileSize) { return false; }
++  Memory raw(kFileSize);
++  if (!raw.data) { return false; }
++  DWORD read = 0;
++  if (!ReadFile(file.handle, raw.data, kFileSize, &read, nullptr) || read != kFileSize) { return false; }
++  char hash[65] {};
++  return digest(raw.data, kFileSize, hash) && strcmp(hash, kFileHash) == 0 && sameText(module, raw.data);
++}
++bool __fastcall hookedLoadModel(void* context, void*, void* header, void* vtx, void* hardware) {
++  // Verified thiscall: ECX=this, three stack pointers, AL=bool, ret 0x0c.
++  Scope model(context, header, vtx, hardware);
++  return s_original.load(std::memory_order_acquire)(context, header, vtx, hardware);
++}
++bool replaceSlot(void** slot, ModelFunction original) noexcept {
++  if ((reinterpret_cast<uintptr_t>(slot) & (sizeof(void*) - 1)) != 0) { return false; }
++  DWORD oldProtection = 0;
++  if (!VirtualProtect(slot, sizeof(*slot), PAGE_READWRITE, &oldProtection)) { return false; }
++  s_original.store(original, std::memory_order_release);
++  const auto previous = InterlockedCompareExchangePointer(slot, reinterpret_cast<void*>(&hookedLoadModel),
++                                                         reinterpret_cast<void*>(original));
++  DWORD ignored = 0;
++  const bool restored = VirtualProtect(slot, sizeof(*slot), oldProtection, &ignored) != FALSE;
++  if (!restored) { bridge_exception::logDiagnostic("studio_model status=protection_restore_failed"); }
++  return previous == reinterpret_cast<void*>(original);
++}
++}
++void configure(bool enable) noexcept { s_enabled = enable; }
++bool enabled() noexcept { return s_enabled; }
++void tryInstall() noexcept {
++  if (!s_enabled) { return; }
++  const DWORD error = GetLastError();
++  if (InterlockedCompareExchange(&s_state, 1, 0) != 0) { SetLastError(error); return; }
++  HMODULE module = nullptr;
++  if (!GetModuleHandleExW(0, L"studiorender.dll", &module)) {
++    if (!InterlockedExchange(&s_missingLogged, 1)) {
++      bridge_exception::logDiagnostic("studio_model status=waiting_for_module retry=next_d3d_create_only");
++    }
++    InterlockedExchange(&s_state, 0);
++    SetLastError(error);
++    return;
++  }
++  bool installed = false;
++  if (verifyImage(module)) {
++    HMODULE self = nullptr;
++    // The shared vtable must not outlive either the original target or this callback.
++    if (GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_PIN,
++                          reinterpret_cast<LPCWSTR>(&hookedLoadModel), &self)) {
++      auto* base = reinterpret_cast<unsigned char*>(module);
++      installed = replaceSlot(reinterpret_cast<void**>(base + kSlotRva),
++                              reinterpret_cast<ModelFunction>(base + kEntryRva));
++    }
++  }
++  if (installed) {
++    // Retain the acquired StudioRender module reference until process exit.
++    bridge_exception::logDiagnostic("studio_model status=installed entry=0x69cd0 slot=0x7f064 "
++      "sha256=03964dedcf8b7f4ebde24cd3d0738873d37c075a7a9b313dad001bb937f9d1b6 lod=unknown");
++  } else {
++    FreeLibrary(module);
++    bridge_exception::logDiagnostic("studio_model status=disabled reason=identity_or_live_code_or_slot_verification_failed "
++      "required_sha256=03964dedcf8b7f4ebde24cd3d0738873d37c075a7a9b313dad001bb937f9d1b6");
++  }
++  InterlockedExchange(&s_state, installed ? 2 : 3);
++  SetLastError(error);
++}
++#ifdef L4D2_STUDIO_TEST
++bool testInstallSlot(void** slot, LoadModel original) noexcept { return replaceSlot(slot, original); }
++bool testVerifyImage(HMODULE module) noexcept { return verifyImage(module); }
++#endif
++}
+diff --git a/bridge/src/client/studio_model_diagnostics.h b/bridge/src/client/studio_model_diagnostics.h
+new file mode 100644
+index 0000000..3be5150
+--- /dev/null
++++ b/bridge/src/client/studio_model_diagnostics.h
+@@ -0,0 +1,18 @@
++// SPDX-License-Identifier: MIT
++// Copyright (c) 2026 yeyunyyds.
++// All newly added implementation code in this fork was generated by OpenAI Codex from prompts and specifications provided by yeyunyyds.
++#pragma once
++
++#include <windows.h>
++
++namespace studio_model {
++// Configuration only in DllMain; installation only on later D3D entry paths.
++void configure(bool enabled) noexcept;
++bool enabled() noexcept;
++void tryInstall() noexcept;
++#ifdef L4D2_STUDIO_TEST
++using LoadModel = bool(__thiscall*)(void*, void*, void*, void*);
++bool testInstallSlot(void** slot, LoadModel original) noexcept;
++bool testVerifyImage(HMODULE module) noexcept;
++#endif
++}
+diff --git a/bridge/src/util/studio_model_context.cpp b/bridge/src/util/studio_model_context.cpp
+new file mode 100644
+index 0000000..f5e5678
+--- /dev/null
++++ b/bridge/src/util/studio_model_context.cpp
+@@ -0,0 +1,122 @@
++// SPDX-License-Identifier: MIT
++// Copyright (c) 2026 yeyunyyds.
++// All newly added implementation code in this fork was generated by OpenAI Codex from prompts and specifications provided by yeyunyyds.
++#include <cstdio>
++#include <cstring>
++#include <memory>
++#include <new>
++
++#include "exception_diagnostics.h"
++#include "studio_model_context.h"
++
++namespace studio_model {
++struct ThreadState {
++  const Scope* current = nullptr;
++  Snapshot last;
++  bool hasLast = false;
++  uint64_t sequence = 0;
++};
++namespace {
++// Constant-initialized pointer only: no lazy allocation in the exception getters.
++thread_local ThreadState* s_thread = nullptr;
++thread_local bool s_storageFailed = false;
++struct Storage {
++  std::unique_ptr<ThreadState> state;
++  ~Storage() { s_thread = nullptr; s_storageFailed = true; }
++};
++ThreadState* storage() noexcept {
++  if (s_storageFailed) { return nullptr; }
++  thread_local Storage owner;
++  if (!s_thread) {
++    owner.state.reset(new (std::nothrow) ThreadState());
++    s_thread = owner.state.get();
++    if (!s_thread) { s_storageFailed = true; }
++  }
++  return s_thread;
++}
++void copyName(Snapshot& snapshot) noexcept {
++  // Verified binary uses hdr+12 as the name; SDK studiohdr has name[64].
++  // Copy the header once on the healthy path. A failed read never changes engine behavior.
++  struct Header { uint32_t id; int32_t version; uint32_t checksum; unsigned char name[64]; int32_t length; } header {};
++  static_assert(sizeof(Header) == 80, "studio header prefix");
++  SIZE_T copied = 0;
++  if (!ReadProcessMemory(GetCurrentProcess(), reinterpret_cast<const void*>(snapshot.studioHeader),
++                         &header, sizeof(header), &copied) || copied != sizeof(header)) { return; }
++  if (header.id != 0x54534449u || header.length < static_cast<int32_t>(sizeof(header))) {
++    snapshot.nameStatus = NameStatus::InvalidHeader;
++    return;
++  }
++  unsigned output = 0;
++  bool terminated = false;
++  constexpr char hex[] = "0123456789abcdef";
++  for (const auto ch : header.name) {
++    if (!ch) { terminated = true; break; }
++    if (ch == '\\' || ch == '"') {
++      snapshot.name[output++] = '\\'; snapshot.name[output++] = static_cast<char>(ch);
++    } else if (ch < 32 || ch >= 127) {
++      snapshot.name[output++] = '\\'; snapshot.name[output++] = 'x';
++      snapshot.name[output++] = hex[ch >> 4]; snapshot.name[output++] = hex[ch & 15];
++    } else { snapshot.name[output++] = static_cast<char>(ch); }
++  }
++  snapshot.name[output] = 0;
++  snapshot.nameStatus = !output ? NameStatus::Empty : terminated ? NameStatus::Available : NameStatus::Truncated;
++}
++void event(const char* phase, const Snapshot& snapshot) noexcept {
++  char message[1024] {};
++  _snprintf_s(message, _countof(message), _TRUNCATE,
++    "studio_model event=%s sequence=%llu depth=%u model_tid=%lu model=\"%s\" name_status=%s "
++    "name_source=studiohdr.name[64] lod=unknown context=0x%llx studiohdr=0x%llx vtx=0x%llx hardware=0x%llx",
++    phase, static_cast<unsigned long long>(snapshot.sequence), snapshot.depth, snapshot.threadId,
++    snapshot.name, nameStatus(snapshot.nameStatus), static_cast<unsigned long long>(snapshot.renderContext),
++    static_cast<unsigned long long>(snapshot.studioHeader), static_cast<unsigned long long>(snapshot.vtxData),
++    static_cast<unsigned long long>(snapshot.hardwareData));
++  // Write to the existing log, without a synchronous disk flush for every model.
++  bridge_exception::logDiagnostic(message, false);
++}
++}
++Scope::Scope(void* renderContext, const void* studioHeader, const void* vtxData, const void* hardwareData) noexcept {
++  const DWORD error = GetLastError();
++  m_state = storage();
++  if (m_state) {
++    m_previous = m_state->current;
++    m_snapshot.threadId = GetCurrentThreadId();
++    m_snapshot.depth = m_previous ? m_previous->m_snapshot.depth + 1 : 1;
++    m_snapshot.sequence = ++m_state->sequence;
++    m_snapshot.renderContext = reinterpret_cast<uintptr_t>(renderContext);
++    m_snapshot.studioHeader = reinterpret_cast<uintptr_t>(studioHeader);
++    m_snapshot.vtxData = reinterpret_cast<uintptr_t>(vtxData);
++    m_snapshot.hardwareData = reinterpret_cast<uintptr_t>(hardwareData);
++    copyName(m_snapshot);
++    // Publish only after the bounded copy is complete.
++    m_state->current = this;
++    event("begin", m_snapshot);
++  }
++  SetLastError(error);
++}
++Scope::~Scope() noexcept {
++  const DWORD error = GetLastError();
++  if (m_state) {
++    event("end", m_snapshot);
++    if (m_snapshot.nameStatus == NameStatus::Available || m_snapshot.nameStatus == NameStatus::Truncated) {
++      m_state->last = m_snapshot;
++      m_state->hasLast = true;
++    }
++    m_state->current = m_previous;
++  }
++  SetLastError(error);
++}
++const Snapshot* active() noexcept { return s_thread && s_thread->current ? &s_thread->current->m_snapshot : nullptr; }
++const Snapshot* recent() noexcept { return s_thread && s_thread->hasLast ? &s_thread->last : nullptr; }
++const char* nameStatus(NameStatus status) noexcept {
++  switch (status) {
++  case NameStatus::InvalidHeader: return "invalid_header";
++  case NameStatus::Empty: return "empty";
++  case NameStatus::Available: return "available";
++  case NameStatus::Truncated: return "truncated_64_bytes";
++  default: return "unreadable";
++  }
++}
++#ifdef L4D2_STUDIO_TEST
++bool testHasStorage() noexcept { return s_thread != nullptr; }
++#endif
++}
+diff --git a/bridge/src/util/studio_model_context.h b/bridge/src/util/studio_model_context.h
+new file mode 100644
+index 0000000..ff7c435
+--- /dev/null
++++ b/bridge/src/util/studio_model_context.h
+@@ -0,0 +1,44 @@
++// SPDX-License-Identifier: MIT
++// Copyright (c) 2026 yeyunyyds.
++// All newly added implementation code in this fork was generated by OpenAI Codex from prompts and specifications provided by yeyunyyds.
++#pragma once
++
++#include <windows.h>
++#include <cstdint>
++
++namespace studio_model {
++enum class NameStatus : uint8_t { Unreadable, InvalidHeader, Empty, Available, Truncated };
++struct Snapshot {
++  // Escaped copy of the 64-byte studiohdr name, never an engine-owned string.
++  char name[257] {};
++  NameStatus nameStatus = NameStatus::Unreadable;
++  DWORD threadId = 0;
++  unsigned depth = 0;
++  uint64_t sequence = 0;
++  uintptr_t renderContext = 0;
++  uintptr_t studioHeader = 0;
++  uintptr_t vtxData = 0;
++  uintptr_t hardwareData = 0;
++};
++struct ThreadState;
++class Scope {
++public:
++  Scope(void* renderContext, const void* studioHeader, const void* vtxData, const void* hardwareData) noexcept;
++  ~Scope() noexcept;
++  Scope(const Scope&) = delete;
++  Scope& operator=(const Scope&) = delete;
++  const Snapshot& snapshot() const noexcept { return m_snapshot; }
++private:
++  friend const Snapshot* active() noexcept;
++  ThreadState* m_state = nullptr;
++  const Scope* m_previous = nullptr;
++  Snapshot m_snapshot;
++};
++// Both getters only read already-published fault-thread TLS. They never create it.
++const Snapshot* active() noexcept;
++const Snapshot* recent() noexcept;
++const char* nameStatus(NameStatus status) noexcept;
++#ifdef L4D2_STUDIO_TEST
++bool testHasStorage() noexcept;
++#endif
++}
