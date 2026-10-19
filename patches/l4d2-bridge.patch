@@ -21615,7 +21615,7 @@ index 0000000..3be5150
 +}
 diff --git a/bridge/src/util/studio_model_context.cpp b/bridge/src/util/studio_model_context.cpp
 new file mode 100644
-index 0000000..0b81e13
+index 0000000..1574641
 --- /dev/null
 +++ b/bridge/src/util/studio_model_context.cpp
 @@ -0,0 +1,132 @@
@@ -21686,7 +21686,7 @@ index 0000000..0b81e13
 +void event(const char* phase, const Snapshot& snapshot) noexcept {
 +  char message[1024] {};
 +  _snprintf_s(message, _countof(message), _TRUNCATE,
-+    "studio_model event=%s sequence=%llu depth=%u model_tid=%lu model=\"%s\" name_status=%s "
++    "studio_model event=%s sequence=%llu depth=%u model_tid=%lu model=\"%.256s\" name_status=%s "
 +    "name_source=studiohdr.name[64] lod=unknown context=0x%llx studiohdr=0x%llx vtx=0x%llx hardware=0x%llx",
 +    phase, static_cast<unsigned long long>(snapshot.sequence), snapshot.depth, snapshot.threadId,
 +    snapshot.name, nameStatus(snapshot.nameStatus), static_cast<unsigned long long>(snapshot.renderContext),
