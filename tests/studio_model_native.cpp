@@ -110,15 +110,18 @@ void semantics() {
     studio_model::Scope a(nullptr, &outer, nullptr, nullptr);
     assert(GetLastError() == 0xabc);
     const auto* before = studio_model::active(); assert(before && before->depth == 1);
+    assert(before != &a.snapshot()); // Exception readers use TLS-owned data, not the Scope's stack copy.
     {
       studio_model::Scope b(nullptr, &inner, nullptr, nullptr);
       assert(studio_model::active()->depth == 2);
       assert(strcmp(studio_model::active()->name, inner.name) == 0);
     }
     assert(studio_model::active() == before && GetLastError() == 0xabc);
+    assert(strcmp(studio_model::active()->name, outer.name) == 0);
     try { studio_model::Scope b(nullptr, &inner, nullptr, nullptr); throw 7; }
     catch (int value) { assert(value == 7); }
     assert(studio_model::active() == before);
+    assert(strcmp(studio_model::active()->name, outer.name) == 0);
   }
   assert(!studio_model::active());
   assert(strcmp(studio_model::recent()->name, outer.name) == 0);
@@ -193,6 +196,7 @@ void semantics() {
     const auto* previous = studio_model::active();
     assert(catchOriginalAv(&target, &inner));
     assert(studio_model::active() == previous);
+    assert(strcmp(studio_model::active()->name, outer.name) == 0);
   }
   assert(!studio_model::active());
   setSlot(table, reinterpret_cast<void*>(original)); assert(VirtualFree(table, 0, MEM_RELEASE));
@@ -233,13 +237,18 @@ void childFault(const std::wstring& mode, const fs::path& directory) {
     assert(VirtualFree(data, 0, MEM_RELEASE)); volatile int value = fault(); (void)value;
   }
   studio_model::Scope a(nullptr, &outer, nullptr, nullptr);
+  if (mode == L"bounded") {
+    auto* snapshot = const_cast<studio_model::Snapshot*>(studio_model::active());
+    memset(snapshot->name, 'x', sizeof(snapshot->name)); // Simulate a corrupted terminator in our own test buffer.
+    volatile int value = fault(); (void)value;
+  }
   if (mode == L"nested") { studio_model::Scope b(nullptr, &inner, nullptr, nullptr); volatile int value = fault(); (void)value; }
   volatile int value = fault(); (void)value;
   abort();
 }
 void faults() {
   wchar_t exe[4096] {}; assert(GetModuleFileNameW(nullptr, exe, _countof(exe)));
-  for (const auto* mode : {L"active", L"nested", L"freed", L"unreadable", L"recent", L"worker", L"disabled", L"hook"}) {
+  for (const auto* mode : {L"active", L"nested", L"freed", L"unreadable", L"recent", L"worker", L"disabled", L"hook", L"bounded"}) {
     const auto directory = fs::absolute(fs::path("cases") / mode);
     fs::remove_all(directory); fs::create_directories(directory);
     std::wstring command = L"\"" + std::wstring(exe) + L"\" crash " + mode + L" \"" + directory.wstring() + L"\"";
@@ -266,6 +275,11 @@ void faults() {
     if (std::wstring(mode) == L"nested") { contains(text, "depth=2"); }
     if (std::wstring(mode) == L"recent") { contains(text, "studio_model kind=recent_completed available=1"); }
     if (std::wstring(mode) == L"unreadable") { contains(text, "name_status=unreadable"); }
+    if (std::wstring(mode) == L"bounded") {
+      const auto start = report.find("model=\""); assert(start != std::string::npos);
+      const auto end = report.find('"', start + 7); assert(end != std::string::npos);
+      assert(report.substr(start + 7, end - start - 7) == std::string(256, 'x'));
+    }
     if (std::wstring(mode) == L"disabled") { assert(text.find("studio_model event=") == std::string::npos); }
     assert(text.find("studio_model event=end") == std::string::npos || std::wstring(mode) == L"recent");
     puts(("fault context passed: " + std::string(fs::path(mode).string())).c_str());
