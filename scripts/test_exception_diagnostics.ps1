@@ -17,7 +17,7 @@ if ($CompileArchitecture) {
     try {
       & cl.exe /nologo /std:c++17 /EHsc /W4 /WX /LD "$repoRoot/tests/exception_test_module.cpp" /link /OUT:exception-test-module.dll
       if ($LASTEXITCODE -ne 0) { throw 'Exception test DLL compilation failed' }
-      & cl.exe /nologo /std:c++17 /EHsc /W4 /WX /DNOMINMAX /DL4D2_EXCEPTION_TEST "/DREMIX_BRIDGE_$role" "/I$source/bridge/src/util" "$repoRoot/tests/exception_attribution.cpp" "$source/bridge/src/util/exception_diagnostics.cpp" /Fe:exception-test.exe /link psapi.lib
+      & cl.exe /nologo /std:c++17 /EHsc /W4 /WX /DNOMINMAX /DL4D2_EXCEPTION_TEST "/DREMIX_BRIDGE_$role" "/I$source/bridge/src/util" "$repoRoot/tests/exception_attribution.cpp" "$source/bridge/src/util/exception_diagnostics.cpp" "$source/bridge/src/util/studio_model_context.cpp" /Fe:exception-test.exe /link psapi.lib
       if ($LASTEXITCODE -ne 0) { throw "Exception test compilation failed for $CompileArchitecture $role" }
       & .\exception-test.exe (Join-Path $output 'exception-test-module.dll')
       if ($LASTEXITCODE -ne 0) { throw "Exception diagnostic test failed for $CompileArchitecture $role" }

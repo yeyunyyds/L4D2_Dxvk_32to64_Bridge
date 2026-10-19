@@ -13,6 +13,7 @@ on:
       - codex/ipc-upload-safety
       - codex/steam-renderer-1112307
       - codex/ipc-data-queue-correctness
+      - codex/studio-model-diagnostics
   workflow_dispatch:
     inputs:
       correctness_stage:
@@ -158,6 +159,9 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'DXVK extraction failed' }
       - name: Prepare pinned Bridge sources
         run: python scripts/prepare_bridge.py
+      - name: StudioRender model context, exact DLL identity and crash-thread diagnostics
+        shell: powershell
+        run: ./scripts/test_studio_model_diagnostics.ps1
       - name: All correctness fixes against frozen main and negative controls
         shell: powershell
         run: ./scripts/test_correctness.ps1 -Stage all
@@ -307,6 +311,7 @@ jobs:
             work/upload-safety-*/
             work/ipc-safety-replies.json
             work/release-build.json
+            work/studio-model-native/
             work/correctness-*/
             .deps/observation-test-*/
             .deps/steam-*/

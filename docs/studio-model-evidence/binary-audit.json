@@ -1,0 +1,37 @@
+{
+  "sha256": "03964dedcf8b7f4ebde24cd3d0738873d37c075a7a9b313dad001bb937f9d1b6",
+  "bytes": 634672,
+  "machine": "0x14c",
+  "image_base": "0x10000000",
+  "image_size": "0x653000",
+  "timestamp": "0x6a440dd6",
+  "executed": false,
+  "known_sample": true,
+  "verified_annotations": {
+    "fault": "0x6896f: movss xmm6, dword ptr [eax] (read)",
+    "call_chain": [
+      [
+        "0x69e36",
+        "0x69b00"
+      ],
+      [
+        "0x69c62",
+        "0x69950"
+      ],
+      [
+        "0x69a32",
+        "0x69560"
+      ],
+      [
+        "0x696f2",
+        "0x68890"
+      ]
+    ],
+    "entry": "0x69cd0; ECX=this; [ESP+4]=studiohdr*, [ESP+8]=vtx*, [ESP+12]=hardware*; AL=bool; ret 0x0c",
+    "vtable": "CStudioRenderContext vtable RVA 0x7f03c; slot 10 at 0x7f064",
+    "name": "studiohdr+0x0c used by actual error formatter; copy capacity 64 from SDK studiohdr",
+    "lod": "LoadModel loops over LODs; current LOD unavailable in the chosen entry Hook",
+    "coverage": "Virtual calls through this audited slot after installation; not arbitrary engine versions",
+    "symbols": "No matching PDB available; internal mesh names are structural identifications, not recovered symbols"
+  }
+}
