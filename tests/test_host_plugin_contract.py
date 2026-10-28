@@ -36,6 +36,7 @@ class HostPluginContractTests(unittest.TestCase):
         self.assertIn("server.plugins = False", config)
         self.assertIn('Config::getOption<bool>("server.plugins", false)', PATCH)
         self.assertIn("if (gHostPlugins.wantsPresent())", PATCH)
+        self.assertIn("host_plugin_include_path = include_directories('../../include')", PATCH)
         self.assertNotIn("server.plugins = True", config)
 
 
