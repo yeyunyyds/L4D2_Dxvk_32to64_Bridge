@@ -41,16 +41,18 @@ ABI v1 提供这些可选回调：
 |---|---|
 | `on_load` | DLL 查询通过后，尚未创建 Device |
 | `on_device_created` | Host 的真实 DXVK D3D9 Device 创建成功后 |
+| `on_swapchain_created` | 主 SwapChain 链接或附加 SwapChain 创建成功后，传入真实 `IDirect3DSwapChain9*` |
 | `on_before_present` | `IDirect3DDevice9::Present` 或 SwapChain `Present` 之前 |
 | `on_before_reset` | `Reset` / `ResetEx` 调用之前，适合释放默认池资源 |
 | `on_after_reset` | Reset 返回后，同时提供真实 HRESULT |
+| `on_swapchain_destroyed` | Host 释放对应 SwapChain 之前 |
 | `on_device_destroyed` | Device 最终 Release 之前 |
 | `on_shutdown` | Host 退出且 DLL 卸载之前；插件必须在这里停止线程 |
 
-`on_before_present` 在 Host 渲染线程调用。插件不能在此等待网络、文件或后台锁；音乐状态应由插件自己的后台线程读取并发布无阻塞快照。插件若执行 D3D9 绘制，必须恢复自己改变的 render target、shader、texture、vertex/index buffer、viewport 和 render state。Host 不替插件保存整套状态，因为这会让未使用插件的路径承担成本。
+`on_before_present` 在 Host 渲染线程调用。`LDBHostPresentInfoV1::swap_chain` 提供当前真实 SwapChain：SwapChain `Present` 路径保证非空；Device `Present` 路径按需取得主 SwapChain，查询失败时可能为空。插件不能在此等待网络、文件或后台锁；音乐状态应由插件自己的后台线程读取并发布无阻塞快照。插件若执行 D3D9 绘制，必须恢复自己改变的 render target、shader、texture、vertex/index buffer、viewport 和 render state。Host 不替插件保存整套状态，因为这会让未使用插件的路径承担成本。
 
 ## 故障与兼容边界
 
-插件 DLL 与 Host 同进程，错误指针、死锁或设备误用仍可能使 Host 崩溃；C ABI 和异常边界不能提供进程隔离。插件不应保存回调参数中的临时结构指针，不能自行 Release Host 传入的 Device，也不能取消或替换 Present/Reset 返回值。
+插件 DLL 与 Host 同进程，错误指针、死锁或设备误用仍可能使 Host 崩溃；C ABI 和异常边界不能提供进程隔离。插件不应保存回调参数中的临时结构指针，不能自行 Release Host 传入的 Device 或 SwapChain，也不能取消或替换 Present/Reset 返回值。若插件需要在回调外保留 COM 对象，必须自行 `AddRef`，并在对应销毁回调或退出前配对 `Release`。
 
-未来的屏幕歌词插件可以复用自己的音乐 API、歌词解析和动画，只需在 `on_before_present` 使用真实 Host D3D9 Device 绘制。LDB 本体不负责网络、歌词、配置界面或字体资源。
+未来的屏幕歌词插件可以复用自己的音乐 API、歌词解析和动画，在 `on_before_present` 使用真实 Host D3D9 Device 与当前 SwapChain 绘制；也可以按 SwapChain 生命周期维护独立资源。LDB 本体不负责网络、歌词、配置界面或字体资源。

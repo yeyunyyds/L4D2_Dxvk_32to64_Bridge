@@ -13,7 +13,7 @@
 | D3D9 COM | 游戏和现有 D3D9 使用者 | Windows SDK 接口形状；桥代理/缓存/异步语义见下文 |
 | Client control exports | 游戏进程内 x86 插件或其他控制器 | 带明确版本、固定二进制布局；推荐用于 HUD/设置集成 |
 | L4N SDK | L4N HUD 与可选插件 | SDK v2 的原有 callback/虚函数约定 |
-| Host plugin ABI | x86/x64 Host 同进程原生插件 | 默认关闭；Device/Present/Reset 生命周期回调，插件 DLL 与 Host 位数一致 |
+| Host plugin ABI | x86/x64 Host 同进程原生插件 | 默认关闭；Device/SwapChain/Present/Reset 生命周期回调，插件 DLL 与 Host 位数一致 |
 | 内部 IPC / recovery wire | 同批 Client 与 Host | 维护实现用，不是可跨版本、跨机器或第三方直接调用的 RPC SDK |
 
 ## 1. 公共控制 API：接入约定

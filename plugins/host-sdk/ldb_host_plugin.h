@@ -34,6 +34,7 @@ typedef struct LDBHostApiV1 {
 typedef struct LDBHostPresentInfoV1 {
   uint32_t struct_size;
   uint32_t is_swapchain_present;
+  IDirect3DSwapChain9* swap_chain;
   HWND destination_window_override;
   const RECT* source_rect;
   const RECT* destination_rect;
@@ -43,6 +44,7 @@ typedef struct LDBHostPresentInfoV1 {
 
 typedef BOOL (WINAPI* LDBHostPluginLoadFn)(const LDBHostApiV1* host);
 typedef void (WINAPI* LDBHostPluginDeviceFn)(IDirect3DDevice9* device);
+typedef void (WINAPI* LDBHostPluginSwapChainFn)(IDirect3DSwapChain9* swap_chain);
 typedef void (WINAPI* LDBHostPluginPresentFn)(IDirect3DDevice9* device, const LDBHostPresentInfoV1* present);
 typedef void (WINAPI* LDBHostPluginBeforeResetFn)(IDirect3DDevice9* device, const D3DPRESENT_PARAMETERS* parameters, BOOL extended);
 typedef void (WINAPI* LDBHostPluginAfterResetFn)(IDirect3DDevice9* device, HRESULT result, BOOL extended);
@@ -55,9 +57,11 @@ typedef struct LDBHostPluginV1 {
   const char* version;
   LDBHostPluginLoadFn on_load;
   LDBHostPluginDeviceFn on_device_created;
+  LDBHostPluginSwapChainFn on_swapchain_created;
   LDBHostPluginPresentFn on_before_present;
   LDBHostPluginBeforeResetFn on_before_reset;
   LDBHostPluginAfterResetFn on_after_reset;
+  LDBHostPluginSwapChainFn on_swapchain_destroyed;
   LDBHostPluginDeviceFn on_device_destroyed;
   LDBHostPluginShutdownFn on_shutdown;
 } LDBHostPluginV1;

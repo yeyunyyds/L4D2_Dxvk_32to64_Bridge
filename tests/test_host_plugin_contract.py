@@ -21,6 +21,9 @@ class HostPluginContractTests(unittest.TestCase):
         self.assertEqual(added_file("bridge/include/ldb_host_plugin.h"), public)
         self.assertIn("LDB_HOST_PLUGIN_ABI_VERSION 1u", public)
         self.assertIn('LDB_HOST_PLUGIN_QUERY_EXPORT "LDBHostPluginQuery"', public)
+        self.assertIn("IDirect3DSwapChain9* swap_chain", public)
+        self.assertIn("on_swapchain_created", public)
+        self.assertIn("on_swapchain_destroyed", public)
 
     def test_disabled_initialization_returns_before_any_filesystem_work(self):
         manager = added_file("bridge/src/server/host_plugins.h")
@@ -37,6 +40,8 @@ class HostPluginContractTests(unittest.TestCase):
         self.assertIn('Config::getOption<bool>("server.plugins", false)', PATCH)
         self.assertIn("if (gHostPlugins.wantsPresent())", PATCH)
         self.assertIn("host_plugin_include_path = include_directories('../../include')", PATCH)
+        self.assertIn("gHostPlugins.swapChainCreated(pSwapChain)", PATCH)
+        self.assertIn("gHostPlugins.swapChainDestroyed(pSwapChain)", PATCH)
         self.assertNotIn("server.plugins = True", config)
 
 

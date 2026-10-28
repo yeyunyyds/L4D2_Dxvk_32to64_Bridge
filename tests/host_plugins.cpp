@@ -11,9 +11,11 @@
 struct TestCounts {
   unsigned loaded;
   unsigned created;
+  unsigned swapchainsCreated;
   unsigned presented;
   unsigned beforeReset;
   unsigned afterReset;
+  unsigned swapchainsDestroyed;
   unsigned destroyed;
   unsigned shutdown;
   unsigned hostBits;
@@ -45,17 +47,22 @@ int main() {
     "plugin receives versioned Host API and actual architecture");
 
   auto* device = reinterpret_cast<IDirect3DDevice9*>(static_cast<uintptr_t>(1));
+  auto* swapChain = reinterpret_cast<IDirect3DSwapChain9*>(static_cast<uintptr_t>(2));
   D3DPRESENT_PARAMETERS parameters {};
-  LDBHostPresentInfoV1 present { sizeof(present), FALSE, nullptr, nullptr, nullptr, nullptr, 0 };
+  LDBHostPresentInfoV1 present { sizeof(present), TRUE, swapChain, nullptr, nullptr, nullptr, nullptr, 0 };
   enabled.deviceCreated(device);
+  enabled.swapChainCreated(swapChain);
   enabled.beforePresent(device, present);
   enabled.beforeReset(device, &parameters, FALSE);
   enabled.afterReset(device, D3D_OK, FALSE);
+  enabled.swapChainDestroyed(swapChain);
   enabled.deviceDestroyed(device);
   const TestCounts beforeShutdown = *counts();
-  require(beforeShutdown.created == 1 && beforeShutdown.presented == 1
+  require(beforeShutdown.created == 1 && beforeShutdown.swapchainsCreated == 1
+    && beforeShutdown.presented == 1
     && beforeShutdown.beforeReset == 1 && beforeShutdown.afterReset == 1
-    && beforeShutdown.destroyed == 1, "all D3D9 lifecycle callbacks are routed once");
+    && beforeShutdown.swapchainsDestroyed == 1 && beforeShutdown.destroyed == 1,
+    "all Device, SwapChain and Present lifecycle callbacks are routed once");
 
   enabled.shutdown();
   require(GetModuleHandleW(moduleName) == nullptr, "shutdown unloads independent plugin DLL");

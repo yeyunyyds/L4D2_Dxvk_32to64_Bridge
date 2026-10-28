@@ -48,7 +48,7 @@ flowchart LR
 | x86 / x64 Host | 解码命令、管理真实 D3D9 对象、调用后端、呈现、有限资源 readback | 不替 Client 决定下次 Host 位数，不负责常用设置菜单写配置 |
 | DXVK DLL | D3D9 后端语义、Vulkan 资源与提交、驱动交互 | Client PageBlock 回收不等于 DXVK 分配器或 VRAM 回收 |
 | 可选 L4N 插件 | HUD、查询与控制请求、展示结果 | 不解析或编辑 `bridge.conf`，不加载第二份 D3D9 runtime |
-| 可选 Host 插件 | 在真实 Host D3D9 Device 上接收 Device/Present/Reset 生命周期回调 | 默认关闭；插件自行负责功能、线程、资源和 D3D9 状态恢复 |
+| 可选 Host 插件 | 在真实 Host D3D9 Device/SwapChain 上接收创建、Present、Reset 和销毁回调 | 默认关闭；插件自行负责功能、线程、资源和 D3D9 状态恢复 |
 | ReShade | 在 Host 的 Vulkan 路径处理其效果和 UI | Bridge 菜单不安装、卸载或重载 ReShade |
 
 默认采用官方 DXVK 路径：`server.useVanillaDxvk=True`、`exposeRemixApi=False`。上游 Remix 接口和相关代码仍保留，但本分支日常路径不以 RTX/Remix runtime 为前提，也没有 GPU 厂商白名单。

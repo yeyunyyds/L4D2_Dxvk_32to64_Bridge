@@ -7,9 +7,11 @@
 struct TestCounts {
   unsigned loaded;
   unsigned created;
+  unsigned swapchainsCreated;
   unsigned presented;
   unsigned beforeReset;
   unsigned afterReset;
+  unsigned swapchainsDestroyed;
   unsigned destroyed;
   unsigned shutdown;
   unsigned hostBits;
@@ -27,11 +29,13 @@ static BOOL WINAPI onLoad(const LDBHostApiV1* host) {
   return TRUE;
 }
 static void WINAPI onCreated(IDirect3DDevice9*) { ++g_counts.created; }
+static void WINAPI onSwapChainCreated(IDirect3DSwapChain9*) { ++g_counts.swapchainsCreated; }
 static void WINAPI onPresent(IDirect3DDevice9*, const LDBHostPresentInfoV1* info) {
-  if (info && info->struct_size == sizeof(*info)) { ++g_counts.presented; }
+  if (info && info->struct_size == sizeof(*info) && info->swap_chain) { ++g_counts.presented; }
 }
 static void WINAPI beforeReset(IDirect3DDevice9*, const D3DPRESENT_PARAMETERS*, BOOL) { ++g_counts.beforeReset; }
 static void WINAPI afterReset(IDirect3DDevice9*, HRESULT, BOOL) { ++g_counts.afterReset; }
+static void WINAPI onSwapChainDestroyed(IDirect3DSwapChain9*) { ++g_counts.swapchainsDestroyed; }
 static void WINAPI onDestroyed(IDirect3DDevice9*) { ++g_counts.destroyed; }
 static void WINAPI onShutdown() {
   ++g_counts.shutdown;
@@ -47,9 +51,11 @@ extern "C" BOOL WINAPI LDBHostPluginQuery(uint32_t requested, LDBHostPluginV1* p
   result.version = "1";
   result.on_load = onLoad;
   result.on_device_created = onCreated;
+  result.on_swapchain_created = onSwapChainCreated;
   result.on_before_present = onPresent;
   result.on_before_reset = beforeReset;
   result.on_after_reset = afterReset;
+  result.on_swapchain_destroyed = onSwapChainDestroyed;
   result.on_device_destroyed = onDestroyed;
   result.on_shutdown = onShutdown;
   std::memcpy(plugin, &result, sizeof(result));
