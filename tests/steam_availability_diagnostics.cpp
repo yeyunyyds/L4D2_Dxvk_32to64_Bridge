@@ -34,9 +34,20 @@ int main(){
   require(decode(shifted,0x1d0000,shifted+0xb8a90,newer)==shifted+0x1962e9);
   require(!decode(base,0x1962e9,base+0xb8a90,newer));
   newer[7]=0x90;require(!decode(base,0x1d0000,base+0xb8a90,newer));
+  BYTE newer32[8]={0xa0,0xb9,0x81,0x15,0x10,0xc3,0xcc,0xcc};
+  require(decode(0x10000000u,0x18c000,0x1009ea70u,newer32)==0x101581b9u);
+  newer32[5]=0x90;require(!decode(0x10000000u,0x18c000,0x1009ea70u,newer32));
+  newer32[5]=0xc3;newer32[4]=0x20;require(!decode(0x10000000u,0x18c000,0x1009ea70u,newer32));
   using namespace l4d2_steam_availability;
+  #ifdef _WIN64
   require(l4d2_file_hash::matchesAny("59057f983ae6f02b7eb2495bf65e0430129dd81dff8d9628c764bd1a07e23fee",rendererHashes,rendererHashCount));
   require(l4d2_file_hash::matchesAny("cbde033f76ac070ad8b7d25328e8acfbbabae6e40487f40dfcf6203b6c932c0b",rendererHashes,rendererHashCount));
+  require(l4d2_file_hash::matchesAny("05a62859e55a9f2a8cb987cbdc79a3303f23ad7c83b4be56f5494beaa993ed43",rendererHashes,rendererHashCount));
+  require(!l4d2_file_hash::matchesAny("1afe9b93e0f36cbee628346e03ccae0c3f75567fdd2dd99c7b326b7f01eec841",rendererHashes,rendererHashCount));
+  #else
+  require(l4d2_file_hash::matchesAny("1afe9b93e0f36cbee628346e03ccae0c3f75567fdd2dd99c7b326b7f01eec841",rendererHashes,rendererHashCount));
+  require(!l4d2_file_hash::matchesAny("05a62859e55a9f2a8cb987cbdc79a3303f23ad7c83b4be56f5494beaa993ed43",rendererHashes,rendererHashCount));
+  #endif
   require(!l4d2_file_hash::matchesAny("cd5059973609f64595cbff4e18970a3fd7b45a2e5ff113b59ee86ba8f462d8a1",rendererHashes,rendererHashCount));
   require(!l4d2_file_hash::matchesAny(nullptr,rendererHashes,rendererHashCount));
   // Real Windows hashing of a test-owned file; a second accepted digest must
@@ -56,5 +67,5 @@ int main(){
   require(!l4d2_file_hash::hashFileAny(L"renderer-hash-fixture.bin",choices,2));
   require(std::remove("renderer-hash-fixture.bin")==0);
   Diagnostics::poll(false,logLine);
-  std::puts("PASS host-renderer-availability: old/new getter layout, ASLR, signed displacement, bounds, malformed/unknown refusal, one-pass multi-hash, LastError, legacy hash API, disabled observer; no supplied code executed");
+  std::puts("PASS host-renderer-availability: reviewed x86/x64 11.15 identities, old/new getter layouts, ASLR, signed displacement, bounds, malformed/unknown refusal, one-pass multi-hash, LastError, legacy hash API, disabled observer; no supplied code executed");
 }

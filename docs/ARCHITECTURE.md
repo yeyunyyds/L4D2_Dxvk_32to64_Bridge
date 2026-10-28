@@ -26,8 +26,10 @@ flowchart LR
     Host["L4D2Bridge32.exe / L4D2Bridge64.exe<br/>命令分派 / 真实 COM 对象表"]
     Backend["同位数 d3d9vk DLL<br/>DXVK D3D9 → Vulkan"]
     Presenter["可选 Host Presenter 子窗口<br/>ReShade 输入协调"]
+    HostPlugin["可选同位数 Host 插件<br/>默认关闭 / D3D9 生命周期回调"]
     Host --> Backend
     Host --> Presenter
+    Host --> HostPlugin
   end
   GPU["Vulkan 驱动 / GPU / 显示"]
   Conf["bin/.l4d2bridge/bridge.conf"]
@@ -46,6 +48,7 @@ flowchart LR
 | x86 / x64 Host | 解码命令、管理真实 D3D9 对象、调用后端、呈现、有限资源 readback | 不替 Client 决定下次 Host 位数，不负责常用设置菜单写配置 |
 | DXVK DLL | D3D9 后端语义、Vulkan 资源与提交、驱动交互 | Client PageBlock 回收不等于 DXVK 分配器或 VRAM 回收 |
 | 可选 L4N 插件 | HUD、查询与控制请求、展示结果 | 不解析或编辑 `bridge.conf`，不加载第二份 D3D9 runtime |
+| 可选 Host 插件 | 在真实 Host D3D9 Device 上接收 Device/Present/Reset 生命周期回调 | 默认关闭；插件自行负责功能、线程、资源和 D3D9 状态恢复 |
 | ReShade | 在 Host 的 Vulkan 路径处理其效果和 UI | Bridge 菜单不安装、卸载或重载 ReShade |
 
 默认采用官方 DXVK 路径：`server.useVanillaDxvk=True`、`exposeRemixApi=False`。上游 Remix 接口和相关代码仍保留，但本分支日常路径不以 RTX/Remix runtime 为前提，也没有 GPU 厂商白名单。
@@ -69,6 +72,7 @@ flowchart LR
 | `server/main.cpp`、`module_processing.cpp` | Device/Module 队列消费者、真实 D3D9 对象、Host 生命周期 |
 | `server/readback_backend.h`、`util/readback_*.h` | Host readback、临时 section/event、布局和数据校验 |
 | `server/overlay_presenter.h`、`client/window.cpp`、`di_hook.cpp` | 可选 Presenter、窗口消息和输入协调 |
+| `server/host_plugins.h`、`bridge/include/ldb_host_plugin.h` | 默认关闭的 Host 插件加载器与 C ABI v1；公共 SDK 副本位于 `plugins/host-sdk` |
 | `util/util_bridgecommand.*`、`util_commands.h`、`util_ipcchannel.h` | 命令编号、协议头、命令批次、共享队列与响应匹配 |
 | `util/config/config.*`、`config_document.h` | 配置加载、运行时缓存、保留原文的安全更新 |
 | `plugins/l4n/L4D2BridgePlugin.cpp` | 独立 x86 L4N HUD 插件 |
@@ -88,6 +92,7 @@ Client、x86 Host、x64 Host 使用同一补丁生成相同的 Bridge build ID�
    │  ├─ L4D2Bridge64.exe                x64 Host
    │  ├─ d3d9vk_x86.dll                  x86 DXVK
    │  ├─ d3d9vk_x64.dll                  x64 DXVK
+   │  ├─ plugins/                        可选同位数 Host 插件；默认不扫描
    │  └─ resource-retention.db
    └─ neko/plugins/L4D2BridgePlugin.dll   可选 x86 插件
 ```

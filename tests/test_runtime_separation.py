@@ -86,6 +86,7 @@ class RuntimeSeparation(unittest.TestCase):
                            'dataDiagnostics', 'colorDiagnostics', 'steamInputDiagnostics', 'steamWindowDiagnostics']:
                 self.assertRegex(config, re.escape(side + '.' + switch) + r'\s*=\s*False')
         self.assertRegex(config, r'server.presenterWindow\s*=\s*True')
+        self.assertRegex(config, r'server.plugins\s*=\s*False')
         self.assertRegex(config, r'client.steamWebDiagnostics\s*=\s*False')
         self.assertRegex(config, r'client.hookMessagePump\s*=\s*False')
         self.assertRegex(config, r'client.overrideCustomWinHooks\s*=\s*False')

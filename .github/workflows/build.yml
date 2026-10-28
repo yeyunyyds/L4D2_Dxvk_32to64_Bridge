@@ -81,7 +81,7 @@ jobs:
       - name: IME, capture and cross-process Presenter native regressions
         shell: powershell
         run: |
-          foreach ($test in @('steam_ime_native','steam_capture_state','overlay_presenter','steam_window_diagnostics','steam_web_diagnostics','steam_availability_diagnostics','steam_workshop_status','runtime_observation')) {
+          foreach ($test in @('steam_ime_native','steam_capture_state','overlay_presenter','host_plugins','steam_window_diagnostics','steam_web_diagnostics','steam_availability_diagnostics','steam_workshop_status','runtime_observation')) {
             & powershell.exe -NoProfile -File "./scripts/test_$test.ps1"
             if ($LASTEXITCODE -ne 0) { throw "$test failed" }
           }
@@ -111,6 +111,7 @@ jobs:
 
 
             .deps/overlay-presenter-test/
+            .deps/host-plugin-test/
             work/release-build.json
           include-hidden-files: true
           if-no-files-found: warn
@@ -257,6 +258,9 @@ jobs:
       - name: Test cross-process overlay presentation windows and input capture
         shell: powershell
         run: ./scripts/test_overlay_presenter.ps1
+      - name: Test opt-in Host plugin ABI and disabled no-scan path
+        shell: powershell
+        run: ./scripts/test_host_plugins.ps1
       - name: Test API wait attribution and snapshots on x86 and x64
         shell: powershell
         run: |

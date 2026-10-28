@@ -79,6 +79,14 @@ v1.2.0 正式版包含通用设置 API，L4N 插件单独提供 ZIP。旧 `v1.2.
 
 使用 [OVERLAY-INPUT.conf](../config/OVERLAY-INPUT.conf) 时需合并其中的配套设置；不要只改一个钩子便假设完整输入路径已开启。1.1.1 的点击重新激活修复继承在实现中，没有新增独立配置键。
 
+ReShade 6.8 的原生焦点修复与验证边界见 [ReShade 6.8 输入兼容](RESHADE-6.8-INPUT.md)。
+
+## Host 插件入口
+
+| 键 | 随包值 | 说明 |
+|---|---:|---|
+| `server.plugins` | `False` | Host 启动时是否启用独立原生插件。False 时在初始化入口立即返回，不解析 `plugins` 路径、不枚举目录、不查询或加载 DLL；运行中不能热开启。True 时扫描当前 Host EXE 同目录的 `plugins/*.dll`，只接受匹配架构和 ABI v1 的插件。详见 [Host 插件 ABI](HOST-PLUGIN-API.md)。 |
+
 ## 运行职责与诊断停用
 
 本节描述当前源码的诊断分离清理；已发布 v1.2.0 二进制仍按发布时行为运行，不能通过新配置键假定旧二进制已停止采样。实现前分类见 [完整审计](RUNTIME-DIAGNOSTICS-AUDIT.md)，验证方法和边界见 [分离报告](RUNTIME-DIAGNOSTICS-SEPARATION.md)。

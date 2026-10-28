@@ -14,6 +14,8 @@
 
 开发者参考：[当前技术架构](docs/ARCHITECTURE.md) · [API 与 ABI](docs/API.md) · [配置说明](docs/CONFIGURATION.md)。
 
+当前 main 的未发布改动包括 [Steam Renderer 11.15.70.27 适配](docs/STEAM-RENDERER-11.15.70.27.md)、[ReShade 6.8 输入修复](docs/RESHADE-6.8-INPUT.md)和默认关闭的[独立 Host 插件 ABI](docs/HOST-PLUGIN-API.md)。歌词插件本身不在本次范围内。
+
 <a id="chinese"></a>
 
 ## 项目作用
@@ -112,6 +114,7 @@ client.dataDiagnostics = False
 server.dataDiagnostics = False
 server.presenterWindow = True
 server.presenterInput = True
+server.plugins = False
 client.ipcBatchSize = 8
 client.vbibMappedShadow = False
 logApiCalls = False
@@ -157,7 +160,7 @@ L4D2 Bridge
 
 另有基于 2.6.1 x64 的可选 mem1 后端，只限制普通可映射分配块；不随本次本体升级重编，安装和历史观察见 [内存实验说明](docs/DXVK-MEMORY-EXPERIMENT.md)。相关 `dxvk.bridge*` 键写入 `dxvk.conf`，不能写入 `bridge.conf`。
 
-已验证 ReShade 组合：**x64 Host + Vulkan ReShade 6.0.1**。在安装器选择 `bin/.l4d2bridge/L4D2Bridge64.exe`，API 选 Vulkan；保持窗口模式。不要把 D3D9 ReShade 代理覆盖到游戏侧 Client 上。
+历史实机验证组合为 **x64 Host + Vulkan ReShade 6.0.1**；当前源码另整合 [ReShade 6.8 输入修复](docs/RESHADE-6.8-INPUT.md)，本次构建仍需游戏内验收。在安装器选择 `bin/.l4d2bridge/L4D2Bridge64.exe`，API 选 Vulkan；保持窗口模式。不要把 D3D9 ReShade 代理覆盖到游戏侧 Client 上。
 
 合并 [OVERLAY-INPUT.conf](config/OVERLAY-INPUT.conf)，或通过 L4N 的 Presenter 菜单保存配套配置。Home 开关面板，Host 选择独立设置，菜单不会自动切换为 x64。ReShade 本体、shader 和预设需要另行安装。说明见 [输入文档](docs/OVERLAY-INPUT-EXPERIMENT.md)。
 
@@ -193,7 +196,7 @@ Fresh installations default to **x64 Host + learned-aggressive**. Keep `forceX64
 
 Optional L4N SDK v2 controls install to `bin/neko/plugins/`. Menus include Status, GC, Memory Policy, ReShade Presenter, Host, IPC/Shadow configuration and English/Chinese language selection. Policy selection changes runtime only until explicitly saved; Host selection also requires Save and a full restart. Presenter settings apply after a full restart and do not install ReShade. Bridge works without the plugin.
 
-The validated ReShade combination remains **x64 Host + Vulkan ReShade 6.0.1**. Select the x64 Host EXE and Vulkan in its installer, use windowed mode and the presenter configuration described above. Replace only matching DXVK backend DLLs, never the Bridge Client.
+The historically validated combination is **x64 Host + Vulkan ReShade 6.0.1**. The current source also integrates the scoped ReShade 6.8 input fix; this build still requires in-game acceptance. Select the x64 Host EXE and Vulkan in its installer, use windowed mode and the presenter configuration described above. Replace only matching DXVK backend DLLs, never the Bridge Client.
 
 Steam Overlay fixes require matching configuration. The scoped Workshop proxy uses x64 Host and preserves original behavior for unknown GameUI/Renderer versions. IPC failures require a full restart; there is no automatic reconnection. Recovery is selective, experimental drop may cause repeated recovery stalls, and performance/compatibility depend on hardware, drivers, maps, MODs and overlays. Native CI and recorded gameplay checks have separate scopes.
 
@@ -213,7 +216,7 @@ Client/Host logs are `bridge32.log` and `bridge-host32.log`/`bridge64.log`. Keep
 | [Microsoft Detours](https://github.com/microsoft/Detours) | Microsoft Corporation and contributors; API hooks | MIT |
 | [Tracy](https://github.com/wolfpld/tracy) | Bartosz Taudul and contributors; upstream profiling component | BSD-3-Clause |
 | [TXVK](https://github.com/tianxiaols/TXVK) | tianxiaols / TXVK contributors; public documentation/binary analysis reference, no custom code copied or binaries redistributed | Closed source; current TXVK license reserves all rights; reference only |
-| [ReShade 6.0.1](https://github.com/crosire/reshade/tree/v6.0.1) | Patrick Mours; public ABI and input reference, no SDK implementation or DLL redistributed | SDK: BSD-3-Clause OR MIT |
+| [ReShade 6.0.1 / 6.8.0](https://github.com/crosire/reshade) | Patrick Mours; public addon ABI and input behavior reference, no SDK implementation or DLL redistributed | SDK: BSD-3-Clause OR MIT |
 | L4N plugin SDK v2 | User-provided official interface header; preserved verbatim, optional HUD controls | License unspecified in supplied header; not relicensed as MIT |
 | L4D2 / Steam | Valve; game/platform, not distributed here | Valve's terms |
 

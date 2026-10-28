@@ -4,15 +4,16 @@
 
 # Bridge API 参考
 
-下文记录 v1.2.0 基础控制 ABI，v1.3.0 保留这些尺寸、版本与旧调用兼容；利用原 reserved 字段增加的 IPC/Shadow 配置扩展见 [L4N 配置接口](L4N-CONFIG-MENU.md)。内部 IPC 已更新为完整 v2，不作为外部控制 ABI 使用。架构与生命周期见 [ARCHITECTURE.md](ARCHITECTURE.md)。
+下文记录 v1.2.0 基础控制 ABI，v1.3.0 保留这些尺寸、版本与旧调用兼容；利用原 reserved 字段增加的 IPC/Shadow 配置扩展见 [L4N 配置接口](L4N-CONFIG-MENU.md)。main 另新增默认关闭的 [Host 插件 ABI v1](HOST-PLUGIN-API.md)，它与 Client 控制 ABI 独立。内部 IPC 已更新为完整 v2，不作为外部控制 ABI 使用。架构与生命周期见 [ARCHITECTURE.md](ARCHITECTURE.md)。
 
-本文是**现有接口文档**，不增加 API、不改变 ABI。接口分层如下：
+本文记录现有 Client 控制接口，并索引 main 新增且独立版本化的 Host 插件 ABI；原 Client 控制 ABI 不变。接口分层如下：
 
 | 层 | 调用者 | 稳定性与用途 |
 |---|---|---|
 | D3D9 COM | 游戏和现有 D3D9 使用者 | Windows SDK 接口形状；桥代理/缓存/异步语义见下文 |
 | Client control exports | 游戏进程内 x86 插件或其他控制器 | 带明确版本、固定二进制布局；推荐用于 HUD/设置集成 |
 | L4N SDK | L4N HUD 与可选插件 | SDK v2 的原有 callback/虚函数约定 |
+| Host plugin ABI | x86/x64 Host 同进程原生插件 | 默认关闭；Device/Present/Reset 生命周期回调，插件 DLL 与 Host 位数一致 |
 | 内部 IPC / recovery wire | 同批 Client 与 Host | 维护实现用，不是可跨版本、跨机器或第三方直接调用的 RPC SDK |
 
 ## 1. 公共控制 API：接入约定
@@ -693,4 +694,4 @@ Client backing 可有最小行 pitch/padding，wire bytes 只含逻辑像素；�
 
 ## 可选数据追踪
 
-本轮未新增或修改公开导出、请求结构、命令 ID 或 IPC payload。Client/Host 通过 `client/server.dataDiagnostics` 启用内部追踪，不通过 L4N 控制；日志格式和分析入口见 [DATA-TRACKING.md](DATA-TRACKING.md)。
+数据追踪功能没有新增或修改 Client 公开导出、请求结构、命令 ID 或 IPC payload。独立 Host 插件 ABI 不进入桥 IPC。Client/Host 通过 `client/server.dataDiagnostics` 启用内部追踪，不通过 L4N 控制；日志格式和分析入口见 [DATA-TRACKING.md](DATA-TRACKING.md)。

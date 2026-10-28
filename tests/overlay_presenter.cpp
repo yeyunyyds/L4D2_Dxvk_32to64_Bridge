@@ -176,14 +176,29 @@ int main(int argc, char** argv) {
     // Foreground activation of a different thread can complete asynchronously.
     SendMessageW(parent, WM_NULL, 0, 0);
     require(GetForegroundWindow() == parent, "clicking captured presenter restores foreground to game root");
-    hostGui = {}; hostGui.cbSize = sizeof(hostGui);
-    require(GetGUIThreadInfo(GetWindowThreadProcessId(child, nullptr), &hostGui) != FALSE
-      && hostGui.hwndFocus != child, "click does not give keyboard focus to Host presenter");
+    bool reshadeFocused = false;
+    for (int i = 0; i < 100; ++i) {
+      hostGui = {}; hostGui.cbSize = sizeof(hostGui);
+      if (GetGUIThreadInfo(GetWindowThreadProcessId(child, nullptr), &hostGui) != FALSE
+        && hostGui.hwndFocus == child) { reshadeFocused = true; break; }
+      Sleep(10);
+    }
+    require(reshadeFocused, "foreground ReShade capture gives native queue focus to Presenter");
     require(toggle(false) && enabled(child, false), "ReShade closes and releases capture after reactivation");
     SendMessageW(parent, kFinishActivation, 0, 0);
     require(warmupCalls.load() == 0, "background Steam and ReShade never initialize or steal IME focus");
     require(SendMessageW(parent, kFocusGame, GetCurrentProcessId(), 0) != FALSE,
       "activate owned game for native Steam IME regression");
+    require(toggle(true), "open ReShade after foreground activation");
+    reshadeFocused = false;
+    for (int i = 0; i < 100; ++i) {
+      hostGui = {}; hostGui.cbSize = sizeof(hostGui);
+      if (GetGUIThreadInfo(GetWindowThreadProcessId(child, nullptr), &hostGui) != FALSE
+        && hostGui.hwndFocus == child) { reshadeFocused = true; break; }
+      Sleep(10);
+    }
+    require(reshadeFocused, "ReShade 6.8 receives native Home and checkbox queue input");
+    require(toggle(false) && enabled(child, false), "closing ReShade releases native capture");
     presenter.steamCapture(true);
     for (int i = 0; i < 100 && !warmupCalls.load(); ++i) { Sleep(10); }
     require(warmupCalls.load() == 1 && warmupSuccess.load() == 1,

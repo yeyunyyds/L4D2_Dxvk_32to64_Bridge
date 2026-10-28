@@ -7,6 +7,12 @@
 
 当前正式版为 **v1.3.2**。简明记录见 [LDBREADME](LDBREADME.md)。
 
+## main（未发布）
+
+- 适配 Steam Renderer 11.15.70.27：核对并接受用户提供的 x86/x64 完整文件身份，分别验证 `IsOverlayEnabled` getter 指令与映像边界；x86 Host 也可发布真实可用性状态。未知版本继续拒绝。
+- 参考 NPCodex Nightlybuild 的已验证修复，让 ReShade 6.8 捕获时使用 Presenter 原生焦点，保留 Steam/ReShade 独立捕获来源及交接。
+- 新增默认关闭的 Host 插件 ABI v1。`server.plugins=False` 时不解析、枚举或加载插件；启用后才扫描 Host 同目录的 `plugins`，提供 Device、Present、Reset、销毁与退出回调。当前不包含歌词插件。
+
 ## 1.3.2（正式发布 / Stable）
 
 - 中文输入法修复：整合已实机通过的 Steam Overlay TSF / 原生输入初始化。
