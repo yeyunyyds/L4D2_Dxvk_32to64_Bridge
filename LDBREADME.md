@@ -1,10 +1,10 @@
-# LDB v1.3.2
+# LDB v1.3.3
 
-本次修复中文输入法、Steam Overlay 及部分安全性问题。保留完整 IPC v2，默认 C8；VB/IB VA allocator；可选 Shadow 按需映射（默认关闭）；Steam Overlay、鼠标、Join Server 与 Workshop 入口修复；L4N 配置保存及中英文切换。
+本次适配 Steam Renderer 11.15.70.27，并修复 ReShade 6.8 的 Home 与复选框原生输入。保留 v1.3.2 的中文输入、Steam 邀请/Workshop、正确性修补、完整 IPC v2 与 L4N 菜单；不包含实验 Host 插件入口。
 
 新安装默认 x64 Host + learned-aggressive。已有安装使用配套三件套升级包并保留配置/DXVK/ReShade/retention DB；插件独立更新。配置菜单保存后完整重启游戏与 Host 生效。
 
-[本次改动](docs/RELEASE-V1.3.2-NOTES.md) · [安装与回退](docs/RELEASE-V1.3.2.md) · [L4N 菜单](docs/L4N-CONFIG-MENU.md)
+[本次改动](docs/RELEASE-V1.3.3-NOTES.md) · [安装与回退](docs/RELEASE-V1.3.3.md) · [L4N 菜单](docs/L4N-CONFIG-MENU.md)
 
 以下保留旧版本记录。
 

@@ -12,7 +12,13 @@ import json
 from pathlib import Path
 import struct
 
-KNOWN = '59057f983ae6f02b7eb2495bf65e0430129dd81dff8d9628c764bd1a07e23fee'
+KNOWN = {
+    '59057f983ae6f02b7eb2495bf65e0430129dd81dff8d9628c764bd1a07e23fee': '10.96.30.42-x64',
+    'cbde033f76ac070ad8b7d25328e8acfbbabae6e40487f40dfcf6203b6c932c0b': '11.12.30.7-x64',
+    'cd5059973609f64595cbff4e18970a3fd7b45a2e5ff113b59ee86ba8f462d8a1': '11.12.30.7-x86',
+    '05a62859e55a9f2a8cb987cbdc79a3303f23ad7c83b4be56f5494beaa993ed43': '11.15.70.27-x64',
+    '1afe9b93e0f36cbee628346e03ccae0c3f75567fdd2dd99c7b326b7f01eec841': '11.15.70.27-x86',
+}
 
 
 def inspect(path):
@@ -26,9 +32,14 @@ def inspect(path):
     optional_size = struct.unpack_from('<H', raw, pe+20)[0]
     optional = pe+24
     magic = struct.unpack_from('<H', raw, optional)[0]
-    if magic != 0x20b or machine != 0x8664:
-        raise ValueError('This inspector expects an x64 PE32+ sample')
-    image_base = struct.unpack_from('<Q', raw, optional+24)[0]
+    if magic == 0x20b and machine == 0x8664:
+        image_base = struct.unpack_from('<Q', raw, optional+24)[0]
+        data_directory = optional+112
+    elif magic == 0x10b and machine == 0x14c:
+        image_base = struct.unpack_from('<I', raw, optional+28)[0]
+        data_directory = optional+96
+    else:
+        raise ValueError('Expected an x86 PE32 or x64 PE32+ sample')
     sections = []
     for i in range(count):
         offset = optional+optional_size+40*i
@@ -51,8 +62,9 @@ def inspect(path):
         end = raw.index(0, start, min(start+4096, len(raw)))
         return raw[start:end].decode('ascii')
 
-    export_rva = struct.unpack_from('<I', raw, optional+112)[0]
+    export_rva = struct.unpack_from('<I', raw, data_directory)[0]
     exports = {}
+    export_values = {}
     if export_rva:
         e = offset(export_rva)
         _, functions, names, function_table, name_table, ordinal_table = struct.unpack_from('<IIIIII', raw, e+16)
@@ -63,24 +75,31 @@ def inspect(path):
                 raise ValueError('Invalid export ordinal')
             target = struct.unpack_from('<I', raw, offset(function_table)+4*ordinal)[0]
             exports[string(name_rva)] = hex(target)
+            export_values[string(name_rva)] = target
     digest = hashlib.sha256(raw).hexdigest()
     report = dict(bytes=len(raw), sha256=digest, machine=hex(machine),
                   image_base=hex(image_base), exports=exports,
-                  known_sample=digest == KNOWN, executed=False)
-    if digest == KNOWN:
-        report['known_sample_annotations'] = {
-            'window_selection_rva': '0xa69f0',
-            'get_active_window_return_rva': '0xa6ad4',
-            'get_foreground_window_return_rva': '0xa6ae2',
-            'owner_pid_failure_branch_rva': '0xa6b22 -> 0xa6b28',
-            'render_update_rva': '0xbfd60',
-            'selection_call_rva': '0xc04fb',
-            'vulkan_present_export_rva': '0xc6ae0',
-            'selection_bytes_sha256': hashlib.sha256(raw[offset(0xa69f0):offset(0xa6ba8)]).hexdigest(),
-            'keyboard_mouse_exports_alias': exports['SteamOverlayIsUsingKeyboard'] == exports['SteamOverlayIsUsingMouse'],
-            'set_window_type_first_bytes': raw[offset(0x3ded0):offset(0x3ded0)+3].hex(),
+                  known_sample=digest in KNOWN, known_identity=KNOWN.get(digest), executed=False)
+    if digest in KNOWN:
+        annotations = {
+            'is_overlay_enabled_rva': exports.get('IsOverlayEnabled'),
+            'is_overlay_enabled_first_bytes': raw[offset(export_values['IsOverlayEnabled']):offset(export_values['IsOverlayEnabled'])+8].hex(),
             'claim_scope': 'static sample only; actual runtime branch and loaded DLL identity unverified',
         }
+        if digest == '59057f983ae6f02b7eb2495bf65e0430129dd81dff8d9628c764bd1a07e23fee':
+            annotations.update({
+                'window_selection_rva': '0xa69f0',
+                'get_active_window_return_rva': '0xa6ad4',
+                'get_foreground_window_return_rva': '0xa6ae2',
+                'owner_pid_failure_branch_rva': '0xa6b22 -> 0xa6b28',
+                'render_update_rva': '0xbfd60',
+                'selection_call_rva': '0xc04fb',
+                'vulkan_present_export_rva': '0xc6ae0',
+                'selection_bytes_sha256': hashlib.sha256(raw[offset(0xa69f0):offset(0xa6ba8)]).hexdigest(),
+                'keyboard_mouse_exports_alias': exports['SteamOverlayIsUsingKeyboard'] == exports['SteamOverlayIsUsingMouse'],
+                'set_window_type_first_bytes': raw[offset(0x3ded0):offset(0x3ded0)+3].hex(),
+            })
+        report['known_sample_annotations'] = annotations
     return report
 
 

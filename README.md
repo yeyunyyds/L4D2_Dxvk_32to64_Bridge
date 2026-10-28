@@ -1,16 +1,16 @@
-# LDB v1.3.2
+# LDB v1.3.3
 
-本次修复 Steam Overlay 中文输入，整合 Steam Overlay 修复与部分安全性修补。保留完整 IPC v2、默认 C8、VA allocator、默认关闭的 Shadow 按需映射及 L4N 配置/语言菜单。
+本次适配 Steam Renderer 11.15.70.27，并修复 ReShade 6.8 的 Home 与复选框输入。保留 v1.3.2 的中文输入、正确性修补、完整 IPC v2 与 L4N 配置菜单。
 
-[更新说明](docs/RELEASE-V1.3.2-NOTES.md) · [安装、默认值与回退](docs/RELEASE-V1.3.2.md)
+[更新说明](docs/RELEASE-V1.3.3-NOTES.md) · [安装、默认值与回退](docs/RELEASE-V1.3.3.md)
 
 # L4D2 DXVK Bridge
 
-[中文](#chinese) | [English](#english) · [v1.3.2 更新说明](docs/RELEASE-V1.3.2-NOTES.md) · [简明版本记录](LDBREADME.md) · [详细更新历史](CHANGELOG.md)
+[中文](#chinese) | [English](#english) · [v1.3.3 更新说明](docs/RELEASE-V1.3.3-NOTES.md) · [简明版本记录](LDBREADME.md) · [详细更新历史](CHANGELOG.md)
 
-**当前正式版：v1.3.2。** 整合完整 IPC v2、VB/IB VA 分配器、可选 Shadow 按需映射、Steam Overlay 修复与新版 L4N 菜单。默认 C8、Shadow 映射关闭，详细诊断关闭。
+**当前正式版：v1.3.3。** 适配 Steam Renderer 11.15.70.27，修复 ReShade 6.8 原生输入，并保留 v1.3.2 的完整 IPC v2、正确性修补与 L4N 菜单。默认 C8、Shadow 映射关闭，详细诊断关闭。
 
-[下载 v1.3.2](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/releases/tag/v1.3.2)：已有安装优先选三件套补丁，保留配置、DXVK、ReShade 和 retention DB。完整包用于首次安装；新版 L4N 插件单独下载。历史附件保持原样。
+[下载 v1.3.3](https://github.com/yeyunyyds/L4D2_Dxvk_32to64_Bridge/releases/tag/v1.3.3)：已有安装优先选三件套补丁，保留配置、DXVK、ReShade 和 retention DB。完整包用于首次安装；L4N 插件单独下载。历史附件保持原样。
 
 开发者参考：[当前技术架构](docs/ARCHITECTURE.md) · [API 与 ABI](docs/API.md) · [配置说明](docs/CONFIGURATION.md)。
 
@@ -22,11 +22,11 @@
 
 桥负责 D3D9 接口、桥接资源、跨进程传输与呈现，以及这些实现引起的问题。它不修改 Source 游戏逻辑、私有对象或任务队列。项目没有显卡厂商白名单，不要求 NVIDIA/RTX，实际支持取决于所选 DXVK、GPU 和驱动。
 
-## v1.3.2 的变化
+## v1.3.3 的变化
 
-- 修复 Steam Overlay 中文输入法初始化，保留已实机验证的中文输入路径。
-- 整合 Steam Overlay 邀请、输入、窗口及新版 Steam Renderer 兼容修复。
-- 修补 Query 返回值、Shader 参数溢出、UpdateTexture 参数、SharedHeap 边界与 Host 资源访问检查。
+- 适配 Steam Renderer 11.15.70.27 的 x86/x64 完整文件身份与 `IsOverlayEnabled` getter。
+- 参考 NPCodex Nightlybuild，让 ReShade 6.8 捕获时取得 Presenter 原生焦点，修复 Home 和复选框输入。
+- 保留 v1.3.2 的 Steam 中文输入、邀请/Workshop 适配与 Bridge 正确性修补；不包含实验 Host 插件入口。
 
 ## 保留的功能
 
@@ -59,9 +59,9 @@
 
 | Release 文件 | 选择方式 |
 |---|---|
-| `l4d2-bridge-v1.3.2.zip` | 首次安装；包含 Client、x86/x64 Host、官方 DXVK 2.6.1 和默认配置 |
-| `l4d2-bridge-patch-v1.3.2.zip` | 已有安装；只更新三个桥二进制，保留运行配置、后端、ReShade 和 retention DB |
-| `l4d2-bridge-l4n-v1.3.2.zip` | 可选 L4N SDK v2 菜单插件，独立于本体和补丁 |
+| `l4d2-bridge-v1.3.3.zip` | 首次安装；包含 Client、x86/x64 Host、官方 DXVK 2.6.1 和默认配置 |
+| `l4d2-bridge-patch-v1.3.3.zip` | 已有安装；只更新三个桥二进制，保留运行配置、后端、ReShade 和 retention DB |
+| `l4d2-bridge-l4n-v1.3.3.zip` | 可选 L4N SDK v2 菜单插件，独立于本体和补丁 |
 | `SHA256SUMS.txt` | 下载文件校验；包内另有二进制 SHA256 和构建记录 |
 
 1. 完全退出游戏与所有 Host，备份 `bin/dxvk_d3d9.dll` 和 `bin/.l4d2bridge/`。已有用户优先使用补丁包，完整包会覆盖同路径默认配置与 DXVK。
@@ -157,7 +157,7 @@ L4D2 Bridge
 
 另有基于 2.6.1 x64 的可选 mem1 后端，只限制普通可映射分配块；不随本次本体升级重编，安装和历史观察见 [内存实验说明](docs/DXVK-MEMORY-EXPERIMENT.md)。相关 `dxvk.bridge*` 键写入 `dxvk.conf`，不能写入 `bridge.conf`。
 
-已验证 ReShade 组合：**x64 Host + Vulkan ReShade 6.0.1**。在安装器选择 `bin/.l4d2bridge/L4D2Bridge64.exe`，API 选 Vulkan；保持窗口模式。不要把 D3D9 ReShade 代理覆盖到游戏侧 Client 上。
+历史实机验证组合为 **x64 Host + Vulkan ReShade 6.0.1**；v1.3.3 另整合 [ReShade 6.8 输入修复](docs/RESHADE-6.8-INPUT.md)。在安装器选择 `bin/.l4d2bridge/L4D2Bridge64.exe`，API 选 Vulkan；保持窗口模式。不要把 D3D9 ReShade 代理覆盖到游戏侧 Client 上。
 
 合并 [OVERLAY-INPUT.conf](config/OVERLAY-INPUT.conf)，或通过 L4N 的 Presenter 菜单保存配套配置。Home 开关面板，Host 选择独立设置，菜单不会自动切换为 x64。ReShade 本体、shader 和预设需要另行安装。说明见 [输入文档](docs/OVERLAY-INPUT-EXPERIMENT.md)。
 
@@ -183,9 +183,9 @@ Client 日志为 `bridge32.log`，x86/x64 Host 分别为 `bridge-host32.log` / `
 
 ## English
 
-**v1.3.2 is the current stable release.** It fixes Steam Overlay Chinese IME initialization, integrates Steam Overlay compatibility repairs and adds parameter, shared-memory and Host resource-access checks. It retains full IPC v2, the VB/IB VA allocator, optional mapped Shadow, Steam Overlay fixes, and new L4N configuration/language menus. This Windows bridge forwards D3D9 calls from the 32-bit L4D2 process to an independent x86/x64 Host running DXVK. The game engine and Client remain 32-bit. There is no NVIDIA/RTX requirement; use a compatible Vulkan GPU, driver and DXVK backend.
+**v1.3.3 is the current stable release.** It accepts the reviewed Steam Renderer 11.15.70.27 x86/x64 identities and restores native Home and checkbox input for ReShade 6.8. It retains the v1.3.2 Chinese IME and correctness repairs, full IPC v2, optional mapped Shadow, and L4N configuration menus. It does not include the abandoned experimental Host plugin entry. This Windows bridge forwards D3D9 calls from the 32-bit L4D2 process to an independent x86/x64 Host running DXVK.
 
-The release fixes confirmed fullscreen/windowed Reset failures and Volume byte-pitch corruption behind the reported network colour tint. It expands selective PageBlock management/recovery, adds optional L4N common settings and Client-owned configuration persistence, and retains the ReShade reactivation fix. Detailed diagnostics default off. See [release notes](docs/RELEASE-V1.3.2-NOTES.md) and the [version ledger](LDBREADME.md).
+The release retains the confirmed fullscreen/windowed Reset and Volume byte-pitch fixes, selective PageBlock management, and optional L4N settings. Detailed diagnostics default off. See [release notes](docs/RELEASE-V1.3.3-NOTES.md) and the [version ledger](LDBREADME.md).
 
 Download the full ZIP for a fresh installation, the matched three-binary patch for an existing installation, and the **separate optional L4N ZIP** only if needed. Exit L4D2 and all Hosts before updating. Merge `bin` into the game directory and preserve custom backends, configuration, ReShade and retention DB files. The full package includes official DXVK 2.6.1 and default configuration; the patch preserves installed runtime configuration and backends. Start through Steam with `-vulkan -insecure -windowed`; do not launch Host EXEs directly.
 
@@ -193,7 +193,7 @@ Fresh installations default to **x64 Host + learned-aggressive**. Keep `forceX64
 
 Optional L4N SDK v2 controls install to `bin/neko/plugins/`. Menus include Status, GC, Memory Policy, ReShade Presenter, Host, IPC/Shadow configuration and English/Chinese language selection. Policy selection changes runtime only until explicitly saved; Host selection also requires Save and a full restart. Presenter settings apply after a full restart and do not install ReShade. Bridge works without the plugin.
 
-The validated ReShade combination remains **x64 Host + Vulkan ReShade 6.0.1**. Select the x64 Host EXE and Vulkan in its installer, use windowed mode and the presenter configuration described above. Replace only matching DXVK backend DLLs, never the Bridge Client.
+The historically validated combination remains **x64 Host + Vulkan ReShade 6.0.1**; v1.3.3 also integrates the scoped ReShade 6.8 native-input fix. Select the x64 Host EXE and Vulkan in its installer, use windowed mode and the presenter configuration described above. Replace only matching DXVK backend DLLs, never the Bridge Client.
 
 Steam Overlay fixes require matching configuration. The scoped Workshop proxy uses x64 Host and preserves original behavior for unknown GameUI/Renderer versions. IPC failures require a full restart; there is no automatic reconnection. Recovery is selective, experimental drop may cause repeated recovery stalls, and performance/compatibility depend on hardware, drivers, maps, MODs and overlays. Native CI and recorded gameplay checks have separate scopes.
 
@@ -213,7 +213,7 @@ Client/Host logs are `bridge32.log` and `bridge-host32.log`/`bridge64.log`. Keep
 | [Microsoft Detours](https://github.com/microsoft/Detours) | Microsoft Corporation and contributors; API hooks | MIT |
 | [Tracy](https://github.com/wolfpld/tracy) | Bartosz Taudul and contributors; upstream profiling component | BSD-3-Clause |
 | [TXVK](https://github.com/tianxiaols/TXVK) | tianxiaols / TXVK contributors; public documentation/binary analysis reference, no custom code copied or binaries redistributed | Closed source; current TXVK license reserves all rights; reference only |
-| [ReShade 6.0.1](https://github.com/crosire/reshade/tree/v6.0.1) | Patrick Mours; public ABI and input reference, no SDK implementation or DLL redistributed | SDK: BSD-3-Clause OR MIT |
+| [ReShade 6.0.1 / 6.8.0](https://github.com/crosire/reshade) | Patrick Mours; public addon ABI and input behavior reference, no SDK implementation or DLL redistributed | SDK: BSD-3-Clause OR MIT |
 | L4N plugin SDK v2 | User-provided official interface header; preserved verbatim, optional HUD controls | License unspecified in supplied header; not relicensed as MIT |
 | L4D2 / Steam | Valve; game/platform, not distributed here | Valve's terms |
 

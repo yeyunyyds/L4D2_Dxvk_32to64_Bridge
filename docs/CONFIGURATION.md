@@ -6,7 +6,7 @@
 
 配置所有权与 Client 安全持久化实现见 [技术架构](ARCHITECTURE.md#configuration-persistence)，接口的分别失败和重启判定见 [API 参考](API.md#general-control)。
 
-本文对应正式版 **1.3.0**。表中的“随包值”是当前 [config/bridge.conf](../config/bridge.conf) 写明的值；“缺省值”指不写该键时实现采用的值，两者不一定相同。升级保留已有配置，旧实验 ZIP 保持原样。安装见 [v1.3.0 说明](RELEASE-V1.3.0.md)。
+本文对应正式版 **1.3.3**。表中的“随包值”是当前 [config/bridge.conf](../config/bridge.conf) 写明的值；“缺省值”指不写该键时实现采用的值，两者不一定相同。升级保留已有配置，旧实验 ZIP 保持原样。安装见 [v1.3.3 说明](RELEASE-V1.3.3.md)。
 
 运行配置位于游戏的 **`bin/.l4d2bridge/bridge.conf`**。`client.*` 作用于游戏内的 Bridge Client；`server.*` 作用于渲染 Host，不指联机游戏服务器。更改后退出游戏及 Host，再重启；同一个键只保留一份。可选片段需要合并到该文件，不会因为放在旁边就自动生效。`dxvk.conf` 是后端配置，不能与 `bridge.conf` 混用。
 
@@ -78,6 +78,8 @@ v1.2.0 正式版包含通用设置 API，L4N 插件单独提供 ZIP。旧 `v1.2.
 | `client.DirectInput.forward.keyboardPolicy` | `0` | 同上，作用于键盘。源码缺省 2。 |
 
 使用 [OVERLAY-INPUT.conf](../config/OVERLAY-INPUT.conf) 时需合并其中的配套设置；不要只改一个钩子便假设完整输入路径已开启。1.1.1 的点击重新激活修复继承在实现中，没有新增独立配置键。
+
+ReShade 6.8 的原生焦点修复与验证边界见 [ReShade 6.8 输入兼容](RESHADE-6.8-INPUT.md)。
 
 ## 运行职责与诊断停用
 

@@ -5,7 +5,14 @@
 
 # 更新记录 / Changelog
 
-当前正式版为 **v1.3.2**。简明记录见 [LDBREADME](LDBREADME.md)。
+当前正式版为 **v1.3.3**。简明记录见 [LDBREADME](LDBREADME.md)。
+
+## 1.3.3（正式发布 / Stable）
+
+- 适配 Steam Renderer 11.15.70.27：核对并接受用户提供的 x86/x64 完整文件身份，分别验证 `IsOverlayEnabled` getter 指令、PE 位数与映像边界；未知版本继续拒绝。
+- 参考 NPCodex Nightlybuild 的 `b1fa0a1` 修复，让 ReShade 6.8 捕获时使用 Presenter 原生焦点，并独立跟踪 Steam/ReShade 捕获来源及交接。
+- 保留 v1.3.2 的中文输入、Steam 邀请/Workshop 和正确性修补。此前开发分支中的 Host 插件入口作为废案保留，未进入 v1.3.3。
+- 安装、验证范围及回滚见 [1.3.3 安装说明](docs/RELEASE-V1.3.3.md)。
 
 ## 1.3.2（正式发布 / Stable）
 
