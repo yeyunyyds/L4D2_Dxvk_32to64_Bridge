@@ -12,7 +12,7 @@ int wmain(int argc, wchar_t** argv) {
   auto* plugin = get(); assert(plugin);
   assert(plugin->GetInterfaceVersion() == 2);
   assert(std::strcmp(plugin->GetName(), "L4D2 Bridge Native HUD") == 0);
-  assert(std::strcmp(plugin->GetVersion(), "native-hud-2") == 0);
+  assert(std::strcmp(plugin->GetVersion(), "native-hud-3") == 0);
   assert(std::strcmp(plugin->RequestHudMenu(true), "LDB Control Panel") == 0);
   const char* menu = plugin->RequestHudMenu(false); assert(menu);
   assert(std::strstr(menu, "Open LDB Control Panel"));

@@ -2,11 +2,11 @@
 
 ## 原生 HUD 实验分支
 
-`codex/l4n-native-hud` 只在 L4N 菜单发布一个 **Open LDB Control Panel** 入口，设置本身由独立的原生 HUD 绘制。界面采用 Skeeto 风格的纯键盘操作：`1..9` 选择对应行，`0` 返回，`Esc` 或 `/` 关闭，`-`/`=` 调整当前项目。F10 默认关闭，可在外观页启用。窗口过程只拦截这些功能键，WASD、方向键及其他游戏按键继续传给游戏；插件不读取或捕获鼠标。
+`codex/l4n-native-hud` 在用户进入 L4N 的 **LDB Control Panel** 插件页时直接打开原生 HUD，不再要求选择第二层 Open 行。打开后先等待触发 L4N 的数字键释放，避免同一次按键继续点击 HUD 第一行。界面采用 Skeeto 风格的纯键盘操作：`1..9` 选择对应行，`0` 返回，`Esc` 或 `/` 关闭，`-`/`=` 调整当前项目。F10 默认关闭，可在外观页启用。窗口过程只拦截这些功能键，WASD 及其他游戏按键继续传给游戏；方向键仅在位置调整页使用，插件不读取或捕获鼠标。
 
 原生 HUD 使用固定版本 Dear ImGui 的 Win32/D3D9 后端。插件从 `OnD3DDeviceCreated` 取得 x86 Client Device，串联 Device/SwapChain Present，并处理 Reset 前后的字体和设备对象。它不 Hook StudioRender、不修改 Bridge/IPC 协议，也不加载另一份 D3D9 runtime。L4D2 的 DirectInput 路径不保证产生普通键盘窗口消息，因此打开后只读取 HUD 所需的数字、关闭和调整键。F10 启用时，关闭状态每次最外层 Present 只读取一次 F10 边沿；默认关闭时不执行该轮询。
 
-主面板直接显示并切换 Memory Policy、GC、IPC Batch、VB/IB Shadow、Host、ReShade/Steam Overlay 和语言，减少二级页面。Status 保留完整 PageBlock/GC/coverage 分类数据；外观页提供四套底色预设、自定义背景不透明度、字体大小及可选 F10。配置修改仍只调用现有 `L4D2BridgeControl`；PageBlock 操作仍只调用现有 PageBlock ABI。需要重启的项目会在当前行标记，不在运行中重建 Host、Presenter 或 Shadow。
+主面板直接显示并切换 Memory Policy、GC、IPC Batch、VB/IB Shadow、Host、ReShade/Steam Overlay 和语言，减少二级页面。Status 保留完整 PageBlock/GC/coverage 分类数据；外观页提供四套底色预设、自定义背景不透明度、字体大小、可选 F10 和位置调整页。位置页用方向键移动菜单，`-`/`=` 调整 1–64 px 的单次步宽。配置修改仍只调用现有 `L4D2BridgeControl`；PageBlock 操作仍只调用现有 PageBlock ABI。
 
 这是实机验证前的实验性重构。必须重点验证 L4N、Steam Overlay、ReShade 和其他 D3D9 插件的 Hook 链，Device 与 SwapChain 两种 Present、Reset/切屏、输入焦点、中文字体、x86/x64 Host，以及面板关闭时的帧时间。下文保留正式版 KeyValues 菜单的历史行为说明，不能将其视为此实验分支的界面结构。
 
