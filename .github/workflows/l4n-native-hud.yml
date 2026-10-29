@@ -1,0 +1,44 @@
+# SPDX-License-Identifier: MIT
+name: L4N native HUD gate
+on:
+  push:
+    branches: [codex/l4n-native-hud]
+    paths:
+      - 'plugins/l4n/**'
+      - 'scripts/build_l4n_plugin.ps1'
+      - 'tests/l4n_plugin.cpp'
+      - '.github/workflows/l4n-native-hud.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-hud:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Prepare pinned Bridge headers
+        run: python scripts/prepare_bridge.py
+      - name: Build x86 native HUD plugin
+        shell: powershell
+        run: ./scripts/build_l4n_plugin.ps1
+      - name: Verify loader-only L4N contract
+        shell: powershell
+        run: |
+          . ./.deps/dxvk-remix/bridge/build_common.ps1
+          SetupVS -Platform x86 -VcVarsVer '14.29'
+          New-Item -ItemType Directory -Force .deps/l4n-native-hud-test | Out-Null
+          cl.exe /nologo /std:c++17 /EHsc /W4 /WX /utf-8 tests/l4n_plugin.cpp /Fe:.deps/l4n-native-hud-test/l4n-plugin.exe
+          if ($LASTEXITCODE -ne 0) { throw 'L4N native HUD contract compilation failed' }
+          ./.deps/l4n-native-hud-test/l4n-plugin.exe ./.deps/l4n-plugin/L4D2BridgePlugin.dll
+          if ($LASTEXITCODE -ne 0) { throw 'L4N native HUD contract failed' }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: l4n-native-hud-${{ github.run_id }}
+          path: |
+            .deps/l4n-plugin/L4D2BridgePlugin.dll
+            .deps/l4n-native-hud-test/
+          if-no-files-found: warn
