@@ -30,7 +30,7 @@ jobs:
           . ./.deps/dxvk-remix/bridge/build_common.ps1
           SetupVS -Platform x86 -VcVarsVer '14.29'
           New-Item -ItemType Directory -Force .deps/l4n-native-hud-test | Out-Null
-          cl.exe /nologo /std:c++17 /EHsc /W4 /WX /utf-8 tests/l4n_plugin.cpp /Fe:.deps/l4n-native-hud-test/l4n-plugin.exe
+          cl.exe /nologo /std:c++17 /EHsc /W4 /WX /wd4100 /utf-8 tests/l4n_plugin.cpp /Fe:.deps/l4n-native-hud-test/l4n-plugin.exe
           if ($LASTEXITCODE -ne 0) { throw 'L4N native HUD contract compilation failed' }
           ./.deps/l4n-native-hud-test/l4n-plugin.exe ./.deps/l4n-plugin/L4D2BridgePlugin.dll
           if ($LASTEXITCODE -ne 0) { throw 'L4N native HUD contract failed' }
