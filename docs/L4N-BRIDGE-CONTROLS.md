@@ -1,5 +1,15 @@
 # L4N Bridge 常用设置
 
+## 原生 HUD 实验分支
+
+`codex/l4n-native-hud` 将 L4N 缩减为插件加载与 D3D9 Device 通知入口。插件的 `RequestHudMenu` 不再发布 KeyValues 菜单；按 **F10** 打开独立的 LDB 控制面板。界面采用数字键优先的 Skeeto 风格操作：`1..9` 选择对应行，`0` 返回，`Esc` 或 `/` 关闭，也可使用鼠标。
+
+原生 HUD 使用固定版本 Dear ImGui 的 Win32/D3D9 后端。插件从 `OnD3DDeviceCreated` 取得 x86 Client Device，串联 Device/SwapChain Present，并处理 Reset 前后的字体和设备对象。它不 Hook StudioRender、不修改 Bridge/IPC 协议，也不加载另一份 D3D9 runtime。关闭面板时 Present 路径只检查打开标志，不生成 ImGui 帧、不查询状态、不读取配置。
+
+面板包含 Status、Memory Policy、GC、IPC Batch、VB/IB Shadow、Host、ReShade/Steam Overlay、语言和说明页。配置修改仍只调用现有 `L4D2BridgeControl`；PageBlock 操作仍只调用现有 PageBlock ABI。默认英文，中文在当前会话立即切换。需要重启的项目继续明确提示，不在运行中重建 Host、Presenter 或 Shadow。
+
+这是实机验证前的实验性重构。必须重点验证 L4N、Steam Overlay、ReShade 和其他 D3D9 插件的 Hook 链，Device 与 SwapChain 两种 Present、Reset/切屏、输入焦点、中文字体、x86/x64 Host，以及面板关闭时的帧时间。下文保留正式版 KeyValues 菜单的历史行为说明，不能将其视为此实验分支的界面结构。
+
 v1.3.0 新增 `ipcBatchSize`、`vbibMappedShadow` 的仅配置菜单，以及默认英文的 English/中文语言切换；安装与重启规则见 [新菜单说明](L4N-CONFIG-MENU.md)。下文 v1.2.0 的五项菜单记录保留原版本范围。
 
 开发接入见 [完整 API 参考](API.md)，进程/资源/配置的技术边界见 [当前架构](ARCHITECTURE.md)。本文描述最终 HUD 行为；控制 ABI 仍提供 runtime Host 等字段，插件按当前菜单要求不显示这些字段。

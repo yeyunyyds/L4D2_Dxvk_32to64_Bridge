@@ -58,3 +58,7 @@ L4D2 与 Steam 属于 Valve，游戏及平台不包含在本项目的授权范�
 ## 可选 L4N v2 控制插件 SDK
 
 `plugins/l4n/sdk/l4n_plugin.h` 是用户提供的 L4N / Left4Neko plugin SDK v2 header，原样保留；所提供文件没有作者版权或许可证声明，本项目不推定其为 MIT，也不声称它由本项目生成。它定义 `IL4NPlugin`、`GetL4NPluginInstance` 与 `RequestHudMenu`。新增 UI/control 实现位于 `plugins/l4n/L4D2BridgePlugin.cpp`，按本项目新增代码署名与 MIT 发布；SDK 本身的权利仍归其原权利人。
+
+## Dear ImGui
+
+可选 L4N 原生 HUD 内置 Dear ImGui `v1.91.9b` 的核心、Win32 后端和 Direct3D 9 后端，固定来源为 `https://github.com/ocornut/imgui/releases/tag/v1.91.9b`。Dear ImGui 由 Omar Cornut 及贡献者以 MIT 许可发布；原始许可保存在 `plugins/l4n/vendor/imgui/LICENSE.txt`。本项目的 Skeeto 风格页面结构、Bridge 控制逻辑和生命周期接入是独立实现，不包含 Skeeto 或 L4D2Evolved 源码。
