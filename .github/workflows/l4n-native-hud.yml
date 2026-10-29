@@ -9,6 +9,11 @@ on:
       - 'tests/l4n_plugin.cpp'
       - '.github/workflows/l4n-native-hud.yml'
   workflow_dispatch:
+    inputs:
+      publish_optional_v133:
+        description: Replace only the optional v1.3.3 L4N asset and its checksum
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
@@ -34,6 +39,12 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'L4N native HUD contract compilation failed' }
           ./.deps/l4n-native-hud-test/l4n-plugin.exe ./.deps/l4n-plugin/L4D2BridgePlugin.dll
           if ($LASTEXITCODE -ne 0) { throw 'L4N native HUD contract failed' }
+      - name: Package optional L4N patch
+        shell: powershell
+        run: |
+          New-Item -ItemType Directory -Force dist | Out-Null
+          python scripts/package_l4n_optional.py package --dll .deps/l4n-plugin/L4D2BridgePlugin.dll --output dist/l4d2-bridge-l4n-v1.3.3.zip
+          if ($LASTEXITCODE -ne 0) { throw 'Optional L4N packaging failed' }
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -41,4 +52,30 @@ jobs:
           path: |
             .deps/l4n-plugin/L4D2BridgePlugin.dll
             .deps/l4n-native-hud-test/
+            dist/l4d2-bridge-l4n-v1.3.3.zip
           if-no-files-found: warn
+  publish-optional-v133:
+    if: github.event_name == 'workflow_dispatch' && inputs.publish_optional_v133
+    needs: native-hud
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: l4n-native-hud-${{ github.run_id }}
+          path: published
+      - name: Verify and replace only the optional L4N release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          test "$(cat VERSION)" = "1.3.3"
+          python scripts/package_l4n_optional.py verify published/dist/l4d2-bridge-l4n-v1.3.3.zip
+          mkdir existing
+          gh release download v1.3.3 --pattern SHA256SUMS.txt --dir existing
+          python scripts/package_l4n_optional.py update-sums --asset published/dist/l4d2-bridge-l4n-v1.3.3.zip --existing existing/SHA256SUMS.txt --output published/SHA256SUMS.txt
+          gh release upload v1.3.3 published/dist/l4d2-bridge-l4n-v1.3.3.zip published/SHA256SUMS.txt --clobber
+          gh release view v1.3.3 --json assets --jq '.assets[] | select(.name == "l4d2-bridge-l4n-v1.3.3.zip" or .name == "SHA256SUMS.txt") | [.name,.size] | @tsv'
