@@ -4,7 +4,7 @@
 
 `codex/l4n-native-hud` 将 L4N 缩减为插件加载与 D3D9 Device 通知入口。插件的 `RequestHudMenu` 不再发布 KeyValues 菜单；按 **F10** 打开独立的 LDB 控制面板。界面采用 Skeeto 风格的纯键盘操作：`1..9` 选择对应行，`0` 返回，`Esc` 或 `/` 关闭。插件不向 ImGui 转发鼠标消息、不吞掉鼠标输入，也不捕获鼠标；鼠标始终交给游戏和已有 Overlay。
 
-原生 HUD 使用固定版本 Dear ImGui 的 Win32/D3D9 后端。插件从 `OnD3DDeviceCreated` 取得 x86 Client Device，串联 Device/SwapChain Present，并处理 Reset 前后的字体和设备对象。它不 Hook StudioRender、不修改 Bridge/IPC 协议，也不加载另一份 D3D9 runtime。关闭面板时 Present 路径只检查打开标志，不生成 ImGui 帧、不查询状态、不读取配置。
+原生 HUD 使用固定版本 Dear ImGui 的 Win32/D3D9 后端。插件从 `OnD3DDeviceCreated` 取得 x86 Client Device，串联 Device/SwapChain Present，并处理 Reset 前后的字体和设备对象。它不 Hook StudioRender、不修改 Bridge/IPC 协议，也不加载另一份 D3D9 runtime。L4D2 的 DirectInput 路径不保证产生普通键盘窗口消息，因此关闭时每次最外层 Present 只读取一次 F10 边沿；打开后读取 HUD 所需的 `0..9`、`Esc`、`/` 键并送入 ImGui。它不读取鼠标状态。关闭面板时除此之外不生成 ImGui 帧、不查询状态、不读取配置。
 
 面板包含 Status、Memory Policy、GC、IPC Batch、VB/IB Shadow、Host、ReShade/Steam Overlay、语言和说明页。配置修改仍只调用现有 `L4D2BridgeControl`；PageBlock 操作仍只调用现有 PageBlock ABI。默认英文，中文在当前会话立即切换。需要重启的项目继续明确提示，不在运行中重建 Host、Presenter 或 Shadow。
 
