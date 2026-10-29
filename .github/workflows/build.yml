@@ -195,7 +195,7 @@ jobs:
         if: github.event_name != 'workflow_dispatch' || inputs.build_l4n
         shell: powershell
         run: ./scripts/build_l4n_plugin.ps1
-      - name: Test PageBlock residency, GC and L4N v2 callbacks
+      - name: Test PageBlock residency, GC and native HUD loader contract
         shell: powershell
         run: |
           $skipPlugin = '${{ github.event_name == 'workflow_dispatch' && !inputs.build_l4n }}' -eq 'true'

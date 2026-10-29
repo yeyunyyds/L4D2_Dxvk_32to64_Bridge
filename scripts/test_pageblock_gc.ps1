@@ -44,18 +44,10 @@ try {
   & $unicodeExecutable
   if ($LASTEXITCODE -ne 0) { throw "Unicode Config path $arch tests failed: $LASTEXITCODE" }
   if ($arch -eq 'x86' -and !$SkipPluginTests) {
-    foreach ($mode in @('modern', 'old-general', 'legacy', 'missing')) {
-      $compileArgs = @('/nologo', '/std:c++17', '/EHsc', '/W4', '/WX', '/utf-8', '/wd4100', "/I$source/bridge/src/util", "/I$source/bridge/src/client", "$repoRoot/tests/l4n_plugin.cpp", "/Fe:l4n-plugin-$mode.exe")
-      if ($mode -eq 'modern' -or $mode -eq 'old-general') { $compileArgs += '/DL4D2_TEST_GENERAL' }
-      if ($mode -eq 'old-general') { $compileArgs += '/DL4D2_TEST_OLD_GENERAL' }
-      if ($mode -eq 'missing') { $compileArgs += '/DL4D2_TEST_NO_API' }
-      $compileArgs += '/link'
-      if ($mode -ne 'missing') { $compileArgs += '/EXPORT:L4D2BridgePageBlockControl=_L4D2BridgePageBlockControl@8' }
-      if ($mode -eq 'modern' -or $mode -eq 'old-general') { $compileArgs += '/EXPORT:L4D2BridgeControl=_L4D2BridgeControl@8' }
-      & cl.exe @compileArgs
-      if ($LASTEXITCODE -ne 0) { throw "L4N $mode test compilation failed" }
-      & ".\l4n-plugin-$mode.exe" (Join-Path $repoRoot '.deps/l4n-plugin/L4D2BridgePlugin.dll')
-      if ($LASTEXITCODE -ne 0) { throw "L4N $mode callback tests failed: $LASTEXITCODE" }
-    }
+    $compileArgs = @('/nologo', '/std:c++17', '/EHsc', '/W4', '/WX', '/utf-8', '/wd4100', "$repoRoot/tests/l4n_plugin.cpp", '/Fe:l4n-plugin.exe')
+    & cl.exe @compileArgs
+    if ($LASTEXITCODE -ne 0) { throw 'L4N native HUD loader-contract compilation failed' }
+    & '.\l4n-plugin.exe' (Join-Path $repoRoot '.deps/l4n-plugin/L4D2BridgePlugin.dll')
+    if ($LASTEXITCODE -ne 0) { throw "L4N native HUD loader-contract test failed: $LASTEXITCODE" }
   }
 } finally { Pop-Location }
