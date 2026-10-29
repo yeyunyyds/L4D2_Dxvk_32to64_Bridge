@@ -2,7 +2,7 @@
 
 ## 原生 HUD 实验分支
 
-`codex/l4n-native-hud` 将 L4N 缩减为插件加载与 D3D9 Device 通知入口。插件的 `RequestHudMenu` 不再发布 KeyValues 菜单；按 **F10** 打开独立的 LDB 控制面板。界面采用数字键优先的 Skeeto 风格操作：`1..9` 选择对应行，`0` 返回，`Esc` 或 `/` 关闭，也可使用鼠标。
+`codex/l4n-native-hud` 将 L4N 缩减为插件加载与 D3D9 Device 通知入口。插件的 `RequestHudMenu` 不再发布 KeyValues 菜单；按 **F10** 打开独立的 LDB 控制面板。界面采用 Skeeto 风格的纯键盘操作：`1..9` 选择对应行，`0` 返回，`Esc` 或 `/` 关闭。插件不向 ImGui 转发鼠标消息、不吞掉鼠标输入，也不捕获鼠标；鼠标始终交给游戏和已有 Overlay。
 
 原生 HUD 使用固定版本 Dear ImGui 的 Win32/D3D9 后端。插件从 `OnD3DDeviceCreated` 取得 x86 Client Device，串联 Device/SwapChain Present，并处理 Reset 前后的字体和设备对象。它不 Hook StudioRender、不修改 Bridge/IPC 协议，也不加载另一份 D3D9 runtime。关闭面板时 Present 路径只检查打开标志，不生成 ImGui 帧、不查询状态、不读取配置。
 
