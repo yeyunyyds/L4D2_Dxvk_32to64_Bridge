@@ -75,9 +75,11 @@ def package(bridge, plugin, output, run_id, source_commit):
     }
     (staging / "BUILD-INFO.json").write_text(json.dumps(combined, indent=2) + "\n", encoding="utf-8")
     (staging / "SHA256.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
-    (staging / "STUDIO-DIAGNOSTICS.conf.txt").write_text(
-        "# Merge this line into bin/.l4d2bridge/bridge.conf, then restart L4D2.\n"
-        "client.studioModelDiagnostics = True\n",
+    (staging / "TEST-OPTIONS.conf.txt").write_text(
+        "# Merge only the options needed into bin/.l4d2bridge/bridge.conf, then restart L4D2.\n"
+        "client.studioModelDiagnostics = True\n"
+        "client.createDeviceTimeoutMs = 30000\n"
+        "server.blockHostTcp443 = True\n",
         encoding="utf-8",
     )
     (staging / "INSTALL.zh-CN.md").write_text(
@@ -88,7 +90,7 @@ def package(bridge, plugin, output, run_id, source_commit):
         "- `bin/.l4d2bridge/L4D2Bridge64.exe`\n"
         "- `bin/neko/plugins/L4D2BridgePlugin.dll`\n\n"
         "不要复制或覆盖 `bridge.conf`、DXVK 后端、ReShade 和 retention DB。"
-        "需要模型诊断时，将 `STUDIO-DIAGNOSTICS.conf.txt` 中的配置行合并到现有 `bridge.conf` 并重启。"
+        "需要测试时，将 `TEST-OPTIONS.conf.txt` 中所需的配置行合并到现有 `bridge.conf` 并重启。"
         "功能默认关闭。启动后可在 `bridge32.log` 核对已匹配的 StudioRender 变体与哈希。\n\n"
         "菜单位置在移动时立即写入插件同目录的 `L4D2BridgePlugin.ini`。"
         "首次使用的默认位置位于屏幕左侧、垂直居中稍偏上；菜单内重置位置会删除已保存坐标。\n\n"

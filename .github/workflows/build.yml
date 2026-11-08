@@ -163,6 +163,9 @@ jobs:
       - name: StudioRender dual-image model context and crash-thread diagnostics
         shell: powershell
         run: ./scripts/test_studio_model_diagnostics.ps1
+      - name: Host TCP 443 fail-fast policy on x86 and x64
+        shell: powershell
+        run: ./scripts/test_host_network_policy.ps1
       - name: All correctness fixes against frozen main and negative controls
         shell: powershell
         run: ./scripts/test_correctness.ps1 -Stage all
