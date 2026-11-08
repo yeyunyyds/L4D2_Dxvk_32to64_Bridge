@@ -6,8 +6,9 @@ $root = Split-Path $PSScriptRoot -Parent
 $source = Join-Path $root '.deps/dxvk-remix'
 $out = Join-Path $root 'work/studio-model-native'
 $reference = Join-Path $root '.deps/studio-reference/studiorender.dll'
-$valveReference = Join-Path $root '.deps/studio-reference/studiorender-valve.dll'
+$valveReference = Join-Path $root '.deps/studio-reference/valve/studiorender.dll'
 New-Item -ItemType Directory -Force (Split-Path $reference) | Out-Null
+New-Item -ItemType Directory -Force (Split-Path $valveReference) | Out-Null
 New-Item -ItemType Directory -Force $out | Out-Null
 $uri = 'https://raw.githubusercontent.com/NPCodex/L4D2_Dxvk_32to64_Bridge-Nightlybuild/b1fa0a1d6ba9f2e2c23c92e4da13bf324e883cc8/runtime/engine/studiorender.dll'
 if (!(Test-Path $reference)) {
