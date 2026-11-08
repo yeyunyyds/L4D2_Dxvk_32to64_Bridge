@@ -338,3 +338,45 @@ jobs:
           L4D2_ZIP_COMMIT: ${{ inputs.experimental_zip_commit }}
           L4D2_ZIP_CHECKSUMS: ${{ inputs.experimental_zip_checksums }}
         run: python scripts/publish_experimental.py
+  publish-studio-menu-field-test:
+    if: >-
+      github.event_name == 'push' &&
+      github.ref_name == 'codex/v133-studio-persistent-menu' &&
+      contains(github.event.head_commit.message, '[publish studio test]')
+    needs: windows-build
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: l4d2-bridge-patch-v1.3.3
+          path: artifacts/bridge
+      - uses: actions/download-artifact@v4
+        with:
+          name: l4d2-bridge-l4n-v1.3.3
+          path: artifacts/plugin
+      - name: Verify and combine the matched field-test package
+        run: >-
+          python scripts/package_studio_menu_test.py
+          --bridge artifacts/bridge
+          --plugin artifacts/plugin
+          --output publish
+          --run-id "${{ github.run_id }}"
+          --source-commit "${{ github.sha }}"
+      - uses: actions/checkout@v4
+        with:
+          ref: experimental-downloads-1.1.2-dev.2
+          path: downloads
+          fetch-depth: 1
+      - name: Append the immutable ZIP to the download branch
+        run: |
+          cp publish/LDB-v1.3.3-studio-dual-menu-r* downloads/
+          cd downloads
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add LDB-v1.3.3-studio-dual-menu-r*
+          git commit -m "Add v1.3.3 dual Studio Hook and persistent menu test"
+          git push origin HEAD:experimental-downloads-1.1.2-dev.2
