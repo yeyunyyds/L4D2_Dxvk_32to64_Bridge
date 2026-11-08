@@ -14,6 +14,7 @@ on:
       - codex/steam-renderer-1112307
       - codex/ipc-data-queue-correctness
       - codex/l4n-native-hud
+      - codex/v133-studio-persistent-menu
   workflow_dispatch:
     inputs:
       correctness_stage:
@@ -159,6 +160,9 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'DXVK extraction failed' }
       - name: Prepare pinned Bridge sources
         run: python scripts/prepare_bridge.py
+      - name: StudioRender dual-image model context and crash-thread diagnostics
+        shell: powershell
+        run: ./scripts/test_studio_model_diagnostics.ps1
       - name: All correctness fixes against frozen main and negative controls
         shell: powershell
         run: ./scripts/test_correctness.ps1 -Stage all
