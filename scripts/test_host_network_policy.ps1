@@ -20,7 +20,7 @@ Push-Location $directory
 try {
   & cl.exe /nologo /std:c++17 /EHsc /O2 /W2 /WX `
     "/I$source/bridge/src/server" "/I$source/submodules/Detours/src" `
-    "$root/tests/host_network_policy.cpp" "$source/bridge/src/server/host_network_policy.cpp" `
+    "$root/tests/host_network_policy_test.cpp" "$source/bridge/src/server/host_network_policy.cpp" `
     /Fe:host-network-test.exe /link ws2_32.lib
   if ($LASTEXITCODE -ne 0) { throw "Host network policy compilation failed for $CompileArchitecture" }
   Assert-NativeArchitecture -Path (Join-Path $directory 'host-network-test.exe') -Architecture $CompileArchitecture
