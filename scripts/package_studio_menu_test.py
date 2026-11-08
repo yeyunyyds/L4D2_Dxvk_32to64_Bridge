@@ -49,7 +49,7 @@ def package(bridge, plugin, output, run_id, source_commit):
             raise ValueError("Artifact checksum mismatch: " + name)
 
     version = bridge_info["version"]
-    base = f"LDB-v{version}-studio-dual-menu-r{run_id}"
+    base = f"LDB-v{version}-host-tcp443-studio-menu-r{run_id}"
     staging = output / base
     if staging.exists():
         raise FileExistsError(staging)
@@ -61,7 +61,7 @@ def package(bridge, plugin, output, run_id, source_commit):
     manifest = {name: digest(staging / name) for name in sources}
     combined = {
         "version": version,
-        "kind": "studio-diagnostics-and-persistent-menu-field-test",
+        "kind": "host-tcp443-studio-diagnostics-and-persistent-menu-field-test",
         "build_id": bridge_info["build_id"],
         "source_commit": source_commit,
         "actions_run_id": int(run_id),
@@ -83,7 +83,7 @@ def package(bridge, plugin, output, run_id, source_commit):
         encoding="utf-8",
     )
     (staging / "INSTALL.zh-CN.md").write_text(
-        f"# LDB v{version} Studio Hook + 持久化菜单测试包\n\n"
+        f"# LDB v{version} Host TCP 443 快速失败 + Studio Hook + 持久化菜单测试包\n\n"
         "关闭游戏以及 L4D2Bridge32/L4D2Bridge64，备份并替换以下四个文件：\n\n"
         "- `bin/dxvk_d3d9.dll`\n"
         "- `bin/.l4d2bridge/L4D2Bridge32.exe`\n"
@@ -91,7 +91,11 @@ def package(bridge, plugin, output, run_id, source_commit):
         "- `bin/neko/plugins/L4D2BridgePlugin.dll`\n\n"
         "不要复制或覆盖 `bridge.conf`、DXVK 后端、ReShade 和 retention DB。"
         "需要测试时，将 `TEST-OPTIONS.conf.txt` 中所需的配置行合并到现有 `bridge.conf` 并重启。"
-        "功能默认关闭。启动后可在 `bridge32.log` 核对已匹配的 StudioRender 变体与哈希。\n\n"
+        "功能默认关闭。受限网络测试可启用 `server.blockHostTcp443=True`；它会让 Host 内所有 TCP 443 "
+        "连接立即失败，因此 Steam 网页、Workshop 和其他 HTTPS 将不可用。\n\n"
+        "`client.createDeviceTimeoutMs` 单位为毫秒，可在 1000–600000 范围调整，只控制 CreateDevice "
+        "等待 Host 匹配回复。启动后可在日志核对网络策略安装结果、实际等待值，以及已匹配的 "
+        "StudioRender 变体与哈希。\n\n"
         "菜单位置在移动时立即写入插件同目录的 `L4D2BridgePlugin.ini`。"
         "首次使用的默认位置位于屏幕左侧、垂直居中稍偏上；菜单内重置位置会删除已保存坐标。\n\n"
         "回退时关闭游戏和 Host，恢复上述四个备份文件。可删除 `L4D2BridgePlugin.ini` 复位菜单位置。\n",

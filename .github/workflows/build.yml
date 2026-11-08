@@ -376,10 +376,10 @@ jobs:
           fetch-depth: 1
       - name: Append the immutable ZIP to the download branch
         run: |
-          cp publish/LDB-v1.3.3-studio-dual-menu-r* downloads/
+          cp publish/LDB-v1.3.3-host-tcp443-studio-menu-r* downloads/
           cd downloads
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add LDB-v1.3.3-studio-dual-menu-r*
-          git commit -m "Add v1.3.3 dual Studio Hook and persistent menu test"
+          git add LDB-v1.3.3-host-tcp443-studio-menu-r*
+          git commit -m "Add v1.3.3 Host TCP 443 fail-fast field test"
           git push origin HEAD:experimental-downloads-1.1.2-dev.2
