@@ -22,7 +22,7 @@ try {
   $arch = $Platform
   SetupVS -Platform $arch -VcVarsVer '14.29'
   $pointerBytes = if ($arch -eq 'x86') { 4 } else { 8 }
-  & cl.exe /nologo /std:c++17 /EHsc /W4 /WX "/DEXPECTED_POINTER_BYTES=$pointerBytes" "/I$source/bridge/src/server" "/I$source/bridge/src/client" "/I$source/bridge/src/util" "$repoRoot/tests/pageblock_residency.cpp" "/Fe:pageblock-$arch.exe" /link bcrypt.lib
+  & cl.exe /nologo /std:c++17 /EHsc /W4 /WX "/DEXPECTED_POINTER_BYTES=$pointerBytes" "/I$source/bridge/src/server" "/I$source/bridge/src/client" "/I$source/bridge/src/util" "$repoRoot/tests/pageblock_residency.cpp" "$source/bridge/src/util/log_session.cpp" "/Fe:pageblock-$arch.exe" /link bcrypt.lib
   if ($LASTEXITCODE -ne 0) { throw "PageBlock GC $arch compilation failed" }
   & ".\pageblock-$arch.exe"
   if ($LASTEXITCODE -ne 0) { throw "PageBlock GC $arch tests failed: $LASTEXITCODE" }

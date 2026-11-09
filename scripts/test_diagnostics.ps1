@@ -11,7 +11,7 @@ $testDir = Join-Path $repoRoot '.deps/diagnostics-test'
 New-Item -ItemType Directory -Force $testDir | Out-Null
 Push-Location $testDir
 try {
-  & cl.exe /nologo /std:c++17 /EHsc /W4 /WX "/I$source/bridge/src/client" "$repoRoot/tests/memory_diagnostics.cpp" /Fe:diagnostics-test.exe
+  & cl.exe /nologo /std:c++17 /EHsc /W4 /WX "/I$source/bridge/src/client" "$repoRoot/tests/memory_diagnostics.cpp" "$source/bridge/src/util/log_session.cpp" /Fe:diagnostics-test.exe
   if ($LASTEXITCODE -ne 0) { throw 'Diagnostics test compilation failed' }
   & ./diagnostics-test.exe (Join-Path $testDir 'l4d2-memory.log')
   if ($LASTEXITCODE -ne 0) { throw "Diagnostics test failed: $LASTEXITCODE" }
@@ -19,7 +19,7 @@ try {
   if ($LASTEXITCODE -ne 0) { throw 'Shadow lifetime test compilation failed' }
   & ./shadow-lifetime-test.exe
   if ($LASTEXITCODE -ne 0) { throw "Shadow lifetime test failed: $LASTEXITCODE" }
-  & cl.exe /nologo /std:c++17 /EHsc /W4 /WX "/I$source/bridge/src/client" "$repoRoot/tests/pageblock_diagnostics.cpp" /Fe:pageblock-test.exe
+  & cl.exe /nologo /std:c++17 /EHsc /W4 /WX "/I$source/bridge/src/client" "$repoRoot/tests/pageblock_diagnostics.cpp" "$source/bridge/src/util/log_session.cpp" /Fe:pageblock-test.exe
   if ($LASTEXITCODE -ne 0) { throw 'Pageblock diagnostics test compilation failed' }
   & ./pageblock-test.exe (Join-Path $testDir 'l4d2-pageblock.log')
   if ($LASTEXITCODE -ne 0) { throw "Pageblock diagnostics test failed: $LASTEXITCODE" }
