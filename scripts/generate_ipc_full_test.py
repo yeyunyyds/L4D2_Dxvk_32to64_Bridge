@@ -15,8 +15,16 @@ if not baseline.exists():baseline=ROOT/'.deps/c32-baseline'
 generate(baseline,out)
 util=source/'bridge/src/util'
 for folder in ('ipc_full','ipc_v2'):shutil.copytree(util/folder,out/folder,dirs_exist_ok=True)
-for name in ('util_ipcchannel.h','util_commands.h','ipc_c32_message_queue.h','log_session.h','log_session.cpp'):
+for name in ('util_ipcchannel.h','util_commands.h','ipc_c32_message_queue.h'):
     shutil.copy2(util/name,out/name)
+if (util/'log_session.h').exists() and (util/'log_session.cpp').exists():
+    shutil.copy2(util/'log_session.h',out/'log_session.h')
+    shutil.copy2(util/'log_session.cpp',out/'log_session.cpp')
+else:
+    # Frozen pre-session sources have no dependency on this unit, but the shared native build
+    # command always names it so current and baseline fixtures stay structurally identical.
+    (out/'log_session.h').write_text('#pragma once\n')
+    (out/'log_session.cpp').write_text('#include "log_session.h"\n')
 options=out/'config/global_options.h';options.write_text(options.read_text().replace('struct GlobalOptions {','struct GlobalOptions {\n static uint32_t getIpcBatchSize(){return 1;}'))
 header=(util/'util_bridgecommand.h').read_text();bridge=header[header.index('struct BridgeReadFailure'):]
 bridge=bridge.replace('public:\n  static void init(','''public:
