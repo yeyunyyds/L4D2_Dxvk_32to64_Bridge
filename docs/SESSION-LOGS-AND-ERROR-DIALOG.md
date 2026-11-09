@@ -9,6 +9,8 @@ Bridge-owned common logs use one directory per Client/Host run:
 The directory contains `session-info.txt`, the Client and selected Host main log, optional API wait,
 data and memory diagnostics, and deterministic `exception-client.txt` / `exception-host.txt` reports.
 The Client creates the directory before its logger starts and is the sole owner of startup retention.
+Each live Client/Host pair holds a non-delete-shared marker; retention probes that marker and skips the
+entire directory while either process is active, so concurrent game sessions cannot prune each other's logs.
 `logging.sessionRetention` defaults to 10 total sessions and is clamped to 1–100. Cleanup failure never
 blocks Bridge startup. Older Color, PageBlock, readback, retention and Sentry diagnostic locations are
 unchanged.

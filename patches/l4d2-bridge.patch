@@ -18145,10 +18145,10 @@ index 869be34..9ecf225 100644
  #endif
 diff --git a/bridge/src/util/log_session.cpp b/bridge/src/util/log_session.cpp
 new file mode 100644
-index 0000000..b7079c8
+index 0000000..fcee5ad
 --- /dev/null
 +++ b/bridge/src/util/log_session.cpp
-@@ -0,0 +1,106 @@
+@@ -0,0 +1,120 @@
 +// SPDX-License-Identifier: MIT
 +#include "log_session.h"
 +
@@ -18194,6 +18194,19 @@ index 0000000..b7079c8
 +    size_t total = entries.size() + 1;
 +    for (const auto& entry : entries) {
 +      if (total <= keep) { break; }
++      const auto activePath = entry.path / L"session-active.lock";
++      HANDLE activeProbe = CreateFileW(activePath.c_str(), DELETE,
++        FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, nullptr, OPEN_EXISTING,
++        FILE_ATTRIBUTE_NORMAL, nullptr);
++      if (activeProbe == INVALID_HANDLE_VALUE) {
++        const DWORD reason = GetLastError();
++        // A sharing violation means another Bridge process deliberately denied delete access.
++        // Other access errors are also protected conservatively; a missing marker is an old,
++        // inactive session and remains eligible for cleanup.
++        if (reason != ERROR_FILE_NOT_FOUND && reason != ERROR_PATH_NOT_FOUND) { continue; }
++      } else {
++        CloseHandle(activeProbe);
++      }
 +      std::filesystem::remove_all(entry.path, error);
 +      if (!error) { --total; }
 +      error.clear();
@@ -18233,10 +18246,11 @@ index 0000000..b7079c8
 +    std::filesystem::create_directories(selected, error);
 +    if (error || !std::filesystem::is_directory(selected, error)) { return false; }
 +    s_directory = selected;
-+    s_ready = true;
 +    s_activeLock = CreateFileW((selected / L"session-active.lock").c_str(), GENERIC_READ,
 +      FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_ALWAYS,
 +      FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_TEMPORARY, nullptr);
++    if (s_activeLock == INVALID_HANDLE_VALUE) { s_directory.clear(); return false; }
++    s_ready = true;
 +    if (pruneHistory) { prune(root, selected, retention); }
 +    appendInfo(role, build);
 +    return true;
