@@ -14,7 +14,7 @@ if(!$Platform){
  SetupVS -Platform $Platform -VcVarsVer '14.29'
  Push-Location (Join-Path $repoRoot '.deps/ipc-api')
  try{
-  & cl.exe /nologo /std:c++17 /EHsc /O2 /W3 /DNOMINMAX "/I$source/bridge/src/util" "/I$repoRoot/tests" ipc_api.cpp "/Fe:api-$Platform.exe"
+  & cl.exe /nologo /std:c++17 /EHsc /O2 /W3 /DNOMINMAX "/I$source/bridge/src/util" "/I$repoRoot/tests" ipc_api.cpp "$source/bridge/src/util/log_session.cpp" "/Fe:api-$Platform.exe"
   if($LASTEXITCODE -ne 0){throw 'API compilation failed'}
   & ".\api-$Platform.exe"
   if($LASTEXITCODE -ne 0){throw 'API assertions failed'}

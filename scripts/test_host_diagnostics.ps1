@@ -12,7 +12,7 @@ $testDir = Join-Path $repoRoot ".deps/host-diagnostics-test-$Platform"
 New-Item -ItemType Directory -Force $testDir | Out-Null
 Push-Location $testDir
 try {
-  & cl.exe /nologo /std:c++17 /EHsc /W4 /WX "/I$source/bridge/src/server" "$repoRoot/tests/host_memory_diagnostics.cpp" /Fe:host-diagnostics-test.exe /link /LARGEADDRESSAWARE
+  & cl.exe /nologo /std:c++17 /EHsc /W4 /WX "/I$source/bridge/src/server" "$repoRoot/tests/host_memory_diagnostics.cpp" "$source/bridge/src/util/log_session.cpp" /Fe:host-diagnostics-test.exe /link /LARGEADDRESSAWARE
   if ($LASTEXITCODE -ne 0) { throw 'Host diagnostics test compilation failed' }
   & ./host-diagnostics-test.exe (Join-Path $testDir 'l4d2-host-memory.log')
   if ($LASTEXITCODE -ne 0) { throw "Host diagnostics test failed: $LASTEXITCODE" }
