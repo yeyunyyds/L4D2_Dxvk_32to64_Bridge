@@ -15,7 +15,8 @@ if not baseline.exists():baseline=ROOT/'.deps/c32-baseline'
 generate(baseline,out)
 util=source/'bridge/src/util'
 for folder in ('ipc_full','ipc_v2'):shutil.copytree(util/folder,out/folder,dirs_exist_ok=True)
-for name in ('util_ipcchannel.h','util_commands.h','ipc_c32_message_queue.h'):shutil.copy2(util/name,out/name)
+for name in ('util_ipcchannel.h','util_commands.h','ipc_c32_message_queue.h','log_session.h','log_session.cpp'):
+    shutil.copy2(util/name,out/name)
 options=out/'config/global_options.h';options.write_text(options.read_text().replace('struct GlobalOptions {','struct GlobalOptions {\n static uint32_t getIpcBatchSize(){return 1;}'))
 header=(util/'util_bridgecommand.h').read_text();bridge=header[header.index('struct BridgeReadFailure'):]
 bridge=bridge.replace('public:\n  static void init(','''public:
@@ -37,7 +38,7 @@ client=source/'bridge/src/client'
 if (client/'buffer_mapped_shadow.h').exists():
     (out/'client').mkdir(exist_ok=True)
     for name in ('buffer_shadow.h','buffer_shadow_arena.h','buffer_mapped_shadow.h','memory_diagnostics.h'):
-        text=(client/name).read_text().replace('../util/queue_wait_diagnostics.h','../queue_wait_diagnostics.h').replace('../util/runtime_observation.h','../runtime_observation.h')
+        text=(client/name).read_text().replace('../util/queue_wait_diagnostics.h','../queue_wait_diagnostics.h').replace('../util/runtime_observation.h','../runtime_observation.h').replace('../util/log_session.h','../log_session.h')
         (out/'client'/name).write_text(text)
     options=out/'config/global_options.h'
     options.write_text(options.read_text().replace('struct GlobalOptions {','struct GlobalOptions {\n static bool getUseSharedHeap(){return false;}\n static bool getUseSharedHeapForDynamicBuffers(){return false;}\n static bool getUseSharedHeapForStaticBuffers(){return false;}\n static bool getAlwaysCopyEntireStaticBuffer(){return false;}'))
