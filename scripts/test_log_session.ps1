@@ -20,7 +20,7 @@ Push-Location $directory
 try {
   & cl.exe /nologo /std:c++17 /EHsc /O2 /W2 /WX /utf-8 `
     "/I$source/bridge/src/util" `
-    "$root/tests/log_session.cpp" "$source/bridge/src/util/log_session.cpp" `
+    "$root/tests/log_session_test.cpp" "$source/bridge/src/util/log_session.cpp" `
     /Fe:log-session-test.exe
   if ($LASTEXITCODE -ne 0) { throw "Log session compilation failed for $CompileArchitecture" }
   Assert-NativeArchitecture -Path (Join-Path $directory 'log-session-test.exe') -Architecture $CompileArchitecture
