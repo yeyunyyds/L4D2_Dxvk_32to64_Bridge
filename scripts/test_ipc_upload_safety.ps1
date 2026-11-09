@@ -65,6 +65,6 @@ try {
   $role=if($Platform -eq 'x64') {'host64'} else {'client32'}
   [string[]]$flags=@('/DLDB_MAPPED_BUFFER_TRANSPORT')
   if($role -eq 'host64') {$flags+=@('/DREMIX_BRIDGE_SERVER')}
-  & cl.exe /nologo /std:c++17 /EHsc /O2 /DNDEBUG /W3 /DNOMINMAX /DWIN32 @flags "/I$transport" ipc_transport.cpp util_sharedmemory.cpp util_semaphore.cpp data_diagnostics.cpp exception_diagnostics.cpp "/Fe:transport-$role.exe" /link /LARGEADDRESSAWARE ole32.lib psapi.lib
+  & cl.exe /nologo /std:c++17 /EHsc /O2 /DNDEBUG /W3 /DNOMINMAX /DWIN32 @flags "/I$transport" ipc_transport.cpp util_sharedmemory.cpp util_semaphore.cpp data_diagnostics.cpp log_session.cpp exception_diagnostics.cpp "/Fe:transport-$role.exe" /link /LARGEADDRESSAWARE ole32.lib psapi.lib
   if($LASTEXITCODE -ne 0) {throw 'Baseline reply control compilation failed'}
 } finally {Pop-Location}

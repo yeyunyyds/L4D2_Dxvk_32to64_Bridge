@@ -10,7 +10,7 @@ if ($CompileRole) {
   Push-Location $out
   try {
     [string[]]$flags=if ($CompileRole -eq 'host32') {@('/DREMIX_BRIDGE_X86_SERVER','/DREMIX_BRIDGE_SERVER')} else {@()}
-    & cl.exe /nologo /std:c++17 /EHsc /O2 /DNDEBUG /W3 /DNOMINMAX /DWIN32 @flags "/I$out" ipc_transport.cpp util_sharedmemory.cpp util_semaphore.cpp data_diagnostics.cpp exception_diagnostics.cpp "/Fe:transport-$CompileRole.exe" /link /LARGEADDRESSAWARE ole32.lib psapi.lib
+    & cl.exe /nologo /std:c++17 /EHsc /O2 /DNDEBUG /W3 /DNOMINMAX /DWIN32 @flags "/I$out" ipc_transport.cpp util_sharedmemory.cpp util_semaphore.cpp data_diagnostics.cpp log_session.cpp exception_diagnostics.cpp "/Fe:transport-$CompileRole.exe" /link /LARGEADDRESSAWARE ole32.lib psapi.lib
     if ($LASTEXITCODE -ne 0) {throw "Frozen C32 compile failed: $CompileRole"}
   } finally {Pop-Location}
 } else {

@@ -49,7 +49,7 @@ if($Role -ne 'host32'){
   Push-Location $gen
   try {
    $exe=Join-Path $gen "clientheap-$arch.exe"
-   & cl.exe /nologo /std:c++17 /EHsc /O2 /DNDEBUG /W3 /DNOMINMAX /DWIN32 "/I$gen" "/I$source/bridge/src/client" "/I$source/bridge/src/util" "$root/tests/sharedheap_client_contract.cpp" "$source/bridge/src/util/data_diagnostics.cpp" "/Fe:$exe"
+   & cl.exe /nologo /std:c++17 /EHsc /O2 /DNDEBUG /W3 /DNOMINMAX /DWIN32 "/I$gen" "/I$source/bridge/src/client" "/I$source/bridge/src/util" "$root/tests/sharedheap_client_contract.cpp" "$source/bridge/src/util/data_diagnostics.cpp" "$source/bridge/src/util/log_session.cpp" "/Fe:$exe"
    if($LASTEXITCODE -ne 0){throw "Client SharedHeap compilation failed: $variant"}
    Assert-NativeArchitecture -Path $exe -Architecture $arch
    [string[]]$expected=@()
