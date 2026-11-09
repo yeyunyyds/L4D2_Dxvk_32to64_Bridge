@@ -26,7 +26,10 @@ bridge=bridge.replace('public:\n  static void init(','''public:
   static void init(''',1)
 support=(pr6/'tests/ipc_transport_support.h').read_text()
 cpp=(util/'util_bridgecommand.cpp').read_text();cpp='\n'.join(line for line in cpp.splitlines() if not line.startswith('#include'))
-(out/'ipc_transport.cpp').write_text(support+'\n'+bridge+'\n'+cpp+'\n#include "full_bridge_cases.cpp"\n')
+# The frozen diagnostics fixture predates allocation-free fault attribution. The transport test
+# exercises channel faulting, not report persistence, so provide the one missing observer adapter.
+fault_adapter='namespace bridge_exception { inline void recordFault(const char*, uint32_t, uint32_t) noexcept {} }\n'
+(out/'ipc_transport.cpp').write_text(support+'\n'+fault_adapter+bridge+'\n'+cpp+'\n#include "full_bridge_cases.cpp"\n')
 shutil.copy2(ROOT/'tests/ipc-v2/full_bridge_cases.cpp',out/'full_bridge_cases.cpp')
 shutil.copy2(ROOT/'tests/ipc_reply_budget_cases.h',out/'ipc_reply_budget_cases.h')
 shutil.copy2(pr6/'tests/ipc_wait_injection.h',out/'ipc_wait_injection.h')
