@@ -166,6 +166,9 @@ jobs:
       - name: Host TCP 443 fail-fast policy on x86 and x64
         shell: powershell
         run: ./scripts/test_host_network_policy.ps1
+      - name: Unified session logs and Unicode retention on x86 and x64
+        shell: powershell
+        run: ./scripts/test_log_session.ps1
       - name: All correctness fixes against frozen main and negative controls
         shell: powershell
         run: ./scripts/test_correctness.ps1 -Stage all

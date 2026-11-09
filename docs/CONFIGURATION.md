@@ -48,6 +48,7 @@ v1.2.0 正式版包含通用设置 API，L4N 插件单独提供 ZIP。旧 `v1.2.
 
 | `client.ipcBatchSize` | `8` | 完整 IPC v2 的提交批次档位，支持 1/2/4/8/16/32；同步及资源边界强制提交。初始化时读取，完整重启生效。 | v1.3.0 |
 | `client.createDeviceTimeoutMs` | `30000` | CreateDevice 等待 Host 匹配回复的独立硬截止，单位毫秒；有效范围 1000–600000。它不改变普通命令超时。 | v1.3.3 测试 |
+| `logging.sessionRetention` | `10` | 保留 `<game root>/L4D2BridgeLogs` 中最近的 Session 总数，范围 1–100；只由 Client 在启动时清理，当前 Session 永不删除。 | v1.3.3 测试 |
 | `client.vbibMappedShadow` | `False` | 静态、非 SharedHeap 且达到阈值的 VB/IB 使用按需 section 映射；保留完整历史内容，动态 VB/IB 不变。AV 紧张时可选，冷映射可能增加耗时。 | v1.3.0 |
 | `client.vbibMappedShadowMinKB` | `256` | 选择 section 存储的最小资源大小，下限 64 KiB；静态并不保证低频访问。 | v1.3.0 |
 | `client.vbibShadowCacheMB` | `32` | 未锁定 VB/IB 映射的缓存预算，0 为最后一个 Unlock 后解除映射，上限 1024 MiB；活动 Lock 可超预算，预算不限制 section backing。 | v1.3.0 |
