@@ -13,7 +13,7 @@ if ($CompileArchitecture) {
   SetupVS -Platform $CompileArchitecture -VcVarsVer '14.29'
   Push-Location $testDir
   try {
-    & cl.exe /nologo /std:c++17 /EHsc /W4 /WX "/I$source/bridge/src/util" "$repoRoot/tests/command_queue.cpp" "/Fe:queue-test-$CompileArchitecture.exe"
+    & cl.exe /nologo /std:c++17 /EHsc /W4 /WX "/I$source/bridge/src/util" "$repoRoot/tests/command_queue.cpp" "$source/bridge/src/util/log_session.cpp" "/Fe:queue-test-$CompileArchitecture.exe"
     if ($LASTEXITCODE -ne 0) { throw "Queue test compilation failed for $CompileArchitecture" }
   } finally { Pop-Location }
 } else {

@@ -20,7 +20,7 @@ if($CompileRole){
     if($SeparateCaller){$roleFlags+=@('/DIPC_SEPARATE_CALLER')}
     if($Generic){$roleFlags+=@('/DIPC_BENCH_GENERIC')}
     [string[]]$transportSources=if($SeparateCaller){@('ipc_command.cpp','ipc_caller.cpp')}else{@('ipc_transport.cpp')}
-    & cl.exe /nologo /std:c++17 /EHsc /O2 /W3 /FAs "/Fa$assemblyDir\" /DNOMINMAX /DWIN32 @roleFlags "/I$testDir" "/I$repoRoot/tests" @transportSources util_sharedmemory.cpp util_semaphore.cpp data_diagnostics.cpp exception_diagnostics.cpp "/Fe:perf-$CompileRole$suffix.exe" /link ole32.lib psapi.lib
+    & cl.exe /nologo /std:c++17 /EHsc /O2 /W3 /FAs "/Fa$assemblyDir\" /DNOMINMAX /DWIN32 @roleFlags "/I$testDir" "/I$repoRoot/tests" @transportSources util_sharedmemory.cpp util_semaphore.cpp data_diagnostics.cpp log_session.cpp exception_diagnostics.cpp "/Fe:perf-$CompileRole$suffix.exe" /link ole32.lib psapi.lib
     if($LASTEXITCODE -ne 0){throw "Performance compilation failed $Variant $CompileRole"}
   }finally{Pop-Location}
 }else{

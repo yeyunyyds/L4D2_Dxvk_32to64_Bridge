@@ -11,6 +11,12 @@ New-Item -ItemType Directory -Force $output | Out-Null
 Push-Location $output
 try {
   # Keep the supplied SDK verbatim; unused parameters inside that header are expected.
-  & cl.exe /nologo /std:c++17 /EHsc /O2 /DNDEBUG /W4 /WX /utf-8 /wd4100 /LD "/I$source/bridge/src/util" "$repoRoot/plugins/l4n/L4D2BridgePlugin.cpp" /link /OUT:L4D2BridgePlugin.dll
+  $imgui = Join-Path $repoRoot 'plugins/l4n/vendor/imgui'
+  & cl.exe /nologo /std:c++17 /EHsc /O2 /DNDEBUG /W4 /WX /utf-8 /wd4100 /wd4458 /LD `
+    "/I$source/bridge/src/util" "/I$repoRoot/plugins/l4n" "/I$imgui" "/I$imgui/backends" `
+    "$repoRoot/plugins/l4n/L4D2BridgePlugin.cpp" `
+    "$imgui/imgui.cpp" "$imgui/imgui_draw.cpp" "$imgui/imgui_tables.cpp" "$imgui/imgui_widgets.cpp" `
+    "$imgui/backends/imgui_impl_dx9.cpp" "$imgui/backends/imgui_impl_win32.cpp" `
+    /link /OUT:L4D2BridgePlugin.dll d3d9.lib comctl32.lib user32.lib gdi32.lib imm32.lib
   if ($LASTEXITCODE -ne 0) { throw 'L4N v2 plugin build failed' }
 } finally { Pop-Location }

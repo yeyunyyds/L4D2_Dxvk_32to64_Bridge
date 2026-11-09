@@ -47,6 +47,8 @@ v1.2.0 正式版包含通用设置 API，L4N 插件单独提供 ZIP。旧 `v1.2.
 | `client.surfaceShadowCacheMB` | `128` | 缓存 Client surface shadow **映射**的预算，缺省 128 MiB，最大有效 1024。0 表示解锁后不缓存映射；活动锁可暂时超预算。降低预算可能增加映射次数，预算不等于 backing 或物理 RAM 上限。 | 已有 |
 
 | `client.ipcBatchSize` | `8` | 完整 IPC v2 的提交批次档位，支持 1/2/4/8/16/32；同步及资源边界强制提交。初始化时读取，完整重启生效。 | v1.3.0 |
+| `client.createDeviceTimeoutMs` | `30000` | CreateDevice 等待 Host 匹配回复的独立硬截止，单位毫秒；有效范围 1000–600000。它不改变普通命令超时。 | v1.3.3 测试 |
+| `logging.sessionRetention` | `10` | 保留 `<game root>/L4D2BridgeLogs` 中最近的 Session 总数，范围 1–100；只由 Client 在启动时清理，当前 Session 永不删除。 | v1.3.3 测试 |
 | `client.vbibMappedShadow` | `False` | 静态、非 SharedHeap 且达到阈值的 VB/IB 使用按需 section 映射；保留完整历史内容，动态 VB/IB 不变。AV 紧张时可选，冷映射可能增加耗时。 | v1.3.0 |
 | `client.vbibMappedShadowMinKB` | `256` | 选择 section 存储的最小资源大小，下限 64 KiB；静态并不保证低频访问。 | v1.3.0 |
 | `client.vbibShadowCacheMB` | `32` | 未锁定 VB/IB 映射的缓存预算，0 为最后一个 Unlock 后解除映射，上限 1024 MiB；活动 Lock 可超预算，预算不限制 section backing。 | v1.3.0 |
@@ -118,6 +120,7 @@ PR #4 第二轮进一步分离存储与失败：关闭 API wait 不分配线程�
 | `client.steamPollChainPassThrough` | `True` | Steam 活动时原查询执行一次，游戏仍收到受抑制的输入结果。 |
 | `server.steamWindowAdapter` | `True` | 限定 Steam Renderer 查询的游戏/Host 呈现窗口身份适配。 |
 | `client.steamWorkshopAvailabilityProxy` | `True` | 限定 GameUI 三个菜单调用位置，用新鲜且存活的 Host 状态补充可用性；不注入 URL，不全局强制可用。使用已支持的 x64 Renderer；未知版本保持原行为。 |
+| `server.blockHostTcp443` | `False` | Host 进程内所有模块的 IPv4/IPv6 TCP 443 连接立即返回 `WSAENETUNREACH`；用于避免受限网络的 SYN 黑洞阻塞 CreateDevice。会禁用 Host Steam 网页/Workshop 和其他 HTTPS，完整重启生效。 |
 | `server.steamWindowDiagnostics` / `client.steamWebDiagnostics` | `False` | 独立详细窗口/网页入口观察，增加诊断日志与查询；普通使用关闭。 |
 
 ## 诊断和实验开关

@@ -14,7 +14,7 @@ if ($CompileArch) {
     if ($LASTEXITCODE -ne 0) { throw 'Section policy regression failed' }
     if ($CompileArch -eq 'x86') {
       foreach ($label in @('old','new')) {
-        & cl.exe /nologo /std:c++17 /EHsc /O2 /MT /DNDEBUG /W4 /WX /DNOMINMAX /DLDB_SHADOW_ARENA /DLDB_PRESSURE_NATIVE_ALLOCATOR "/I$source/bridge/src/util" "/I$source/bridge/src/client" "/I$root/tests" "$label.cpp" "$source/bridge/src/util/data_diagnostics.cpp" "/Fe:$label-x86.exe" /link /LARGEADDRESSAWARE psapi.lib
+        & cl.exe /nologo /std:c++17 /EHsc /O2 /MT /DNDEBUG /W4 /WX /DNOMINMAX /DLDB_SHADOW_ARENA /DLDB_PRESSURE_NATIVE_ALLOCATOR "/I$source/bridge/src/util" "/I$source/bridge/src/client" "/I$root/tests" "$label.cpp" "$source/bridge/src/util/data_diagnostics.cpp" "$source/bridge/src/util/log_session.cpp" "/Fe:$label-x86.exe" /link /LARGEADDRESSAWARE psapi.lib
         if ($LASTEXITCODE -ne 0) { throw "Actual production template compilation failed: $label" }
       }
       & .\new-x86.exe

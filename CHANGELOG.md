@@ -5,7 +5,15 @@
 
 # 更新记录 / Changelog
 
-当前正式版为 **v1.3.3**。简明记录见 [LDBREADME](LDBREADME.md)。
+当前正式版为 **v1.3.4**。简明记录见 [LDBREADME](LDBREADME.md)。
+
+## 1.3.4（正式发布 / Stable）
+
+- 将常用 Client/Host、异常、内存及可选诊断日志按 GUID 汇总到游戏根目录 `L4D2BridgeLogs/<session>/`；默认保留最近 10 个 Session，运行中的目录不会被清理。
+- Client 或 Host 异常退出后由存活端显示统一错误窗口，列出已观察到的异常代码、模块调用链及完整报告路径；该信息用于定位，不将调用栈直接认定为根因。
+- 新增默认关闭的 StudioRender 模型诊断，兼容已核验的两份 x86 `studiorender.dll`；仅匹配受支持文件身份时安装 Hook，异常报告可读取预先复制的 TLS 模型上下文。
+- 增加可选 `server.blockHostTcp443`，在受限网络中让 Host TCP 443 连接立即失败，避免 SYN 黑洞长期阻塞；默认关闭。L4N 菜单语言与位置共同写入插件 INI 并跨启动保留。
+- 保留 v1.3.3 的 Steam Renderer 11.15.70.27 和 ReShade 6.8 输入修复；IPC v2、C8 与 Shadow 默认值不变。安装与回滚见 [1.3.4 安装说明](docs/RELEASE-V1.3.4.md)。
 
 ## 1.3.3（正式发布 / Stable）
 

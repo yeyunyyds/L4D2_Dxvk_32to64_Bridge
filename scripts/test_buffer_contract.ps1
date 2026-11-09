@@ -17,7 +17,7 @@ if (Select-String -Path "$source/bridge/src/client/buffer_shadow.h" -Pattern 'us
 if ($LASTEXITCODE -ne 0) { throw 'Buffer contract source generation failed' }
 Push-Location $output
 try {
-  & cl.exe /nologo /std:c++17 /EHsc /W4 /WX /DNOMINMAX @allocatorFlags "/I$source/bridge/src/util" "/I$source/bridge/src/client" "/I$repoRoot/tests" $generated "$source/bridge/src/util/data_diagnostics.cpp" /Fe:buffer-contract.exe
+  & cl.exe /nologo /std:c++17 /EHsc /W4 /WX /DNOMINMAX @allocatorFlags "/I$source/bridge/src/util" "/I$source/bridge/src/client" "/I$repoRoot/tests" $generated "$source/bridge/src/util/data_diagnostics.cpp" "$source/bridge/src/util/log_session.cpp" /Fe:buffer-contract.exe
   if ($LASTEXITCODE -ne 0) { throw 'Buffer contract test compilation failed' }
   & .\buffer-contract.exe
   if ($LASTEXITCODE -ne 0) { throw 'Buffer contract regression test failed' }

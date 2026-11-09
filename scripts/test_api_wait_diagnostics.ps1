@@ -28,7 +28,7 @@ if ($CompileArchitecture) {
   SetupVS -Platform $CompileArchitecture -VcVarsVer '14.29'
   Push-Location $testDir
   try {
-    & cl.exe /nologo /std:c++17 /EHsc /W4 /WX "/I$source/bridge/src/util" "$repoRoot/tests/api_wait_diagnostics.cpp" "/Fe:api-wait-$CompileArchitecture.exe"
+    & cl.exe /nologo /std:c++17 /EHsc /W4 /WX "/I$source/bridge/src/util" "$repoRoot/tests/api_wait_diagnostics.cpp" "$source/bridge/src/util/log_session.cpp" "/Fe:api-wait-$CompileArchitecture.exe"
     if ($LASTEXITCODE -ne 0) { throw "API wait diagnostic compilation failed for $CompileArchitecture" }
     & ".\api-wait-$CompileArchitecture.exe"
     if ($LASTEXITCODE -ne 0) { throw "API wait diagnostic tests failed for $CompileArchitecture" }

@@ -15,7 +15,16 @@ if not baseline.exists():baseline=ROOT/'.deps/c32-baseline'
 generate(baseline,out)
 util=source/'bridge/src/util'
 for folder in ('ipc_full','ipc_v2'):shutil.copytree(util/folder,out/folder,dirs_exist_ok=True)
-for name in ('util_ipcchannel.h','util_commands.h','ipc_c32_message_queue.h'):shutil.copy2(util/name,out/name)
+for name in ('util_ipcchannel.h','util_commands.h','ipc_c32_message_queue.h'):
+    shutil.copy2(util/name,out/name)
+if (util/'log_session.h').exists() and (util/'log_session.cpp').exists():
+    shutil.copy2(util/'log_session.h',out/'log_session.h')
+    shutil.copy2(util/'log_session.cpp',out/'log_session.cpp')
+else:
+    # Frozen pre-session sources have no dependency on this unit, but the shared native build
+    # command always names it so current and baseline fixtures stay structurally identical.
+    (out/'log_session.h').write_text('#pragma once\n')
+    (out/'log_session.cpp').write_text('#include "log_session.h"\n')
 options=out/'config/global_options.h';options.write_text(options.read_text().replace('struct GlobalOptions {','struct GlobalOptions {\n static uint32_t getIpcBatchSize(){return 1;}'))
 header=(util/'util_bridgecommand.h').read_text();bridge=header[header.index('struct BridgeReadFailure'):]
 bridge=bridge.replace('public:\n  static void init(','''public:
@@ -25,7 +34,10 @@ bridge=bridge.replace('public:\n  static void init(','''public:
   static void init(''',1)
 support=(pr6/'tests/ipc_transport_support.h').read_text()
 cpp=(util/'util_bridgecommand.cpp').read_text();cpp='\n'.join(line for line in cpp.splitlines() if not line.startswith('#include'))
-(out/'ipc_transport.cpp').write_text(support+'\n'+bridge+'\n'+cpp+'\n#include "full_bridge_cases.cpp"\n')
+# The frozen diagnostics fixture predates allocation-free fault attribution. The transport test
+# exercises channel faulting, not report persistence, so provide the one missing observer adapter.
+fault_adapter='namespace bridge_exception { inline void recordFault(const char*, uint32_t, uint32_t) noexcept {} }\n'
+(out/'ipc_transport.cpp').write_text(support+'\n'+fault_adapter+bridge+'\n'+cpp+'\n#include "full_bridge_cases.cpp"\n')
 shutil.copy2(ROOT/'tests/ipc-v2/full_bridge_cases.cpp',out/'full_bridge_cases.cpp')
 shutil.copy2(ROOT/'tests/ipc_reply_budget_cases.h',out/'ipc_reply_budget_cases.h')
 shutil.copy2(pr6/'tests/ipc_wait_injection.h',out/'ipc_wait_injection.h')
@@ -37,7 +49,7 @@ client=source/'bridge/src/client'
 if (client/'buffer_mapped_shadow.h').exists():
     (out/'client').mkdir(exist_ok=True)
     for name in ('buffer_shadow.h','buffer_shadow_arena.h','buffer_mapped_shadow.h','memory_diagnostics.h'):
-        text=(client/name).read_text().replace('../util/queue_wait_diagnostics.h','../queue_wait_diagnostics.h').replace('../util/runtime_observation.h','../runtime_observation.h')
+        text=(client/name).read_text().replace('../util/queue_wait_diagnostics.h','../queue_wait_diagnostics.h').replace('../util/runtime_observation.h','../runtime_observation.h').replace('../util/log_session.h','../log_session.h')
         (out/'client'/name).write_text(text)
     options=out/'config/global_options.h'
     options.write_text(options.read_text().replace('struct GlobalOptions {','struct GlobalOptions {\n static bool getUseSharedHeap(){return false;}\n static bool getUseSharedHeapForDynamicBuffers(){return false;}\n static bool getUseSharedHeapForStaticBuffers(){return false;}\n static bool getAlwaysCopyEntireStaticBuffer(){return false;}'))

@@ -17,7 +17,8 @@ FILES = (
     'util_common.h', 'util_commands.h', 'util_circularqueue.h', 'util_circularbuffer.h',
     'util_atomiccircularqueue.h', 'util_ipcchannel.h', 'util_sharedmemory.h', 'util_sharedmemory.cpp',
     'util_semaphore.h', 'util_semaphore.cpp', 'util_guid.h', 'api_wait_diagnostics.h',
-    'data_diagnostics.h', 'data_diagnostics.cpp', 'exception_diagnostics.h', 'exception_diagnostics.cpp',
+    'data_diagnostics.h', 'data_diagnostics.cpp', 'log_session.h', 'log_session.cpp',
+    'exception_diagnostics.h', 'exception_diagnostics.cpp',
     'queue_wait_diagnostics.h', 'runtime_observation.h', 'util_scopedlock.h', 'device_reset.h',
     'data_ring_contract.h',
 )
