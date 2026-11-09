@@ -18575,10 +18575,10 @@ index 0000000..2424f5a
 +}
 diff --git a/bridge/src/util/peer_error_dialog.cpp b/bridge/src/util/peer_error_dialog.cpp
 new file mode 100644
-index 0000000..c438d3e
+index 0000000..dd5df51
 --- /dev/null
 +++ b/bridge/src/util/peer_error_dialog.cpp
-@@ -0,0 +1,90 @@
+@@ -0,0 +1,93 @@
 +// SPDX-License-Identifier: MIT
 +#include "peer_error_dialog.h"
 +
@@ -18668,20 +18668,29 @@ index 0000000..c438d3e
 +    return false;
 +  }
 +}
++#ifdef L4D2_PEER_ERROR_TEST
++std::string summarizeForTest(const std::string& report) { return summarize(report); }
++#endif
 +}
 diff --git a/bridge/src/util/peer_error_dialog.h b/bridge/src/util/peer_error_dialog.h
 new file mode 100644
-index 0000000..e56942c
+index 0000000..d052e5a
 --- /dev/null
 +++ b/bridge/src/util/peer_error_dialog.h
-@@ -0,0 +1,8 @@
+@@ -0,0 +1,14 @@
 +// SPDX-License-Identifier: MIT
 +#pragma once
 +
 +#include <windows.h>
++#ifdef L4D2_PEER_ERROR_TEST
++#include <string>
++#endif
 +
 +namespace l4d2_peer_error {
 +bool show(const char* peerRole, DWORD exitCode) noexcept;
++#ifdef L4D2_PEER_ERROR_TEST
++std::string summarizeForTest(const std::string& report);
++#endif
 +}
 diff --git a/bridge/src/util/queue_wait_diagnostics.h b/bridge/src/util/queue_wait_diagnostics.h
 new file mode 100644

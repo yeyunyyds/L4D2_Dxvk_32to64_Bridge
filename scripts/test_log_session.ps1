@@ -26,6 +26,14 @@ try {
   Assert-NativeArchitecture -Path (Join-Path $directory 'log-session-test.exe') -Architecture $CompileArchitecture
   & .\log-session-test.exe
   if ($LASTEXITCODE -ne 0) { throw "Log session test failed for $CompileArchitecture" }
+  & cl.exe /nologo /std:c++17 /EHsc /O2 /W2 /WX /utf-8 /DNOMINMAX /DL4D2_PEER_ERROR_TEST `
+    "/I$source/bridge/src/util" `
+    "$root/tests/peer_error_dialog_test.cpp" "$source/bridge/src/util/peer_error_dialog.cpp" `
+    "$source/bridge/src/util/log_session.cpp" /Fe:peer-error-test.exe /link user32.lib
+  if ($LASTEXITCODE -ne 0) { throw "Peer error summary compilation failed for $CompileArchitecture" }
+  Assert-NativeArchitecture -Path (Join-Path $directory 'peer-error-test.exe') -Architecture $CompileArchitecture
+  & .\peer-error-test.exe
+  if ($LASTEXITCODE -ne 0) { throw "Peer error summary test failed for $CompileArchitecture" }
 } finally {
   Pop-Location
 }
