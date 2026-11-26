@@ -1,10 +1,10 @@
-# LDB v1.3.4
+# LDB v1.3.5
 
-本次统一按 Session 保存常用日志，并在一侧异常退出后由另一侧显示故障链和报告路径。新增默认关闭的 StudioRender 模型诊断与 Host TCP 443 快速失败选项；L4N 菜单语言现在和位置一样跨启动保留。
+本次修复 D3D9 PrivateData 内存所有权与接口边界，精简 LG 数据库的重复读写；保留原有回收策略和历史学习数据。
 
 新安装默认 x64 Host + learned-aggressive。已有安装使用配套三件套升级包并保留配置/DXVK/ReShade/retention DB；插件独立更新。配置菜单保存后完整重启游戏与 Host 生效。
 
-[本次改动](docs/RELEASE-V1.3.4-NOTES.md) · [安装与回退](docs/RELEASE-V1.3.4.md) · [L4N 菜单](docs/L4N-CONFIG-MENU.md)
+[本次改动](docs/RELEASE-V1.3.5-NOTES.md) · [安装与回退](docs/RELEASE-V1.3.5.md) · [L4N 菜单](docs/L4N-CONFIG-MENU.md)
 
 以下保留旧版本记录。
 
@@ -15,6 +15,16 @@
 # L4D2 Bridge 简明版本记录
 
 这里只记录已经加入各版本的功能和修复。安装见 [README](README.md)，详细历史见 [CHANGELOG](CHANGELOG.md)。
+
+## v1.3.5
+
+- PrivateData 普通数据直接持有，修复内存所有权、COM 引用与缓冲区边界。
+- LG 已知 KEEP 不重复写入；新学习增量校验、去重，沿用 V1 数据库及默认策略。
+- 用户实机确认 EM2 可正常使用，首次装备仍可能短暂卡顿；不代表全部 MOD 已验证。
+
+## v1.3.4
+
+- 统一 Session 日志、异常故障链与报告路径，新增可选 StudioRender 诊断、Host TCP 443 快速失败，L4N 保存语言与位置。
 
 ## v1.2.2（Optional / 可选更新）
 

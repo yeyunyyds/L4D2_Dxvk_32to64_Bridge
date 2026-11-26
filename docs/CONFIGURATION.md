@@ -43,7 +43,7 @@ v1.2.0 正式版包含通用设置 API，L4N 插件单独提供 ZIP。旧 `v1.2.
 | `threadSafetyPolicy` | `1` | 0 尊重游戏设备创建选择，1 强制线程安全，2 强制非线程安全。当前 1 保留锁保护，可能有竞争成本；源码缺省 0。不要通过强制 2 掩盖线程安全问题。 | 已有 |
 | `sendReadOnlyCalls` | `False` | 不额外将部分只读 Getter 转发给 Host，使用 Client 已有状态。True 用于核对状态，会增加命令/传输开销。 | 已有 |
 | `client.pageBlockRetentionPolicy` | `learned-aggressive` | 选择 Client PageBlock 内容保留策略，详见下表。省略该键时仍为保守的 `keep`。它是常规内存管理，不是诊断开关。 | 键和 learned 已有；新增 `drop` 并统一回收管理 |
-| `client.pageBlockRetentionDb` | `.l4d2bridge/resource-retention.db` | learned 的持久 KEEP 指纹库；相对路径从 Client DLL 所在 `bin` 解析，即当前 `bin/.l4d2bridge/resource-retention.db`。不是纹理内容副本；会有 DB 读取及学习记录写入。 | 已有 |
+| `client.pageBlockRetentionDb` | `.l4d2bridge/resource-retention.db` | learned 的持久 KEEP 指纹库；相对路径从 Client DLL 所在 `bin` 解析，即当前 `bin/.l4d2bridge/resource-retention.db`。不是纹理内容副本；v1.3.5 起初始化全量读取，已知 KEEP 命中不写入，新学习增量校验及同步追加，沿用 V1 格式。 | 已有 |
 | `client.surfaceShadowCacheMB` | `128` | 缓存 Client surface shadow **映射**的预算，缺省 128 MiB，最大有效 1024。0 表示解锁后不缓存映射；活动锁可暂时超预算。降低预算可能增加映射次数，预算不等于 backing 或物理 RAM 上限。 | 已有 |
 
 | `client.ipcBatchSize` | `8` | 完整 IPC v2 的提交批次档位，支持 1/2/4/8/16/32；同步及资源边界强制提交。初始化时读取，完整重启生效。 | v1.3.0 |
