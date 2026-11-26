@@ -46,7 +46,7 @@ jobs:
       - name: Existing resource and native regressions
         shell: powershell
         run: |
-          foreach ($test in @('buffer_contract','buffer_shadow_arena','volume_layout','device_reset','readback_recovery','input_hooks','adapter_information','ati_texture_layout','command_queue','runtime_observation','exception_diagnostics','color_diagnostics','data_diagnostics','diagnostics','host_diagnostics','overlay_presenter','api_wait_diagnostics')) {
+          foreach ($test in @('private_data','buffer_contract','buffer_shadow_arena','volume_layout','device_reset','readback_recovery','input_hooks','adapter_information','ati_texture_layout','command_queue','runtime_observation','exception_diagnostics','color_diagnostics','data_diagnostics','diagnostics','host_diagnostics','overlay_presenter','api_wait_diagnostics')) {
             & powershell.exe -NoProfile -File "./scripts/test_$test.ps1"
             if ($LASTEXITCODE -ne 0) { throw "$test failed" }
           }

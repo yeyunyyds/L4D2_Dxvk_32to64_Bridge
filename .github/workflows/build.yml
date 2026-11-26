@@ -265,6 +265,9 @@ jobs:
       - name: Test ATI1 and ATI2 guarded texture transfers on x86 and x64
         shell: powershell
         run: ./scripts/test_ati_texture_layout.ps1
+      - name: Test resource PrivateData ownership and API contracts
+        shell: powershell
+        run: ./scripts/test_private_data.ps1
       - name: Test cross-process overlay presentation windows and input capture
         shell: powershell
         run: ./scripts/test_overlay_presenter.ps1
