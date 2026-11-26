@@ -22457,7 +22457,7 @@ index 0000000..97a6af2
 diff --git a/bridge/src/client/d3d9_privatedata.h b/bridge/src/client/d3d9_privatedata.h
 --- a/bridge/src/client/d3d9_privatedata.h
 +++ b/bridge/src/client/d3d9_privatedata.h
-@@ -21,118 +21,106 @@
+@@ -21,118 +21,98 @@
   */
  #pragma once
  
@@ -22574,6 +22574,8 @@ diff --git a/bridge/src/client/d3d9_privatedata.h b/bridge/src/client/d3d9_priva
 -    }
 -
 -    return D3DERR_INVALIDCALL;
+-  }
+-};
 +#include <d3d9.h>
 +#include <cstdint>
 +#include <cstring>
@@ -22583,6 +22585,7 @@ diff --git a/bridge/src/client/d3d9_privatedata.h b/bridge/src/client/d3d9_priva
 +#include <stdexcept>
 +#include <unordered_map>
 +#include <utility>
++#include <variant>
 +#include <vector>
 +
 +class PrivateDataFactory {
@@ -22594,25 +22597,13 @@ diff --git a/bridge/src/client/d3d9_privatedata.h b/bridge/src/client/d3d9_priva
 +    }
 +  };
 +
-+  // Immutable entries own a byte copy or exactly one COM reference.
-+  // A shared snapshot keeps the entry alive while Get returns its contents.
-+  struct Entry {
-+    std::vector<uint8_t> bytes;
-+    IUnknown* object = nullptr;
-+    explicit Entry(const void* data, DWORD size) : bytes(size) {
-+      if (size) { std::memcpy(bytes.data(), data, size); }
-+    }
-+    explicit Entry(IUnknown* value) : object(value) { object->AddRef(); }
-+    ~Entry() { if (object) { object->Release(); } }
-+    Entry(const Entry&) = delete;
-+    Entry& operator=(const Entry&) = delete;
-+    DWORD size() const {
-+      return object ? static_cast<DWORD>(sizeof(object)) : static_cast<DWORD>(bytes.size());
-+    }
-+  };
-+
++  using Bytes = std::vector<uint8_t>;
++  // Only the COM path needs a snapshot across the lock boundary: AddRef
++  // and Release may execute foreign code. Ordinary data is owned by the map.
++  using Interface = std::shared_ptr<IUnknown>;
++  using Entry = std::variant<Bytes, Interface>;
 +  std::mutex m_mutex;
-+  std::unordered_map<GUID, std::shared_ptr<const Entry>, GuidHash> m_entries;
++  std::unordered_map<GUID, Entry, GuidHash> m_entries;
 +
 +public:
 +  HRESULT setData(REFGUID refguid, CONST void* pData, DWORD SizeOfData, DWORD Flags) {
@@ -22621,19 +22612,23 @@ diff --git a/bridge/src/client/d3d9_privatedata.h b/bridge/src/client/d3d9_priva
 +      return D3DERR_INVALIDCALL;
 +    }
 +    try {
-+      std::shared_ptr<const Entry> next;
++      Entry next;
 +      if (Flags & D3DSPD_IUNKNOWN) {
-+        next = std::make_shared<Entry>(static_cast<IUnknown*>(const_cast<void*>(pData)));
++        auto* object = static_cast<IUnknown*>(const_cast<void*>(pData));
++        object->AddRef();
++        // shared_ptr calls the deleter even if control-block allocation fails.
++        next.emplace<Interface>(object, [](IUnknown* value) { value->Release(); });
 +      } else {
-+        next = std::make_shared<Entry>(pData, SizeOfData);
++        auto& bytes = std::get<Bytes>(next);
++        bytes.resize(SizeOfData);
++        if (SizeOfData) { std::memcpy(bytes.data(), pData, SizeOfData); }
 +      }
 +      {
 +        std::lock_guard<std::mutex> lock(m_mutex);
 +        auto it = m_entries.find(refguid);
-+        if (it == m_entries.end()) { m_entries.emplace(refguid, next); }
++        if (it == m_entries.end()) { m_entries.emplace(refguid, std::move(next)); }
 +        else { it->second.swap(next); }
 +      }
-+      // Release replaced COM references after dropping the map lock.
 +      return D3D_OK;
 +    } catch (const std::bad_alloc&) {
 +      return E_OUTOFMEMORY;
@@ -22644,39 +22639,38 @@ diff --git a/bridge/src/client/d3d9_privatedata.h b/bridge/src/client/d3d9_priva
 +
 +  HRESULT getData(REFGUID refguid, void* pData, DWORD* pSizeOfData) {
 +    if (!pSizeOfData) { return D3DERR_INVALIDCALL; }
-+    std::shared_ptr<const Entry> entry;
++    Interface object;
 +    {
 +      std::lock_guard<std::mutex> lock(m_mutex);
 +      auto it = m_entries.find(refguid);
 +      if (it == m_entries.end()) { return D3DERR_NOTFOUND; }
-+      entry = it->second;
++      const auto* bytes = std::get_if<Bytes>(&it->second);
++      const DWORD required = bytes ? static_cast<DWORD>(bytes->size()) : static_cast<DWORD>(sizeof(IUnknown*));
++      const DWORD capacity = *pSizeOfData;
++      *pSizeOfData = required;
++      if (capacity < required) { return D3DERR_MOREDATA; }
++      if (!pData) { return D3D_OK; }
++      if (bytes) {
++        if (required) { std::memcpy(pData, bytes->data(), required); }
++        return D3D_OK;
++      }
++      object = std::get<Interface>(it->second);
 +    }
-+    const DWORD capacity = *pSizeOfData;
-+    const DWORD required = entry->size();
-+    *pSizeOfData = required;
-+    if (capacity < required) { return D3DERR_MOREDATA; }
-+    if (!pData) { return D3D_OK; }
-+    if (entry->object) {
-+      entry->object->AddRef();
-+      std::memcpy(pData, &entry->object, required);
-+    } else if (required) {
-+      std::memcpy(pData, entry->bytes.data(), required);
-+    }
++    auto* value = object.get();
++    value->AddRef();
++    std::memcpy(pData, &value, sizeof(value));
 +    return D3D_OK;
 +  }
 +
 +  HRESULT freeData(REFGUID refguid) {
-+    std::shared_ptr<const Entry> removed;
++    decltype(m_entries)::node_type removed;
 +    {
 +      std::lock_guard<std::mutex> lock(m_mutex);
-+      auto it = m_entries.find(refguid);
-+      if (it == m_entries.end()) { return D3DERR_NOTFOUND; }
-+      removed = std::move(it->second);
-+      m_entries.erase(it);
++      removed = m_entries.extract(refguid);
 +    }
-+    return D3D_OK;
-   }
- };
++    return removed.empty() ? D3DERR_NOTFOUND : D3D_OK;
++  }
++};
 diff --git a/bridge/src/client/d3d9_resource.h b/bridge/src/client/d3d9_resource.h
 --- a/bridge/src/client/d3d9_resource.h
 +++ b/bridge/src/client/d3d9_resource.h
