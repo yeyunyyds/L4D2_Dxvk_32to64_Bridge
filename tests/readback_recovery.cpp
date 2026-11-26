@@ -249,6 +249,40 @@ static int policyTests(const wchar_t* executable) {
     }
     summary(c);
   }
+  // A known hit (including content-only matches) must never grow the journal.
+  {
+    Database check;
+    if (!check.open(db.wstring()) || check.records() != 1) { return 81; }
+  }
+  // Two independently opened handles must merge only new verified records.
+  // Duplicate observations must not grow the journal; reason upgrades must.
+  {
+    const auto journal = directory / L"incremental.db";
+    const std::string a(64, 'a'), b(64, 'b'), cKey(64, 'c'), d(64, 'd');
+    Database first, second;
+    if (!first.open(journal.wstring()) || !second.open(journal.wstring())) { return 82; }
+    bool added = false;
+    if (!first.keep(a, b, "post-upload-preserve-miss", true, added) || !added) { return 83; }
+    const auto initialSize = std::filesystem::file_size(journal);
+    if (!second.keep(a, b, "post-upload-preserve-miss", false, added) || added
+      || second.records() != 1 || std::filesystem::file_size(journal) != initialSize) { return 84; }
+    if (!second.keep(cKey, d, "post-upload-preserve-miss", true, added) || !added) { return 85; }
+    const auto secondSize = std::filesystem::file_size(journal);
+    if (!first.keep(cKey, d, "post-upload-preserve-miss", true, added) || added
+      || first.lookup(cKey, d) != Match::Strong || first.records() != 2
+      || std::filesystem::file_size(journal) != secondSize) { return 86; }
+    if (!first.keep(a, b, "recovery-failure", true, added) || added
+      || std::filesystem::file_size(journal) <= secondSize) { return 87; }
+    const auto upgradedSize = std::filesystem::file_size(journal);
+    if (!second.keep(a, b, "post-upload-preserve-miss", false, added) || added
+      || std::filesystem::file_size(journal) != upgradedSize) { return 88; }
+    Database reopened;
+    if (!reopened.open(journal.wstring()) || reopened.records() != 2
+      || reopened.lookup(a, b) != Match::Strong || reopened.lookup(cKey, d) != Match::Strong) { return 89; }
+    { std::ofstream out(journal, std::ios::app); out << "broken-tail\n"; }
+    if (first.keep(std::string(64, 'e'), std::string(64, 'f'), "post-upload-preserve-miss", true, added)
+      || first.valid()) { return 90; }
+  }
   if (l4d2_memory::surfaceBackingBytes != baseline) { return 54; }
   {
     Context c; if (!setupPolicy(c, executable, directory / L"overwrite.db", mode, log)) { return 55; }

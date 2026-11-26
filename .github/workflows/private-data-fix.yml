@@ -1,4 +1,4 @@
-name: PrivateData compatibility fix
+name: PrivateData and LG lightweight compatibility fix
 on:
   push:
     branches: ['fix/d3d9-private-data']
@@ -21,6 +21,9 @@ jobs:
       - name: PrivateData ownership and D3D9 API regression tests (x86 and x64)
         shell: powershell
         run: ./scripts/test_private_data.ps1
+      - name: LG journal and cross-process readback regression
+        shell: powershell
+        run: ./scripts/test_readback_recovery.ps1
       - name: Download verified pinned DXVK build dependencies
         shell: pwsh
         run: |
@@ -37,15 +40,15 @@ jobs:
         run: |
           python -c "import json,pathlib; p=pathlib.Path('dist/l4d2-bridge-patch/BUILD-INFO.json'); d=json.loads(p.read_text()); d.update(distribution='experimental',status='AWAITING GAME VALIDATION'); p.write_text(json.dumps(d,indent=2)+'\n',encoding='utf-8')"
           if ($LASTEXITCODE -ne 0) { throw 'Test receipt update failed' }
-          python -c "import shutil; shutil.make_archive('dist/l4d2-bridge-private-data-test','zip','dist/l4d2-bridge-patch')"
+          python -c "import shutil; shutil.make_archive('dist/l4d2-bridge-lightweight-test','zip','dist/l4d2-bridge-patch')"
           if ($LASTEXITCODE -ne 0) { throw 'Test ZIP creation failed' }
-          $zip = Get-Item dist/l4d2-bridge-private-data-test.zip
+          $zip = Get-Item dist/l4d2-bridge-lightweight-test.zip
           $hash = (Get-FileHash $zip.FullName -Algorithm SHA256).Hash.ToLower()
           "$hash  $($zip.Name)" | Set-Content dist/SHA256SUMS.txt -Encoding ascii
       - name: Preserve matched update and build receipt
         uses: actions/upload-artifact@v4
         with:
-          name: private-data-fix-${{ github.run_id }}
+          name: lightweight-fix-${{ github.run_id }}
           path: |
             dist/*.zip
             dist/SHA256SUMS.txt
